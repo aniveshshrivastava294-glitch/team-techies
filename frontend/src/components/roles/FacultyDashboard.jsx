@@ -9,8 +9,12 @@ import {
 import ChatWidget from '../ChatWidget';
 import RealtimeBookingMatrix from '../RealtimeBookingMatrix';
 
-export default function FacultyDashboard({ currentUser }) {
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'matrix', 'transport', 'tickets'
+export default function FacultyDashboard({ currentUser, activeTab: propActiveTab, setActiveTab: propSetActiveTab }) {
+  const [internalActiveTab, setInternalActiveTab] = useState(propActiveTab || 'overview');
+
+  const activeTab = propActiveTab || internalActiveTab;
+  const setActiveTab = propSetActiveTab || setInternalActiveTab;
+
   const [activeExpand, setActiveExpand] = useState('classroom'); // 'classroom', 'venue', 'bus', or null
   const [buses, setBuses] = useState([]);
   const [userTickets, setUserTickets] = useState([]);

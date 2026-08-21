@@ -13,26 +13,33 @@ import {
   Send, Activity, Cpu, Gauge, HelpCircle, FileText
 } from 'lucide-react';
 
-export default function SubAdminDashboard({ currentUser }) {
-  // Determine primary domain
+export default function SubAdminDashboard({ currentUser, activeTab: propActiveTab, setActiveTab: propSetActiveTab }) {
   const rawDomain = currentUser?.department_domain || 'events';
   const domain = rawDomain;
 
-  // Strict Domain Isolation: Render only the dedicated domain interface for single-domain sub-admins
-  if (domain === 'transport') {
+  // Allow sidebar activeTab selection to switch modules even within sub-admin view
+  if (propActiveTab === 'transport') {
     return <TransportManagerInterface />;
   }
 
-  if (domain === 'maintenance') {
+  if (propActiveTab === 'maintenance') {
     return <MaintenanceManagerInterface />;
   }
 
-  if (domain === 'energy') {
+  if (propActiveTab === 'anomalies') {
     return <EnergyManagerInterface />;
   }
 
-  if (domain === 'classroom' || domain === 'classes' || domain === 'class') {
+  if (propActiveTab === 'matrix') {
     return <ClassroomManagerInterface />;
+  }
+
+  // Strict Domain Isolation default fallback if overview or default domain
+  if (!propActiveTab || propActiveTab === 'overview') {
+    if (domain === 'transport') return <TransportManagerInterface />;
+    if (domain === 'maintenance') return <MaintenanceManagerInterface />;
+    if (domain === 'energy') return <EnergyManagerInterface />;
+    if (domain === 'classroom' || domain === 'classes' || domain === 'class') return <ClassroomManagerInterface />;
   }
 
   // Active view tab state (for multi-domain / events view)

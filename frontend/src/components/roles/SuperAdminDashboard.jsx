@@ -6,9 +6,12 @@ import Visualizers from '../Visualizers';
 import DomainDataTables from '../DomainDataTables';
 import BulkFacultyUploadModal from '../BulkFacultyUploadModal';
 import LiveCampusTicker from '../LiveCampusTicker';
+import RealtimeBookingMatrix from '../RealtimeBookingMatrix';
+import CosmicOrbitRadar from '../CosmicOrbitRadar';
+import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import { UserCheck, ShieldCheck, Check, X, Sparkles, Upload } from 'lucide-react';
 
-export default function SuperAdminDashboard({ kpis, anomalies, recommendations, isRefreshing, onRefresh }) {
+export default function SuperAdminDashboard({ kpis, anomalies, recommendations, isRefreshing, onRefresh, activeTab = 'overview', setActiveTab }) {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [actionLoading, setActionLoading] = useState(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -55,122 +58,249 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
       {/* Live Campus Telemetry Ticker */}
       <LiveCampusTicker />
 
-      {/* Super Admin Top Row: Pending Approvals & Multi-Batch AI Data Intaker */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Left: Pending Staff Registrations (List Rows Specification) */}
-        <div className="lg:col-span-8 card-enterprise p-5">
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
-            <div className="flex items-center space-x-2.5">
-              <UserCheck className="w-5 h-5 text-[#2563EB]" />
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold text-slate-900">Pending Staff Access Approvals</h2>
-                  <span className="badge-pill badge-warning">
-                    {pendingUsers.length} Action Required
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500">
-                  Review and verify administrative clearance for newly registered department staff.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {pendingUsers.length === 0 ? (
-            <div className="py-8 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0] flex items-center justify-center space-x-2">
-              <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
-              <span>All staff registration requests have been reviewed and verified.</span>
-            </div>
-          ) : (
-            <div className="divide-y divide-[#E2E8F0]">
-              {pendingUsers.map((user) => (
-                <div key={user.id} className="py-2.5 flex items-center justify-between gap-3 hover:bg-[#F8FAFC] px-2 rounded">
-                  <div className="min-w-0">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs font-semibold text-slate-900 truncate">{user.full_name || user.email}</span>
-                      <span className="badge-pill badge-info font-mono text-[10px] uppercase">
-                        {user.department_domain} Admin
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 font-mono mt-0.5">{user.email}</p>
-                  </div>
-
-                  <div className="flex items-center space-x-2 shrink-0">
-                    <button
-                      onClick={() => handleApproveUser(user.id, 'approved')}
-                      disabled={actionLoading === user.id}
-                      className="btn-primary text-xs py-1 px-3"
-                    >
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Approve</span>
-                    </button>
-                    <button
-                      onClick={() => handleApproveUser(user.id, 'rejected')}
-                      disabled={actionLoading === user.id}
-                      className="btn-secondary text-xs py-1 px-2.5 text-[#DC2626]"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                      <span>Reject</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      {/* VIEW SWITCHER BASED ON SIDEBAR / TOPBAR SELECTION */}
+      {activeTab === 'matrix' && (
+        <div className="space-y-6">
+          <RealtimeBookingMatrix currentUser={{ role: 'super_admin' }} />
+          <DomainDataTables defaultDomain="classrooms" />
         </div>
+      )}
 
-        {/* Right: Universal Multi-Batch AI Data Intaker Hero Card */}
-        <div className="lg:col-span-4 card-enterprise p-5 flex flex-col justify-between space-y-4">
-          <div>
-            <div className="w-8 h-8 rounded bg-blue-50 border border-blue-200 flex items-center justify-center text-[#2563EB] mb-2.5">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              Universal AI Data Intaker
-              <span className="badge-pill badge-info text-[9px] font-mono">
-                AI Advisor
-              </span>
-            </h3>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              Feed CSV, JSON, or unstructured text into Faculty, Transport, Energy, Classroom, or Maintenance databases with live placement guidance.
-            </p>
-          </div>
-
-          <button
-            onClick={() => setIsUploadOpen(true)}
-            className="btn-primary w-full text-xs font-mono"
-          >
-            <Upload className="w-4 h-4" />
-            <span>Open Universal AI Data Intaker</span>
-          </button>
+      {activeTab === 'transport' && (
+        <div className="space-y-6">
+          <CosmicOrbitRadar />
+          <DomainDataTables defaultDomain="transportation" />
         </div>
+      )}
 
-      </div>
-
-      {/* Inline Executive KPI Overview Bar */}
-      <KpiOverview kpis={kpis} />
-
-      {/* Anomalies & Role AI Co-Pilot */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-7">
+      {activeTab === 'anomalies' && (
+        <div className="space-y-6">
           <AnomaliesPanel
             anomalies={anomalies}
             recommendations={recommendations}
             isLoading={isRefreshing}
           />
         </div>
+      )}
 
-        <div className="lg:col-span-5">
-          <ChatWidget />
+      {activeTab === 'maintenance' && (
+        <div className="space-y-6">
+          <TicketsSupportLogCard currentUser={{ role: 'super_admin', department_domain: 'maintenance' }} />
+          <DomainDataTables defaultDomain="maintenance" />
         </div>
-      </div>
+      )}
 
-      {/* Analytics Visualizers */}
-      <Visualizers kpis={kpis} anomalies={anomalies} />
+      {activeTab === 'users' && (
+        <div className="space-y-6">
+          {/* Pending Approvals & Universal AI Data Intaker */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-8 card-enterprise p-6">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
+                <div className="flex items-center space-x-2.5">
+                  <UserCheck className="w-5 h-5 text-[#2563EB]" />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-sm font-bold text-slate-900">Pending Staff Access Approvals</h2>
+                      <span className="badge-pill badge-warning">
+                        {pendingUsers.length} Action Required
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Review and verify administrative clearance for newly registered department staff.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-      {/* Domain Inspector Tables */}
-      <DomainDataTables />
+              {pendingUsers.length === 0 ? (
+                <div className="py-8 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0] flex items-center justify-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+                  <span>All staff registration requests have been reviewed and verified.</span>
+                </div>
+              ) : (
+                <div className="divide-y divide-[#E2E8F0]">
+                  {pendingUsers.map((user) => (
+                    <div key={user.id} className="py-3 flex items-center justify-between gap-3 hover:bg-[#F8FAFC] px-2 rounded">
+                      <div className="min-w-0">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xs font-semibold text-slate-900 truncate">{user.full_name || user.email}</span>
+                          <span className="badge-pill badge-info font-mono text-[10px] uppercase">
+                            {user.department_domain} Admin
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 font-mono mt-0.5">{user.email}</p>
+                      </div>
+
+                      <div className="flex items-center space-x-2 shrink-0">
+                        <button
+                          onClick={() => handleApproveUser(user.id, 'approved')}
+                          disabled={actionLoading === user.id}
+                          className="btn-primary text-xs py-1 px-3"
+                        >
+                          <Check className="w-3.5 h-3.5" />
+                          <span>Approve Clearance</span>
+                        </button>
+                        <button
+                          onClick={() => handleApproveUser(user.id, 'rejected')}
+                          disabled={actionLoading === user.id}
+                          className="btn-secondary text-xs py-1 px-2.5 text-[#DC2626]"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                          <span>Reject</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="lg:col-span-4 card-enterprise p-6 flex flex-col justify-between space-y-4">
+              <div>
+                <div className="w-8 h-8 rounded bg-blue-50 border border-blue-200 flex items-center justify-center text-[#2563EB] mb-2.5">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  Universal AI Data Intaker
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Feed CSV, JSON, or unstructured text into Faculty, Transport, Energy, Classroom, or Maintenance databases with live placement guidance.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setIsUploadOpen(true)}
+                className="btn-primary w-full text-xs font-mono"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Open Universal AI Data Intaker</span>
+              </button>
+            </div>
+          </div>
+
+          <DomainDataTables defaultDomain="users" />
+        </div>
+      )}
+
+      {/* DEFAULT OVERVIEW VIEW */}
+      {(activeTab === 'overview' || !['matrix', 'transport', 'anomalies', 'maintenance', 'users'].includes(activeTab)) && (
+        <div className="space-y-6">
+          
+          {/* Top Pending Approvals & AI Intaker Card */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-8 card-enterprise p-6">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
+                <div className="flex items-center space-x-2.5">
+                  <UserCheck className="w-5 h-5 text-[#2563EB]" />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-sm font-bold text-slate-900">Pending Staff Access Approvals</h2>
+                      <span className="badge-pill badge-warning">
+                        {pendingUsers.length} Action Required
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Review and verify administrative clearance for newly registered department staff.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {pendingUsers.length === 0 ? (
+                <div className="py-6 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0] flex items-center justify-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+                  <span>All staff registration requests have been reviewed and verified.</span>
+                </div>
+              ) : (
+                <div className="divide-y divide-[#E2E8F0]">
+                  {pendingUsers.map((user) => (
+                    <div key={user.id} className="py-2.5 flex items-center justify-between gap-3 hover:bg-[#F8FAFC] px-2 rounded">
+                      <div className="min-w-0">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xs font-semibold text-slate-900 truncate">{user.full_name || user.email}</span>
+                          <span className="badge-pill badge-info font-mono text-[10px] uppercase">
+                            {user.department_domain} Admin
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 font-mono mt-0.5">{user.email}</p>
+                      </div>
+
+                      <div className="flex items-center space-x-2 shrink-0">
+                        <button
+                          onClick={() => handleApproveUser(user.id, 'approved')}
+                          disabled={actionLoading === user.id}
+                          className="btn-primary text-xs py-1 px-3"
+                        >
+                          <Check className="w-3.5 h-3.5" />
+                          <span>Approve</span>
+                        </button>
+                        <button
+                          onClick={() => handleApproveUser(user.id, 'rejected')}
+                          disabled={actionLoading === user.id}
+                          className="btn-secondary text-xs py-1 px-2.5 text-[#DC2626]"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                          <span>Reject</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="lg:col-span-4 card-enterprise p-6 flex flex-col justify-between space-y-4">
+              <div>
+                <div className="w-8 h-8 rounded bg-blue-50 border border-blue-200 flex items-center justify-center text-[#2563EB] mb-2.5">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  Universal AI Data Intaker
+                  <span className="badge-pill badge-info text-[9px] font-mono">
+                    AI Advisor
+                  </span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Feed CSV, JSON, or unstructured text into Faculty, Transport, Energy, Classroom, or Maintenance databases with live placement guidance.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setIsUploadOpen(true)}
+                className="btn-primary w-full text-xs font-mono"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Open Universal AI Data Intaker</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Executive Inline KPI Bar */}
+          <KpiOverview kpis={kpis} />
+
+          {/* Anomalies & Role AI Co-Pilot */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-7">
+              <AnomaliesPanel
+                anomalies={anomalies}
+                recommendations={recommendations}
+                isLoading={isRefreshing}
+              />
+            </div>
+
+            <div className="lg:col-span-5">
+              <ChatWidget />
+            </div>
+          </div>
+
+          {/* Recharts Visualizers */}
+          <Visualizers kpis={kpis} anomalies={anomalies} />
+
+          {/* Domain Data Tables */}
+          <DomainDataTables />
+
+        </div>
+      )}
 
       {/* AI Bulk Upload Modal */}
       <BulkFacultyUploadModal

@@ -37,29 +37,29 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
     <div className="card-enterprise p-5 mb-6 font-sans">
       
       {/* Header & Segmented Tab Filters */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-3 border-b border-[#E2E8F0]">
-        <div className="flex items-center space-x-2.5">
-          <ShieldAlert className="w-5 h-5 text-[#DC2626]" />
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E2E8F0]">
+        <div className="flex items-start sm:items-center space-x-2.5">
+          <ShieldAlert className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5 sm:mt-0" />
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-slate-900">Operational Alerts & Anomalies Register</h2>
-              <span className="badge-pill badge-error">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-sm font-bold text-slate-900 leading-snug">Operational Alerts & Anomalies Register</h2>
+              <span className="badge-pill badge-error shrink-0 text-[10px]">
                 {filteredAnomalies.length} Active Alerts
               </span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 mt-0.5">
               Automated telemetry notifications for facility maintenance, energy spikes, and transit delays.
             </p>
           </div>
         </div>
 
-        {/* Segmented Control Filter Bar */}
-        <div className="flex items-center space-x-1 border-b border-[#E2E8F0] md:border-b-0">
+        {/* Scrollable Segmented Category Bar */}
+        <div className="flex items-center space-x-1 overflow-x-auto pb-1 lg:pb-0 whitespace-nowrap">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 text-xs font-medium cursor-pointer transition-colors ${
+              className={`px-2.5 py-1 text-xs font-semibold cursor-pointer transition-colors shrink-0 ${
                 selectedCategory === cat ? 'nav-tab-active' : 'nav-tab-inactive'
               }`}
             >
@@ -97,7 +97,7 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
                     </span>
 
                     <div className="min-w-0">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 flex-wrap">
                         <h3 className="text-xs font-bold text-slate-900 truncate">{item.title}</h3>
                         {item.location && (
                           <span className="text-[11px] font-mono text-slate-500 flex items-center gap-1 shrink-0">
@@ -114,7 +114,7 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
 
                   <button
                     onClick={() => toggleExpand(item.id)}
-                    className="btn-ghost text-xs self-start sm:self-center"
+                    className="btn-ghost text-xs self-start sm:self-center shrink-0"
                   >
                     <Cpu className="w-3.5 h-3.5 text-[#2563EB]" />
                     <span>View AI Recommendation</span>
