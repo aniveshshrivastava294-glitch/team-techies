@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
-import KpiOverview from './components/KpiOverview';
-import AnomaliesPanel from './components/AnomaliesPanel';
-import ChatWidget from './components/ChatWidget';
-import Visualizers from './components/Visualizers';
-import DomainDataTables from './components/DomainDataTables';
+import LoginModal from './components/LoginModal';
+import PendingApprovalView from './components/PendingApprovalView';
+import SuperAdminDashboard from './components/roles/SuperAdminDashboard';
+import FacultyDashboard from './components/roles/FacultyDashboard';
+import SubAdminDashboard from './components/roles/SubAdminDashboard';
 
-export default function App() {
+function DashboardRouter() {
+  const { currentUser } = useAuth();
   const [kpis, setKpis] = useState(null);
   const [anomalies, setAnomalies] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [datasource, setDatasource] = useState('Local Synthetic Store');
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [health, setHealth] = useState(null);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const fetchDashboardData = async () => {
     setIsRefreshing(true);
@@ -38,12 +40,6 @@ export default function App() {
       if (recData.status === 'success') {
         setRecommendations(recData.recommendations || []);
       }
-
-      // 4. Health Check
-      const healthRes = await fetch('/api/health');
-      const healthData = await healthRes.json();
-      setHealth(healthData);
-
     } catch (err) {
       console.error('Error fetching dashboard payload:', err);
     } finally {
@@ -55,54 +51,90 @@ export default function App() {
     fetchDashboardData();
   }, []);
 
+  const renderRoleDashboard = () => {
+    if (!currentUser) {
+      return (
+        <div className="py-20 text-center space-y-4">
+          <h2 className="text-xl font-bold text-white">Please sign in to access your role dashboard</h2>
+          <button
+            onClick={() => setIsLoginOpen(true)}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all"
+          >
+            Open Login Portal
+          </button>
+        </div>
+      );
+    }
+
+    // Pending approval state
+    if (currentUser.approval_status === 'pending') {
+      return <PendingApprovalView />;
+    }
+
+    // Role views
+    switch (currentUser.role) {
+      case 'super_admin':
+        return (
+          <SuperAdminDashboard
+            kpis={kpis}
+            anomalies={anomalies}
+            recommendations={recommendations}
+            isRefreshing={isRefreshing}
+            onRefresh={fetchDashboardData}
+          />
+        );
+      case 'faculty':
+        return <FacultyDashboard currentUser={currentUser} />;
+      case 'sub_admin':
+        return <SubAdminDashboard currentUser={currentUser} />;
+      default:
+        return (
+          <SuperAdminDashboard
+            kpis={kpis}
+            anomalies={anomalies}
+            recommendations={recommendations}
+            isRefreshing={isRefreshing}
+            onRefresh={fetchDashboardData}
+          />
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
       
-      {/* Top Sticky Header */}
+      {/* Header */}
       <Header
         onRefresh={fetchDashboardData}
         isRefreshing={isRefreshing}
         datasource={datasource}
-        health={health}
+        onOpenLogin={() => setIsLoginOpen(true)}
       />
 
-      {/* Main Container */}
+      {/* Main Container with Role Router */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12">
-        
-        {/* Executive KPI Overview */}
-        <KpiOverview kpis={kpis} />
-
-        {/* Top Grid Layout: Anomalies Panel & NL Chat Widget */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
-          <div className="lg:col-span-7">
-            <AnomaliesPanel
-              anomalies={anomalies}
-              recommendations={recommendations}
-              isLoading={isRefreshing}
-            />
-          </div>
-
-          <div className="lg:col-span-5">
-            <ChatWidget />
-          </div>
-        </div>
-
-        {/* Interactive Visualizers Section */}
-        <Visualizers kpis={kpis} anomalies={anomalies} />
-
-        {/* Siloed Domain Raw Data Table Inspector */}
-        <DomainDataTables />
-
+        {renderRoleDashboard()}
       </main>
+
+      {/* Login / Demo Switcher Modal */}
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
       {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950 py-6 px-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Campus Intelligence Dashboard (Problem SW-01-P) &bull; Production Prototype</span>
-          <span className="text-slate-400">Powered by Groq Text-to-SQL + Gemini 2.5 Multi-Factor Synthesis</span>
+          <span>Campus Intelligence Dashboard (Problem SW-01-P) &bull; RBAC Platform</span>
+          <span className="text-slate-400">Groq Text-to-SQL + Gemini 2.5 Multi-Factor Synthesis</span>
         </div>
       </footer>
 
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <DashboardRouter />
+    </AuthProvider>
   );
 }

@@ -1,7 +1,19 @@
 -- Campus Intelligence Dashboard (SW-01-P)
--- Database Schema DDL for Supabase (PostgreSQL)
+-- Database Schema DDL for Supabase (PostgreSQL) with RBAC & Ticketing Support
 
--- 1. CLASSROOMS TABLE
+-- 1. USERS TABLE (RBAC)
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(30) NOT NULL, -- 'super_admin', 'sub_admin', 'faculty'
+    department_domain VARCHAR(50) DEFAULT 'general', -- 'events', 'transport', 'maintenance', 'general'
+    approval_status VARCHAR(30) DEFAULT 'approved', -- 'pending', 'approved', 'rejected'
+    full_name VARCHAR(100),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. CLASSROOMS TABLE
 CREATE TABLE IF NOT EXISTS classrooms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     room_number VARCHAR(50) UNIQUE NOT NULL,
@@ -9,10 +21,11 @@ CREATE TABLE IF NOT EXISTS classrooms (
     capacity INT NOT NULL,
     room_type VARCHAR(50) NOT NULL, -- 'Lecture Hall', 'Lab', 'Seminar', 'Auditorium'
     hvac_zone VARCHAR(50) NOT NULL,
+    is_available BOOLEAN DEFAULT true,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 2. EVENTS TABLE
+-- 3. EVENTS TABLE
 CREATE TABLE IF NOT EXISTS events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     event_name VARCHAR(150) NOT NULL,
@@ -21,11 +34,11 @@ CREATE TABLE IF NOT EXISTS events (
     end_time TIMESTAMP WITH TIME ZONE NOT NULL,
     expected_attendees INT NOT NULL,
     organizer VARCHAR(100) NOT NULL,
-    status VARCHAR(30) DEFAULT 'Scheduled', -- 'Scheduled', 'Completed', 'Cancelled'
+    status VARCHAR(30) DEFAULT 'Scheduled', -- 'Scheduled', 'Pending Approval', 'Completed', 'Cancelled'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. MAINTENANCE TABLE
+-- 4. MAINTENANCE TABLE
 CREATE TABLE IF NOT EXISTS maintenance (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     room_id UUID REFERENCES classrooms(id) ON DELETE CASCADE,
@@ -37,18 +50,35 @@ CREATE TABLE IF NOT EXISTS maintenance (
     resolved_at TIMESTAMP WITH TIME ZONE
 );
 
--- 4. TRANSPORTATION TABLE
+-- 5. TICKETS TABLE (Faculty Issues -> Sub-Admins)
+CREATE TABLE IF NOT EXISTS tickets (
+    ticket_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    raised_by_user UUID REFERENCES users(id) ON DELETE SET NULL,
+    raised_by_email VARCHAR(150),
+    assigned_domain VARCHAR(50) NOT NULL, -- 'maintenance', 'transport', 'events'
+    title VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL,
+    status VARCHAR(30) DEFAULT 'open', -- 'open', 'in-progress', 'resolved'
+    venue_id UUID REFERENCES classrooms(id) ON DELETE SET NULL,
+    venue_name VARCHAR(100),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 6. TRANSPORTATION TABLE (5-6 Seeded Buses)
 CREATE TABLE IF NOT EXISTS transportation (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     route_name VARCHAR(100) NOT NULL,
     vehicle_id VARCHAR(50) NOT NULL,
+    driver_name VARCHAR(100) NOT NULL,
+    driver_phone VARCHAR(50),
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     passenger_count INT NOT NULL,
     capacity INT NOT NULL,
-    status VARCHAR(30) NOT NULL -- 'On Time', 'Delayed', 'Overcrowded'
+    status VARCHAR(30) NOT NULL -- 'On Time', 'Delayed', 'Overcrowded', 'Maintenance Required'
 );
 
--- 5. ENERGY TABLE
+-- 7. ENERGY TABLE
 CREATE TABLE IF NOT EXISTS energy (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     room_id UUID REFERENCES classrooms(id) ON DELETE CASCADE,
@@ -58,44 +88,18 @@ CREATE TABLE IF NOT EXISTS energy (
     hvac_status VARCHAR(30) NOT NULL -- 'Active', 'Eco', 'Off', 'Malfunction'
 );
 
--- 6. ATTENDANCE TABLE
+-- 8. ATTENDANCE TABLE
 CREATE TABLE IF NOT EXISTS attendance (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     event_id UUID REFERENCES events(id) ON DELETE CASCADE,
     room_id UUID REFERENCES classrooms(id) ON DELETE CASCADE,
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     actual_count INT NOT NULL,
-    scan_method VARCHAR(50) DEFAULT 'RFID Gate' -- 'RFID Gate', 'Manual Check-in', 'Camera AI'
+    scan_method VARCHAR(50) DEFAULT 'RFID Gate'
 );
 
--- INDEXES FOR FAST CROSS-DOMAIN ANALYTICS
+-- INDEXES
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role, approval_status);
+CREATE INDEX IF NOT EXISTS idx_tickets_domain_status ON tickets(assigned_domain, status);
 CREATE INDEX IF NOT EXISTS idx_events_room_time ON events(room_id, start_time, end_time);
-CREATE INDEX IF NOT EXISTS idx_maintenance_room_status ON maintenance(room_id, status);
-CREATE INDEX IF NOT EXISTS idx_energy_room_time ON energy(room_id, timestamp);
-CREATE INDEX IF NOT EXISTS idx_attendance_event ON attendance(event_id);
-CREATE INDEX IF NOT EXISTS idx_transportation_time ON transportation(timestamp);
-
--- ANALYTICAL HELPER VIEW: CROSS-DOMAIN ANOMALY INDICATORS
-CREATE OR REPLACE VIEW view_cross_domain_metrics AS
-SELECT 
-    c.id AS room_id,
-    c.room_number,
-    c.building,
-    c.capacity,
-    e.id AS event_id,
-    e.event_name,
-    e.start_time,
-    e.end_time,
-    e.expected_attendees,
-    a.actual_count,
-    m.id AS maintenance_id,
-    m.issue_type AS maintenance_issue,
-    m.severity AS maintenance_severity,
-    m.status AS maintenance_status,
-    eng.kwh_consumed,
-    eng.hvac_status
-FROM classrooms c
-LEFT JOIN events e ON c.id = e.room_id
-LEFT JOIN attendance a ON e.id = a.event_id
-LEFT JOIN maintenance m ON c.id = m.room_id AND m.status IN ('Open', 'In Progress')
-LEFT JOIN energy eng ON c.id = eng.room_id;

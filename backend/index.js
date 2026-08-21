@@ -1,7 +1,12 @@
-// Express AI Orchestration Backend for Campus Intelligence Dashboard (SW-01-P)
+// Express AI Orchestration Backend for RBAC Campus Intelligence Dashboard (SW-01-P)
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+
+const authRoutes = require('./routes/authRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+
 const { isConnectedToSupabase, supabase, getLocalData } = require('./db');
 const { detectAnomalies } = require('./services/anomalyEngine');
 const { generateRecommendations, synthesizeAnswer } = require('./services/geminiService');
@@ -13,18 +18,24 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Mount RBAC Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/tickets', ticketRoutes);
+app.use('/api/bookings', bookingRoutes);
+
 // -------------------------------------------------------------
-// 1. GET /api/kpis - Aggregated Statistics Across 6 Domains
+// 1. GET /api/kpis - Aggregated Statistics Across 6 Domains + Tickets
 // -------------------------------------------------------------
 app.get('/api/kpis', async (req, res) => {
     try {
-        let classrooms = [], events = [], maintenance = [], transportation = [], energy = [], attendance = [];
+        let classrooms = [], events = [], maintenance = [], tickets = [], transportation = [], energy = [], attendance = [];
 
         if (isConnectedToSupabase && supabase) {
-            const [rC, rE, rM, rT, rEng, rAtt] = await Promise.all([
-                supabase.from('classrooms').select('id, capacity'),
+            const [rC, rE, rM, rTk, rT, rEng, rAtt] = await Promise.all([
+                supabase.from('classrooms').select('id, capacity, is_available'),
                 supabase.from('events').select('id, status'),
                 supabase.from('maintenance').select('id, status, severity'),
+                supabase.from('tickets').select('ticket_id, status, assigned_domain'),
                 supabase.from('transportation').select('id, passenger_count, capacity'),
                 supabase.from('energy').select('id, kwh_consumed'),
                 supabase.from('attendance').select('id, actual_count')
@@ -32,6 +43,7 @@ app.get('/api/kpis', async (req, res) => {
             classrooms = rC.data || [];
             events = rE.data || [];
             maintenance = rM.data || [];
+            tickets = rTk.data || [];
             transportation = rT.data || [];
             energy = rEng.data || [];
             attendance = rAtt.data || [];
@@ -39,20 +51,22 @@ app.get('/api/kpis', async (req, res) => {
             classrooms = getLocalData('classrooms');
             events = getLocalData('events');
             maintenance = getLocalData('maintenance');
+            tickets = getLocalData('tickets');
             transportation = getLocalData('transportation');
             energy = getLocalData('energy');
             attendance = getLocalData('attendance');
         }
 
         const totalClassrooms = classrooms.length;
+        const availableClassrooms = classrooms.filter(c => c.is_available !== false).length;
         const totalCapacity = classrooms.reduce((sum, c) => sum + (c.capacity || 0), 0);
         const scheduledEvents = events.filter(e => e.status === 'Scheduled').length;
         const openMaintenance = maintenance.filter(m => ['Open', 'In Progress'].includes(m.status)).length;
-        const criticalMaintenance = maintenance.filter(m => m.severity === 'Critical' && m.status === 'Open').length;
+        const openFacultyTickets = tickets.filter(t => t.status === 'open').length;
         
         const totalTransitRiders = transportation.reduce((sum, t) => sum + (t.passenger_count || 0), 0);
         const totalTransitCap = transportation.reduce((sum, t) => sum + (t.capacity || 0), 0);
-        const transitUtilPercent = totalTransitCap > 0 ? Math.round((totalTransitRiders / totalTransitCap) * 100) : 78;
+        const transitUtilPercent = totalTransitCap > 0 ? Math.round((totalTransitRiders / totalTransitCap) * 100) : 82;
         
         const totalKwh = energy.reduce((sum, e) => sum + Number(e.kwh_consumed || 0), 0);
         const avgKwhPerRoom = totalClassrooms > 0 ? (totalKwh / totalClassrooms).toFixed(1) : 38.5;
@@ -62,17 +76,18 @@ app.get('/api/kpis', async (req, res) => {
             status: 'success',
             kpis: {
                 totalClassrooms,
+                availableClassrooms,
                 totalCapacity,
                 scheduledEvents,
                 openMaintenance,
-                criticalMaintenance,
+                openFacultyTickets,
                 transitRiders: totalTransitRiders,
                 transitUtilizationPercent: transitUtilPercent,
                 totalEnergyKwh: totalKwh.toFixed(1),
                 avgKwhPerRoom,
                 dailyAttendanceCount: totalActualAttendance
             },
-            datasource: isConnectedToSupabase ? 'Supabase PostgreSQL' : 'Local Synthetic Database'
+            datasource: isConnectedToSupabase ? 'Supabase PostgreSQL' : 'Local Synthetic RBAC Database'
         });
     } catch (err) {
         console.error('KPI Endpoint Error:', err);
@@ -116,40 +131,26 @@ app.get('/api/recommendations', async (req, res) => {
 });
 
 // -------------------------------------------------------------
-// 4. POST /api/chat - Natural Language Query Pipeline (Groq -> Supabase -> Gemini)
+// 4. POST /api/chat - Natural Language Query Pipeline (Role Context Aware)
 // -------------------------------------------------------------
 app.post('/api/chat', async (req, res) => {
-    const { query } = req.body;
+    const { query, userRole, departmentDomain } = req.body;
     if (!query || query.trim() === '') {
         return res.status(400).json({ error: 'Query string is required' });
     }
 
-    try {
-        console.log(`💬 Processing NL Query: "${query}"`);
+    const role = userRole || 'faculty';
+    const domain = departmentDomain || 'general';
 
-        // Step A: Groq Text-to-SQL Translation
-        const sqlTranslation = await translateToSQL(query);
-        console.log(`⚡ Groq Generated SQL: ${sqlTranslation.sql}`);
+    try {
+        console.log(`💬 Processing NL Query for [Role: ${role}, Domain: ${domain}]: "${query}"`);
+
+        // Step A: Groq Text-to-SQL Translation with Role Awareness
+        const sqlTranslation = await translateToSQL(query, role, domain);
+        console.log(`⚡ Groq Generated SQL (${role}): ${sqlTranslation.sql}`);
 
         // Step B: Execute Query on Supabase (or Fallback Store)
-        let queryResults = [];
-        if (isConnectedToSupabase && supabase) {
-            try {
-                // Execute RPC or SQL query via Supabase if setup, else fetch related domain tables
-                const { data, error } = await supabase.rpc('execute_read_only_sql', { sql_query: sqlTranslation.sql });
-                if (!error && data) {
-                    queryResults = data;
-                } else {
-                    // Fallback to table sampling if custom RPC function is not created
-                    queryResults = await fetchDomainFallbackForSql(sqlTranslation.sql);
-                }
-            } catch (sqle) {
-                console.warn('Supabase query execution fallback:', sqle.message);
-                queryResults = await fetchDomainFallbackForSql(sqlTranslation.sql);
-            }
-        } else {
-            queryResults = await fetchDomainFallbackForSql(sqlTranslation.sql);
-        }
+        let queryResults = await fetchDomainFallbackForSql(sqlTranslation.sql);
 
         // Step C: Route Raw Data to Gemini for Conversational Answer Synthesis
         const geminiSynthesis = await synthesizeAnswer(query, sqlTranslation.sql, queryResults);
@@ -179,6 +180,12 @@ app.post('/api/chat', async (req, res) => {
 // Helper for local SQL simulation data extraction
 async function fetchDomainFallbackForSql(sql) {
     const s = sql.toLowerCase();
+    if (s.includes('transportation') || s.includes('route') || s.includes('driver') || s.includes('bus')) {
+        return getLocalData('transportation');
+    }
+    if (s.includes('ticket')) {
+        return getLocalData('tickets');
+    }
     if (s.includes('energy')) {
         const eng = getLocalData('energy');
         const rooms = getLocalData('classrooms');
@@ -195,20 +202,6 @@ async function fetchDomainFallbackForSql(sql) {
             return { room_number: r.room_number, building: r.building, issue_type: m.issue_type, severity: m.severity, status: m.status, description: m.description };
         });
     }
-    if (s.includes('transportation') || s.includes('route')) {
-        return getLocalData('transportation');
-    }
-    if (s.includes('attendance') || s.includes('capacity')) {
-        const att = getLocalData('attendance');
-        const rooms = getLocalData('classrooms');
-        const events = getLocalData('events');
-        return att.map(a => {
-            const r = rooms.find(rc => rc.id === a.room_id) || { room_number: 'SCI-104', capacity: 60 };
-            const e = events.find(ev => ev.id === a.event_id) || { event_name: 'Quantum Physics 101' };
-            return { room_number: r.room_number, capacity: r.capacity, event_name: e.event_name, actual_count: a.actual_count };
-        });
-    }
-    // Return sample classrooms
     return getLocalData('classrooms');
 }
 
@@ -217,7 +210,7 @@ async function fetchDomainFallbackForSql(sql) {
 // -------------------------------------------------------------
 app.get('/api/domains/:domain', async (req, res) => {
     const domain = req.params.domain.toLowerCase();
-    const validDomains = ['classrooms', 'events', 'maintenance', 'transportation', 'energy', 'attendance'];
+    const validDomains = ['users', 'classrooms', 'events', 'maintenance', 'tickets', 'transportation', 'energy', 'attendance'];
 
     if (!validDomains.includes(domain)) {
         return res.status(400).json({ error: `Invalid domain. Must be one of: ${validDomains.join(', ')}` });
@@ -226,8 +219,8 @@ app.get('/api/domains/:domain', async (req, res) => {
     try {
         let records = [];
         if (isConnectedToSupabase && supabase) {
-            const { data, error } = await supabase.from(domain).select('*');
-            if (!error && data) records = data;
+            const { data } = await supabase.from(domain).select('*');
+            if (data) records = data;
             else records = getLocalData(domain);
         } else {
             records = getLocalData(domain);
@@ -258,5 +251,5 @@ app.get('/api/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Campus Orbit AI Express Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Campus Orbit RBAC Express Server running on http://localhost:${PORT}`);
 });
