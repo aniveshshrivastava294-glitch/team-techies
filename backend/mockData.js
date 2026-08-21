@@ -1,11 +1,11 @@
 // Mock Data Generator & Fallback Store for RBAC Campus Intelligence Dashboard
-// Supports Users (RBAC), Tickets (Faculty Issues), 6 Seeded Buses, Venues & Multi-Domain Metrics
+// Standardized with valid 32-character hex UUID format for Supabase compatibility
 
 const generateMockDataset = () => {
     // 1. DEMO USERS (RBAC)
     const users = [
         {
-            id: "u0010000-0000-0000-0000-000000000001",
+            id: "10000000-0000-0000-0000-000000000001",
             email: "super@demo.com",
             password_hash: "demo123",
             role: "super_admin",
@@ -14,7 +14,7 @@ const generateMockDataset = () => {
             full_name: "Dr. Arthur Vance (Super Admin)"
         },
         {
-            id: "u0010000-0000-0000-0000-000000000002",
+            id: "10000000-0000-0000-0000-000000000002",
             email: "faculty@demo.com",
             password_hash: "demo123",
             role: "faculty",
@@ -23,7 +23,7 @@ const generateMockDataset = () => {
             full_name: "Prof. Elena Rostova (Faculty)"
         },
         {
-            id: "u0010000-0000-0000-0000-000000000003",
+            id: "10000000-0000-0000-0000-000000000003",
             email: "events@demo.com",
             password_hash: "demo123",
             role: "sub_admin",
@@ -32,7 +32,7 @@ const generateMockDataset = () => {
             full_name: "Marcus Brody (Event Sub-Admin)"
         },
         {
-            id: "u0010000-0000-0000-0000-000000000004",
+            id: "10000000-0000-0000-0000-000000000004",
             email: "transport@demo.com",
             password_hash: "demo123",
             role: "sub_admin",
@@ -41,7 +41,7 @@ const generateMockDataset = () => {
             full_name: "Cap. Frank Miller (Transport Sub-Admin)"
         },
         {
-            id: "u0010000-0000-0000-0000-000000000005",
+            id: "10000000-0000-0000-0000-000000000005",
             email: "maint@demo.com",
             password_hash: "demo123",
             role: "sub_admin",
@@ -50,7 +50,7 @@ const generateMockDataset = () => {
             full_name: "Eng. Sarah Jenkins (Maintenance Sub-Admin)"
         },
         {
-            id: "u0010000-0000-0000-0000-000000000006",
+            id: "10000000-0000-0000-0000-000000000006",
             email: "pending@demo.com",
             password_hash: "demo123",
             role: "sub_admin",
@@ -62,16 +62,16 @@ const generateMockDataset = () => {
 
     // 2. CLASSROOMS & VENUES
     const classrooms = [
-        { id: "c0010000-0000-0000-0000-000000000001", room_number: "CS-301", building: "Computer Science Hall", capacity: 200, room_type: "Auditorium", hvac_zone: "Zone-A1", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000002", room_number: "CS-102", building: "Computer Science Hall", capacity: 45, room_type: "Lab", hvac_zone: "Zone-A2", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000003", room_number: "SCI-104", building: "Science Complex", capacity: 60, room_type: "Lecture Hall", hvac_zone: "Zone-B1", is_available: false },
-        { id: "c0010000-0000-0000-0000-000000000004", room_number: "SCI-201", building: "Science Complex", capacity: 120, room_type: "Lecture Hall", hvac_zone: "Zone-B2", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000005", room_number: "ENG-202", building: "Engineering Building", capacity: 80, room_type: "Lab", hvac_zone: "Zone-C1", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000006", room_number: "ENG-105", building: "Engineering Building", capacity: 30, room_type: "Seminar", hvac_zone: "Zone-C2", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000007", room_number: "LIB-102", building: "Main Library", capacity: 50, room_type: "Seminar", hvac_zone: "Zone-D1", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000008", room_number: "LIB-305", building: "Main Library", capacity: 100, room_type: "Study Hall", hvac_zone: "Zone-D2", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000009", room_number: "ART-101", building: "Fine Arts Center", capacity: 250, room_type: "Auditorium", hvac_zone: "Zone-E1", is_available: true },
-        { id: "c0010000-0000-0000-0000-000000000010", room_number: "BUS-401", building: "Business School", capacity: 150, room_type: "Lecture Hall", hvac_zone: "Zone-F1", is_available: true }
+        { id: "20000000-0000-0000-0000-000000000001", room_number: "CS-301", building: "Computer Science Hall", capacity: 200, room_type: "Auditorium", hvac_zone: "Zone-A1", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000002", room_number: "CS-102", building: "Computer Science Hall", capacity: 45, room_type: "Lab", hvac_zone: "Zone-A2", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000003", room_number: "SCI-104", building: "Science Complex", capacity: 60, room_type: "Lecture Hall", hvac_zone: "Zone-B1", is_available: false },
+        { id: "20000000-0000-0000-0000-000000000004", room_number: "SCI-201", building: "Science Complex", capacity: 120, room_type: "Lecture Hall", hvac_zone: "Zone-B2", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000005", room_number: "ENG-202", building: "Engineering Building", capacity: 80, room_type: "Lab", hvac_zone: "Zone-C1", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000006", room_number: "ENG-105", building: "Engineering Building", capacity: 30, room_type: "Seminar", hvac_zone: "Zone-C2", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000007", room_number: "LIB-102", building: "Main Library", capacity: 50, room_type: "Seminar", hvac_zone: "Zone-D1", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000008", room_number: "LIB-305", building: "Main Library", capacity: 100, room_type: "Study Hall", hvac_zone: "Zone-D2", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000009", room_number: "ART-101", building: "Fine Arts Center", capacity: 250, room_type: "Auditorium", hvac_zone: "Zone-E1", is_available: true },
+        { id: "20000000-0000-0000-0000-000000000010", room_number: "BUS-401", building: "Business School", capacity: 150, room_type: "Lecture Hall", hvac_zone: "Zone-F1", is_available: true }
     ];
 
     const now = new Date();
@@ -84,9 +84,9 @@ const generateMockDataset = () => {
     // 3. EVENTS
     const events = [
         {
-            id: "e0020000-0000-0000-0000-000000000001",
+            id: "30000000-0000-0000-0000-000000000001",
             event_name: "Annual CS AI & Cloud Summit 2026",
-            room_id: "c0010000-0000-0000-0000-000000000001", // CS-301
+            room_id: "20000000-0000-0000-0000-000000000001", // CS-301
             start_time: isoDateStr(0, 14, 0),
             end_time: isoDateStr(0, 17, 30),
             expected_attendees: 185,
@@ -94,9 +94,9 @@ const generateMockDataset = () => {
             status: "Scheduled"
         },
         {
-            id: "e0020000-0000-0000-0000-000000000002",
+            id: "30000000-0000-0000-0000-000000000002",
             event_name: "Quantum Physics 101 Lecture",
-            room_id: "c0010000-0000-0000-0000-000000000003", // SCI-104
+            room_id: "20000000-0000-0000-0000-000000000003", // SCI-104
             start_time: isoDateStr(0, 10, 0),
             end_time: isoDateStr(0, 11, 30),
             expected_attendees: 90,
@@ -104,9 +104,9 @@ const generateMockDataset = () => {
             status: "Scheduled"
         },
         {
-            id: "e0020000-0000-0000-0000-000000000003",
+            id: "30000000-0000-0000-0000-000000000003",
             event_name: "Robotics Workshop",
-            room_id: "c0010000-0000-0000-0000-000000000005", // ENG-202
+            room_id: "20000000-0000-0000-0000-000000000005", // ENG-202
             start_time: isoDateStr(-1, 9, 0),
             end_time: isoDateStr(-1, 12, 0),
             expected_attendees: 75,
@@ -114,9 +114,9 @@ const generateMockDataset = () => {
             status: "Completed"
         },
         {
-            id: "e0020000-0000-0000-0000-000000000004",
+            id: "30000000-0000-0000-0000-000000000004",
             event_name: "Symphony Orchestra Rehearsal",
-            room_id: "c0010000-0000-0000-0000-000000000009", // ART-101
+            room_id: "20000000-0000-0000-0000-000000000009", // ART-101
             start_time: isoDateStr(1, 18, 0),
             end_time: isoDateStr(1, 21, 0),
             expected_attendees: 210,
@@ -128,8 +128,8 @@ const generateMockDataset = () => {
     // 4. MAINTENANCE TICKETS
     const maintenance = [
         {
-            id: "m0030000-0000-0000-0000-000000000001",
-            room_id: "c0010000-0000-0000-0000-000000000001", // CS-301
+            id: "40000000-0000-0000-0000-000000000001",
+            room_id: "20000000-0000-0000-0000-000000000001", // CS-301
             issue_type: "HVAC",
             severity: "Critical",
             status: "Open",
@@ -138,8 +138,8 @@ const generateMockDataset = () => {
             resolved_at: null
         },
         {
-            id: "m0030000-0000-0000-0000-000000000002",
-            room_id: "c0010000-0000-0000-0000-000000000005", // ENG-202
+            id: "40000000-0000-0000-0000-000000000002",
+            room_id: "20000000-0000-0000-0000-000000000005", // ENG-202
             issue_type: "AV Equipment",
             severity: "High",
             status: "In Progress",
@@ -152,7 +152,7 @@ const generateMockDataset = () => {
     // 5. FACULTY TICKETS KANBAN STORE
     const tickets = [
         {
-            ticket_id: "tk-101",
+            ticket_id: "50000000-0000-0000-0000-000000000001",
             raised_by_email: "faculty@demo.com",
             assigned_domain: "maintenance",
             title: "AC Inoperative & Overheating in CS-301",
@@ -162,7 +162,7 @@ const generateMockDataset = () => {
             created_at: isoDateStr(0, 8, 30)
         },
         {
-            ticket_id: "tk-102",
+            ticket_id: "50000000-0000-0000-0000-000000000002",
             raised_by_email: "faculty@demo.com",
             assigned_domain: "maintenance",
             title: "Projector HDMI Port Loose in ENG-202",
@@ -172,7 +172,7 @@ const generateMockDataset = () => {
             created_at: isoDateStr(-1, 14, 0)
         },
         {
-            ticket_id: "tk-103",
+            ticket_id: "50000000-0000-0000-0000-000000000003",
             raised_by_email: "faculty@demo.com",
             assigned_domain: "transport",
             title: "Shuttle Bus #2 Overcrowding Request",
@@ -182,7 +182,7 @@ const generateMockDataset = () => {
             created_at: isoDateStr(0, 9, 15)
         },
         {
-            ticket_id: "tk-104",
+            ticket_id: "50000000-0000-0000-0000-000000000004",
             raised_by_email: "faculty@demo.com",
             assigned_domain: "events",
             title: "Auditorium ART-101 Microphone Feedback",
@@ -193,10 +193,10 @@ const generateMockDataset = () => {
         }
     ];
 
-    // 6. TRANSPORTATION (5-6 Seeded Buses)
+    // 6. TRANSPORTATION (6 Seeded Buses)
     const transportation = [
         {
-            id: "t0040000-0000-0000-0000-000000000001",
+            id: "60000000-0000-0000-0000-000000000001",
             route_name: "Campus Express Shuttle 1",
             vehicle_id: "BUS-01",
             driver_name: "Robert Vance",
@@ -207,7 +207,7 @@ const generateMockDataset = () => {
             status: "On Time"
         },
         {
-            id: "t0040000-0000-0000-0000-000000000002",
+            id: "60000000-0000-0000-0000-000000000002",
             route_name: "Campus Express Shuttle 2",
             vehicle_id: "BUS-02",
             driver_name: "Sarah Connor",
@@ -218,7 +218,7 @@ const generateMockDataset = () => {
             status: "Overcrowded"
         },
         {
-            id: "t0040000-0000-0000-0000-000000000003",
+            id: "60000000-0000-0000-0000-000000000003",
             route_name: "North Campus Express",
             vehicle_id: "BUS-03",
             driver_name: "Michael Scott",
@@ -229,7 +229,7 @@ const generateMockDataset = () => {
             status: "On Time"
         },
         {
-            id: "t0040000-0000-0000-0000-000000000004",
+            id: "60000000-0000-0000-0000-000000000004",
             route_name: "South Dorm Connector",
             vehicle_id: "BUS-04",
             driver_name: "Dwight Schrute",
@@ -240,7 +240,7 @@ const generateMockDataset = () => {
             status: "Delayed"
         },
         {
-            id: "t0040000-0000-0000-0000-000000000005",
+            id: "60000000-0000-0000-0000-000000000005",
             route_name: "Night Owl Shuttle",
             vehicle_id: "BUS-05",
             driver_name: "Jim Halpert",
@@ -251,7 +251,7 @@ const generateMockDataset = () => {
             status: "On Time"
         },
         {
-            id: "t0040000-0000-0000-0000-000000000006",
+            id: "60000000-0000-0000-0000-000000000006",
             route_name: "West Campus Science Loop",
             vehicle_id: "BUS-06",
             driver_name: "Pam Beesly",
@@ -266,16 +266,16 @@ const generateMockDataset = () => {
     // 7. ENERGY
     const energy = [
         {
-            id: "n0050000-0000-0000-0000-000000000001",
-            room_id: "c0010000-0000-0000-0000-000000000007", // LIB-102
+            id: "70000000-0000-0000-0000-000000000001",
+            room_id: "20000000-0000-0000-0000-000000000007", // LIB-102
             timestamp: isoDateStr(0, 2, 30),
             kwh_consumed: 48.70,
             peak_kw: 24.50,
             hvac_status: "Active"
         },
         {
-            id: "n0050000-0000-0000-0000-000000000002",
-            room_id: "c0010000-0000-0000-0000-000000000001", // CS-301
+            id: "70000000-0000-0000-0000-000000000002",
+            room_id: "20000000-0000-0000-0000-000000000001", // CS-301
             timestamp: isoDateStr(0, 14, 0),
             kwh_consumed: 62.40,
             peak_kw: 31.20,
@@ -286,9 +286,9 @@ const generateMockDataset = () => {
     // 8. ATTENDANCE
     const attendance = [
         {
-            id: "a0060000-0000-0000-0000-000000000001",
-            event_id: "e0020000-0000-0000-0000-000000000002",
-            room_id: "c0010000-0000-0000-0000-000000000003",
+            id: "80000000-0000-0000-0000-000000000001",
+            event_id: "30000000-0000-0000-0000-000000000002",
+            room_id: "20000000-0000-0000-0000-000000000003",
             timestamp: isoDateStr(0, 10, 15),
             actual_count: 105,
             scan_method: "RFID Gate"

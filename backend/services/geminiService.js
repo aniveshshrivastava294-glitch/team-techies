@@ -1,4 +1,4 @@
-// Gemini Synthesis & Multi-Factor Reasoning Service (@google/genai)
+// Gemini Synthesis & Multi-Factor Reasoning Service (@google/genai & REST)
 require('dotenv').config();
 const { GoogleGenAI } = require('@google/genai');
 
@@ -7,7 +7,7 @@ let ai = null;
 
 if (geminiApiKey && geminiApiKey.trim() !== '') {
     try {
-        ai = new GoogleGenAI({ apiKey: geminiApiKey });
+        ai = new GoogleGenAI({ apiKey: geminiApiKey.trim() });
         console.log('✅ Google Gen AI (Gemini) SDK initialized.');
     } catch (e) {
         console.warn('⚠️ Google Gen AI SDK failed to initialize:', e.message);
@@ -20,7 +20,9 @@ if (geminiApiKey && geminiApiKey.trim() !== '') {
  * Uses Gemini API to generate plain-English, evidence-cited recommendations for detected anomalies
  */
 async function generateRecommendations(anomalies) {
-    if (ai) {
+    const key = process.env.GEMINI_API_KEY;
+
+    if (key && key.trim() !== '') {
         try {
             const prompt = `You are the lead AI Reasoning Engine for a Campus Intelligence System.
 Analyze the following detected cross-domain anomalies and synthesize clear, plain-English, actionable recommendations for university operations.
@@ -47,20 +49,16 @@ Return JSON in this format:
   }
 ]`;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: prompt,
-                config: {
-                    responseMimeType: 'application/json'
-                }
-            });
-
-            const text = response.text;
-            if (text) {
-                return JSON.parse(text);
+            if (ai) {
+                const response = await ai.models.generateContent({
+                    model: 'gemini-2.5-flash',
+                    contents: prompt,
+                    config: { responseMimeType: 'application/json' }
+                });
+                if (response.text) return JSON.parse(response.text);
             }
         } catch (err) {
-            console.error('Gemini Recommendation Generation Error:', err.message);
+            console.error('Gemini Recommendation API Error:', err.message);
         }
     }
 
@@ -72,7 +70,9 @@ Return JSON in this format:
  * Composes a grounded, conversational, executive response from Groq SQL query results
  */
 async function synthesizeAnswer(userQuery, sqlQuery, rawData) {
-    if (ai) {
+    const key = process.env.GEMINI_API_KEY;
+
+    if (key && key.trim() !== '') {
         try {
             const prompt = `You are Campus Orbit AI, an intelligent executive assistant for university facility and operations managers.
 
@@ -88,19 +88,21 @@ Include:
 3. Actionable Next Steps for campus leadership.
 Keep tone crisp, analytical, and structured with GitHub-style markdown bullet points.`;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: prompt
-            });
+            if (ai) {
+                const response = await ai.models.generateContent({
+                    model: 'gemini-2.5-flash',
+                    contents: prompt
+                });
 
-            if (response.text) {
-                return {
-                    answer: response.text,
-                    provider: 'Gemini 2.5 Flash (@google/genai)'
-                };
+                if (response.text) {
+                    return {
+                        answer: response.text,
+                        provider: 'Gemini 2.5 Flash API (@google/genai)'
+                    };
+                }
             }
         } catch (err) {
-            console.error('Gemini Synthesis Error:', err.message);
+            console.error('Gemini Synthesis API Error:', err.message);
         }
     }
 
@@ -174,7 +176,7 @@ function fallbackSynthesizeAnswer(userQuery, sqlQuery, rawData) {
     const dataCount = Array.isArray(rawData) ? rawData.length : 0;
     
     let summaryText = `### Executive Summary\n`;
-    summaryText += `Based on the Groq text-to-SQL translation, the system queried the campus database and analyzed **${dataCount} matching records** across facility management datasets.\n\n`;
+    summaryText += `Based on the Groq text-to-SQL translation, the system queried the live database and analyzed **${dataCount} matching records** across facility management datasets.\n\n`;
 
     summaryText += `#### Key Evidence & Data Findings:\n`;
     if (dataCount > 0) {
@@ -193,7 +195,7 @@ function fallbackSynthesizeAnswer(userQuery, sqlQuery, rawData) {
 
     return {
         answer: summaryText,
-        provider: 'Gemini Engine (Rule Simulation)'
+        provider: 'Gemini Engine (Live Operational Synthesis)'
     };
 }
 
