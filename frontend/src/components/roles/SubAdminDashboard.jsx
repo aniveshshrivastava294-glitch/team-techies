@@ -469,32 +469,59 @@ export default function SubAdminDashboard({ currentUser }) {
               </div>
 
               {/* Timetable Matrix */}
-              <div className="p-4 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2">
-                <div className="flex items-center justify-between text-xs font-semibold dark:text-slate-300 text-slate-700">
-                  <span>Slot #{activeCalendarSlot} Status</span>
-                  <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono font-medium">
-                    {activeCalendarSlot === 3 ? 'Audi 1 Occupied' : 'All Halls Available'}
-                  </span>
-                </div>
+              <div className="p-4 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-3">
+                {(() => {
+                  // Dynamic schedule slot occupancy map
+                  const slotScheduleMap = {
+                    1: ['audi-4'],
+                    2: ['audi-2'],
+                    3: ['audi-1'],
+                    4: [],
+                    5: ['audi-1', 'audi-3'],
+                    6: []
+                  };
+                  const occupiedIds = slotScheduleMap[activeCalendarSlot] || [];
+                  const occupiedCount = auditoriums.filter(a => occupiedIds.includes(a.id) || (a.status === 'Booked' && activeCalendarSlot === 3)).length;
+                  const availableCount = auditoriums.length - occupiedCount;
 
-                <div className="grid grid-cols-5 gap-2 text-center text-[11px] pt-1">
-                  {auditoriums.map((audi) => {
-                    const isSlotBooked = (activeCalendarSlot === 3 && audi.id === 'audi-1') || (activeCalendarSlot === 1 && audi.id === 'audi-4');
-                    return (
-                      <div
-                        key={audi.id}
-                        className={`p-2 rounded-xl border ${
-                          isSlotBooked
-                            ? 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-800 font-bold'
-                            : 'dark:bg-slate-900 bg-white text-slate-600 border-slate-200 dark:border-slate-800'
-                        }`}
-                      >
-                        <span className="block font-semibold">{audi.name}</span>
-                        <span className="text-[10px] mt-0.5 block">{isSlotBooked ? 'Occupied' : 'Vacant'}</span>
+                  return (
+                    <>
+                      <div className="flex items-center justify-between text-xs font-semibold">
+                        <span className="dark:text-slate-300 text-black font-bold">
+                          Slot #{activeCalendarSlot} Overview:
+                        </span>
+                        <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                          {occupiedCount > 0 
+                            ? `${occupiedCount} Hall${occupiedCount > 1 ? 's' : ''} Occupied (${availableCount} Available)`
+                            : `All ${auditoriums.length} Halls Available`}
+                        </span>
                       </div>
-                    );
-                  })}
-                </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-center text-[11px] pt-1">
+                        {auditoriums.map((audi) => {
+                          const isSlotBooked = occupiedIds.includes(audi.id) || (audi.status === 'Booked' && activeCalendarSlot === 3);
+                          return (
+                            <div
+                              key={audi.id}
+                              className={`p-2.5 rounded-xl border transition-all ${
+                                isSlotBooked
+                                  ? 'bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800 font-bold'
+                                  : 'dark:bg-slate-900 bg-white border-slate-200 dark:border-slate-800 font-semibold shadow-sm'
+                              }`}
+                            >
+                              <span className="block font-black text-xs text-black dark:text-white">{audi.name}</span>
+                              <span className={`text-[10px] mt-0.5 block font-bold uppercase tracking-wider ${
+                                isSlotBooked ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'
+                              }`}>
+                                {isSlotBooked ? 'Occupied' : 'Available'}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             </div>
 
