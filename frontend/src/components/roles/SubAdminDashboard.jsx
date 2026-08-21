@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChatWidget from '../ChatWidget';
 import ResolveConfirmationModal from '../ResolveConfirmationModal';
+import AttendanceAdminWidget from '../AttendanceAdminWidget';
 import { Wrench, Bus, Calendar, Check, X, Building2, UserCheck, Zap, RefreshCw, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 export default function SubAdminDashboard({ currentUser }) {
@@ -200,57 +201,9 @@ export default function SubAdminDashboard({ currentUser }) {
         </div>
       )}
 
-      {/* DOMAIN 2: ATTENDANCE SUB-ADMIN FACULTY LEAVE QUEUE */}
+      {/* DOMAIN 2: ATTENDANCE SUB-ADMIN WORKFLOW WIDGET */}
       {domain === 'attendance' && (
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center space-x-3 mb-6 pb-3 border-b border-slate-800">
-            <div className="p-2 bg-blue-500/10 border border-blue-500/30 rounded-xl text-blue-400">
-              <UserCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-white">Faculty Leave Request Approval Queue</h3>
-              <p className="text-xs text-slate-400">Review and approve faculty casual, sick, and duty leave applications</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            {leaves.map((l) => (
-              <div key={l.id} className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-white text-xs">{l.faculty_name} ({l.faculty_email})</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
-                      l.status === 'approved' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                    }`}>
-                      {l.status}
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-300 mt-1">Reason: "{l.reason}" ({l.leave_type})</p>
-                  <p className="text-[11px] text-slate-500 font-mono mt-0.5">Dates: {l.start_date} to {l.end_date}</p>
-                </div>
-
-                {l.status === 'pending' && (
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => handleUpdateLeaveStatus(l.id, 'approved')}
-                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1 cursor-pointer"
-                    >
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Approve Leave</span>
-                    </button>
-                    <button
-                      onClick={() => handleUpdateLeaveStatus(l.id, 'rejected')}
-                      className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 rounded-lg text-xs font-semibold flex items-center space-x-1 cursor-pointer"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                      <span>Reject</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <AttendanceAdminWidget />
       )}
 
       {/* DOMAIN 3: CLASSROOMS SUB-ADMIN OVERRIDE MONITOR */}

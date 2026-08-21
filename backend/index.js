@@ -13,6 +13,7 @@ const { isConnectedToSupabase, supabase, getLocalData } = require('./db');
 const { detectAnomalies } = require('./services/anomalyEngine');
 const { generateRecommendations, synthesizeAnswer } = require('./services/geminiService');
 const { translateToSQL } = require('./services/groqService');
+const { processAgentChat } = require('./services/agentEngine');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -147,17 +148,14 @@ app.post('/api/chat', async (req, res) => {
     const domain = departmentDomain || 'general';
 
     try {
-        console.log(`💬 Processing NL Query for [Role: ${role}, Domain: ${domain}]: "${query}"`);
+        console.log(`💬 Processing Agentic Query for [Role: ${role}, Domain: ${domain}]: "${query}"`);
 
-        // Step A: Groq Text-to-SQL Translation with Role Awareness
+        // Step 1: Agentic Gemini API Function Calling Pipeline
+        const agentResponse = await processAgentChat(query, role, domain);
+
+        // Step 2: Groq Text-to-SQL Translation for Data Context
         const sqlTranslation = await translateToSQL(query, role, domain);
-        console.log(`⚡ Groq Generated SQL (${role}): ${sqlTranslation.sql}`);
-
-        // Step B: Execute Query on Supabase (or Fallback Store)
         let queryResults = await fetchDomainFallbackForSql(sqlTranslation.sql);
-
-        // Step C: Route Raw Data to Gemini for Conversational Answer Synthesis
-        const geminiSynthesis = await synthesizeAnswer(query, sqlTranslation.sql, queryResults);
 
         res.json({
             status: 'success',
@@ -168,11 +166,13 @@ app.post('/api/chat', async (req, res) => {
                 explanation: sqlTranslation.explanation,
                 provider: sqlTranslation.provider
             },
+            toolExecuted: agentResponse.toolExecuted || null,
+            toolDetails: agentResponse.toolDetails || null,
             dataCount: queryResults.length,
             rawResults: queryResults,
             gemini: {
-                answer: geminiSynthesis.answer,
-                provider: geminiSynthesis.provider
+                answer: agentResponse.answer,
+                provider: agentResponse.provider
             }
         });
     } catch (err) {

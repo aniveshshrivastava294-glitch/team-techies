@@ -1,4 +1,4 @@
-// Faculty Leave Requests Route (Attendance Sub-Admin)
+// Faculty Leave Requests & Attendance Monitoring Route (Attendance Sub-Admin)
 const express = require('express');
 const router = express.Router();
 const { isConnectedToSupabase, supabase, getLocalData, mockStore } = require('../db');
@@ -16,6 +16,29 @@ router.get('/', async (req, res) => {
         res.json({ status: 'success', count: leaves.length, leaves });
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch leave requests', message: err.message });
+    }
+});
+
+// GET /api/leaves/daily-checkins - Attendance Admin Daily Staff Monitoring & Anomaly Detection
+router.get('/daily-checkins', async (req, res) => {
+    try {
+        const checkins = [
+            { id: 'chk-01', name: 'Prof. Elena Rostova', email: 'faculty@demo.com', status: 'Checked In', time: '08:42 AM', isScheduled: true },
+            { id: 'chk-02', name: 'Dr. Alan Turing', email: 'turing@demo.com', status: 'Checked In', time: '08:55 AM', isScheduled: true },
+            { id: 'chk-03', name: 'Prof. Marie Curie', email: 'curie@demo.com', status: 'ABSENT_ANOMALY', time: 'N/A', isScheduled: true, alert: 'Scheduled for Physics 101 at 09:00 AM but missing RFID gate check-in' },
+            { id: 'chk-04', name: 'Dr. Richard Feynman', email: 'feynman@demo.com', status: 'Checked In', time: '09:12 AM', isScheduled: true }
+        ];
+
+        res.json({
+            status: 'success',
+            date: new Date().toISOString().split('T')[0],
+            totalScheduled: checkins.length,
+            presentCount: checkins.filter(c => c.status === 'Checked In').length,
+            anomaliesCount: checkins.filter(c => c.status === 'ABSENT_ANOMALY').length,
+            checkins
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch daily checkins', message: err.message });
     }
 });
 
