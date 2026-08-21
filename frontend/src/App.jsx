@@ -53,6 +53,25 @@ function DashboardRouter() {
     fetchDashboardData();
   }, []);
 
+  // Compute Role-Based Theme Background Gradient
+  const getRoleThemeGradient = () => {
+    if (!currentUser) return 'from-slate-950 via-slate-900 to-slate-950';
+    
+    if (currentUser.role === 'super_admin') {
+      return 'from-slate-950 via-purple-950/25 to-slate-950';
+    }
+    if (currentUser.role === 'faculty') {
+      return 'from-slate-950 via-cyan-950/25 to-slate-950';
+    }
+    if (currentUser.role === 'sub_admin') {
+      if (currentUser.department_domain === 'transport') {
+        return 'from-slate-950 via-teal-950/25 to-slate-950';
+      }
+      return 'from-slate-950 via-amber-950/25 to-slate-950';
+    }
+    return 'from-slate-950 via-slate-900 to-slate-950';
+  };
+
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
@@ -60,7 +79,7 @@ function DashboardRouter() {
           <h2 className="text-xl font-bold text-white">Please sign in to access your Campus Orbit workspace</h2>
           <button
             onClick={() => setIsLoginOpen(true)}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all cursor-pointer"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-full shadow-lg transition-all cursor-pointer"
           >
             Open Login & Quick Role Switcher
           </button>
@@ -68,12 +87,10 @@ function DashboardRouter() {
       );
     }
 
-    // Pending approval state
     if (currentUser.approval_status === 'pending') {
       return <PendingApprovalView />;
     }
 
-    // Role views
     switch (currentUser.role) {
       case 'super_admin':
         return (
@@ -103,9 +120,13 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
+    <div className={`min-h-screen bg-gradient-to-b ${getRoleThemeGradient()} text-slate-100 flex flex-col transition-colors duration-700 relative overflow-x-hidden`}>
       
-      {/* Header with Plain Text Brand: Campus Orbit */}
+      {/* Subtle Background 3D Vector Glow Accents */}
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute bottom-1/3 left-10 w-[400px] h-[400px] bg-purple-600/5 rounded-full blur-[140px] pointer-events-none"></div>
+
+      {/* Floating Glass Pill Navbar */}
       <Header
         onRefresh={fetchDashboardData}
         isRefreshing={isRefreshing}
@@ -114,7 +135,7 @@ function DashboardRouter() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 pt-2">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 relative z-10">
         
         {/* Conversational Hero Bar for All Signed-In Users */}
         {currentUser && currentUser.approval_status !== 'pending' && (
@@ -126,16 +147,16 @@ function DashboardRouter() {
 
       </main>
 
-      {/* Persistent Omni-Agent Floating Assistant Widget on Every Screen */}
+      {/* Persistent 3D Glowing Omni-Agent Widget on Every Screen */}
       <FloatingAIAssistant currentUser={currentUser} />
 
       {/* Login / Demo Switcher Modal */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 px-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-900/80 bg-slate-950/80 py-6 px-6 text-center text-xs text-slate-500 relative z-10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Campus Orbit &bull; Intelligent Decision-Support Platform</span>
+          <span>Campus Orbit &bull; Agentic Glassmorphism Decision-Support Platform</span>
           <span className="text-slate-400">Gemini 2.5 API Function Calling & Groq Text-to-SQL</span>
         </div>
       </footer>
