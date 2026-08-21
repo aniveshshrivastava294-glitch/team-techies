@@ -37,25 +37,25 @@ export default function LoginModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/75 backdrop-blur-xs">
-      <div className="inst-card w-full max-w-md p-6 rounded border border-stone-300 dark:border-stone-800 shadow-xl relative bg-white dark:bg-stone-900 font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs font-sans">
+      <div className="card-enterprise w-full max-w-md p-6 rounded-lg border border-slate-200 shadow-xl relative bg-white">
         
         {/* Header */}
-        <div className="text-center mb-5">
-          <div className="w-10 h-10 bg-[#B5654A]/10 border border-[#B5654A]/30 rounded flex items-center justify-center text-[#B5654A] mx-auto mb-2.5">
-            <Lock className="w-5 h-5" />
+        <div className="text-center mb-4">
+          <div className="w-9 h-9 bg-blue-50 border border-blue-200 rounded flex items-center justify-center text-[#2563EB] mx-auto mb-2">
+            <Lock className="w-4 h-4" />
           </div>
-          <h2 className="text-lg font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+          <h2 className="text-base font-bold text-slate-900 tracking-tight">
             {isRegisterMode ? 'Register Campus Account' : 'CampusOrbit Authentication'}
           </h2>
-          <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
-            {isRegisterMode ? 'Faculty accounts auto-approve. Sub-Admins require administrator approval.' : 'Select a demo role below or sign in with credentials'}
+          <p className="text-xs text-slate-500 mt-1">
+            {isRegisterMode ? 'Faculty accounts auto-approve. Sub-Admins require administrator verification.' : 'Select a demo role below or sign in with credentials'}
           </p>
         </div>
 
         {/* Quick Demo Login Chips */}
-        <div className="mb-5 bg-stone-50 dark:bg-stone-950 p-3 rounded border border-stone-200 dark:border-stone-800">
-          <span className="text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider block mb-2">
+        <div className="mb-4 bg-[#F8FAFC] p-3 rounded border border-slate-200">
+          <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
             Quick Demo Role Switcher:
           </span>
           <div className="grid grid-cols-2 gap-1.5 text-xs font-medium">

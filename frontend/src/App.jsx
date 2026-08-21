@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import LoginModal from './components/LoginModal';
 import PendingApprovalView from './components/PendingApprovalView';
@@ -9,7 +10,6 @@ import FloatingAIAssistant from './components/FloatingAIAssistant';
 import SuperAdminDashboard from './components/roles/SuperAdminDashboard';
 import FacultyDashboard from './components/roles/FacultyDashboard';
 import SubAdminDashboard from './components/roles/SubAdminDashboard';
-
 import InstitutionalFooter from './components/InstitutionalFooter';
 
 function DashboardRouter() {
@@ -20,11 +20,11 @@ function DashboardRouter() {
   const [datasource, setDatasource] = useState('Local Synthetic Store');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
 
   const fetchDashboardData = async () => {
     setIsRefreshing(true);
     try {
-      // 1. Fetch KPIs
       const kpiRes = await fetch('/api/kpis');
       const kpiData = await kpiRes.json();
       if (kpiData.status === 'success') {
@@ -32,14 +32,12 @@ function DashboardRouter() {
         setDatasource(kpiData.datasource);
       }
 
-      // 2. Fetch Anomalies
       const anomRes = await fetch('/api/anomalies');
       const anomData = await anomRes.json();
       if (anomData.status === 'success') {
         setAnomalies(anomData.anomalies || []);
       }
 
-      // 3. Fetch Recommendations
       const recRes = await fetch('/api/recommendations');
       const recData = await recRes.json();
       if (recData.status === 'success') {
@@ -59,18 +57,18 @@ function DashboardRouter() {
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
-        <div className="py-20 text-center space-y-4 inst-card max-w-xl mx-auto p-12 mt-8">
-          <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-stone-100">
+        <div className="py-16 text-center space-y-3 card-enterprise max-w-lg mx-auto p-8 my-8">
+          <h2 className="text-lg font-bold text-slate-900">
             Welcome to CampusOrbit
           </h2>
-          <p className="text-sm text-stone-600 dark:text-stone-400 max-w-md mx-auto">
-            Please sign in to access your institutional campus workspace and administrative tools.
+          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            Please sign in to access your administrative operations workspace.
           </p>
           <button
             onClick={() => setIsLoginOpen(true)}
-            className="px-6 py-2.5 inst-button-primary text-xs cursor-pointer shadow-sm"
+            className="btn-primary text-xs"
           >
-            Sign In / Switch Account Role
+            Sign In / Switch Demo Account
           </button>
         </div>
       );
@@ -89,12 +87,14 @@ function DashboardRouter() {
             recommendations={recommendations}
             isRefreshing={isRefreshing}
             onRefresh={fetchDashboardData}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
         );
       case 'faculty':
-        return <FacultyDashboard currentUser={currentUser} />;
+        return <FacultyDashboard currentUser={currentUser} activeTab={activeTab} setActiveTab={setActiveTab} />;
       case 'sub_admin':
-        return <SubAdminDashboard currentUser={currentUser} />;
+        return <SubAdminDashboard currentUser={currentUser} activeTab={activeTab} setActiveTab={setActiveTab} />;
       default:
         return (
           <SuperAdminDashboard
@@ -103,43 +103,52 @@ function DashboardRouter() {
             recommendations={recommendations}
             isRefreshing={isRefreshing}
             onRefresh={fetchDashboardData}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#231F1B] text-stone-800 dark:text-stone-200 flex flex-col transition-colors duration-200 relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex font-sans">
       
-      {/* Header Navbar */}
-      <Header
-        onRefresh={fetchDashboardData}
-        isRefreshing={isRefreshing}
-        datasource={datasource}
-        onOpenLogin={() => setIsLoginOpen(true)}
-      />
+      {/* Fixed Left Sidebar Navigation (#0F2747) */}
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 relative z-10">
+      {/* Main Content Area Layout */}
+      <div className="flex-1 flex flex-col pl-64 min-w-0">
         
-        {/* Conversational Hero Bar for Signed-In Users */}
-        {currentUser && currentUser.approval_status !== 'pending' && (
-          <ConversationalHero currentUser={currentUser} />
-        )}
+        {/* Sticky White Top Bar (#FFFFFF) */}
+        <Header
+          onRefresh={fetchDashboardData}
+          isRefreshing={isRefreshing}
+          datasource={datasource}
+          onOpenLogin={() => setIsLoginOpen(true)}
+          activeTab={activeTab}
+        />
 
-        {/* Role Workspace */}
-        {renderRoleDashboard()}
+        {/* Content Canvas Area (#F8FAFC) */}
+        <main className="flex-1 p-6 space-y-6 max-w-7xl w-full mx-auto">
+          
+          {currentUser && currentUser.approval_status !== 'pending' && (
+            <ConversationalHero currentUser={currentUser} />
+          )}
 
-      </main>
+          {renderRoleDashboard()}
 
-      {/* Persistent AI Assistant Widget */}
+        </main>
+
+        {/* Enterprise Footer */}
+        <InstitutionalFooter />
+
+      </div>
+
+      {/* Persistent AI Assistant Drawer */}
       <FloatingAIAssistant currentUser={currentUser} />
 
-      {/* Login / Demo Switcher Modal */}
+      {/* Login Modal */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-
-      {/* Institutional Enterprise Footer */}
-      <InstitutionalFooter />
 
     </div>
   );

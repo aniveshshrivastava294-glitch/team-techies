@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,189 +6,170 @@
 
 @layer base {
   :root {
-    --bg-canvas: #FAF7F2;
-    --bg-surface: #FFFFFF;
-    --bg-surface-subtle: #F4EFE6;
-    --border-color: rgba(60, 50, 40, 0.14);
-    --text-heading: #1C1917;
-    --text-body: #44403C;
-    --text-muted: #78716C;
-    --color-terracotta: #B5654A;
-    --color-forest: #2F4034;
-    --color-sage: #5C6E3F;
-    --color-ochre: #C79A45;
-    --color-rust: #A64B34;
-    --color-sand: #EAE3D2;
-  }
-
-  html.dark, body.dark, :root.dark {
-    --bg-canvas: #231F1B;
-    --bg-surface: #2D2721;
-    --bg-surface-subtle: #1C1814;
-    --border-color: rgba(216, 201, 174, 0.14);
-    --text-heading: #F5F2EC;
-    --text-body: #D6CFC7;
-    --text-muted: #A39B91;
-    --color-terracotta: #C87559;
-    --color-forest: #425748;
-    --color-sage: #788A58;
-    --color-ochre: #D9AA52;
-    --color-rust: #C25B43;
-    --color-sand: #3D352E;
+    --primary: #0F2747;
+    --secondary: #1E3A5F;
+    --accent: #2563EB;
+    --background: #F8FAFC;
+    --card: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    --success: #16A34A;
+    --warning: #F59E0B;
+    --error: #DC2626;
+    --border-subtle: #E2E8F0;
   }
 
   body {
-    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--bg-canvas);
-    color: var(--text-body);
-    @apply antialiased transition-colors duration-200 relative min-h-screen overflow-x-hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    @apply antialiased min-h-screen text-slate-900;
   }
 
-  h1, h2, h3, h4, .font-serif-heading {
-    font-family: 'Source Serif 4', Georgia, serif;
-    color: var(--text-heading);
-  }
-
-  /* Tactile Parchment Paper Grain Overlay */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
 }
 
-/* Institutional Design Utility Classes */
-.inst-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(30, 25, 20, 0.04);
-}
-
-.inst-card-subtle {
-  background-color: var(--bg-surface-subtle);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-}
-
-.inst-header-band {
-  background-color: var(--bg-surface);
-  border-bottom: 2px solid var(--border-color);
-}
-
-.inst-button-primary {
-  background-color: #B5654A;
+/* Linear & Shadcn Enterprise Design System Classes */
+.btn-primary {
+  background-color: var(--accent);
   color: #FFFFFF;
-  border-radius: 4px;
-  font-weight: 600;
-  transition: background-color 0.15s ease, transform 0.1s ease;
-}
-.inst-button-primary:hover {
-  background-color: #9E533A;
-}
-
-.inst-button-secondary {
-  background-color: transparent;
-  color: var(--text-heading);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
   font-weight: 500;
-  transition: background-color 0.15s ease;
+  font-size: 0.8125rem;
+  padding: 0.4375rem 0.875rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: background-color 150ms ease, border-color 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  cursor: pointer;
 }
-.inst-button-secondary:hover {
-  background-color: var(--bg-surface-subtle);
+.btn-primary:hover {
+  background-color: #1D4ED8;
 }
 
-.inst-badge-sage {
-  background-color: rgba(92, 110, 63, 0.12);
-  color: #43542B;
-  border: 1px solid rgba(92, 110, 63, 0.3);
-  border-radius: 4px;
+.btn-secondary {
+  background-color: #FFFFFF;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  padding: 0.4375rem 0.875rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  transition: background-color 150ms ease, border-color 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: background-color 150ms ease, color 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  background-color: #F1F5F9;
+  color: var(--text-primary);
+}
+
+/* Status Badges with low-opacity tinted background + dot */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1rem;
+}
+.badge-success {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: #15803D;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+}
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #B45309;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.badge-error {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #B91C1C;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+.badge-info {
+  background-color: rgba(37, 99, 235, 0.1);
+  color: #1D4ED8;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+/* Card Surface Standard (Shadcn specification) */
+.card-enterprise {
+  background-color: var(--card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Segmented Tab Controls */
+.nav-tab-active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
   font-weight: 600;
 }
-
-.inst-badge-ochre {
-  background-color: rgba(199, 154, 69, 0.12);
-  color: #8C6418;
-  border: 1px solid rgba(199, 154, 69, 0.3);
-  border-radius: 4px;
-  font-weight: 600;
+.nav-tab-inactive {
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+}
+.nav-tab-inactive:hover {
+  color: var(--text-primary);
 }
 
-.inst-badge-rust {
-  background-color: rgba(166, 75, 52, 0.12);
-  color: #7A2F1B;
-  border: 1px solid rgba(166, 75, 52, 0.3);
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.inst-badge-neutral {
-  background-color: var(--bg-surface-subtle);
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-}
-
-/* Institutional Ledger Table Styles */
-.inst-table {
+/* Data Table Enterprise Specification */
+.table-enterprise {
   width: 100%;
   border-collapse: collapse;
+  text-align: left;
   font-size: 0.8125rem;
 }
-.inst-table th {
-  background-color: var(--bg-surface-subtle);
-  color: var(--text-heading);
-  font-family: 'Source Sans 3', sans-serif;
-  font-weight: 700;
+.table-enterprise th {
+  background-color: #F8FAFC;
+  color: var(--text-secondary);
+  font-weight: 600;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   font-size: 0.6875rem;
-  padding: 10px 14px;
-  border-bottom: 2px solid var(--border-color);
-  text-align: left;
+  letter-spacing: 0.05em;
 }
-.inst-table td {
-  padding: 11px 14px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-body);
+.table-enterprise td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-primary);
 }
-.inst-table tr:hover td {
-  background-color: var(--bg-surface-subtle);
-}
-
-/* Clean Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-canvas);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(120, 113, 108, 0.3);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(120, 113, 108, 0.5);
-}
-
-/* Overwrite old glass classes with clean earthy institutional panels */
-.glass-panel, .glass-card, .glass-card-interactive {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  box-shadow: 0 1px 2px rgba(30, 25, 20, 0.03);
-}
-
-.divider-galaxy {
-  height: 1px;
-  width: 100%;
-  background-color: var(--border-color);
+.table-enterprise tr:hover td {
+  background-color: #F8FAFC;
 }

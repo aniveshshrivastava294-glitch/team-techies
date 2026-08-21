@@ -50,59 +50,57 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       
-      {/* Live Campus Telemetry Ticker Marquee */}
+      {/* Live Campus Telemetry Ticker */}
       <LiveCampusTicker />
 
-      {/* Super Admin Actions: Sub-Admin Approvals & AI Bulk Faculty Extraction */}
+      {/* Super Admin Top Row: Pending Approvals & Multi-Batch AI Data Intaker */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Left: Pending Sub-Admin Registrations */}
-        <div className="lg:col-span-8 inst-card p-6 border border-stone-300 dark:border-stone-800">
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-stone-200 dark:border-stone-800">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-[#B5654A]/10 border border-[#B5654A]/30 rounded text-[#B5654A]">
-                <UserCheck className="w-5 h-5" />
-              </div>
+        {/* Left: Pending Staff Registrations (List Rows Specification) */}
+        <div className="lg:col-span-8 card-enterprise p-5">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
+            <div className="flex items-center space-x-2.5">
+              <UserCheck className="w-5 h-5 text-[#2563EB]" />
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">Pending Staff Approvals</h2>
-                  <span className="px-2 py-0.5 text-xs font-mono font-bold inst-badge-ochre">
+                  <h2 className="text-sm font-bold text-slate-900">Pending Staff Access Approvals</h2>
+                  <span className="badge-pill badge-warning">
                     {pendingUsers.length} Action Required
                   </span>
                 </div>
-                <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-                  Review and approve access requests for staff members
+                <p className="text-xs text-slate-500">
+                  Review and verify administrative clearance for newly registered department staff.
                 </p>
               </div>
             </div>
           </div>
 
           {pendingUsers.length === 0 ? (
-            <div className="py-6 text-center text-stone-500 dark:text-stone-400 text-xs bg-stone-50 dark:bg-stone-950 rounded border border-stone-200 dark:border-stone-800 flex items-center justify-center space-x-2">
-              <ShieldCheck className="w-4 h-4 text-[#5C6E3F]" />
-              <span>No pending accounts awaiting approval. All accounts are verified.</span>
+            <div className="py-8 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0] flex items-center justify-center space-x-2">
+              <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+              <span>All staff registration requests have been reviewed and verified.</span>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="divide-y divide-[#E2E8F0]">
               {pendingUsers.map((user) => (
-                <div key={user.id} className="bg-stone-50 dark:bg-stone-950 p-3.5 rounded border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-bold text-stone-900 dark:text-stone-100">{user.full_name || user.email}</span>
-                      <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase inst-badge-ochre">
+                <div key={user.id} className="py-2.5 flex items-center justify-between gap-3 hover:bg-[#F8FAFC] px-2 rounded">
+                  <div className="min-w-0">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs font-semibold text-slate-900 truncate">{user.full_name || user.email}</span>
+                      <span className="badge-pill badge-info font-mono text-[10px] uppercase">
                         {user.department_domain} Admin
                       </span>
                     </div>
-                    <p className="text-xs text-stone-500 dark:text-stone-400 font-mono mb-2">{user.email}</p>
+                    <p className="text-[11px] text-slate-500 font-mono mt-0.5">{user.email}</p>
                   </div>
 
-                  <div className="flex items-center space-x-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                  <div className="flex items-center space-x-2 shrink-0">
                     <button
                       onClick={() => handleApproveUser(user.id, 'approved')}
                       disabled={actionLoading === user.id}
-                      className="flex-1 py-1.5 bg-[#5C6E3F] hover:bg-[#4B5B32] text-white rounded text-xs font-semibold transition-colors flex items-center justify-center space-x-1 cursor-pointer disabled:opacity-50"
+                      className="btn-primary text-xs py-1 px-3"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>Approve</span>
@@ -110,7 +108,7 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
                     <button
                       onClick={() => handleApproveUser(user.id, 'rejected')}
                       disabled={actionLoading === user.id}
-                      className="py-1.5 px-3 bg-[#A64B34]/10 hover:bg-[#A64B34]/20 text-[#A64B34] border border-[#A64B34]/30 rounded text-xs font-semibold transition-colors flex items-center justify-center space-x-1 cursor-pointer"
+                      className="btn-secondary text-xs py-1 px-2.5 text-[#DC2626]"
                     >
                       <X className="w-3.5 h-3.5" />
                       <span>Reject</span>
@@ -123,25 +121,25 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
         </div>
 
         {/* Right: Universal Multi-Batch AI Data Intaker Hero Card */}
-        <div className="lg:col-span-4 inst-card p-6 border border-stone-300 dark:border-stone-800 flex flex-col justify-between space-y-4 font-sans">
+        <div className="lg:col-span-4 card-enterprise p-5 flex flex-col justify-between space-y-4">
           <div>
-            <div className="w-9 h-9 bg-[#B5654A]/10 border border-[#B5654A]/30 rounded flex items-center justify-center text-[#B5654A] mb-3">
-              <Sparkles className="w-5 h-5" />
+            <div className="w-8 h-8 rounded bg-blue-50 border border-blue-200 flex items-center justify-center text-[#2563EB] mb-2.5">
+              <Sparkles className="w-4 h-4" />
             </div>
-            <h3 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight flex items-center gap-2">
-              Universal Multi-Batch AI Data Intaker
-              <span className="px-2 py-0.5 text-[9px] font-mono font-bold inst-badge-ochre">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              Universal AI Data Intaker
+              <span className="badge-pill badge-info text-[9px] font-mono">
                 AI Advisor
               </span>
             </h3>
-            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-relaxed">
-              Feed CSV, JSON, or unstructured text unlimited times into Faculty, Transport, Energy, Classroom, or Maintenance databases. Features real-time AI placement guidance chatbox.
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              Feed CSV, JSON, or unstructured text into Faculty, Transport, Energy, Classroom, or Maintenance databases with live placement guidance.
             </p>
           </div>
 
           <button
             onClick={() => setIsUploadOpen(true)}
-            className="w-full py-2.5 inst-button-primary text-xs flex items-center justify-center space-x-2 cursor-pointer shadow-sm font-mono"
+            className="btn-primary w-full text-xs font-mono"
           >
             <Upload className="w-4 h-4" />
             <span>Open Universal AI Data Intaker</span>
@@ -150,10 +148,10 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
 
       </div>
 
-      {/* Master Executive KPI Overview */}
+      {/* Inline Executive KPI Overview Bar */}
       <KpiOverview kpis={kpis} />
 
-      {/* Top Grid: Anomalies & Role AI Co-Pilot */}
+      {/* Anomalies & Role AI Co-Pilot */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7">
           <AnomaliesPanel
@@ -168,13 +166,13 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
         </div>
       </div>
 
-      {/* Recharts Visualizers */}
+      {/* Analytics Visualizers */}
       <Visualizers kpis={kpis} anomalies={anomalies} />
 
-      {/* Domain Inspector */}
+      {/* Domain Inspector Tables */}
       <DomainDataTables />
 
-      {/* AI Bulk Faculty Upload Modal */}
+      {/* AI Bulk Upload Modal */}
       <BulkFacultyUploadModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}

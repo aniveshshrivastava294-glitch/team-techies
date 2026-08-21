@@ -203,75 +203,69 @@ export default function FacultyDashboard({ currentUser }) {
       )}
 
       {/* ================= HEADER BANNER: FACULTY PORTAL GREETING ================= */}
-      <div className="p-6 rounded border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm relative overflow-hidden font-sans">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+      <div className="card-enterprise p-5 font-sans">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           
           <div className="space-y-1">
             <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider bg-stone-100 dark:bg-stone-800 text-[#B5654A] border border-stone-300 dark:border-stone-700 rounded flex items-center gap-1.5">
-                <User className="w-3 h-3 text-[#B5654A]" />
+              <span className="badge-pill badge-info font-mono text-[10px]">
+                <User className="w-3 h-3 text-[#2563EB]" />
                 FACULTY PORTAL
               </span>
-              <span className="text-xs text-stone-500 dark:text-stone-400 font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 font-mono">
+              <span className="text-xs text-slate-500 font-mono">
                 {department}
               </span>
             </div>
             
-            <h1 className="text-2xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100 flex items-center gap-2">
-              Welcome, <span className="text-[#B5654A]">{currentUser?.full_name || professorName}</span>
-              <Sparkles className="w-5 h-5 text-[#B5654A]" />
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+              Welcome back, <span className="text-[#2563EB]">{currentUser?.full_name || professorName}</span>
+              <Sparkles className="w-4 h-4 text-[#2563EB]" />
             </h1>
-            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-2xl font-medium">
-              Welcome to your campus dashboard! Easily book classrooms, check bus schedules, apply for leave, and submit support tickets.
+            <p className="text-xs text-slate-500 max-w-xl">
+              Welcome to your campus operations hub. Easily reserve classrooms, inspect shuttle schedules, apply for leave, and track support requests.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setShowIssueModal(true)}
-              className="px-3.5 py-2 inst-button-secondary text-xs flex items-center gap-2 cursor-pointer"
+              className="btn-secondary text-xs"
             >
-              <AlertTriangle className="w-4 h-4 text-[#C79A45]" />
-              <span>Report an Issue</span>
+              <AlertTriangle className="w-3.5 h-3.5 text-[#F59E0B]" />
+              <span>Report Facility Issue</span>
             </button>
           </div>
 
         </div>
       </div>
 
-      {/* ================= NAVIGATION TABS ================= */}
-      <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2">
-        <div className="flex items-center gap-2">
+      {/* ================= NAVIGATION TABS (REQUIRED Pattern #5) ================= */}
+      <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-0 font-sans">
+        <div className="flex items-center space-x-2">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
-              activeTab === 'overview'
-                ? 'bg-[#B5654A] text-white border-[#B5654A]'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
+            className={`px-3.5 py-2 text-xs font-semibold cursor-pointer transition-colors flex items-center space-x-2 ${
+              activeTab === 'overview' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
-            <span>My Dashboard</span>
+            <span>My Overview</span>
           </button>
 
           <button
             onClick={() => setActiveTab('matrix')}
-            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
-              activeTab === 'matrix'
-                ? 'bg-[#B5654A] text-white border-[#B5654A]'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
+            className={`px-3.5 py-2 text-xs font-semibold cursor-pointer transition-colors flex items-center space-x-2 ${
+              activeTab === 'matrix' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
-            <span>Book Classrooms</span>
+            <span>Classroom Booking</span>
           </button>
 
           <button
             onClick={() => setActiveTab('transport')}
-            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
-              activeTab === 'transport'
-                ? 'bg-[#B5654A] text-white border-[#B5654A]'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
+            className={`px-3.5 py-2 text-xs font-semibold cursor-pointer transition-colors flex items-center space-x-2 ${
+              activeTab === 'transport' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <Bus className="w-3.5 h-3.5" />
@@ -279,8 +273,8 @@ export default function FacultyDashboard({ currentUser }) {
           </button>
         </div>
 
-        <span className="text-xs font-mono text-stone-500 hidden sm:inline-block">
-          Role: <strong className="text-[#B5654A]">Faculty</strong>
+        <span className="text-xs font-mono text-slate-500 hidden sm:inline-block">
+          Active Role: <strong className="text-[#2563EB]">Faculty</strong>
         </span>
       </div>
 
@@ -308,77 +302,74 @@ export default function FacultyDashboard({ currentUser }) {
             </div>
 
             {/* LEAVES TAKEN CARD */}
-            <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2 hover:border-white/10 transition-all flex flex-col justify-between">
+            <div className="card-enterprise p-4 flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider block">
+                <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
                   casual leaves used
                 </span>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl font-mono font-extrabold text-white tracking-tight">{leavesTaken}</span>
-                  <span className="text-xs text-zinc-500 font-mono">days</span>
+                <div className="flex items-baseline gap-1.5 mt-1">
+                  <span className="text-2xl font-bold text-slate-900">{leavesTaken}</span>
+                  <span className="text-xs text-slate-500 font-mono">days</span>
                 </div>
               </div>
-              <p className="text-[11px] text-zinc-500 font-mono mt-3">15 Days Available in Term</p>
+              <p className="text-[10px] text-slate-500 font-mono mt-2">15 Days Available in Term</p>
             </div>
 
             {/* ACTIVE TICKETS CARD */}
-            <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2 hover:border-white/10 transition-all flex flex-col justify-between">
+            <div className="card-enterprise p-4 flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
                     active support tickets
                   </span>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-3xl font-mono font-extrabold text-amber-400 tracking-tight">{activeTicketsCount}</span>
-                    <span className="text-xs text-amber-400/80 font-mono">in dispatch</span>
+                  <div className="flex items-baseline gap-1.5 mt-1">
+                    <span className="text-2xl font-bold text-[#F59E0B]">{activeTicketsCount}</span>
+                    <span className="text-xs text-slate-500 font-mono">in dispatch</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(true)}
-                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-amber-400 border border-amber-500/30 rounded-full text-xs font-mono font-bold transition-all cursor-pointer"
+                  className="btn-secondary text-[11px] py-1 px-2.5"
                 >
                   + Raise Ticket
                 </button>
               </div>
-              <p className="text-[11px] text-zinc-500 font-mono mt-2">IT Support & Maintenance Dispatch</p>
+              <p className="text-[10px] text-slate-500 font-mono mt-2">IT Support & Maintenance Dispatch</p>
             </div>
 
           </div>
 
-          {/* ================= ALWAYS-OPEN COMPACT MINI ACADEMIC CALENDAR ================= */}
-          <div className="p-4 sm:p-5 rounded-3xl border border-white/5 bg-white/[0.02] space-y-3 hover:border-white/10 transition-all backdrop-blur-xl">
+          {/* ================= COMPACT ACADEMIC CALENDAR ================= */}
+          <div className="card-enterprise p-4 space-y-3 font-sans">
             
             {/* Widget Header */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/5 pb-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E2E8F0] pb-2">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-white/5 text-cyan-400 border border-white/10">
-                  <CalendarDays className="w-4 h-4 text-cyan-400 stroke-[1.5]" />
-                </div>
+                <CalendarDays className="w-4 h-4 text-[#2563EB]" />
                 <div>
-                  <h4 className="text-xs font-bold text-white tracking-tight flex items-center gap-2">
-                    Academic Calendar
-                    <span className="text-[9px] font-mono font-bold px-2 py-0.2 bg-white/[0.03] text-emerald-400 rounded-full border border-white/10 uppercase">
-                      ALWAYS OPEN
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
+                    Academic Calendar Grid
+                    <span className="badge-pill badge-info text-[9px] font-mono">
+                      Fall 2026
                     </span>
                   </h4>
-                  <p className="text-[10px] text-zinc-500 font-mono">Fall Term 2026 Grid</p>
                 </div>
               </div>
 
-              {/* Month Navigator & Sync */}
-              <div className="flex items-center gap-1.5 font-mono">
+              {/* Month Navigator */}
+              <div className="flex items-center gap-1.5 font-mono text-xs">
                 <button
                   type="button"
                   onClick={() => {
                     setCalendarMonth(calendarMonth === 'August 2026' ? 'July 2026' : 'August 2026');
                     showToast('Updated calendar month view');
                   }}
-                  className="px-2.5 py-1 bg-white/[0.03] hover:bg-white/10 text-zinc-300 rounded-full text-[10px] font-bold transition-all border border-white/10 cursor-pointer"
+                  className="btn-secondary py-0.5 px-2 text-[10px]"
                 >
                   ‹ Prev
                 </button>
-                <span className="text-[11px] font-mono font-bold text-cyan-300 bg-white/[0.04] px-3 py-0.5 rounded-full border border-white/10">
+                <span className="text-[11px] font-mono font-semibold text-slate-800 px-2 py-0.5">
                   {calendarMonth}
                 </span>
                 <button
@@ -387,31 +378,23 @@ export default function FacultyDashboard({ currentUser }) {
                     setCalendarMonth(calendarMonth === 'August 2026' ? 'September 2026' : 'August 2026');
                     showToast('Updated calendar month view');
                   }}
-                  className="px-2.5 py-1 bg-white/[0.03] hover:bg-white/10 text-zinc-300 rounded-full text-[10px] font-bold transition-all border border-white/10 cursor-pointer"
+                  className="btn-secondary py-0.5 px-2 text-[10px]"
                 >
                   Next ›
-                </button>
-                <button
-                  type="button"
-                  onClick={() => showToast('Synced Academic Calendar with Outlook & Google Calendar!')}
-                  className="px-3 py-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-full text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer"
-                >
-                  <Sparkles className="w-3 h-3 text-cyan-400" />
-                  <span>Sync</span>
                 </button>
               </div>
             </div>
 
-            {/* 2-Column Ultra-Compact Layout */}
+            {/* 2-Column Calendar Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
               
               {/* Left: Mini Month Date Grid Matrix */}
-              <div className="lg:col-span-7 bg-black/40 p-3 rounded-2xl border border-white/5 space-y-2">
-                <div className="flex items-center justify-between border-b border-white/5 pb-1">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">
-                    Mini Month Grid
+              <div className="lg:col-span-7 bg-[#F8FAFC] p-3 rounded-md border border-[#E2E8F0] space-y-2">
+                <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-1">
+                  <span className="text-[10px] font-mono font-bold uppercase text-slate-500">
+                    Month View
                   </span>
-                  <span className="text-[9px] font-mono text-cyan-400 font-bold bg-white/[0.04] px-2 py-0.5 rounded-full border border-white/10">
+                  <span className="text-[10px] font-mono text-[#2563EB] font-bold">
                     Today: Aug 21
                   </span>
                 </div>
@@ -419,7 +402,7 @@ export default function FacultyDashboard({ currentUser }) {
                 {/* Day Headers (Sun-Sat) */}
                 <div className="grid grid-cols-7 gap-1 text-center">
                   {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-                    <div key={i} className="text-[9px] font-mono font-bold text-zinc-500 uppercase py-0.2">
+                    <div key={i} className="text-[9px] font-mono font-bold text-slate-400 py-0.2">
                       {d}
                     </div>
                   ))}
@@ -428,7 +411,7 @@ export default function FacultyDashboard({ currentUser }) {
                 {/* Days Grid */}
                 <div className="grid grid-cols-7 gap-1">
                   {[...Array(6)].map((_, i) => (
-                    <div key={`off-${i}`} className="h-6 rounded bg-white/[0.01] opacity-20 cursor-not-allowed" />
+                    <div key={`off-${i}`} className="h-6 rounded bg-slate-100 opacity-40 cursor-not-allowed" />
                   ))}
                   {[...Array(31)].map((_, idx) => {
                     const dayNum = idx + 1;
@@ -443,18 +426,15 @@ export default function FacultyDashboard({ currentUser }) {
                         key={dayNum}
                         type="button"
                         onClick={() => setSelectedCalendarDay(dayNum)}
-                        className={`h-6 rounded-lg border text-[10px] font-mono font-bold flex flex-col items-center justify-center transition-all cursor-pointer relative ${
+                        className={`h-6 rounded border text-[10px] font-mono font-semibold flex flex-col items-center justify-center transition-all cursor-pointer relative ${
                           isSelected
-                            ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 ring-1 ring-cyan-400/50 scale-105 z-10'
+                            ? 'bg-[#2563EB] text-white border-[#2563EB]'
                             : isToday
-                            ? 'bg-white/10 border-white/20 text-white font-black'
-                            : 'bg-white/[0.02] border-white/5 text-zinc-400 hover:border-white/20 hover:text-white'
+                            ? 'bg-blue-50 border-blue-300 text-[#2563EB] font-bold'
+                            : 'bg-white border-[#E2E8F0] text-slate-700 hover:bg-slate-100'
                         }`}
                       >
                         <span>{dayNum}</span>
-                        {matchingEvents.length > 0 && (
-                          <span className={`w-1 h-1 rounded-full ${matchingEvents[0].dotColor} absolute bottom-0.5`} />
-                        )}
                       </button>
                     );
                   })}
@@ -462,38 +442,38 @@ export default function FacultyDashboard({ currentUser }) {
               </div>
 
               {/* Right: Selected Date Agenda */}
-              <div className="lg:col-span-5 bg-black/40 p-3 rounded-2xl border border-white/5 flex flex-col justify-between space-y-2">
+              <div className="lg:col-span-5 bg-[#F8FAFC] p-3 rounded-md border border-[#E2E8F0] flex flex-col justify-between space-y-2">
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between border-b border-white/5 pb-1">
-                    <span className="text-[11px] font-bold text-white">
+                  <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-1">
+                    <span className="text-[11px] font-bold text-slate-900">
                       Aug {selectedCalendarDay} Agenda
                     </span>
-                    <span className="text-[9px] font-mono text-cyan-400 font-bold bg-white/[0.04] px-2 py-0.5 rounded-full border border-white/10">
+                    <span className="text-[10px] font-mono text-[#2563EB] font-bold">
                       Day #{selectedCalendarDay}
                     </span>
                   </div>
 
                   {academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).length > 0 ? (
                     academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).map(ev => (
-                      <div key={ev.id} className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                      <div key={ev.id} className="p-2 bg-white rounded border border-[#E2E8F0] space-y-0.5">
                         <div className="flex items-center justify-between">
-                          <span className={`text-[8px] font-mono font-bold px-1.5 py-0.2 rounded-full border uppercase ${ev.badgeColor}`}>
+                          <span className="badge-pill badge-info text-[9px]">
                             {ev.type}
                           </span>
-                          <span className="text-[9px] font-mono text-cyan-300">
+                          <span className="text-[9px] font-mono text-slate-500">
                             {ev.date}
                           </span>
                         </div>
-                        <h5 className="text-[11px] font-extrabold text-white truncate">{ev.title}</h5>
-                        <p className="text-[9px] text-zinc-400 font-mono flex items-center gap-1 truncate">
-                          <MapPin className="w-2.5 h-2.5 text-cyan-400 stroke-[1.5]" /> {ev.venue}
+                        <h5 className="text-[11px] font-bold text-slate-900 truncate">{ev.title}</h5>
+                        <p className="text-[9px] text-slate-500 font-mono flex items-center gap-1 truncate">
+                          <MapPin className="w-2.5 h-2.5 text-[#2563EB]" /> {ev.venue}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <div className="p-2 text-center text-[10px] text-zinc-500 space-y-0.5 font-mono">
-                      <p className="font-bold text-zinc-300">Regular Classes</p>
-                      <p className="text-[9px] text-zinc-500">No major exam on Aug {selectedCalendarDay}.</p>
+                    <div className="p-2 text-center text-[10px] text-slate-500 font-mono">
+                      <p className="font-semibold text-slate-700">Regular Classes</p>
+                      <p className="text-[9px] text-slate-400">No scheduled exam on Aug {selectedCalendarDay}.</p>
                     </div>
                   )}
                 </div>
@@ -501,7 +481,7 @@ export default function FacultyDashboard({ currentUser }) {
                 <button
                   type="button"
                   onClick={() => showToast(`Added reminder for August ${selectedCalendarDay}, 2026!`)}
-                  className="w-full py-1.5 bg-white/5 hover:bg-white/10 text-cyan-300 border border-white/10 rounded-xl text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
+                  className="btn-secondary w-full text-[10px] py-1"
                 >
                   <Plus className="w-3 h-3" />
                   <span>Reminder for Aug {selectedCalendarDay}</span>
@@ -512,18 +492,18 @@ export default function FacultyDashboard({ currentUser }) {
           </div>
 
           {/* WORKSPACE GRID STACK (2-BOX LAYOUT WITH DYNAMIC EXPANSION) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
 
             {/* ================= 1. CLASSROOM RESERVATION ================= */}
-            <div className={`w-full rounded-3xl border transition-all duration-300 overflow-hidden ${
+            <div className={`w-full card-enterprise overflow-hidden ${
               activeExpand === 'classroom'
-                ? 'md:col-span-2 border-cyan-500/40 bg-gradient-to-br from-black via-zinc-950 to-cyan-950/20 shadow-2xl ring-1 ring-cyan-500/20 backdrop-blur-2xl'
-                : 'md:col-span-1 border-white/5 bg-white/[0.02] hover:bg-white/[0.035] hover:border-white/15'
+                ? 'md:col-span-2 border-[#2563EB]'
+                : 'md:col-span-1'
             }`}>
               {/* Header Bar */}
               <div
                 onClick={() => setActiveExpand(activeExpand === 'classroom' ? null : 'classroom')}
-                className="p-5 sm:px-6 flex items-center justify-between cursor-pointer select-none"
+                className="p-4 flex items-center justify-between cursor-pointer select-none bg-[#F8FAFC] border-b border-[#E2E8F0]"
               >
                 <div className="flex items-center gap-3">
                   <div className={`p-2.5 rounded-2xl border transition-all ${

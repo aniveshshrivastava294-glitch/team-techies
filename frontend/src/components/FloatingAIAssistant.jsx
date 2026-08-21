@@ -101,7 +101,7 @@ export default function FloatingAIAssistant({ currentUser, currentContext = 'Gen
       {/* Floating Action Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#B5654A] hover:bg-[#9E533A] text-white rounded-full shadow-lg border border-stone-200 dark:border-stone-700 transition-colors flex items-center justify-center cursor-pointer group"
+        className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full shadow-lg border border-transparent transition-all flex items-center justify-center cursor-pointer group"
         title="Open Campus Orbit AI Assistant"
       >
         <Sparkles className="w-5 h-5" />
@@ -109,27 +109,27 @@ export default function FloatingAIAssistant({ currentUser, currentContext = 'Gen
 
       {/* Floating Assistant Drawer/Modal */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[520px] bg-[#FAF7F2] dark:bg-[#231F1B] border border-stone-300 dark:border-stone-800 rounded-lg shadow-xl flex flex-col overflow-hidden font-sans">
+        <div className="fixed bottom-20 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[500px] bg-white border border-slate-200 rounded-lg shadow-xl flex flex-col overflow-hidden font-sans">
           
           {/* Header */}
-          <div className="p-3.5 bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between">
+          <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1.5 rounded bg-[#B5654A]/10 text-[#B5654A] border border-[#B5654A]/30">
+              <div className="p-1.5 rounded bg-blue-50 text-[#2563EB] border border-blue-200">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-serif font-bold text-stone-900 dark:text-stone-100">
+                <h3 className="text-xs font-bold text-slate-900">
                   Campus Orbit Assistant
                 </h3>
-                <p className="text-[10px] text-stone-500 font-mono">
-                  Institutional Intelligence
+                <p className="text-[10px] text-slate-500 font-mono">
+                  Enterprise Operations Intelligence
                 </p>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 text-stone-500 hover:text-stone-900 dark:hover:text-white rounded hover:bg-stone-200 dark:hover:bg-stone-800 transition-colors"
+              className="p-1 text-slate-400 hover:text-slate-700 rounded hover:bg-slate-100 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
