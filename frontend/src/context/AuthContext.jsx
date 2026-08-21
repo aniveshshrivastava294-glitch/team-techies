@@ -44,6 +44,22 @@ export const demoAccounts = [
     full_name: "Eng. Sarah Jenkins"
   },
   {
+    id: "u0010000-0000-0000-0000-000000000007",
+    email: "energy@demo.com",
+    role: "sub_admin",
+    department_domain: "energy",
+    approval_status: "approved",
+    full_name: "Eng. Robert Vance (Energy)"
+  },
+  {
+    id: "u0010000-0000-0000-0000-000000000008",
+    email: "classroom@demo.com",
+    role: "sub_admin",
+    department_domain: "classroom",
+    approval_status: "approved",
+    full_name: "Prof. Vikram Patel (Classrooms)"
+  },
+  {
     id: "u0010000-0000-0000-0000-000000000006",
     email: "pending@demo.com",
     role: "sub_admin",

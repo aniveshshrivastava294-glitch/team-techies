@@ -157,6 +157,8 @@ export default function LoginModal({ isOpen, onClose }) {
                     <option value="events">Events Admin</option>
                     <option value="transport">Transport Admin</option>
                     <option value="maintenance">Maintenance Admin</option>
+                    <option value="energy">Energy & Sustainability Admin</option>
+                    <option value="classroom">Classroom & Academic Admin</option>
                   </select>
                 </div>
               )}
