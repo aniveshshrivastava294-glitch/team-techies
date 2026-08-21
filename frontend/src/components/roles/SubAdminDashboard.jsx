@@ -1,18 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import ChatWidget from '../ChatWidget';
-import { Wrench, Bus, Calendar, Check, X, ArrowRight, ShieldCheck, AlertTriangle, UserCheck, RefreshCw, Cpu } from 'lucide-react';
+import { 
+  Building2, Sparkles, Check, X, Calendar as CalendarIcon, Clock, 
+  Search, Plus, Tv, Wind, Mic, Volume2, ShieldAlert, Wrench, 
+  Bus, Radio, CheckCircle2, RefreshCw, Zap, Users, Sliders, ArrowRight
+} from 'lucide-react';
 
 export default function SubAdminDashboard({ currentUser }) {
-  const domain = currentUser?.department_domain || 'maintenance';
-  
+  // Determine primary domain or default to events/audi manager
+  const rawDomain = currentUser?.department_domain || 'events';
+  const domain = rawDomain === 'all' || rawDomain === 'events' ? 'events' : rawDomain;
+
+  // Auditorium / Event Admin States
+  const [selectedAudi, setSelectedAudi] = useState(null);
+  const [searchLookup, setSearchLookup] = useState('');
+  const [acMasterToggle, setAcMasterToggle] = useState(true);
+  const [selectedDate, setSelectedDate] = useState('2026-08-26');
+  const [activeCalendarSlot, setActiveCalendarSlot] = useState(3);
+  const [toastMsg, setToastMsg] = useState(null);
+  const [isAddAudiModalOpen, setIsAddAudiModalOpen] = useState(false);
+
+  // Auditorium Fleet Initial Data matching Wireframe
+  const [auditoriums, setAuditoriums] = useState([
+    { id: 'audi-1', name: 'Audi 1', capacity: 500, status: 'Booked', acStatus: 'ON', currentEvent: 'CS-402 Cloud Computing' },
+    { id: 'audi-2', name: 'Audi 2', capacity: 400, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-3', name: 'Audi 3', capacity: 100, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-4', name: 'Audi 4', capacity: 50, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-5', name: 'Audi 5', capacity: 100, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+  ]);
+
+  // AC / Venue Approval Requests matching Wireframe
+  const [approvalRequests, setApprovalRequests] = useState([
+    {
+      id: 'req-1',
+      requestor: 'Prof. Chakraborty',
+      department: 'Computer Science & Eng',
+      details: 'Audi 1 (2pm - 3pm)',
+      purpose: 'Guest Lecture on Quantum AI',
+      status: 'Pending'
+    },
+    {
+      id: 'req-2',
+      requestor: 'Dr. Prashad',
+      department: 'Auditorium Management',
+      details: 'Audi 2 (10am - 12pm)',
+      purpose: 'Annual Research Symposium',
+      status: 'Pending'
+    }
+  ]);
+
+  // Maintenance & Transport Domain States
   const [tickets, setTickets] = useState([]);
   const [buses, setBuses] = useState([]);
-  const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchSubAdminData();
   }, [domain]);
+
+  const showToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 3500);
+  };
 
   const fetchSubAdminData = async () => {
     setIsLoading(true);
@@ -27,11 +76,6 @@ export default function SubAdminDashboard({ currentUser }) {
         const data = await res.json();
         if (data.status === 'success') setBuses(data.records || []);
       }
-      if (domain === 'events') {
-        const res = await fetch('/api/domains/events');
-        const data = await res.json();
-        if (data.status === 'success') setEvents(data.records || []);
-      }
     } catch (e) {
       console.error('SubAdmin fetch error:', e);
     } finally {
@@ -39,255 +83,491 @@ export default function SubAdminDashboard({ currentUser }) {
     }
   };
 
-  const handleUpdateTicketStatus = async (ticketId, status) => {
-    try {
-      const res = await fetch(`/api/tickets/${ticketId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
-      });
-      const data = await res.json();
-      if (data.status === 'success') {
-        fetchSubAdminData();
+  const handleApproveRequest = (reqId, action) => {
+    setApprovalRequests(prev => prev.map(req => {
+      if (req.id === reqId) {
+        return { ...req, status: action };
       }
-    } catch (e) {
-      console.error('Update ticket error:', e);
-    }
+      return req;
+    }));
+    showToast(`Request ${action === 'Approved' ? 'APPROVED ✓' : 'REJECTED ✕'} successfully!`);
   };
 
-  const handleApproveEventBooking = async (eventId, status) => {
-    try {
-      const res = await fetch(`/api/bookings/${eventId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
-      });
-      const data = await res.json();
-      if (data.status === 'success') {
-        fetchSubAdminData();
+  const handleToggleAc = (audiId) => {
+    setAuditoriums(prev => prev.map(audi => {
+      if (audi.id === audiId) {
+        const newAc = audi.acStatus === 'ON' ? 'OFF' : 'ON';
+        return { ...audi, acStatus: newAc };
       }
-    } catch (e) {
-      console.error('Approve event error:', e);
-    }
+      return audi;
+    }));
+    showToast(`Updated Climate AC control status.`);
   };
+
+  // Filter Auditoriums by Search Lookup
+  const filteredAudis = auditoriums.filter(a => 
+    a.name.toLowerCase().includes(searchLookup.toLowerCase()) ||
+    a.status.toLowerCase().includes(searchLookup.toLowerCase()) ||
+    a.capacity.toString().includes(searchLookup)
+  );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       
-      {/* Sub-Admin Domain Banner */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-full">
-              {domain} Sub-Admin Workspace
-            </span>
-            <span className="text-xs text-slate-400 font-mono">Domain Control Center</span>
-          </div>
-          <h2 className="text-xl font-bold text-white tracking-tight mt-1.5">
-            Operational Co-Pilot for {domain.toUpperCase()}
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Logged in as <strong>{currentUser?.full_name || currentUser?.email}</strong>
-          </p>
+      {/* Toast Alert Banner */}
+      {toastMsg && (
+        <div className="fixed top-20 right-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white font-bold text-xs px-4.5 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 animate-in fade-in slide-in-from-top-4">
+          <CheckCircle2 className="w-5 h-5 text-emerald-200" />
+          <span className="tracking-tight">{toastMsg}</span>
         </div>
+      )}
 
-        <button
-          onClick={fetchSubAdminData}
-          disabled={isLoading}
-          className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold border border-slate-800 transition-all flex items-center space-x-1.5 cursor-pointer self-start sm:self-center"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-          <span>Refresh Domain Payload</span>
-        </button>
+      {/* ================= STUNNING AUDI MANAGER HEADER BANNER ================= */}
+      <div className="w-full glass-panel p-6.5 rounded-3xl border dark:border-slate-800/90 border-slate-200 dark:bg-gradient-to-r dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-950/95 bg-white shadow-xl relative overflow-hidden group">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-110 transition-transform duration-700" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-110 transition-transform duration-700" />
+
+        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4 z-10">
+          <div>
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30 rounded-full flex items-center gap-1.5">
+                <Building2 className="w-3.5 h-3.5" />
+                <span>Audi Manager Interface // Class Manager</span>
+              </span>
+              <span className="text-xs text-slate-400 font-mono">Domain: {domain.toUpperCase()}</span>
+            </div>
+
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight dark:text-white text-slate-900 mt-2 flex items-center gap-2">
+              <span>Good morning,</span>
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                {currentUser?.full_name || 'Dr. Prashad'}
+              </span>
+              <span className="text-xs px-2.5 py-0.5 rounded-full font-bold dark:bg-slate-800 bg-slate-100 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                Auditorium Manager
+              </span>
+            </h1>
+            <p className="text-xs md:text-sm dark:text-slate-400 text-slate-600 mt-1">
+              Real-time facility occupancy, automated AC climate approvals & hardware telemetry dashboard.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={fetchSubAdminData}
+              disabled={isLoading}
+              className="px-4 py-2.5 dark:bg-slate-900 bg-slate-100 dark:hover:bg-slate-800 hover:bg-slate-200 dark:text-white text-slate-800 rounded-xl text-xs font-bold border dark:border-slate-800 border-slate-300 transition-all flex items-center space-x-2 cursor-pointer shadow-sm"
+            >
+              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+              <span>Refresh Telemetry</span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* DOMAIN VIEW 1: MAINTENANCE SUB-ADMIN KANBAN BOARD */}
+      {/* ================= DOMAIN VIEW: AUDITORIUM & EVENT ADMIN ================= */}
+      {(domain === 'events' || domain === 'all') && (
+        <div className="space-y-6">
+
+          {/* 1. AUDITORIUM OVERVIEW SECTION */}
+          <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b dark:border-slate-800 border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-500/10 border border-blue-500/30 rounded-2xl text-blue-500">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-base md:text-lg font-bold dark:text-white text-slate-900">
+                    Auditorium Overview
+                  </h2>
+                  <p className="text-xs dark:text-slate-400 text-slate-600">
+                    Live capacity status & Climate AC Book controls
+                  </p>
+                </div>
+              </div>
+
+              {/* Master AC Book Toggle & Facility Lookup Search */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <Wind className="w-4 h-4 text-cyan-500 animate-pulse" />
+                  <span className="text-xs font-bold dark:text-slate-300 text-slate-700">AC Book Master:</span>
+                  <button
+                    onClick={() => {
+                      setAcMasterToggle(!acMasterToggle);
+                      showToast(`Master Climate AC set to ${!acMasterToggle ? 'AUTOMATIC' : 'MANUAL OVERRIDE'}`);
+                    }}
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase transition-all ${
+                      acMasterToggle
+                        ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40'
+                        : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
+                    }`}
+                  >
+                    {acMasterToggle ? 'AUTO ON' : 'MANUAL'}
+                  </button>
+                </div>
+
+                <div className="relative">
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+                  <input
+                    type="text"
+                    value={searchLookup}
+                    onChange={(e) => setSearchLookup(e.target.value)}
+                    placeholder="Facility Lookup (Name/department)..."
+                    className="pl-8 pr-3 py-1.5 dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-300 rounded-xl text-xs dark:text-white text-slate-900 focus:outline-none focus:border-blue-500 min-w-[210px] shadow-inner font-medium"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* AUDITORIUM CARDS ROW (Audi 1 to Audi 5 + Add More) */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5 pt-1">
+              {filteredAudis.map((audi) => {
+                const isBooked = audi.status === 'Booked';
+                return (
+                  <div
+                    key={audi.id}
+                    onClick={() => setSelectedAudi(audi)}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between hover-classic-lift ${
+                      isBooked
+                        ? 'dark:bg-slate-950 bg-rose-50/60 dark:border-rose-500/40 border-rose-200'
+                        : 'dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-200 hover:border-blue-400'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-extrabold dark:text-white text-slate-900 text-sm">{audi.name}</span>
+                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-cyan-500 animate-spin-slow' : 'text-slate-400'}`} />
+                      </div>
+                      <span className="text-[11px] font-mono dark:text-slate-400 text-slate-600 block mt-0.5">
+                        {audi.capacity} C
+                      </span>
+                    </div>
+
+                    <div className="mt-3">
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border block text-center uppercase tracking-wider ${
+                        isBooked
+                          ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30'
+                          : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                      }`}>
+                        {audi.status}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Add More Button matching Wireframe */}
+              <button
+                onClick={() => {
+                  const nextNum = auditoriums.length + 1;
+                  const newAudi = {
+                    id: `audi-${nextNum}`,
+                    name: `Audi ${nextNum}`,
+                    capacity: 150,
+                    status: 'Available',
+                    acStatus: 'STANDBY',
+                    currentEvent: 'Vacant'
+                  };
+                  setAuditoriums([...auditoriums, newAudi]);
+                  showToast(`Added Audi ${nextNum} to Auditorium Overview!`);
+                }}
+                className="p-4 rounded-2xl border border-dashed dark:border-slate-700 border-slate-300 dark:bg-slate-900/40 bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 dark:text-slate-300 cursor-pointer group shadow-sm"
+              >
+                <Plus className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform" />
+                <span className="font-bold text-xs">Add More</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 2. APPROVAL REQUESTS & ACADEMIC CALENDAR (2 COLUMNS matching wireframe) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            {/* LEFT COLUMN: Approval Requests (for AC / Venue Booking) */}
+            <div className="lg:col-span-6 glass-panel p-5.5 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b dark:border-slate-800 border-slate-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-500">
+                    <ShieldAlert className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                      Approval Requests (for AC)
+                    </h3>
+                    <span className="text-[10px] font-mono text-indigo-500 font-bold px-2 py-0.5 bg-indigo-500/10 rounded-full border border-indigo-500/20">
+                      Pending Request(s)
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Callout Tooltip matching Wireframe */}
+              <div className="p-3 bg-blue-50/80 dark:bg-slate-950/80 border border-blue-200 dark:border-slate-800 rounded-2xl text-xs dark:text-slate-300 text-slate-700 leading-relaxed font-medium relative shadow-inner">
+                💡 <strong>Auto-Approval Rule:</strong> Requests are automatically approved <em>only if</em> the venue is vacant at that given time window.
+              </div>
+
+              {/* Pending Request Items */}
+              <div className="space-y-3">
+                {approvalRequests.map((req) => (
+                  <div
+                    key={req.id}
+                    className="p-4 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-xs dark:text-white text-slate-900">
+                        Requestor: <strong className="text-blue-600 dark:text-blue-400">{req.requestor}</strong>
+                      </span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                        req.status === 'Approved' ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30' :
+                        req.status === 'Rejected' ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30' :
+                        'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                      }`}>
+                        {req.status}
+                      </span>
+                    </div>
+
+                    <p className="text-xs dark:text-slate-300 text-slate-700">
+                      Request details: <strong className="font-mono">{req.details}</strong>
+                    </p>
+                    <p className="text-[11px] dark:text-slate-400 text-slate-500 font-medium">
+                      Purpose: {req.purpose} ({req.department})
+                    </p>
+
+                    {req.status === 'Pending' && (
+                      <div className="flex items-center gap-2 pt-2 border-t dark:border-slate-800/80 border-slate-200">
+                        <span className="text-[11px] font-bold dark:text-slate-400 text-slate-600">Approval options:</span>
+                        <div className="flex items-center gap-2 ml-auto">
+                          <button
+                            onClick={() => handleApproveRequest(req.id, 'Approved')}
+                            className="p-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer flex items-center gap-1"
+                          >
+                            <Check className="w-4 h-4 stroke-[3]" />
+                            <span>Approve</span>
+                          </button>
+                          <button
+                            onClick={() => handleApproveRequest(req.id, 'Rejected')}
+                            className="p-2 bg-rose-600/20 hover:bg-rose-600/30 text-rose-600 dark:text-rose-300 border border-rose-500/30 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                          >
+                            <X className="w-4 h-4 stroke-[3]" />
+                            <span>Reject</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Academic Calendar / Timetable Schedule Matrix */}
+            <div className="lg:col-span-6 glass-panel p-5.5 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b dark:border-slate-800 border-slate-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 bg-purple-500/10 border border-purple-500/30 rounded-xl text-purple-500">
+                    <CalendarIcon className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                      Academic Calendar
+                    </h3>
+                    <p className="text-[11px] dark:text-slate-400 text-slate-600">
+                      Auditorium timetable conflict detection matrix
+                    </p>
+                  </div>
+                </div>
+
+                {/* Date Dropdown matching Wireframe */}
+                <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <CalendarIcon className="w-3.5 h-3.5 text-blue-500" />
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="bg-transparent dark:text-white text-slate-900 text-xs font-bold focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Slot selector numbers matching wireframe 1 2 3 4 5 6 */}
+              <div>
+                <span className="text-[11px] font-bold dark:text-slate-400 text-slate-600 uppercase tracking-wider block mb-2">
+                  Academic Schedule Slots (Slot 1 - 6)
+                </span>
+                <div className="flex items-center justify-between gap-1.5">
+                  {[1, 2, 3, 4, 5, 6].map((slot) => {
+                    const isSelected = activeCalendarSlot === slot;
+                    return (
+                      <button
+                        key={slot}
+                        onClick={() => setActiveCalendarSlot(slot)}
+                        className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all border ${
+                          isSelected
+                            ? 'bg-blue-600 text-white border-blue-400 shadow-md scale-105'
+                            : 'dark:bg-slate-950 bg-slate-50 dark:text-slate-300 text-slate-700 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
+                        }`}
+                      >
+                        {slot}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Interactive Calendar Timetable Matrix Grid */}
+              <div className="p-4 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2.5 shadow-inner">
+                <div className="flex items-center justify-between text-xs font-bold dark:text-slate-300 text-slate-700">
+                  <span>Active Slot #{activeCalendarSlot} Overview</span>
+                  <span className="text-[10px] font-mono text-emerald-500 font-bold">
+                    {activeCalendarSlot === 3 ? 'Audi 1 Occupied (2pm-3pm)' : 'All Auditoriums Available'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-5 gap-1.5 text-center text-[10px] font-mono pt-1">
+                  {auditoriums.map((audi) => {
+                    const isSlotBooked = (activeCalendarSlot === 3 && audi.id === 'audi-1') || (activeCalendarSlot === 1 && audi.id === 'audi-4');
+                    return (
+                      <div
+                        key={audi.id}
+                        className={`p-2.5 rounded-xl border transition-all ${
+                          isSlotBooked
+                            ? 'bg-blue-600/20 text-blue-600 dark:text-blue-300 border-blue-500/40 font-bold'
+                            : 'dark:bg-slate-900 bg-white text-slate-500 border-slate-200 dark:border-slate-800'
+                        }`}
+                      >
+                        <span className="block font-sans font-bold">{audi.name}</span>
+                        <span className="text-[9px] mt-0.5 block">{isSlotBooked ? 'BUSY' : 'FREE'}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* 3. HARDWARE & RESOURCE TELEMETRY STATUS (2 CARDS matching wireframe) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* CARD 1: AV Systems Status */}
+            <div className="glass-panel p-5.5 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-3.5">
+              <div className="flex items-center justify-between pb-2.5 border-b dark:border-slate-800 border-slate-200">
+                <h3 className="text-xs md:text-sm font-bold dark:text-white text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                  <Tv className="w-4 h-4 text-blue-500" />
+                  <span>Resource Status (AV Hardware)</span>
+                </h3>
+                <span className="text-[10px] font-mono text-emerald-500 font-bold px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                  ● Telemetry Live
+                </span>
+              </div>
+
+              <div className="space-y-2 text-xs font-semibold">
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">Projectors:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(4/5 Avail.)</span>
+                </div>
+
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">Sound Systems:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                </div>
+
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">Audio Speakers:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                </div>
+
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">Climate HVAC:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 2: Facility Telemetry Status */}
+            <div className="glass-panel p-5.5 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-3.5">
+              <div className="flex items-center justify-between pb-2.5 border-b dark:border-slate-800 border-slate-200">
+                <h3 className="text-xs md:text-sm font-bold dark:text-white text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                  <Mic className="w-4 h-4 text-purple-500" />
+                  <span>Facility Hardware Telemetry</span>
+                </h3>
+                <span className="text-[10px] font-mono text-cyan-500 font-bold px-2 py-0.5 bg-cyan-500/10 rounded-full border border-cyan-500/20">
+                  ● 100% Operational
+                </span>
+              </div>
+
+              <div className="space-y-2 text-xs font-semibold">
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">4K Screens & Displays:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                </div>
+
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">Wireless Microphones:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(8/10 Avail.)</span>
+                </div>
+
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">Stage Lighting Grid:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                </div>
+
+                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700">UPS Power Backup:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(100% Charged)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* ================= DOMAIN VIEW 2: MAINTENANCE SUB-ADMIN ================= */}
       {domain === 'maintenance' && (
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
+        <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg">
+          <div className="flex items-center justify-between mb-6 pb-3 border-b dark:border-slate-800 border-slate-200">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
+              <div className="p-2.5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-amber-500">
                 <Wrench className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">Faculty Issue Tickets Kanban Board</h3>
-                <p className="text-xs text-slate-400">Drag or click actions to advance tickets across resolution states</p>
+                <h3 className="text-sm md:text-base font-bold dark:text-white text-slate-900">Faculty Issue Tickets Kanban Board</h3>
+                <p className="text-xs dark:text-slate-400 text-slate-600">Advance tickets across resolution states</p>
               </div>
             </div>
           </div>
 
-          {/* Kanban Columns */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            {/* Column 1: OPEN */}
-            <div className="bg-slate-950/80 p-4 rounded-xl border border-red-500/30 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                <span className="font-bold text-xs text-red-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                  Open Tickets ({tickets.filter(t => t.status === 'open').length})
-                </span>
-              </div>
-
+            <div className="dark:bg-slate-950 bg-slate-50 p-4 rounded-2xl border border-red-500/30 space-y-3">
+              <span className="font-bold text-xs text-red-500 uppercase tracking-wider block pb-2 border-b border-slate-200 dark:border-slate-800">
+                Open Tickets ({tickets.filter(t => t.status === 'open').length})
+              </span>
               {tickets.filter(t => t.status === 'open').map(t => (
-                <div key={t.ticket_id} className="bg-slate-900 p-3.5 rounded-lg border border-slate-800 space-y-2">
-                  <span className="font-bold text-white text-xs block">{t.title}</span>
-                  <p className="text-[11px] text-slate-300">{t.description}</p>
-                  <div className="text-[10px] text-slate-500 font-mono">
-                    Venue: {t.venue_name} | By: {t.raised_by_email}
-                  </div>
-                  <button
-                    onClick={() => handleUpdateTicketStatus(t.ticket_id, 'in-progress')}
-                    className="w-full py-1.5 bg-amber-600 hover:bg-amber-500 text-white rounded-md text-[11px] font-semibold transition-all cursor-pointer mt-2"
-                  >
-                    Start Investigation →
-                  </button>
+                <div key={t.ticket_id} className="dark:bg-slate-900 bg-white p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+                  <span className="font-bold text-xs dark:text-white text-slate-900 block">{t.title}</span>
+                  <p className="text-[11px] dark:text-slate-300 text-slate-600">{t.description}</p>
                 </div>
               ))}
             </div>
-
-            {/* Column 2: IN PROGRESS */}
-            <div className="bg-slate-950/80 p-4 rounded-xl border border-amber-500/30 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                <span className="font-bold text-xs text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                  In Progress ({tickets.filter(t => t.status === 'in-progress').length})
-                </span>
-              </div>
-
-              {tickets.filter(t => t.status === 'in-progress').map(t => (
-                <div key={t.ticket_id} className="bg-slate-900 p-3.5 rounded-lg border border-slate-800 space-y-2">
-                  <span className="font-bold text-white text-xs block">{t.title}</span>
-                  <p className="text-[11px] text-slate-300">{t.description}</p>
-                  <div className="text-[10px] text-slate-500 font-mono">
-                    Venue: {t.venue_name}
-                  </div>
-                  <button
-                    onClick={() => handleUpdateTicketStatus(t.ticket_id, 'resolved')}
-                    className="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-[11px] font-semibold transition-all cursor-pointer mt-2"
-                  >
-                    Mark as Resolved ✓
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            {/* Column 3: RESOLVED */}
-            <div className="bg-slate-950/80 p-4 rounded-xl border border-emerald-500/30 space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                <span className="font-bold text-xs text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                  Resolved ({tickets.filter(t => t.status === 'resolved').length})
-                </span>
-              </div>
-
-              {tickets.filter(t => t.status === 'resolved').map(t => (
-                <div key={t.ticket_id} className="bg-slate-900/60 p-3.5 rounded-lg border border-slate-800/80 space-y-2 opacity-80">
-                  <span className="font-bold text-slate-300 text-xs block line-through">{t.title}</span>
-                  <p className="text-[11px] text-slate-400">{t.description}</p>
-                  <div className="text-[10px] text-emerald-400 font-semibold">
-                    ✓ Maintenance Complete
-                  </div>
-                </div>
-              ))}
-            </div>
-
           </div>
         </div>
       )}
 
-      {/* DOMAIN VIEW 2: TRANSPORT SUB-ADMIN FLEET MONITOR */}
+      {/* ================= DOMAIN VIEW 3: TRANSPORT SUB-ADMIN ================= */}
       {domain === 'transport' && (
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400">
-                <Bus className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Transport Fleet Management (6 Seeded Buses)</h3>
-                <p className="text-xs text-slate-400">Monitor driver assignments, overcrowding, and trigger AI crowd optimization</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {buses.map((bus, idx) => (
-              <div key={idx} className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white text-sm">{bus.vehicle_id}</span>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
-                    bus.status === 'Overcrowded' ? 'bg-red-500/20 text-red-300 border-red-500/40 animate-pulse' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                  }`}>
-                    {bus.status}
-                  </span>
-                </div>
-                <div>
-                  <h4 className="text-xs font-semibold text-slate-200">{bus.route_name}</h4>
-                  <p className="text-xs text-slate-400 mt-1">Driver: <strong>{bus.driver_name || 'Driver'}</strong> ({bus.driver_phone || 'N/A'})</p>
-                </div>
-                <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Passengers:</span>
-                  <span className="font-bold text-white font-mono">{bus.passenger_count} / {bus.capacity}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* DOMAIN VIEW 3: EVENT SUB-ADMIN VENUE APPROVALS */}
-      {domain === 'events' && (
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-400">
-              <Calendar className="w-5 h-5" />
+        <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-6">
+          <div className="flex items-center space-x-3">
+            <div className="p-2.5 bg-cyan-500/10 border border-cyan-500/30 rounded-2xl text-cyan-500">
+              <Bus className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Event & Venue Reservation Approval Requests</h3>
-              <p className="text-xs text-slate-400">Approve or reject faculty room reservation submissions</p>
+              <h3 className="text-sm md:text-base font-bold dark:text-white text-slate-900">Transport Fleet Telemetry Management</h3>
+              <p className="text-xs dark:text-slate-400 text-slate-600">Monitor driver assignments and real-time passenger occupancy</p>
             </div>
-          </div>
-
-          <div className="space-y-3">
-            {events.map((e) => (
-              <div key={e.id} className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-white text-xs">{e.event_name}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
-                      e.status === 'Scheduled' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                    }`}>
-                      {e.status}
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">Organizer: {e.organizer} | Expected: {e.expected_attendees} attendees</p>
-                </div>
-
-                {e.status === 'Pending Approval' && (
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => handleApproveEventBooking(e.id, 'Scheduled')}
-                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1 cursor-pointer"
-                    >
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Approve Reservation</span>
-                    </button>
-                    <button
-                      onClick={() => handleApproveEventBooking(e.id, 'Cancelled')}
-                      className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 rounded-lg text-xs font-semibold flex items-center space-x-1 cursor-pointer"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                      <span>Reject</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       )}
 
-      {/* Role-Scoped AI Operational Co-Pilot */}
+      {/* Role-Scoped AI Co-Pilot */}
       <ChatWidget />
 
     </div>
