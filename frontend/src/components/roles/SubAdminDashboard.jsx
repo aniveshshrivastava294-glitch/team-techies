@@ -163,10 +163,10 @@ export default function SubAdminDashboard({ currentUser }) {
 
             {/* Practical Greeting Header */}
             <div className="pt-1">
-              <h1 className="text-2xl md:text-3xl font-extrabold dark:text-white text-slate-900 tracking-tight">
+              <h1 className="text-2xl md:text-3xl font-black dark:text-white text-black tracking-tight">
                 Good morning, {currentUser?.full_name || 'Marcus Brody'}
               </h1>
-              <p className="text-xs md:text-sm dark:text-slate-400 text-slate-600 mt-1 font-normal">
+              <p className="text-xs md:text-sm dark:text-slate-400 text-black mt-1 font-semibold">
                 Real-time auditorium occupancy, climate control approvals, and hardware telemetry dashboard.
               </p>
             </div>
@@ -204,10 +204,10 @@ export default function SubAdminDashboard({ currentUser }) {
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base md:text-lg font-bold dark:text-white text-slate-900">
+                  <h2 className="text-base md:text-lg font-black dark:text-white text-black">
                     Auditorium Overview
                   </h2>
-                  <p className="text-xs dark:text-slate-400 text-slate-500">
+                  <p className="text-xs dark:text-slate-400 text-black font-medium">
                     Facility occupancy & automated climate control settings
                   </p>
                 </div>
@@ -217,7 +217,7 @@ export default function SubAdminDashboard({ currentUser }) {
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
                   <Wind className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-                  <span className="text-xs font-medium dark:text-slate-300 text-slate-700">Master Climate AC:</span>
+                  <span className="text-xs font-bold dark:text-slate-300 text-black">Master Climate AC:</span>
                   <button
                     onClick={() => {
                       setAcMasterToggle(!acMasterToggle);
@@ -262,10 +262,10 @@ export default function SubAdminDashboard({ currentUser }) {
                   >
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-bold dark:text-white text-slate-900 text-sm">{audi.name}</span>
+                        <span className="font-extrabold dark:text-white text-black text-sm">{audi.name}</span>
                         <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-cyan-500' : 'text-slate-400'}`} />
                       </div>
-                      <span className="text-[11px] font-mono dark:text-slate-400 text-slate-500 block mt-1">
+                      <span className="text-[11px] font-mono font-bold dark:text-slate-400 text-black block mt-1">
                         Cap: {audi.capacity}
                       </span>
                     </div>
@@ -317,7 +317,7 @@ export default function SubAdminDashboard({ currentUser }) {
                     <ShieldAlert className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                    <h3 className="text-sm font-black dark:text-white text-black">
                       Approval Requests (for AC)
                     </h3>
                     <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
@@ -328,7 +328,7 @@ export default function SubAdminDashboard({ currentUser }) {
               </div>
 
               {/* Callout Box */}
-              <div className="p-3 bg-blue-50/70 dark:bg-slate-950 border border-blue-200 dark:border-slate-800 rounded-2xl text-xs dark:text-slate-300 text-slate-700 leading-relaxed font-medium">
+              <div className="p-3 bg-blue-50/70 dark:bg-slate-950 border border-blue-200 dark:border-slate-800 rounded-2xl text-xs dark:text-slate-300 text-black leading-relaxed font-semibold">
                 💡 <strong>Auto-Approval Rule:</strong> Requests are automatically approved only if the venue is vacant at that given time window.
               </div>
 
@@ -340,10 +340,10 @@ export default function SubAdminDashboard({ currentUser }) {
                     className="p-4 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs dark:text-white text-slate-900">
+                      <span className="font-black text-xs dark:text-white text-black">
                         Requestor: <strong className="text-blue-600 dark:text-blue-400">{req.requestor}</strong>
                       </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                      <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md border ${
                         req.status === 'Approved' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' :
                         req.status === 'Rejected' ? 'bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800' :
                         'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800'
@@ -352,10 +352,10 @@ export default function SubAdminDashboard({ currentUser }) {
                       </span>
                     </div>
 
-                    <p className="text-xs dark:text-slate-300 text-slate-700 font-medium">
+                    <p className="text-xs dark:text-slate-300 text-black font-semibold">
                       Request details: <strong className="font-mono">{req.details}</strong>
                     </p>
-                    <p className="text-[11px] dark:text-slate-400 text-slate-500 font-normal">
+                    <p className="text-[11px] dark:text-slate-400 text-black font-medium">
                       Purpose: {req.purpose} ({req.department})
                     </p>
 
@@ -393,10 +393,10 @@ export default function SubAdminDashboard({ currentUser }) {
                     <CalendarIcon className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                    <h3 className="text-sm font-black dark:text-white text-black">
                       Academic Calendar
                     </h3>
-                    <p className="text-[11px] dark:text-slate-400 text-slate-500">
+                    <p className="text-[11px] dark:text-slate-400 text-black font-medium">
                       Auditorium timetable conflict detection matrix
                     </p>
                   </div>
@@ -481,10 +481,10 @@ export default function SubAdminDashboard({ currentUser }) {
                     <Tv className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                    <h3 className="text-sm font-black dark:text-white text-black">
                       Resource Status (AV Hardware)
                     </h3>
-                    <p className="text-xs dark:text-slate-400 text-slate-500">
+                    <p className="text-xs dark:text-slate-400 text-black font-medium">
                       Audio-visual equipment diagnostic metrics
                     </p>
                   </div>
@@ -498,8 +498,8 @@ export default function SubAdminDashboard({ currentUser }) {
               <div className="space-y-3 text-xs">
                 {/* Projectors */}
                 <div className="p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-1.5">
-                  <div className="flex justify-between items-center font-medium">
-                    <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                  <div className="flex justify-between items-center font-bold">
+                    <span className="dark:text-slate-300 text-black flex items-center gap-2">
                       <Tv className="w-4 h-4 text-blue-500" />
                       Projectors:
                     </span>
@@ -511,8 +511,8 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Sound Systems */}
-                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-medium">
-                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-bold">
+                  <span className="dark:text-slate-300 text-black flex items-center gap-2">
                     <Volume2 className="w-4 h-4 text-indigo-500" />
                     Sound Systems:
                   </span>
@@ -522,8 +522,8 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Audio Speakers */}
-                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-medium">
-                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-bold">
+                  <span className="dark:text-slate-300 text-black flex items-center gap-2">
                     <Radio className="w-4 h-4 text-purple-500" />
                     Audio Speakers:
                   </span>
@@ -533,8 +533,8 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Climate HVAC */}
-                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-medium">
-                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-bold">
+                  <span className="dark:text-slate-300 text-black flex items-center gap-2">
                     <Wind className="w-4 h-4 text-cyan-500" />
                     Climate HVAC:
                   </span>
@@ -553,10 +553,10 @@ export default function SubAdminDashboard({ currentUser }) {
                     <Mic className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                    <h3 className="text-sm font-black dark:text-white text-black">
                       Facility Hardware Telemetry
                     </h3>
-                    <p className="text-xs dark:text-slate-400 text-slate-500">
+                    <p className="text-xs dark:text-slate-400 text-black font-medium">
                       Display panels, wireless mics & power backup status
                     </p>
                   </div>
@@ -569,8 +569,8 @@ export default function SubAdminDashboard({ currentUser }) {
 
               <div className="space-y-3 text-xs">
                 {/* 4K Displays */}
-                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-medium">
-                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-bold">
+                  <span className="dark:text-slate-300 text-black flex items-center gap-2">
                     <Tv className="w-4 h-4 text-blue-500" />
                     4K Screens & Displays:
                   </span>
@@ -581,8 +581,8 @@ export default function SubAdminDashboard({ currentUser }) {
 
                 {/* Wireless Microphones */}
                 <div className="p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-1.5">
-                  <div className="flex justify-between items-center font-medium">
-                    <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                  <div className="flex justify-between items-center font-bold">
+                    <span className="dark:text-slate-300 text-black flex items-center gap-2">
                       <Mic className="w-4 h-4 text-purple-500" />
                       Wireless Microphones:
                     </span>
@@ -594,8 +594,8 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Stage Lighting */}
-                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-medium">
-                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-bold">
+                  <span className="dark:text-slate-300 text-black flex items-center gap-2">
                     <Zap className="w-4 h-4 text-amber-500" />
                     Stage Lighting Grid:
                   </span>
@@ -605,8 +605,8 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* UPS Backup */}
-                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-medium">
-                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2">
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 font-bold">
+                  <span className="dark:text-slate-300 text-black flex items-center gap-2">
                     <Cpu className="w-4 h-4 text-emerald-500" />
                     UPS Power Backup:
                   </span>
@@ -627,10 +627,10 @@ export default function SubAdminDashboard({ currentUser }) {
                   <HelpCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold dark:text-white text-slate-900">
+                  <h3 className="text-base font-black dark:text-white text-black">
                     Facility Assistant Query
                   </h3>
-                  <p className="text-xs dark:text-slate-400 text-slate-500">
+                  <p className="text-xs dark:text-slate-400 text-black font-medium">
                     Search operational status, climate controls, or auditorium timetables
                   </p>
                 </div>
