@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ChatWidget from '../ChatWidget';
+import TransportManagerInterface from './TransportManagerInterface';
+import MaintenanceManagerInterface from './MaintenanceManagerInterface';
+import TicketsSupportLogCard from '../TicketsSupportLogCard';
+import LiveCampusTicker from '../LiveCampusTicker';
 import { 
   Building2, Check, X, Calendar as CalendarIcon, Clock, 
   Search, Plus, Tv, Wind, Mic, Volume2, ShieldAlert, Wrench, 
@@ -8,9 +12,25 @@ import {
 } from 'lucide-react';
 
 export default function SubAdminDashboard({ currentUser }) {
-  // Determine primary domain or default to events/audi manager
+  // Determine primary domain
   const rawDomain = currentUser?.department_domain || 'events';
-  const domain = rawDomain === 'all' || rawDomain === 'events' ? 'events' : rawDomain;
+  const domain = rawDomain;
+
+  // Strict Domain Isolation: Render only the dedicated domain interface for single-domain sub-admins
+  if (domain === 'transport') {
+    return <TransportManagerInterface />;
+  }
+
+  if (domain === 'maintenance') {
+    return <MaintenanceManagerInterface />;
+  }
+
+  // Active view tab state (for multi-domain / events view)
+  const [activeTab, setActiveTab] = useState(
+    domain === 'transport' ? 'transport' :
+    domain === 'maintenance' ? 'maintenance' :
+    'auditorium'
+  );
 
   // Auditorium / Event Admin States
   const [selectedAudi, setSelectedAudi] = useState(null);
@@ -169,6 +189,9 @@ export default function SubAdminDashboard({ currentUser }) {
   return (
     <div className="space-y-8 md:space-y-10 font-sans">
       
+      {/* Live Campus Orbit Telemetry Ticker Marquee */}
+      <LiveCampusTicker />
+
       {/* Toast Alert Banner */}
       {toastMsg && (
         <div className="fixed top-20 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-xl z-50 flex items-center gap-2 border border-slate-700 animate-in fade-in">
@@ -179,27 +202,56 @@ export default function SubAdminDashboard({ currentUser }) {
 
       {/* ================= CLEAN HUMAN-DESIGNED HEADER BANNER ================= */}
       <div className="w-full p-6 md:p-8 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900 bg-white shadow-md relative overflow-hidden">
-        {/* Subtle Auditorium Watermark */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-15 pointer-events-none rounded-3xl"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80')` }}
-        />
 
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-5 z-10">
           <div className="space-y-2 max-w-3xl">
-            {/* Clean Department Pills */}
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="px-3 py-1 text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center gap-1.5">
-                <Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>Auditorium & Venue Management</span>
-              </span>
-              <span className="text-xs font-mono font-medium px-2.5 py-1 bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 rounded-lg border border-slate-200 dark:border-slate-800">
-                Domain: EVENTS
-              </span>
-            </div>
+            {/* Show view switcher tabs ONLY if rawDomain is 'all' */}
+            {rawDomain === 'all' && (
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <button
+                  onClick={() => setActiveTab('auditorium')}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === 'auditorium' || activeTab === 'events'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <Building2 className="w-4 h-4" />
+                  <span>Auditorium Manager</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('transport')}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === 'transport'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <Bus className="w-4 h-4" />
+                  <span>Transport Manager Interface</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('maintenance')}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === 'maintenance'
+                      ? 'bg-amber-500 text-black shadow-md font-extrabold'
+                      : 'bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <Wrench className="w-4 h-4" />
+                  <span>Maintenance Manager</span>
+                </button>
+                <span className="text-xs font-mono font-medium px-2.5 py-1 bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 rounded-lg border border-slate-200 dark:border-slate-800">
+                  Active View: {activeTab.toUpperCase()}
+                </span>
+              </div>
+            )}
 
             {/* Practical Greeting Header */}
             <div className="pt-1">
+              <span className="text-xs font-mono font-bold px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full inline-block mb-2 uppercase tracking-wider">
+                Auditorium & Event Command
+              </span>
               <h1 className="text-2xl md:text-3xl font-black dark:text-white text-black tracking-tight">
                 Good morning, {currentUser?.full_name || 'Marcus Brody'}
               </h1>
@@ -224,7 +276,11 @@ export default function SubAdminDashboard({ currentUser }) {
       </div>
 
       {/* ================= MAIN CONTENT ================= */}
-      {(domain === 'events' || domain === 'all') && (
+      {activeTab === 'transport' ? (
+        <TransportManagerInterface />
+      ) : activeTab === 'maintenance' ? (
+        <MaintenanceManagerInterface />
+      ) : (
         <div className="space-y-8 md:space-y-10">
 
           {/* 1. AUDITORIUM OVERVIEW SECTION */}
@@ -754,6 +810,13 @@ export default function SubAdminDashboard({ currentUser }) {
               </div>
             )}
           </div>
+
+          {/* 5. EVENT ADMIN TICKETS & SUPPORT LOG */}
+          <TicketsSupportLogCard 
+            adminDomain="events" 
+            title="Event Admin Tickets & Support Log" 
+            subtitle="Track AV equipment, stage lighting, climate control & auditorium support tickets" 
+          />
 
         </div>
       )}

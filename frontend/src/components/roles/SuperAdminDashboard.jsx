@@ -5,6 +5,8 @@ import ChatWidget from '../ChatWidget';
 import Visualizers from '../Visualizers';
 import DomainDataTables from '../DomainDataTables';
 import BulkFacultyUploadModal from '../BulkFacultyUploadModal';
+import LiveCampusTicker from '../LiveCampusTicker';
+import CosmicOrbitRadar from '../CosmicOrbitRadar';
 import { UserCheck, ShieldCheck, Check, X, Sparkles, Upload } from 'lucide-react';
 
 export default function SuperAdminDashboard({ kpis, anomalies, recommendations, isRefreshing, onRefresh }) {
@@ -51,6 +53,12 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
   return (
     <div className="space-y-6">
       
+      {/* Live Campus Telemetry Ticker Marquee */}
+      <LiveCampusTicker />
+
+      {/* Cosmic Orbit Telemetry Radar Widget */}
+      <CosmicOrbitRadar />
+
       {/* Super Admin Top Hero Actions: Sub-Admin Approvals & AI Bulk Faculty Extraction */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
