@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, CheckCircle2, AlertCircle, Zap, ShieldAlert, Sparkles, Check, Lock, Building2 } from 'lucide-react';
+import { Calendar, Clock, CheckCircle2, AlertCircle, Building2, Check, Lock } from 'lucide-react';
 
 export default function RealtimeBookingMatrix({ currentUser }) {
   const [venues, setVenues] = useState([]);
@@ -112,49 +112,49 @@ export default function RealtimeBookingMatrix({ currentUser }) {
   };
 
   return (
-    <div className="card-enterprise p-5 space-y-4 font-sans">
+    <div className="card-onyx p-5 space-y-4 font-sans">
       
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#E2E8F0]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-zinc-800">
         <div>
           <div className="flex items-center space-x-2">
-            <Building2 className="w-5 h-5 text-[#2563EB]" />
-            <h2 className="text-sm font-bold text-slate-900">Classroom & Room Reservation Matrix</h2>
-            <span className="badge-pill badge-success font-mono text-[10px]">
+            <Building2 className="w-5 h-5 text-amber-400" />
+            <h2 className="text-sm font-semibold text-zinc-50">Classroom Reservation & Schedule</h2>
+            <span className="badge-emerald font-mono text-[10px]">
               Live Conflict Prevention
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-zinc-400 mt-0.5">
             Instant booking confirmation with zero double-booking or scheduling collisions.
           </p>
         </div>
 
         {/* Policy Badges */}
         <div className="flex items-center space-x-2 text-xs">
-          <span className="badge-pill badge-info">Standard Room: Instant Approval</span>
-          <span className="badge-pill badge-warning">AC Room: Admin Review Required</span>
+          <span className="badge-zinc">Standard Room: Instant</span>
+          <span className="badge-amber">AC Room: Admin Review</span>
         </div>
       </div>
 
       {/* Reservation Form Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 bg-[#F8FAFC] rounded-md border border-[#E2E8F0] text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3.5 bg-zinc-950 rounded-xl border border-zinc-800 text-xs">
         <div className="md:col-span-5">
-          <label className="block text-slate-700 font-medium mb-1">Event / Lecture Title</label>
+          <label className="block text-zinc-400 font-medium mb-1">Event / Lecture Title</label>
           <input
             type="text"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             placeholder="e.g. Machine Learning Lecture"
-            className="w-full bg-white border border-[#E2E8F0] rounded px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500/50"
           />
         </div>
 
         <div className="md:col-span-4">
-          <label className="block text-slate-700 font-medium mb-1">Select Venue</label>
+          <label className="block text-zinc-400 font-medium mb-1">Select Venue</label>
           <select
             value={selectedVenue}
             onChange={(e) => setSelectedVenue(e.target.value)}
-            className="w-full bg-white border border-[#E2E8F0] rounded px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#2563EB] font-semibold"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50 font-semibold"
           >
             {venues.map(v => (
               <option key={v.id} value={v.room_number}>
@@ -165,29 +165,29 @@ export default function RealtimeBookingMatrix({ currentUser }) {
         </div>
 
         <div className="md:col-span-3">
-          <label className="block text-slate-700 font-medium mb-1">Reservation Date</label>
+          <label className="block text-zinc-400 font-medium mb-1">Reservation Date</label>
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full bg-white border border-[#E2E8F0] rounded px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#2563EB] font-mono"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50 font-mono"
           />
         </div>
       </div>
 
       {/* Status Notice */}
       {bookingStatus && (
-        <div className={`p-3 rounded-md text-xs flex items-center space-x-2 border ${
-          bookingStatus.type === 'success' ? 'badge-success' : 'badge-error'
+        <div className={`p-3 rounded-xl text-xs flex items-center space-x-2 border ${
+          bookingStatus.type === 'success' ? 'badge-emerald' : 'badge-rose'
         }`}>
-          {bookingStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-[#16A34A] shrink-0" /> : <AlertCircle className="w-4 h-4 text-[#DC2626] shrink-0" />}
+          {bookingStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />}
           <span>{bookingStatus.message}</span>
         </div>
       )}
 
-      {/* Table-First Data Slot Display (REQUIRED Pattern #1) */}
-      <div className="overflow-x-auto border border-[#E2E8F0] rounded-md">
-        <table className="table-enterprise">
+      {/* Table Display */}
+      <div className="overflow-x-auto border border-zinc-800 rounded-xl">
+        <table className="table-onyx">
           <thead>
             <tr>
               <th>Time Slot</th>
@@ -201,16 +201,14 @@ export default function RealtimeBookingMatrix({ currentUser }) {
               const booked = isSlotBooked(selectedVenue, selectedDate, slot);
               return (
                 <tr key={idx}>
-                  <td className="font-mono font-semibold text-slate-900">{slot}</td>
+                  <td className="font-mono font-semibold text-zinc-100">{slot}</td>
                   <td>
                     {booked ? (
-                      <span className="badge-pill badge-error">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#DC2626]" />
+                      <span className="badge-rose text-[10px]">
                         <span>Reserved</span>
                       </span>
                     ) : (
-                      <span className="badge-pill badge-success">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
+                      <span className="badge-emerald text-[10px]">
                         <span>Available</span>
                       </span>
                     )}
@@ -218,18 +216,18 @@ export default function RealtimeBookingMatrix({ currentUser }) {
                   <td>
                     {booked ? (
                       <div className="text-xs">
-                        <span className="font-semibold text-slate-900 block">{booked.event_name}</span>
-                        <span className="text-[11px] text-slate-500 font-mono">{booked.booked_by_email}</span>
+                        <span className="font-semibold text-zinc-100 block">{booked.event_name}</span>
+                        <span className="text-[11px] text-zinc-400 font-mono">{booked.booked_by_email}</span>
                       </div>
                     ) : (
-                      <span className="text-slate-400 text-xs italic">Open for reservation</span>
+                      <span className="text-zinc-500 text-xs italic">Open for reservation</span>
                     )}
                   </td>
                   <td>
                     <button
                       onClick={() => handleBookSlot(slot)}
                       disabled={Boolean(booked) || isSubmitting}
-                      className={booked ? 'btn-ghost text-slate-400 cursor-not-allowed' : 'btn-primary'}
+                      className={booked ? 'btn-onyx-ghost text-zinc-500 cursor-not-allowed' : 'btn-amber-primary'}
                     >
                       {booked ? (
                         <>

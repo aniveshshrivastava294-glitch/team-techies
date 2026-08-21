@@ -1,39 +1,34 @@
 import React from 'react';
-import { ShieldCheck, Globe, HelpCircle, BookOpen, Layers } from 'lucide-react';
+import { ShieldCheck, Globe } from 'lucide-react';
 
 export default function InstitutionalFooter() {
   return (
-    <footer className="mt-16 border-t-2 border-stone-300 dark:border-stone-800 bg-[#FAF7F2] dark:bg-[#231F1B] text-stone-700 dark:text-stone-300 font-sans text-xs py-10 px-4 sm:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <footer className="mt-16 border-t border-zinc-800 bg-zinc-950 text-zinc-400 font-sans text-xs py-8 px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         
-        {/* Top Row: Brand Lockup & Org Tagline */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-stone-300/60 dark:border-stone-800">
-          <div className="space-y-1.5">
+        {/* Top Row: Brand & Compliance */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
+          <div className="space-y-1">
             <div className="flex items-center space-x-2.5">
-              {/* Minimal Line-Art Orbit Motif */}
-              <div className="w-6 h-6 rounded-full border-2 border-[#B5654A] flex items-center justify-center relative">
-                <div className="w-2 h-2 rounded-full bg-[#2F4034]" />
-                <div className="absolute inset-0 rounded-full border border-dashed border-[#B5654A]/40" />
-              </div>
-              <span className="font-serif text-base font-bold tracking-tight text-stone-900 dark:text-stone-100">
-                CampusOrbit
+              <span className="font-semibold text-sm tracking-tight text-zinc-50">
+                Campus Orbit
               </span>
-              <span className="px-2 py-0.5 text-[10px] font-mono uppercase bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 rounded border border-stone-300 dark:border-stone-700">
-                Institutional Edition v2.4
+              <span className="badge-amber text-[9px] uppercase">
+                EXECUTIVE v2.4
               </span>
             </div>
-            <p className="text-stone-600 dark:text-stone-400 text-xs">
+            <p className="text-zinc-400 text-xs">
               Unified Campus Resource Management & Decision Operations Platform
             </p>
           </div>
 
-          <div className="flex items-center space-x-6 text-stone-600 dark:text-stone-400">
-            <div className="flex items-center space-x-1.5">
-              <ShieldCheck className="w-4 h-4 text-[#5C6E3F]" />
+          <div className="flex items-center space-x-6 text-zinc-400">
+            <div className="flex items-center space-x-1.5 badge-emerald text-[10px]">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>FERPA Compliant</span>
             </div>
-            <div className="flex items-center space-x-1.5">
-              <Globe className="w-4 h-4 text-[#B5654A]" />
+            <div className="flex items-center space-x-1.5 badge-zinc text-[10px]">
+              <Globe className="w-3.5 h-3.5 text-zinc-400" />
               <span>System Operational</span>
             </div>
           </div>
@@ -42,10 +37,10 @@ export default function InstitutionalFooter() {
         {/* Links Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-xs">
           <div>
-            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+            <h4 className="font-semibold text-zinc-200 uppercase tracking-wider text-[10px] mb-2.5">
               Platform Modules
             </h4>
-            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+            <ul className="space-y-1.5 text-zinc-400">
               <li>Classroom & Facility Scheduling</li>
               <li>Campus Shuttle Telemetry</li>
               <li>Energy & Sustainability Log</li>
@@ -54,10 +49,10 @@ export default function InstitutionalFooter() {
           </div>
 
           <div>
-            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+            <h4 className="font-semibold text-zinc-200 uppercase tracking-wider text-[10px] mb-2.5">
               Governance & Security
             </h4>
-            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+            <ul className="space-y-1.5 text-zinc-400">
               <li>Role-Based Access Control (RBAC)</li>
               <li>Data Protection Policy</li>
               <li>Audit Logs & Compliance</li>
@@ -66,10 +61,10 @@ export default function InstitutionalFooter() {
           </div>
 
           <div>
-            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+            <h4 className="font-semibold text-zinc-200 uppercase tracking-wider text-[10px] mb-2.5">
               Institutional Resources
             </h4>
-            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+            <ul className="space-y-1.5 text-zinc-400">
               <li>Faculty Operations Manual</li>
               <li>System Administrator Guide</li>
               <li>API Integration Docs</li>
@@ -78,10 +73,10 @@ export default function InstitutionalFooter() {
           </div>
 
           <div>
-            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+            <h4 className="font-semibold text-zinc-200 uppercase tracking-wider text-[10px] mb-2.5">
               Help & Administration
             </h4>
-            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+            <ul className="space-y-1.5 text-zinc-400">
               <li>IT Support Desk</li>
               <li>Campus Safety Office</li>
               <li>Contact Registrar</li>
@@ -90,15 +85,15 @@ export default function InstitutionalFooter() {
           </div>
         </div>
 
-        {/* Copyright & Disclaimer Line */}
-        <div className="pt-6 border-t border-stone-300/60 dark:border-stone-800 text-[11px] text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© {new Date().getFullYear()} CampusOrbit Systems. Enterprise Education Platform.</p>
+        {/* Copyright */}
+        <div className="pt-4 border-t border-zinc-800 text-[11px] text-zinc-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} Campus Orbit Systems. Enterprise Education Platform.</p>
           <div className="flex items-center space-x-4">
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-zinc-300 cursor-pointer">Privacy Policy</span>
             <span>•</span>
-            <span className="hover:underline cursor-pointer">Terms of Service</span>
+            <span className="hover:text-zinc-300 cursor-pointer">Terms of Service</span>
             <span>•</span>
-            <span className="hover:underline cursor-pointer">Accessibility Statement</span>
+            <span className="hover:text-zinc-300 cursor-pointer">Accessibility</span>
           </div>
         </div>
 

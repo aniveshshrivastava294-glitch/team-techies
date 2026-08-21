@@ -56,16 +56,16 @@ function DashboardRouter() {
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
-        <div className="py-16 text-center space-y-3 card-enterprise max-w-lg mx-auto p-8 my-8">
-          <h2 className="text-lg font-bold text-slate-900">
-            Welcome to CampusOrbit
+        <div className="py-16 text-center space-y-3 card-onyx max-w-lg mx-auto my-8">
+          <h2 className="text-lg font-bold text-zinc-50">
+            Welcome to Campus Orbit
           </h2>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <p className="text-xs text-zinc-400 max-w-sm mx-auto">
             Please sign in to access your administrative operations workspace.
           </p>
           <button
             onClick={() => setIsLoginOpen(true)}
-            className="btn-primary text-xs"
+            className="btn-amber-primary text-xs"
           >
             Sign In / Switch Demo Account
           </button>
@@ -110,9 +110,9 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-zinc-950 text-zinc-50 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
       
-      {/* Top Header & Horizontal Navigation Bar */}
+      {/* Seamless Integrated Header Bar */}
       <Header
         onRefresh={fetchDashboardData}
         isRefreshing={isRefreshing}
@@ -122,7 +122,7 @@ function DashboardRouter() {
         setActiveTab={setActiveTab}
       />
 
-      {/* Main Full-Width Content Area */}
+      {/* Main Full-Width Content Canvas */}
       <main className="flex-1 p-4 sm:p-6 space-y-6 max-w-7xl w-full mx-auto">
         
         {currentUser && currentUser.approval_status !== 'pending' && (
@@ -133,7 +133,7 @@ function DashboardRouter() {
 
       </main>
 
-      {/* Enterprise Footer */}
+      {/* Institutional Footer */}
       <InstitutionalFooter />
 
       {/* Persistent AI Assistant Drawer */}
