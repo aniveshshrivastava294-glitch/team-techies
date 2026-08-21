@@ -249,15 +249,27 @@ INSTRUCTIONS:
 4. If a room is occupied, check free rooms and suggest alternatives.
 5. Be warm, approachable, conversational, concise, and helpful. Avoid robotic tech jargon.`;
 
-            // Initial Gemini Call
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: userQuery,
-                config: {
-                    systemInstruction,
-                    tools: [{ functionDeclarations: toolDeclarations }]
-                }
-            });
+            let response;
+            try {
+                response = await ai.models.generateContent({
+                    model: 'gemini-2.5-flash',
+                    contents: userQuery,
+                    config: {
+                        systemInstruction,
+                        tools: [{ functionDeclarations: toolDeclarations }]
+                    }
+                });
+            } catch (err25) {
+                console.warn('gemini-2.5-flash busy, falling back to gemini-1.5-flash:', err25.message);
+                response = await ai.models.generateContent({
+                    model: 'gemini-1.5-flash',
+                    contents: userQuery,
+                    config: {
+                        systemInstruction,
+                        tools: [{ functionDeclarations: toolDeclarations }]
+                    }
+                });
+            }
 
             // Check if Gemini invoked a tool function call
             const functionCalls = response.functionCalls;

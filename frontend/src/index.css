@@ -5,10 +5,47 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-main: #090d16;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --card-bg: rgba(15, 23, 42, 0.65);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-header-bg: rgba(30, 41, 59, 0.5);
+  }
+
+  html.light {
+    --bg-main: #f3f6fc;
+    --text-main: #000000;
+    --text-muted: #1e293b;
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --card-border: #cbd5e1;
+    --card-header-bg: #e2e8f0;
+  }
+
   body {
-    @apply bg-slate-950 text-slate-100 antialiased selection:bg-blue-600 selection:text-white;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    @apply antialiased selection:bg-blue-600 selection:text-white transition-colors duration-500 ease-in-out relative min-h-screen;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Dynamic Light & Dark Mode Background Mesh Overlays */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(88, 28, 135, 0.2) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(15, 23, 42, 0.5) 0px, transparent 50%),
+      radial-gradient(#1e293b 0.85px, transparent 0.85px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+    transition: opacity 0.5s ease;
   }
 }
 
@@ -30,20 +67,20 @@
 
 /* Premium SaaS Glassmorphism Components */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.55);
+  background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border);
   border-radius: 24px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card {
-  background: rgba(30, 41, 59, 0.4);
+  background: var(--card-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -55,7 +92,7 @@
 }
 
 .glass-pill {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.12);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import LoginModal from './components/LoginModal';
 import PendingApprovalView from './components/PendingApprovalView';
@@ -53,7 +54,6 @@ function DashboardRouter() {
     fetchDashboardData();
   }, []);
 
-  // Compute Role-Based Theme Background Gradient
   const getRoleThemeGradient = () => {
     if (!currentUser) return 'from-slate-950 via-slate-900 to-slate-950';
     
@@ -167,8 +167,10 @@ function DashboardRouter() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <DashboardRouter />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <DashboardRouter />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

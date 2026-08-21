@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth, demoAccounts } from '../context/AuthContext';
-import { Layers, RefreshCw, LogOut, LogIn, ChevronDown } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Layers, RefreshCw, LogOut, LogIn, ChevronDown, Sun, Moon } from 'lucide-react';
 
 export default function Header({ onRefresh, isRefreshing, datasource, onOpenLogin }) {
   const { currentUser, logout, switchDemoRole } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
 
   const getRoleBadgeClass = (role, domain) => {
@@ -45,6 +47,17 @@ export default function Header({ onRefresh, isRefreshing, datasource, onOpenLogi
         {/* Navigation & Profile Actions */}
         <div className="flex items-center space-x-3">
           
+          {/* Dark / Light Theme Toggle Button */}
+          {toggleTheme && (
+            <button
+              onClick={toggleTheme}
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+              className="p-2 rounded-full border border-slate-800 bg-slate-900/80 text-amber-400 hover:scale-105 transition-all cursor-pointer"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+          )}
+
           {/* User Profile & Quick Demo Switcher */}
           <div className="relative">
             <button

@@ -50,12 +50,16 @@ Return JSON in this format:
 ]`;
 
             if (ai) {
-                const response = await ai.models.generateContent({
-                    model: 'gemini-2.5-flash',
-                    contents: prompt,
-                    config: { responseMimeType: 'application/json' }
-                });
-                if (response.text) return JSON.parse(response.text);
+                try {
+                    const response = await ai.models.generateContent({
+                        model: 'gemini-2.5-flash',
+                        contents: prompt,
+                        config: { responseMimeType: 'application/json' }
+                    });
+                    if (response.text) return JSON.parse(response.text);
+                } catch (e25) {
+                    console.warn('Gemini recommendation fallback to mock:', e25.message);
+                }
             }
         } catch (err) {
             console.error('Gemini Recommendation API Error:', err.message);
