@@ -3,7 +3,8 @@ import ChatWidget from '../ChatWidget';
 import { 
   Building2, Sparkles, Check, X, Calendar as CalendarIcon, Clock, 
   Search, Plus, Tv, Wind, Mic, Volume2, ShieldAlert, Wrench, 
-  Bus, Radio, CheckCircle2, RefreshCw, Zap, Users, Sliders, ArrowRight
+  Bus, Radio, CheckCircle2, RefreshCw, Zap, Users, Sliders, ArrowRight,
+  Bot, Send, Activity, Cpu, Gauge
 } from 'lucide-react';
 
 export default function SubAdminDashboard({ currentUser }) {
@@ -18,7 +19,11 @@ export default function SubAdminDashboard({ currentUser }) {
   const [selectedDate, setSelectedDate] = useState('2026-08-26');
   const [activeCalendarSlot, setActiveCalendarSlot] = useState(3);
   const [toastMsg, setToastMsg] = useState(null);
-  const [isAddAudiModalOpen, setIsAddAudiModalOpen] = useState(false);
+
+  // Natural Language AI Query Engine States
+  const [aiQuery, setAiQuery] = useState('');
+  const [aiResponse, setAiResponse] = useState(null);
+  const [isAiQuerying, setIsAiQuerying] = useState(false);
 
   // Auditorium Fleet Initial Data matching Wireframe
   const [auditoriums, setAuditoriums] = useState([
@@ -93,15 +98,28 @@ export default function SubAdminDashboard({ currentUser }) {
     showToast(`Request ${action === 'Approved' ? 'APPROVED ✓' : 'REJECTED ✕'} successfully!`);
   };
 
-  const handleToggleAc = (audiId) => {
-    setAuditoriums(prev => prev.map(audi => {
-      if (audi.id === audiId) {
-        const newAc = audi.acStatus === 'ON' ? 'OFF' : 'ON';
-        return { ...audi, acStatus: newAc };
+  const handleAiQuerySubmit = (e) => {
+    e?.preventDefault();
+    if (!aiQuery.trim()) return;
+
+    setIsAiQuerying(true);
+    setAiResponse(null);
+
+    setTimeout(() => {
+      const q = aiQuery.toLowerCase();
+      let reply = "";
+      if (q.includes('ac') || q.includes('climate')) {
+        reply = "⚡ AC Climate Status: Audi 1 is currently active (ON - 22°C). Audi 2 to 5 are in eco STANDBY mode. Master AC Book is set to AUTO.";
+      } else if (q.includes('projector') || q.includes('hardware') || q.includes('av')) {
+        reply = "📽️ Hardware Telemetry: 4 of 5 projectors are online and operational. Audi 3 projector bulb life is at 88%. 8/10 wireless mics are charged.";
+      } else if (q.includes('request') || q.includes('approval') || q.includes('pending')) {
+        reply = "📋 Approval Telemetry: 2 pending requests found. Prof. Chakraborty requested Audi 1 (2pm-3pm). Auto-approval check: Audi 1 is booked by CS-402.";
+      } else {
+        reply = `🔍 Campus Intelligence Query: "${aiQuery}" analyzed. All 5 auditoriums (Audi 1-5) are monitored with zero critical hardware alerts.`;
       }
-      return audi;
-    }));
-    showToast(`Updated Climate AC control status.`);
+      setAiResponse(reply);
+      setIsAiQuerying(false);
+    }, 800);
   };
 
   // Filter Auditoriums by Search Lookup
@@ -169,8 +187,14 @@ export default function SubAdminDashboard({ currentUser }) {
         <div className="space-y-6">
 
           {/* 1. AUDITORIUM OVERVIEW SECTION */}
-          <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b dark:border-slate-800 border-slate-200">
+          <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-4 relative overflow-hidden">
+            {/* Nice Auditorium Background Overlay (40% Visibility) */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-40 dark:opacity-40 mix-blend-multiply dark:mix-blend-overlay pointer-events-none rounded-3xl transition-opacity duration-500"
+              style={{ backgroundImage: `url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80')` }}
+            />
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b dark:border-slate-800 border-slate-200 relative z-10">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 bg-blue-500/10 border border-blue-500/30 rounded-2xl text-blue-500">
                   <Building2 className="w-5 h-5" />
@@ -219,7 +243,7 @@ export default function SubAdminDashboard({ currentUser }) {
             </div>
 
             {/* AUDITORIUM CARDS ROW (Audi 1 to Audi 5 + Add More) */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5 pt-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5 pt-1 relative z-10">
               {filteredAudis.map((audi) => {
                 const isBooked = audi.status === 'Booked';
                 return (
@@ -443,127 +467,251 @@ export default function SubAdminDashboard({ currentUser }) {
 
           </div>
 
-          {/* 3. HARDWARE & RESOURCE TELEMETRY STATUS (2 CARDS matching wireframe) */}
+          {/* 3. HARDWARE & RESOURCE TELEMETRY STATUS (2 SLEEK ENHANCED BOXES) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* CARD 1: AV Systems Status */}
-            <div className="glass-panel p-5.5 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-3.5">
-              <div className="flex items-center justify-between pb-2.5 border-b dark:border-slate-800 border-slate-200">
-                <h3 className="text-xs md:text-sm font-bold dark:text-white text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Tv className="w-4 h-4 text-blue-500" />
-                  <span>Resource Status (AV Hardware)</span>
-                </h3>
-                <span className="text-[10px] font-mono text-emerald-500 font-bold px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
-                  ● Telemetry Live
-                </span>
+            {/* CARD 1: Resource Status (AV Hardware) */}
+            <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-xl space-y-4 hover-classic-lift">
+              <div className="flex items-center justify-between pb-3 border-b dark:border-slate-800 border-slate-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2.5 bg-blue-500/10 border border-blue-500/30 rounded-2xl text-blue-500 shadow-sm">
+                    <Tv className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm md:text-base font-bold dark:text-white text-slate-900 tracking-tight">
+                      Resource Status (AV Hardware)
+                    </h3>
+                    <p className="text-xs dark:text-slate-400 text-slate-600">
+                      Real-time auditorium audio-visual diagnostics
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-[10px] font-mono font-extrabold">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span>Telemetry Live</span>
+                </div>
               </div>
 
-              <div className="space-y-2 text-xs font-semibold">
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">Projectors:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(4/5 Avail.)</span>
+              <div className="space-y-3 text-xs font-semibold">
+                {/* Projectors */}
+                <div className="p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                      <Tv className="w-4 h-4 text-blue-500" />
+                      Projectors:
+                    </span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono text-xs">(4/5 Avail.)</span>
+                  </div>
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="bg-emerald-500 h-full rounded-full" style={{ width: '80%' }} />
+                  </div>
                 </div>
 
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">Sound Systems:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                {/* Sound Systems */}
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                    <Volume2 className="w-4 h-4 text-indigo-500" />
+                    Sound Systems:
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                    (All Ok)
+                  </span>
                 </div>
 
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">Audio Speakers:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                {/* Audio Speakers */}
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                    <Radio className="w-4 h-4 text-purple-500" />
+                    Audio Speakers:
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                    (All Ok)
+                  </span>
                 </div>
 
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">Climate HVAC:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                {/* Climate HVAC */}
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                    <Wind className="w-4 h-4 text-cyan-500" />
+                    Climate HVAC:
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                    (All Ok)
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* CARD 2: Facility Telemetry Status */}
-            <div className="glass-panel p-5.5 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-3.5">
-              <div className="flex items-center justify-between pb-2.5 border-b dark:border-slate-800 border-slate-200">
-                <h3 className="text-xs md:text-sm font-bold dark:text-white text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Mic className="w-4 h-4 text-purple-500" />
-                  <span>Facility Hardware Telemetry</span>
-                </h3>
-                <span className="text-[10px] font-mono text-cyan-500 font-bold px-2 py-0.5 bg-cyan-500/10 rounded-full border border-cyan-500/20">
-                  ● 100% Operational
-                </span>
+            {/* CARD 2: Facility Hardware Telemetry */}
+            <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-xl space-y-4 hover-classic-lift">
+              <div className="flex items-center justify-between pb-3 border-b dark:border-slate-800 border-slate-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2.5 bg-purple-500/10 border border-purple-500/30 rounded-2xl text-purple-500 shadow-sm">
+                    <Mic className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm md:text-base font-bold dark:text-white text-slate-900 tracking-tight">
+                      Facility Hardware Telemetry
+                    </h3>
+                    <p className="text-xs dark:text-slate-400 text-slate-600">
+                      Infrastructure power & wireless frequency metrics
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-[10px] font-mono font-extrabold">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                  </span>
+                  <span>100% Operational</span>
+                </div>
               </div>
 
-              <div className="space-y-2 text-xs font-semibold">
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">4K Screens & Displays:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+              <div className="space-y-3 text-xs font-semibold">
+                {/* 4K Screens & Displays */}
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                    <Tv className="w-4 h-4 text-blue-500" />
+                    4K Screens & Displays:
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                    (All Ok)
+                  </span>
                 </div>
 
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">Wireless Microphones:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(8/10 Avail.)</span>
+                {/* Wireless Microphones */}
+                <div className="p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                      <Mic className="w-4 h-4 text-purple-500" />
+                      Wireless Microphones:
+                    </span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono text-xs">(8/10 Avail.)</span>
+                  </div>
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="bg-purple-500 h-full rounded-full" style={{ width: '80%' }} />
+                  </div>
                 </div>
 
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">Stage Lighting Grid:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(All Ok)</span>
+                {/* Stage Lighting Grid */}
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                    <Zap className="w-4 h-4 text-amber-500" />
+                    Stage Lighting Grid:
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                    (All Ok)
+                  </span>
                 </div>
 
-                <div className="flex justify-between p-3 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
-                  <span className="dark:text-slate-300 text-slate-700">UPS Power Backup:</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">(100% Charged)</span>
+                {/* UPS Power Backup */}
+                <div className="flex justify-between items-center p-3.5 rounded-2xl dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-200 shadow-sm">
+                  <span className="dark:text-slate-300 text-slate-700 flex items-center gap-2 font-bold">
+                    <Cpu className="w-4 h-4 text-emerald-500" />
+                    UPS Power Backup:
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                    (100% Charged)
+                  </span>
                 </div>
               </div>
             </div>
 
           </div>
 
-        </div>
-      )}
-
-      {/* ================= DOMAIN VIEW 2: MAINTENANCE SUB-ADMIN ================= */}
-      {domain === 'maintenance' && (
-        <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg">
-          <div className="flex items-center justify-between mb-6 pb-3 border-b dark:border-slate-800 border-slate-200">
-            <div className="flex items-center space-x-3">
-              <div className="p-2.5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-amber-500">
-                <Wrench className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-sm md:text-base font-bold dark:text-white text-slate-900">Faculty Issue Tickets Kanban Board</h3>
-                <p className="text-xs dark:text-slate-400 text-slate-600">Advance tickets across resolution states</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="dark:bg-slate-950 bg-slate-50 p-4 rounded-2xl border border-red-500/30 space-y-3">
-              <span className="font-bold text-xs text-red-500 uppercase tracking-wider block pb-2 border-b border-slate-200 dark:border-slate-800">
-                Open Tickets ({tickets.filter(t => t.status === 'open').length})
-              </span>
-              {tickets.filter(t => t.status === 'open').map(t => (
-                <div key={t.ticket_id} className="dark:bg-slate-900 bg-white p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
-                  <span className="font-bold text-xs dark:text-white text-slate-900 block">{t.title}</span>
-                  <p className="text-[11px] dark:text-slate-300 text-slate-600">{t.description}</p>
+          {/* 4. NATURAL-LANGUAGE AI QUERY ENGINE CARD (ULTRA-COOL BOX) */}
+          <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 bg-white shadow-xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b dark:border-slate-800 border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl shadow-md shadow-blue-500/30">
+                  <Bot className="w-5 h-5" />
                 </div>
-              ))}
+                <div>
+                  <h3 className="text-base font-extrabold dark:text-white text-slate-900 tracking-tight flex items-center gap-2">
+                    <span>Natural-Language AI Query Engine</span>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30 rounded-full">
+                      v2.4 Co-Pilot
+                    </span>
+                  </h3>
+                  <p className="text-xs dark:text-slate-400 text-slate-600">
+                    Ask plain-language questions about AC status, hall schedules, or facility hardware telemetry
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* ================= DOMAIN VIEW 3: TRANSPORT SUB-ADMIN ================= */}
-      {domain === 'transport' && (
-        <div className="glass-panel p-6 rounded-3xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/90 bg-white shadow-lg space-y-6">
-          <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-cyan-500/10 border border-cyan-500/30 rounded-2xl text-cyan-500">
-              <Bus className="w-5 h-5" />
+            {/* Quick Query Suggestion Chips */}
+            <div className="flex items-center gap-2 flex-wrap text-xs">
+              <span className="text-[11px] font-bold dark:text-slate-400 text-slate-500 uppercase tracking-wider">Quick Queries:</span>
+              <button
+                onClick={() => {
+                  setAiQuery("Which auditoriums have AC turned on right now?");
+                }}
+                className="px-3 py-1.5 dark:bg-slate-950 bg-slate-100 dark:text-slate-300 text-slate-700 hover:bg-blue-500/10 hover:text-blue-500 rounded-xl border dark:border-slate-800 border-slate-200 text-[11px] font-semibold transition-all cursor-pointer"
+              >
+                ⚡ AC Status
+              </button>
+              <button
+                onClick={() => {
+                  setAiQuery("Check projectors available in Audi 1 & Audi 2");
+                }}
+                className="px-3 py-1.5 dark:bg-slate-950 bg-slate-100 dark:text-slate-300 text-slate-700 hover:bg-blue-500/10 hover:text-blue-500 rounded-xl border dark:border-slate-800 border-slate-200 text-[11px] font-semibold transition-all cursor-pointer"
+              >
+                📽️ Projectors Info
+              </button>
+              <button
+                onClick={() => {
+                  setAiQuery("Summarize pending AC approval requests");
+                }}
+                className="px-3 py-1.5 dark:bg-slate-950 bg-slate-100 dark:text-slate-300 text-slate-700 hover:bg-blue-500/10 hover:text-blue-500 rounded-xl border dark:border-slate-800 border-slate-200 text-[11px] font-semibold transition-all cursor-pointer"
+              >
+                📋 Pending Approvals
+              </button>
             </div>
-            <div>
-              <h3 className="text-sm md:text-base font-bold dark:text-white text-slate-900">Transport Fleet Telemetry Management</h3>
-              <p className="text-xs dark:text-slate-400 text-slate-600">Monitor driver assignments and real-time passenger occupancy</p>
-            </div>
+
+            {/* Form Input Box */}
+            <form onSubmit={handleAiQuerySubmit} className="flex items-center gap-3">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <input
+                  type="text"
+                  value={aiQuery}
+                  onChange={(e) => setAiQuery(e.target.value)}
+                  placeholder="Ask anything (e.g. 'Show me vacant halls for 3pm session')..."
+                  className="w-full pl-10 pr-4 py-2.5 dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-300 rounded-2xl text-xs dark:text-white text-slate-900 focus:outline-none focus:border-blue-500 shadow-inner font-medium"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isAiQuerying || !aiQuery.trim()}
+                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl text-xs font-bold transition-all shadow-md shadow-blue-600/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                {isAiQuerying ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                <span>Run Query</span>
+              </button>
+            </form>
+
+            {/* AI Response Output Box */}
+            {aiResponse && (
+              <div className="p-4 rounded-2xl bg-blue-50/80 dark:bg-slate-950/90 border border-blue-200 dark:border-slate-800 text-xs dark:text-slate-200 text-slate-800 space-y-1.5 animate-in fade-in-0 slide-in-from-top-2 shadow-inner">
+                <div className="flex items-center gap-2 font-bold text-blue-600 dark:text-blue-400">
+                  <Sparkles className="w-4 h-4" />
+                  <span>AI Co-Pilot Telemetry Response:</span>
+                </div>
+                <p className="leading-relaxed font-mono text-[11px] pt-1">{aiResponse}</p>
+              </div>
+            )}
           </div>
+
         </div>
       )}
 
