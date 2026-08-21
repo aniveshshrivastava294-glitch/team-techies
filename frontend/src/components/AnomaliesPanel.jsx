@@ -19,13 +19,13 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
   const getSeverityBadge = (severity) => {
     switch (severity?.toLowerCase()) {
       case 'critical':
-        return 'bg-red-500/20 text-red-300 border-red-500/40 animate-pulse';
+        return 'inst-badge-rust';
       case 'high':
-        return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+        return 'inst-badge-ochre';
       case 'medium':
-        return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40';
+        return 'inst-badge-ochre';
       default:
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/40';
+        return 'inst-badge-sage';
     }
   };
 
@@ -36,23 +36,23 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
   };
 
   return (
-    <div className="glass-panel p-6 rounded-2xl border border-slate-800 mb-6">
+    <div className="inst-card p-6 border border-stone-300 dark:border-stone-800 mb-6 font-sans">
       
       {/* Header & Category Filters */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800/80">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5 pb-4 border-b border-stone-200 dark:border-stone-800">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400">
-            <ShieldAlert className="w-6 h-6" />
+          <div className="p-2 bg-[#A64B34]/10 border border-[#A64B34]/30 rounded text-[#A64B34]">
+            <ShieldAlert className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-white tracking-tight">Cross-Domain Anomaly Detection</h2>
-              <span className="px-2.5 py-0.5 text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30 rounded-full">
-                {filteredAnomalies.length} Detected
+              <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">Smart Campus Alerts</h2>
+              <span className="px-2.5 py-0.5 text-xs font-mono font-semibold inst-badge-rust">
+                {filteredAnomalies.length} Alerts
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Hybrid deterministic SQL rules & statistical outlier engine synthesizing 6 domain feeds
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+              Real-time notifications for room maintenance, energy spikes, and bus delays.
             </p>
           </div>
         </div>

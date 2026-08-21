@@ -8,7 +8,7 @@ export default function FloatingAIAssistant({ currentUser, currentContext = 'Gen
   const [chatMessages, setChatMessages] = useState([
     {
       sender: 'ai',
-      text: `Welcome ${currentUser?.full_name ? currentUser.full_name.split(' ')[0] : 'there'} to Campus Orbit! I am your 3D Omni-Agent. Ask me to book rooms, check bus schedules, open tickets, or approve leave requests directly!`,
+      text: `Welcome ${currentUser?.full_name ? currentUser.full_name.split(' ')[0] : 'there'} to Campus Orbit! I am your Campus AI Assistant. Ask me to book rooms, check bus schedules, open tickets, or apply for leave directly!`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -97,46 +97,39 @@ export default function FloatingAIAssistant({ currentUser, currentContext = 'Gen
   ];
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-sans">
-      
-      {/* 3D Glowing Vector Sphere Toggle Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 sphere-glow flex items-center justify-center cursor-pointer border-2 border-white/40 relative group transition-transform hover:scale-110 active:scale-95"
-          title="Open Campus Orbit 3D Omni-Agent"
-        >
-          <Sparkles className="w-6 h-6 text-white group-hover:rotate-12 transition-transform" />
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-slate-950 flex items-center justify-center">
-            <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
-          </span>
-        </button>
-      )}
+    <>
+      {/* Floating Action Trigger Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#B5654A] hover:bg-[#9E533A] text-white rounded-full shadow-lg border border-stone-200 dark:border-stone-700 transition-colors flex items-center justify-center cursor-pointer group"
+        title="Open Campus Orbit AI Assistant"
+      >
+        <Sparkles className="w-5 h-5" />
+      </button>
 
-      {/* Expanded Glassmorphism Chat Drawer */}
+      {/* Floating Assistant Drawer/Modal */}
       {isOpen && (
-        <div className="w-[360px] sm:w-[410px] h-[540px] glass-panel rounded-3xl border border-white/20 shadow-2xl flex flex-col overflow-hidden animate-fadeIn backdrop-blur-2xl">
+        <div className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[520px] bg-[#FAF7F2] dark:bg-[#231F1B] border border-stone-300 dark:border-stone-800 rounded-lg shadow-xl flex flex-col overflow-hidden font-sans">
           
           {/* Header */}
-          <div className="p-4 bg-slate-900/60 border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-500 flex items-center justify-center text-white shadow-lg">
+          <div className="p-3.5 bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between">
+            <div className="flex items-center space-x-2.5">
+              <div className="p-1.5 rounded bg-[#B5654A]/10 text-[#B5654A] border border-[#B5654A]/30">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-white tracking-tight flex items-center gap-1.5">
-                  <span>Campus Orbit Omni-Agent</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <h3 className="text-xs font-serif font-bold text-stone-900 dark:text-stone-100">
+                  Campus Orbit Assistant
                 </h3>
-                <p className="text-[10px] text-slate-400">
-                  {currentUser?.role ? `${currentUser.role.replace('_', ' ').toUpperCase()} Context` : 'Universal Assistant'}
+                <p className="text-[10px] text-stone-500 font-mono">
+                  Institutional Intelligence
                 </p>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 text-slate-400 hover:text-white rounded-full bg-slate-900/60 border border-white/10 transition-colors"
+              className="p-1 text-stone-500 hover:text-stone-900 dark:hover:text-white rounded hover:bg-stone-200 dark:hover:bg-stone-800 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -188,7 +181,7 @@ export default function FloatingAIAssistant({ currentUser, currentContext = 'Gen
                   <Bot className="w-3.5 h-3.5" />
                 </div>
                 <div className="glass-card text-slate-400 rounded-2xl rounded-tl-xs p-3 text-xs italic">
-                  Executing Agentic Tool...
+                  Finding information...
                 </div>
               </div>
             )}
@@ -229,7 +222,6 @@ export default function FloatingAIAssistant({ currentUser, currentContext = 'Gen
 
         </div>
       )}
-
-    </div>
+    </>
   );
 }

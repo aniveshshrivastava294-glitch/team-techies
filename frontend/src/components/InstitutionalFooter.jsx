@@ -1,0 +1,108 @@
+import React from 'react';
+import { ShieldCheck, Globe, HelpCircle, BookOpen, Layers } from 'lucide-react';
+
+export default function InstitutionalFooter() {
+  return (
+    <footer className="mt-16 border-t-2 border-stone-300 dark:border-stone-800 bg-[#FAF7F2] dark:bg-[#231F1B] text-stone-700 dark:text-stone-300 font-sans text-xs py-10 px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        
+        {/* Top Row: Brand Lockup & Org Tagline */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-stone-300/60 dark:border-stone-800">
+          <div className="space-y-1.5">
+            <div className="flex items-center space-x-2.5">
+              {/* Minimal Line-Art Orbit Motif */}
+              <div className="w-6 h-6 rounded-full border-2 border-[#B5654A] flex items-center justify-center relative">
+                <div className="w-2 h-2 rounded-full bg-[#2F4034]" />
+                <div className="absolute inset-0 rounded-full border border-dashed border-[#B5654A]/40" />
+              </div>
+              <span className="font-serif text-base font-bold tracking-tight text-stone-900 dark:text-stone-100">
+                CampusOrbit
+              </span>
+              <span className="px-2 py-0.5 text-[10px] font-mono uppercase bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 rounded border border-stone-300 dark:border-stone-700">
+                Institutional Edition v2.4
+              </span>
+            </div>
+            <p className="text-stone-600 dark:text-stone-400 text-xs">
+              Unified Campus Resource Management & Decision Operations Platform
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-6 text-stone-600 dark:text-stone-400">
+            <div className="flex items-center space-x-1.5">
+              <ShieldCheck className="w-4 h-4 text-[#5C6E3F]" />
+              <span>FERPA Compliant</span>
+            </div>
+            <div className="flex items-center space-x-1.5">
+              <Globe className="w-4 h-4 text-[#B5654A]" />
+              <span>System Operational</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-xs">
+          <div>
+            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+              Platform Modules
+            </h4>
+            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+              <li>Classroom & Facility Scheduling</li>
+              <li>Campus Shuttle Telemetry</li>
+              <li>Energy & Sustainability Log</li>
+              <li>Maintenance Dispatch</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+              Governance & Security
+            </h4>
+            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+              <li>Role-Based Access Control (RBAC)</li>
+              <li>Data Protection Policy</li>
+              <li>Audit Logs & Compliance</li>
+              <li>Security Disclosures</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+              Institutional Resources
+            </h4>
+            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+              <li>Faculty Operations Manual</li>
+              <li>System Administrator Guide</li>
+              <li>API Integration Docs</li>
+              <li>Service Status Dashboard</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider text-[11px] mb-3">
+              Help & Administration
+            </h4>
+            <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+              <li>IT Support Desk</li>
+              <li>Campus Safety Office</li>
+              <li>Contact Registrar</li>
+              <li>Submit Feedback</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Copyright & Disclaimer Line */}
+        <div className="pt-6 border-t border-stone-300/60 dark:border-stone-800 text-[11px] text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CampusOrbit Systems. Enterprise Education Platform.</p>
+          <div className="flex items-center space-x-4">
+            <span className="hover:underline cursor-pointer">Privacy Policy</span>
+            <span>•</span>
+            <span className="hover:underline cursor-pointer">Terms of Service</span>
+            <span>•</span>
+            <span className="hover:underline cursor-pointer">Accessibility Statement</span>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  );
+}

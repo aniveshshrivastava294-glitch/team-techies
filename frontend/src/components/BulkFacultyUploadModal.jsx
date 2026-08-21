@@ -162,23 +162,23 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-lg animate-fadeIn">
-      <div className="glass-panel w-full max-w-5xl p-6 rounded-3xl border border-purple-500/30 shadow-2xl relative overflow-hidden max-h-[90vh] flex flex-col font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/75 backdrop-blur-xs font-sans">
+      <div className="inst-card w-full max-w-5xl p-6 rounded border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-xl relative overflow-hidden max-h-[90vh] flex flex-col font-sans">
         
         {/* Header Bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/10">
+        <div className="flex items-center justify-between pb-4 border-b border-stone-200 dark:border-stone-800">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-purple-600/20 border border-purple-500/30 rounded-2xl text-purple-400">
+            <div className="p-2 bg-[#B5654A]/10 border border-[#B5654A]/30 rounded text-[#B5654A]">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight flex items-center gap-2">
                 Universal Multi-Batch AI Data Intaker & Placement Assistant
-                <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full">
+                <span className="px-2 py-0.5 text-[9px] font-mono font-bold inst-badge-ochre">
                   Gemini Multi-Ingest
                 </span>
               </h2>
-              <p className="text-[11px] text-zinc-400 font-mono">
+              <p className="text-[11px] text-stone-500 dark:text-stone-400 font-mono">
                 Intake data unlimited times into any domain database with real-time AI placement guidance.
               </p>
             </div>
@@ -186,14 +186,14 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
 
           <div className="flex items-center gap-2">
             {ingestCount > 0 && (
-              <span className="text-[10px] font-mono font-bold px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full flex items-center gap-1.5">
+              <span className="text-[10px] font-mono font-bold px-3 py-1 inst-badge-sage flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 {ingestCount} Batches Ingested
               </span>
             )}
             <button
               onClick={onClose}
-              className="p-1.5 text-zinc-400 hover:text-white rounded-xl bg-white/5 border border-white/10 transition-colors cursor-pointer"
+              className="p-1 text-stone-500 hover:text-stone-900 dark:hover:text-white rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -207,13 +207,13 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
           <div className="lg:col-span-7 space-y-4 text-xs">
             
             {/* Target Destination Selector */}
-            <div className="p-3.5 bg-black/40 border border-white/10 rounded-2xl space-y-2">
-              <label className="text-zinc-300 font-bold flex items-center justify-between font-mono text-[11px]">
+            <div className="p-3.5 bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 rounded space-y-2">
+              <label className="text-stone-800 dark:text-stone-200 font-bold flex items-center justify-between font-mono text-[11px]">
                 <span className="flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-purple-400" />
+                  <Database className="w-3.5 h-3.5 text-[#B5654A]" />
                   Target Data Destination:
                 </span>
-                <span className="text-purple-300 text-[10px]">AI Auto-Detect Enabled</span>
+                <span className="text-[#B5654A] text-[10px]">AI Auto-Detect Enabled</span>
               </label>
 
               <select

@@ -22,62 +22,68 @@ export default function Header({ onRefresh, isRefreshing, datasource, onOpenLogi
   };
 
   return (
-    <header className="sticky top-0 z-50 px-4 sm:px-8 py-4 backdrop-blur-md bg-black/40 border-b border-white/5">
+    <header className="sticky top-0 z-50 px-4 sm:px-8 py-3.5 bg-[#FAF7F2]/95 dark:bg-[#231F1B]/95 backdrop-blur-sm border-b-2 border-stone-300 dark:border-stone-800 font-sans">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
-        {/* Brand: Strictly Text-Only "Campus Orbit" */}
+        {/* Brand: CampusOrbit Institutional Wordmark with Line-Art Orbit Ring */}
         <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 rounded-full border-2 border-[#B5654A] flex items-center justify-center relative bg-stone-100 dark:bg-stone-800 flex-shrink-0">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#2F4034] dark:bg-[#5C6E3F]" />
+            <div className="absolute inset-0 rounded-full border border-dashed border-[#B5654A]/50" />
+          </div>
           <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-lg font-black tracking-tight text-white font-sans uppercase">
-                Campus Orbit
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100">
+                CampusOrbit
               </h1>
-              <span className="px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest text-zinc-400 border border-white/10 rounded-full uppercase bg-white/[0.03]">
-                Deep Space OS
+              <span className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 border border-stone-300 dark:border-stone-700 rounded bg-stone-200/60 dark:bg-stone-800">
+                Institutional
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 font-medium tracking-wide">
-              Enterprise Autonomous Intelligence
+            <p className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+              Campus Operations & Decision Support
             </p>
           </div>
         </div>
 
         {/* Navigation & Profile Actions */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           
-          {/* Quick Transport Manager Shortcut */}
+          {/* Transport Fleet Status Button */}
           <button
             onClick={() => switchDemoRole(demoAccounts[3])}
-            title="Switch to Transport Manager Interface"
-            className="px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] text-zinc-300 text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 hover:border-cyan-500/40"
+            title="Switch to Transport Manager view"
+            className="px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-200 text-xs font-medium transition-colors cursor-pointer flex items-center gap-2"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span className="hidden sm:inline font-mono">Transport Telemetry</span>
+            <span className="w-2 h-2 rounded-full bg-[#5C6E3F]"></span>
+            <span className="hidden sm:inline font-mono">Bus Fleet Status</span>
           </button>
 
           {/* User Profile & Role Switcher */}
           <div className="relative">
             <button
               onClick={() => setShowRoleDropdown(!showRoleDropdown)}
-              className="flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] text-xs transition-all cursor-pointer"
+              className="flex items-center space-x-2 px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-xs transition-colors cursor-pointer"
             >
-              <div className="w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 font-mono text-[10px] font-bold">
+              <div className="w-5 h-5 rounded-full bg-[#B5654A]/20 border border-[#B5654A]/40 flex items-center justify-center text-[#B5654A] font-mono text-[10px] font-bold">
                 {currentUser?.full_name?.charAt(0) || 'G'}
               </div>
               <div className="text-left hidden md:block">
-                <span className="font-bold text-white block leading-none text-xs">{currentUser?.full_name?.split(' ')[0] || 'Guest'}</span>
-                <span className={`text-[8px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.2 rounded-full border inline-block mt-0.5 ${getRoleBadgeClass(currentUser?.role, currentUser?.department_domain)}`}>
-                  {currentUser?.role === 'sub_admin' ? `${currentUser?.department_domain}` : currentUser?.role?.replace('_', ' ')}
+                <span className="font-bold text-stone-900 dark:text-stone-100 block leading-none text-xs">
+                  {currentUser?.full_name?.split(' ')[0] || 'Guest'}
+                </span>
+                <span className="text-[9px] font-mono uppercase tracking-wider text-stone-500 dark:text-stone-400 block mt-0.5">
+                  {currentUser?.role === 'sub_admin' ? currentUser?.department_domain : currentUser?.role?.replace('_', ' ')}
                 </span>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
+              <ChevronDown className="w-3.5 h-3.5 text-stone-500" />
             </button>
 
             {/* Role Dropdown Menu */}
             {showRoleDropdown && (
-              <div className="absolute right-0 mt-2 w-56 p-2 rounded-2xl border border-white/10 bg-black/95 backdrop-blur-2xl shadow-2xl z-50 text-xs space-y-1">
-                <div className="px-2.5 py-1 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
-                  Select Persona:
+              <div className="absolute right-0 mt-2 w-56 p-2 rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 shadow-lg z-50 text-xs space-y-1">
+                <div className="px-2.5 py-1 text-[10px] font-mono text-stone-500 uppercase tracking-wider border-b border-stone-200 dark:border-stone-800 mb-1">
+                  Switch Account Role:
                 </div>
                 {demoAccounts.map((acc, idx) => (
                   <button
@@ -86,13 +92,13 @@ export default function Header({ onRefresh, isRefreshing, datasource, onOpenLogi
                       switchDemoRole(acc);
                       setShowRoleDropdown(false);
                     }}
-                    className={`w-full text-left px-2.5 py-1.5 rounded-xl transition-colors flex items-center justify-between ${
-                      currentUser?.email === acc.email ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' : 'hover:bg-white/5 text-zinc-300'
+                    className={`w-full text-left px-2.5 py-1.5 rounded transition-colors flex items-center justify-between ${
+                      currentUser?.email === acc.email ? 'bg-[#B5654A]/10 text-[#B5654A] font-bold border border-[#B5654A]/30' : 'hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300'
                     }`}
                   >
                     <span>{acc.full_name.split(' ')[0]}</span>
-                    <span className="text-[10px] font-mono text-zinc-500 capitalize">
-                      {acc.role === 'sub_admin' ? `${acc.department_domain}` : acc.role.replace('_', '')}
+                    <span className="text-[10px] font-mono text-stone-500 capitalize">
+                      {acc.role === 'sub_admin' ? `${acc.department_domain}` : acc.role.replace('_', ' ')}
                     </span>
                   </button>
                 ))}
@@ -104,25 +110,25 @@ export default function Header({ onRefresh, isRefreshing, datasource, onOpenLogi
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="p-2 text-zinc-400 hover:text-white rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-all cursor-pointer disabled:opacity-50"
-            title="Sync Workspace Data"
+            className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white rounded border border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 transition-colors cursor-pointer disabled:opacity-50"
+            title="Refresh Data"
           >
-            <RefreshCw className={`w-3.5 h-3.5 stroke-[1.75] ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#B5654A]' : ''}`} />
           </button>
 
           {/* Auth Action */}
           {currentUser ? (
             <button
               onClick={logout}
-              className="p-2 text-zinc-400 hover:text-rose-400 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-colors cursor-pointer"
+              className="p-2 text-stone-500 hover:text-[#A64B34] rounded border border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 transition-colors cursor-pointer"
               title="Sign Out"
             >
-              <LogOut className="w-3.5 h-3.5 stroke-[1.75]" />
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           ) : (
             <button
               onClick={onOpenLogin}
-              className="px-4 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-full text-xs font-semibold border border-white/20 transition-all flex items-center space-x-1.5 cursor-pointer"
+              className="px-3.5 py-1.5 inst-button-primary text-xs flex items-center space-x-1.5 cursor-pointer"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>

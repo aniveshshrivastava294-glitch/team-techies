@@ -116,55 +116,53 @@ export default function RealtimeBookingMatrix({ currentUser }) {
   return (
     <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
       
-      {/* Title & Conditional Approval Logic Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      {/* Header Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-stone-800">
         <div>
           <div className="flex items-center space-x-2">
-            <h2 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
-              Real-Time Booking Matrix
-              <span className="px-2 py-0.5 text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-md animate-pulse">
-                Supabase Realtime Sync
-              </span>
-            </h2>
+            <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100">Classroom & Room Booking</h2>
+            <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-[#5C6E3F]/10 text-[#5C6E3F] border border-[#5C6E3F]/30 rounded uppercase">
+              Live Availability
+            </span>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Strict PostgreSQL unique constraints prevent double-booking across all active sessions
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+            Instant booking confirmation with zero double-booking or scheduling conflicts.
           </p>
         </div>
 
         {/* Conditional Logic Pills */}
         <div className="flex items-center space-x-2 text-xs">
-          <div className="px-3 py-1 bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 rounded-xl font-medium">
-            <strong>Non-AC Venue:</strong> Instant Auto-Approved
+          <div className="px-3 py-1 bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 rounded font-medium">
+            <strong>Standard Room:</strong> Instant Approval
           </div>
-          <div className="px-3 py-1 bg-amber-950/60 border border-amber-500/30 text-amber-300 rounded-xl font-medium">
-            <strong>AC Venue:</strong> Event Admin Review
+          <div className="px-3 py-1 bg-[#C79A45]/10 border border-[#C79A45]/30 text-[#C79A45] rounded font-medium">
+            <strong>AC Room:</strong> Admin Review Required
           </div>
         </div>
       </div>
 
       {/* Booking Form Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-stone-50 dark:bg-stone-900 p-4 rounded border border-stone-300 dark:border-stone-800">
         
         {/* Event Name */}
         <div className="md:col-span-5">
-          <label className="block text-xs font-semibold text-slate-400 mb-1">Event / Lecture Title</label>
+          <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Event / Lecture Title</label>
           <input
             type="text"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
-            placeholder="e.g. CS-301 Algorithms Recitation"
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+            placeholder="e.g. Machine Learning Lecture"
+            className="w-full bg-white dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded px-3 py-2 text-xs text-stone-900 dark:text-stone-100 focus:outline-none focus:border-[#B5654A]"
           />
         </div>
 
         {/* Venue Selector */}
         <div className="md:col-span-4">
-          <label className="block text-xs font-semibold text-slate-400 mb-1">Select Venue</label>
+          <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Select Venue</label>
           <select
             value={selectedVenue}
             onChange={(e) => setSelectedVenue(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-semibold"
+            className="w-full bg-white dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded px-3 py-2 text-xs text-stone-900 dark:text-stone-100 focus:outline-none focus:border-[#B5654A] font-semibold"
           >
             {venues.map(v => (
               <option key={v.id} value={v.room_number}>
@@ -176,12 +174,12 @@ export default function RealtimeBookingMatrix({ currentUser }) {
 
         {/* Date Selector */}
         <div className="md:col-span-3">
-          <label className="block text-xs font-semibold text-slate-400 mb-1">Reservation Date</label>
+          <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Reservation Date</label>
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+            className="w-full bg-white dark:bg-stone-950 border border-stone-300 dark:border-stone-700 rounded px-3 py-2 text-xs text-stone-900 dark:text-stone-100 focus:outline-none focus:border-[#B5654A] font-mono"
           />
         </div>
 
