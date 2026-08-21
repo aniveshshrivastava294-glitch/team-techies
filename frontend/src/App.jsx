@@ -10,6 +10,8 @@ import SuperAdminDashboard from './components/roles/SuperAdminDashboard';
 import FacultyDashboard from './components/roles/FacultyDashboard';
 import SubAdminDashboard from './components/roles/SubAdminDashboard';
 
+import InstitutionalFooter from './components/InstitutionalFooter';
+
 function DashboardRouter() {
   const { currentUser } = useAuth();
   const [kpis, setKpis] = useState(null);
@@ -54,34 +56,21 @@ function DashboardRouter() {
     fetchDashboardData();
   }, []);
 
-  const getRoleThemeGradient = () => {
-    if (!currentUser) return 'from-slate-950 via-slate-900 to-slate-950';
-    
-    if (currentUser.role === 'super_admin') {
-      return 'from-slate-950 via-purple-950/25 to-slate-950';
-    }
-    if (currentUser.role === 'faculty') {
-      return 'from-slate-950 via-cyan-950/25 to-slate-950';
-    }
-    if (currentUser.role === 'sub_admin') {
-      if (currentUser.department_domain === 'transport') {
-        return 'from-slate-950 via-teal-950/25 to-slate-950';
-      }
-      return 'from-slate-950 via-amber-950/25 to-slate-950';
-    }
-    return 'from-slate-950 via-slate-900 to-slate-950';
-  };
-
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
-        <div className="py-20 text-center space-y-4">
-          <h2 className="text-xl font-bold text-white">Please sign in to access your Campus Orbit workspace</h2>
+        <div className="py-20 text-center space-y-4 inst-card max-w-xl mx-auto p-12 mt-8">
+          <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-stone-100">
+            Welcome to CampusOrbit
+          </h2>
+          <p className="text-sm text-stone-600 dark:text-stone-400 max-w-md mx-auto">
+            Please sign in to access your institutional campus workspace and administrative tools.
+          </p>
           <button
             onClick={() => setIsLoginOpen(true)}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-full shadow-lg transition-all cursor-pointer"
+            className="px-6 py-2.5 inst-button-primary text-xs cursor-pointer shadow-sm"
           >
-            Open Login & Quick Role Switcher
+            Sign In / Switch Account Role
           </button>
         </div>
       );
@@ -120,13 +109,9 @@ function DashboardRouter() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${getRoleThemeGradient()} text-slate-100 flex flex-col transition-colors duration-700 relative overflow-x-hidden`}>
+    <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#231F1B] text-stone-800 dark:text-stone-200 flex flex-col transition-colors duration-200 relative overflow-x-hidden font-sans">
       
-      {/* Subtle Background 3D Vector Glow Accents */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[140px] pointer-events-none"></div>
-      <div className="absolute bottom-1/3 left-10 w-[400px] h-[400px] bg-purple-600/5 rounded-full blur-[140px] pointer-events-none"></div>
-
-      {/* Floating Glass Pill Navbar */}
+      {/* Header Navbar */}
       <Header
         onRefresh={fetchDashboardData}
         isRefreshing={isRefreshing}
@@ -137,7 +122,7 @@ function DashboardRouter() {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 relative z-10">
         
-        {/* Conversational Hero Bar for All Signed-In Users */}
+        {/* Conversational Hero Bar for Signed-In Users */}
         {currentUser && currentUser.approval_status !== 'pending' && (
           <ConversationalHero currentUser={currentUser} />
         )}
@@ -147,19 +132,14 @@ function DashboardRouter() {
 
       </main>
 
-      {/* Persistent 3D Glowing Omni-Agent Widget on Every Screen */}
+      {/* Persistent AI Assistant Widget */}
       <FloatingAIAssistant currentUser={currentUser} />
 
       {/* Login / Demo Switcher Modal */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900/80 bg-slate-950/80 py-6 px-6 text-center text-xs text-slate-500 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Campus Orbit &bull; Agentic Glassmorphism Decision-Support Platform</span>
-          <span className="text-slate-400">Gemini 2.5 API Function Calling & Groq Text-to-SQL</span>
-        </div>
-      </footer>
+      {/* Institutional Enterprise Footer */}
+      <InstitutionalFooter />
 
     </div>
   );

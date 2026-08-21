@@ -203,36 +203,36 @@ export default function FacultyDashboard({ currentUser }) {
       )}
 
       {/* ================= HEADER BANNER: FACULTY PORTAL GREETING ================= */}
-      <div className="p-6 rounded-3xl bg-white/[0.02] text-white border border-white/5 backdrop-blur-2xl relative overflow-hidden group">
+      <div className="p-6 rounded border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm relative overflow-hidden font-sans">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <div className="flex items-center space-x-2">
-              <span className="px-3 py-1 text-[9px] font-mono font-bold uppercase tracking-widest bg-white/[0.03] text-cyan-400 border border-white/10 rounded-full flex items-center gap-1.5">
-                <User className="w-3 h-3 text-cyan-400" />
+              <span className="px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider bg-stone-100 dark:bg-stone-800 text-[#B5654A] border border-stone-300 dark:border-stone-700 rounded flex items-center gap-1.5">
+                <User className="w-3 h-3 text-[#B5654A]" />
                 FACULTY PORTAL
               </span>
-              <span className="text-xs text-zinc-400 font-medium px-2.5 py-0.5 rounded-full bg-white/[0.02] border border-white/5 font-mono">
+              <span className="text-xs text-stone-500 dark:text-stone-400 font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 font-mono">
                 {department}
               </span>
             </div>
             
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
-              Welcome, <span className="text-cyan-400">{currentUser?.full_name || professorName}</span>
-              <Sparkles className="w-5 h-5 text-cyan-400 stroke-[1.5]" />
+            <h1 className="text-2xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              Welcome, <span className="text-[#B5654A]">{currentUser?.full_name || professorName}</span>
+              <Sparkles className="w-5 h-5 text-[#B5654A]" />
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl font-medium">
-              Enterprise spatial workspace. Reserve lecture halls, manage venue scheduling, monitor shuttle radar & track support tickets.
+            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-2xl font-medium">
+              Welcome to your campus dashboard! Easily book classrooms, check bus schedules, apply for leave, and submit support tickets.
             </p>
           </div>
 
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setShowIssueModal(true)}
-              className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-full transition-all border border-white/15 flex items-center gap-2 cursor-pointer hover:border-amber-400/50"
+              className="px-3.5 py-2 inst-button-secondary text-xs flex items-center gap-2 cursor-pointer"
             >
-              <AlertTriangle className="w-4 h-4 text-amber-400 stroke-[1.75]" />
-              <span>Raise Campus Issue</span>
+              <AlertTriangle className="w-4 h-4 text-[#C79A45]" />
+              <span>Report an Issue</span>
             </button>
           </div>
 
@@ -240,47 +240,47 @@ export default function FacultyDashboard({ currentUser }) {
       </div>
 
       {/* ================= NAVIGATION TABS ================= */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-4 py-2 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center space-x-2 border ${
+            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
               activeTab === 'overview'
-                ? 'bg-white/10 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-mono'
-                : 'text-zinc-400 hover:text-white bg-white/[0.02] border-white/5'
+                ? 'bg-[#B5654A] text-white border-[#B5654A]'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
             }`}
           >
-            <LayoutDashboard className="w-3.5 h-3.5 stroke-[1.75]" />
-            <span>Executive Workspace</span>
+            <LayoutDashboard className="w-3.5 h-3.5" />
+            <span>My Dashboard</span>
           </button>
 
           <button
             onClick={() => setActiveTab('matrix')}
-            className={`px-4 py-2 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center space-x-2 border ${
+            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
               activeTab === 'matrix'
-                ? 'bg-white/10 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-mono'
-                : 'text-zinc-400 hover:text-white bg-white/[0.02] border-white/5'
+                ? 'bg-[#B5654A] text-white border-[#B5654A]'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
             }`}
           >
-            <Building2 className="w-3.5 h-3.5 stroke-[1.75]" />
-            <span>Venue Matrix</span>
+            <Building2 className="w-3.5 h-3.5" />
+            <span>Book Classrooms</span>
           </button>
 
           <button
             onClick={() => setActiveTab('transport')}
-            className={`px-4 py-2 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center space-x-2 border ${
+            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
               activeTab === 'transport'
-                ? 'bg-white/10 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-mono'
-                : 'text-zinc-400 hover:text-white bg-white/[0.02] border-white/5'
+                ? 'bg-[#B5654A] text-white border-[#B5654A]'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
             }`}
           >
-            <Bus className="w-3.5 h-3.5 stroke-[1.75]" />
-            <span>Shuttle GPS Radar</span>
+            <Bus className="w-3.5 h-3.5" />
+            <span>Campus Bus Tracker</span>
           </button>
         </div>
 
-        <span className="text-xs font-mono text-zinc-500 hidden sm:inline-block">
-          Role: <strong className="text-cyan-400">Faculty Admin</strong>
+        <span className="text-xs font-mono text-stone-500 hidden sm:inline-block">
+          Role: <strong className="text-[#B5654A]">Faculty</strong>
         </span>
       </div>
 

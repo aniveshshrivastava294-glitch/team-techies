@@ -41,56 +41,50 @@ export default function CosmicOrbitRadar() {
   };
 
   return (
-    <div className="w-full rounded-3xl bg-black/80 border border-cyan-500/20 backdrop-blur-2xl p-6 shadow-2xl relative overflow-hidden group font-sans">
-      {/* Background Ambient Glowing Nebulae */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/15 transition-all duration-700" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-purple-500/15 transition-all duration-700" />
-
-      {/* Laser Scanline */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent h-16 w-full animate-scanline pointer-events-none" />
-
-      <div className="relative z-10 space-y-6">
+    <div className="w-full rounded border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 p-5 shadow-sm relative overflow-hidden font-sans">
+      
+      <div className="relative z-10 space-y-5">
         
         {/* Widget Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-stone-200 dark:border-stone-800">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-cyan-500/10 border border-cyan-500/30 rounded-2xl text-cyan-400 glow-cyan-purple">
-              <Satellite className="w-5 h-5 animate-pulse" />
+            <div className="p-2 bg-[#2F4034]/10 border border-[#2F4034]/30 rounded text-[#2F4034] dark:text-[#5C6E3F]">
+              <Satellite className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-black text-white tracking-tight flex items-center gap-1.5">
-                  Cosmic Orbit Telemetry Radar
+                <h3 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                  Live Campus Fleet Tracker
                 </h3>
-                <span className="px-2 py-0.5 text-[9px] font-mono font-extrabold uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-full">
-                  LIVE QUANTUM LINK
+                <span className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase inst-badge-sage">
+                  CONNECTED
                 </span>
               </div>
-              <p className="text-xs text-zinc-400 font-mono">Real-time satellite constellation, transit telemetry & auditorium sensor mesh</p>
+              <p className="text-xs text-stone-500 dark:text-stone-400 font-mono">Real-time location, bus status, and room sensor monitoring.</p>
             </div>
           </div>
 
-          {/* Interactive Control Controls */}
+          {/* Interactive Controls */}
           <div className="flex items-center gap-2 font-mono text-xs">
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`p-1.5 px-3 rounded border text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
                 soundEnabled 
-                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' 
-                  : 'bg-white/5 text-zinc-400 border-white/10 hover:text-white'
+                  ? 'bg-[#B5654A]/10 text-[#B5654A] border-[#B5654A]/30 font-bold' 
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border-stone-300 dark:border-stone-700'
               }`}
-              title="Toggle Audio Feedback Beep"
+              title="Toggle Sound"
             >
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-cyan-400" /> : <VolumeX className="w-4 h-4" />}
-              <span>{soundEnabled ? 'Audio SFX ON' : 'SFX Muted'}</span>
+              {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+              <span>{soundEnabled ? 'Sound ON' : 'Sound Off'}</span>
             </button>
 
             <button
               onClick={() => triggerDiagnosticPing(activeNode)}
-              className="px-3.5 py-2 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-xl transition-all shadow-lg cursor-pointer flex items-center gap-1.5 hover:scale-105 active:scale-95"
+              className="px-3.5 py-1.5 inst-button-primary text-xs flex items-center gap-1.5 cursor-pointer"
             >
-              <Radio className="w-3.5 h-3.5 animate-ping" />
-              <span>Ping Orbit</span>
+              <Radio className="w-3.5 h-3.5" />
+              <span>Refresh Status</span>
             </button>
           </div>
         </div>

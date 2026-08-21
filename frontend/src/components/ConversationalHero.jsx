@@ -7,10 +7,10 @@ export default function ConversationalHero({ currentUser }) {
   const [agentResult, setAgentResult] = useState(null);
 
   const suggestionPills = [
-    { label: "Book AC Room for 2 PM", query: "Book an AC room for 14:00 - 15:30 today" },
-    { label: "Campus Bus Telemetry", query: "Show active bus routes and overcrowding status" },
-    { label: "Faculty Leave Request", query: "I need to apply for casual leave for tomorrow" },
-    { label: "Approve Pending Requests", query: "Approve pending leave requests for faculty" }
+    { label: "Book a Classroom", query: "Book room CS-301 for 2 PM today" },
+    { label: "Check Bus Schedules", query: "Show active bus routes and schedules" },
+    { label: "Apply for Leave", query: "I need to apply for casual leave for tomorrow" },
+    { label: "Approve Leave Requests", query: "Approve pending leave requests for faculty" }
   ];
 
   const handleAskAgent = async (promptText) => {
@@ -43,93 +43,90 @@ export default function ConversationalHero({ currentUser }) {
   };
 
   return (
-    <div className="py-8 px-4 sm:px-6 relative text-center space-y-6">
+    <div className="py-6 px-4 sm:px-6 relative text-center space-y-5 inst-card p-6 border border-stone-300 dark:border-stone-800 my-4">
       
-      {/* Faint Nebula Ambient Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-indigo-600/5 rounded-full blur-[140px] pointer-events-none" />
-
-      <div className="max-w-3xl mx-auto space-y-5 relative z-10">
+      <div className="max-w-3xl mx-auto space-y-4 relative z-10">
         
-        {/* Floating Minimalist Tag */}
-        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-white/[0.03] border border-white/10 rounded-full text-cyan-300 text-xs font-mono">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400 stroke-[1.5]" />
-          <span>Autonomous Orbit Assistant</span>
+        {/* Institutional Tag */}
+        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 rounded text-stone-700 dark:text-stone-300 text-xs font-mono">
+          <Sparkles className="w-3.5 h-3.5 text-[#B5654A]" />
+          <span>Campus Orbit Assistant</span>
         </div>
 
-        {/* High-Contrast Seamless Header */}
-        <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            What do you need to orchestrate today?
+        {/* High-Contrast Serif Header */}
+        <div className="space-y-1.5">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+            How can we help you today?
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto font-medium">
-            Natural language enterprise command bar. Execute venue reservations, track live shuttle telemetry & manage faculty requests.
+          <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-xl mx-auto font-sans font-medium">
+            Search anything in plain English — book classrooms, inspect shuttle schedules, or manage leave requests.
           </p>
         </div>
 
-        {/* Sleek Borderless Translucent Search Pill */}
-        <form onSubmit={(e) => { e.preventDefault(); handleAskAgent(); }} className="relative max-w-2xl mx-auto pt-2">
+        {/* Crisp Bordered Search Input */}
+        <form onSubmit={(e) => { e.preventDefault(); handleAskAgent(); }} className="relative max-w-2xl mx-auto pt-1">
           <div className="relative flex items-center">
-            <Search className="w-4 h-4 text-zinc-400 absolute left-5 pointer-events-none stroke-[1.75]" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-4 pointer-events-none" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="e.g. Reserve CS-301 Audi for tomorrow 10 AM..."
-              className="w-full bg-white/[0.03] hover:bg-white/[0.05] border border-white/10 focus:border-cyan-500/50 backdrop-blur-2xl rounded-full pl-12 pr-32 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none transition-all font-medium shadow-2xl"
+              placeholder="e.g. Book room CS-301 for tomorrow 10 AM..."
+              className="w-full bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 focus:border-[#B5654A] rounded pl-11 pr-28 py-3 text-xs text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none transition-colors font-sans shadow-sm"
             />
             <button
               type="submit"
               disabled={isLoading}
-              className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-full transition-all border border-white/15 flex items-center space-x-1.5 cursor-pointer disabled:opacity-50 hover:border-cyan-400/50"
+              className="absolute right-1.5 top-1.5 bottom-1.5 px-4 inst-button-primary text-xs flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
             >
               {isLoading ? (
-                <span className="font-mono text-[11px]">Executing...</span>
+                <span className="font-mono text-[11px]">Thinking...</span>
               ) : (
                 <>
-                  <span className="font-mono text-[11px]">Query AI</span>
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[2]" />
+                  <span className="font-sans font-semibold text-xs">Ask AI</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
             </button>
           </div>
         </form>
 
-        {/* Floating Action Pills */}
+        {/* Action Pills */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
           {suggestionPills.map((pill, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => { setQuery(pill.query); handleAskAgent(pill.query); }}
-              className="px-3.5 py-1.5 bg-white/[0.02] hover:bg-white/[0.06] text-zinc-400 hover:text-white border border-white/5 hover:border-white/15 rounded-full text-xs font-medium transition-all cursor-pointer flex items-center space-x-1.5 font-mono"
+              className="px-3 py-1 bg-stone-100 dark:bg-stone-800/80 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-300 dark:border-stone-700 rounded text-xs font-medium transition-colors cursor-pointer flex items-center space-x-1 font-mono"
             >
               <span>{pill.label}</span>
             </button>
           ))}
         </div>
 
-        {/* Agent Execution Output Floating Banner */}
+        {/* Execution Output Box */}
         {agentResult && (
-          <div className="mt-6 p-6 rounded-3xl bg-white/[0.02] border border-cyan-500/30 backdrop-blur-2xl text-left space-y-3 shadow-2xl animate-in fade-in">
-            <div className="flex items-center justify-between border-b border-white/5 pb-2">
-              <span className="text-xs font-mono font-bold text-cyan-400 flex items-center gap-2 uppercase tracking-wider">
-                <Sparkles className="w-4 h-4 text-cyan-300 stroke-[1.5]" />
-                <span>Agent Execution Output</span>
+          <div className="mt-4 p-4 rounded border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-left space-y-2 shadow-sm">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2">
+              <span className="text-xs font-mono font-bold text-[#B5654A] flex items-center gap-1.5 uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Assistant Response</span>
               </span>
               {agentResult.toolExecuted && (
-                <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full">
-                  Executed: {agentResult.toolExecuted}
+                <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase inst-badge-sage">
+                  Action: {agentResult.toolExecuted}
                 </span>
               )}
             </div>
 
-            <p className="text-xs text-zinc-200 leading-relaxed font-sans font-medium whitespace-pre-line">
+            <p className="text-xs text-stone-800 dark:text-stone-200 leading-relaxed font-sans whitespace-pre-line">
               {agentResult.gemini?.answer || agentResult.query}
             </p>
 
             {agentResult.toolDetails && (
-              <div className="bg-black/60 p-3 rounded-2xl border border-white/5 text-[11px] font-mono text-zinc-400">
-                <span className="text-zinc-300 block font-sans font-semibold mb-1">State Update Parameters:</span>
+              <div className="bg-stone-100 dark:bg-stone-950 p-2.5 rounded border border-stone-200 dark:border-stone-800 text-[11px] font-mono text-stone-600 dark:text-stone-400">
+                <span className="text-stone-800 dark:text-stone-300 block font-sans font-semibold mb-1">Details:</span>
                 <p className="truncate">{JSON.stringify(agentResult.toolDetails, null, 2)}</p>
               </div>
             )}
@@ -137,9 +134,6 @@ export default function ConversationalHero({ currentUser }) {
         )}
 
       </div>
-      
-      {/* Section Divider */}
-      <div className="divider-galaxy mt-8" />
     </div>
   );
 }
