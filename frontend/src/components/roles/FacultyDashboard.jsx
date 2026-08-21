@@ -171,7 +171,7 @@ export default function FacultyDashboard({ currentUser }) {
           }`}
         >
           <Bus className="w-4 h-4" />
-          <span>Shuttle Bus Telemetry</span>
+          <span>Shuttle Bus Telemetry & GPS Radar</span>
         </button>
 
         <button
@@ -190,61 +190,122 @@ export default function FacultyDashboard({ currentUser }) {
         <RealtimeBookingMatrix currentUser={currentUser} />
       )}
 
-      {/* TAB 2: BUS FLEET TELEMETRY */}
+      {/* TAB 2: BUS FLEET TELEMETRY & GPS RADAR */}
       {activeTab === 'transport' && (
         <div className="glass-panel p-6 rounded-3xl space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Bus className="w-4 h-4 text-cyan-400" />
-                <span>Campus Shuttle Bus Fleet Telemetry</span>
+                <span>Campus Shuttle Bus Fleet Telemetry & GPS Radar</span>
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">Real-time driver details, capacity, speed, and route operational status</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {busFleet.map((bus) => (
-              <div
-                key={bus.id}
-                onClick={() => setSelectedBus(bus)}
-                className={`glass-card p-5 rounded-2xl border transition-all cursor-pointer space-y-3 ${
-                  selectedBus.id === bus.id ? 'border-cyan-500/60 ring-1 ring-cyan-500/30' : 'hover:border-slate-700'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white text-sm">{bus.busNo}</span>
-                  <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
-                    bus.status === 'Peak Load'
-                      ? 'bg-red-500/20 text-red-300 border-red-500/40 animate-pulse'
-                      : bus.status === 'Delayed 5m'
-                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                      : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                  }`}>
-                    {bus.status}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Bus Cards Grid */}
+            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {busFleet.map((bus) => (
+                <div
+                  key={bus.id}
+                  onClick={() => setSelectedBus(bus)}
+                  className={`glass-card p-5 rounded-2xl border transition-all cursor-pointer space-y-3 ${
+                    selectedBus.id === bus.id ? 'border-cyan-500/60 ring-1 ring-cyan-500/30' : 'hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white text-sm">{bus.busNo}</span>
+                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                      bus.status === 'Peak Load'
+                        ? 'bg-red-500/20 text-red-300 border-red-500/40 animate-pulse'
+                        : bus.status === 'Delayed 5m'
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                        : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                    }`}>
+                      {bus.status}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-semibold text-slate-200">{bus.label}</h4>
+                    <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>{bus.loc}</span>
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-800 text-xs space-y-1">
+                    <p className="text-slate-400 flex items-center justify-between">
+                      <span>Driver: <strong>{bus.driver}</strong></span>
+                      <span className="font-mono text-[10px] text-slate-400">{bus.phone}</span>
+                    </p>
+                    <p className="text-slate-400 flex items-center justify-between">
+                      <span>Speed: <strong className="text-white">{bus.speed}</strong></span>
+                      <span className="font-mono font-bold text-cyan-300">{bus.seatsLeft} seats left</span>
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* GPS Radar & Telemetry Display */}
+            <div className="lg:col-span-5 glass-card p-5 rounded-2xl border border-slate-800 space-y-4 shadow-2xl">
+              
+              {/* Live GPS Radar Grid */}
+              <div className="w-full h-24 bg-slate-950/90 rounded-xl border border-slate-800 relative overflow-hidden flex items-center justify-between px-4">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:14px_14px] opacity-40" />
+                <div className="flex items-center gap-3 relative z-10">
+                  <span className="relative flex h-3.5 w-3.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500" />
+                  </span>
+                  <div>
+                    <span className="font-mono text-xs text-cyan-400 font-bold block tracking-wider">GPS RADAR LIVE TELEMETRY</span>
+                    <span className="text-xs text-slate-400">{selectedBus.loc}</span>
+                  </div>
+                </div>
+                <div className="text-right relative z-10">
+                  <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                    {selectedBus.speed}
                   </span>
                 </div>
+              </div>
 
-                <div>
-                  <h4 className="text-xs font-semibold text-slate-200">{bus.label}</h4>
-                  <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                    <span>{bus.loc}</span>
-                  </p>
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h4 className="font-bold text-white text-xs">Live Vehicle Telemetry: {selectedBus.label}</h4>
+                <span className="text-[10px] font-bold text-cyan-400 px-2 py-0.5 bg-cyan-500/10 rounded-full border border-cyan-500/20 font-mono">
+                  {selectedBus.status}
+                </span>
+              </div>
+
+              <div className="space-y-2 text-xs text-slate-300 font-sans pt-1">
+                <div className="flex justify-between p-2.5 bg-slate-950/80 rounded-xl border border-slate-800">
+                  <span className="text-slate-400 font-semibold">Bus Registration:</span>
+                  <span className="font-mono font-bold text-white">{selectedBus.busNo}</span>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800 text-xs space-y-1">
-                  <p className="text-slate-400 flex items-center justify-between">
-                    <span>Driver: <strong>{bus.driver}</strong></span>
-                    <span className="font-mono text-[10px] text-slate-400">{bus.phone}</span>
-                  </p>
-                  <p className="text-slate-400 flex items-center justify-between">
-                    <span>Speed: <strong className="text-white">{bus.speed}</strong></span>
-                    <span className="font-mono font-bold text-cyan-300">{bus.seatsLeft} seats left</span>
-                  </p>
+                <div className="flex justify-between p-2.5 bg-slate-950/80 rounded-xl border border-slate-800">
+                  <span className="text-slate-400 font-semibold">Current Location:</span>
+                  <span className="font-semibold text-white truncate max-w-[150px]">{selectedBus.loc}</span>
+                </div>
+
+                <div className="flex justify-between p-2.5 bg-slate-950/80 rounded-xl border border-slate-800">
+                  <span className="text-slate-400 font-semibold">Seat Occupancy:</span>
+                  <span className="font-mono font-bold text-cyan-400">{selectedBus.capacity - selectedBus.seatsLeft} / {selectedBus.capacity} Seats ({selectedBus.seatsLeft} Available)</span>
                 </div>
               </div>
-            ))}
+
+              <div className="pt-2 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                <span>Driver: <strong className="text-white">{selectedBus.driver}</strong></span>
+                <span className="flex items-center gap-1 text-cyan-400 font-bold cursor-pointer hover:underline">
+                  <Phone className="w-3.5 h-3.5" /> Call Driver ({selectedBus.phone})
+                </span>
+              </div>
+
+            </div>
+
           </div>
         </div>
       )}
