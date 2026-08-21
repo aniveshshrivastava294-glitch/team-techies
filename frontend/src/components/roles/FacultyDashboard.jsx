@@ -791,7 +791,7 @@ export default function FacultyDashboard({ currentUser }) {
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* DYNAMICALLY RE-ORDERED FEATURE CARDS CONTAINER (lg:col-span-8) */}
-        <div className="lg:col-span-8 space-y-4.5 transition-all duration-500">
+        <div className="lg:col-span-8 space-y-7 md:space-y-8 transition-all duration-500">
           {orderedSections.map((sec) => {
             if (sec === 'classroom') return renderClassroomCard();
             if (sec === 'venue') return renderVenueCard();
