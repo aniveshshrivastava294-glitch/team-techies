@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import LoginModal from './components/LoginModal';
 import PendingApprovalView from './components/PendingApprovalView';
@@ -55,7 +56,7 @@ function DashboardRouter() {
     if (!currentUser) {
       return (
         <div className="py-20 text-center space-y-4">
-          <h2 className="text-xl font-bold text-white">Please sign in to access your role dashboard</h2>
+          <h2 className="text-xl font-bold dark:text-white text-slate-900">Please sign in to access your role dashboard</h2>
           <button
             onClick={() => setIsLoginOpen(true)}
             className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all"
@@ -101,7 +102,7 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen transition-colors duration-500 flex flex-col selection:bg-blue-600 selection:text-white">
       
       {/* Header */}
       <Header
@@ -120,10 +121,10 @@ function DashboardRouter() {
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 px-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-800/80 glass-panel py-6 px-6 text-center text-xs dark:text-slate-400 text-slate-600 transition-colors duration-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Campus Intelligence Dashboard (Problem SW-01-P) &bull; RBAC Platform</span>
-          <span className="text-slate-400">Groq Text-to-SQL + Gemini 2.5 Multi-Factor Synthesis</span>
+          <span className="dark:text-slate-300 text-slate-700 font-medium">Groq Text-to-SQL + Gemini 2.5 Multi-Factor Synthesis</span>
         </div>
       </footer>
 
@@ -133,8 +134,10 @@ function DashboardRouter() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <DashboardRouter />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <DashboardRouter />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
