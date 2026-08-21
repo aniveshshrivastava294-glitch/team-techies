@@ -25,15 +25,15 @@ export default function LiveCampusTicker() {
   ];
 
   return (
-    <div className="w-full rounded border border-stone-300 dark:border-stone-800 bg-stone-100 dark:bg-stone-900 px-4 py-2 flex items-center justify-between gap-4 font-mono text-xs text-stone-800 dark:text-stone-200 shadow-xs overflow-hidden relative font-sans">
+    <div className="w-full rounded-md border border-slate-200 bg-white px-4 py-2 flex items-center justify-between gap-4 font-mono text-xs text-slate-800 shadow-xs overflow-hidden relative font-sans">
       
       {/* Left Badge */}
-      <div className="flex items-center gap-2 shrink-0 z-10 bg-stone-100 dark:bg-stone-900 pr-3 border-r border-stone-300 dark:border-stone-800 font-mono">
+      <div className="flex items-center gap-2 shrink-0 z-10 bg-white pr-3 border-r border-slate-200 font-mono">
         <span className="relative flex h-2 w-2">
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5C6E3F]" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
         </span>
-        <span className="font-bold text-[10px] text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
-          <Radio className="w-3.5 h-3.5 text-[#B5654A]" />
+        <span className="font-bold text-[10px] text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Radio className="w-3.5 h-3.5 text-blue-600" />
           SYSTEM STATUS FEED
         </span>
       </div>
@@ -42,8 +42,8 @@ export default function LiveCampusTicker() {
       <div className="overflow-hidden relative w-full flex items-center">
         <div className="animate-marquee whitespace-nowrap flex items-center gap-10">
           {tickerItems.concat(tickerItems).map((item, idx) => (
-            <span key={idx} className="inline-flex items-center gap-2 text-stone-600 dark:text-stone-400 font-sans text-xs hover:text-[#B5654A] transition-colors cursor-pointer">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B5654A]" />
+            <span key={idx} className="inline-flex items-center gap-2 text-slate-600 font-sans text-xs hover:text-blue-600 transition-colors cursor-pointer">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
               <span>{item}</span>
             </span>
           ))}
@@ -51,14 +51,14 @@ export default function LiveCampusTicker() {
       </div>
 
       {/* Right Stats & Clock */}
-      <div className="flex items-center gap-3 shrink-0 z-10 bg-stone-100 dark:bg-stone-900 pl-3 border-l border-stone-300 dark:border-stone-800 text-[11px] font-mono">
-        <div className="hidden sm:flex items-center gap-1.5 text-[#5C6E3F] font-bold">
+      <div className="flex items-center gap-3 shrink-0 z-10 bg-white pl-3 border-l border-slate-200 text-[11px] font-mono">
+        <div className="hidden sm:flex items-center gap-1.5 text-emerald-600 font-bold">
           <Wifi className="w-3.5 h-3.5" />
           <span>{networkSpeed}</span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-stone-700 dark:text-stone-300 font-bold px-2 py-0.5 bg-stone-200 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 rounded">
-          <Clock className="w-3.5 h-3.5 text-[#B5654A]" />
+        <div className="flex items-center gap-1.5 text-slate-800 font-bold px-2 py-0.5 bg-slate-100 border border-slate-200 rounded">
+          <Clock className="w-3.5 h-3.5 text-blue-600" />
           <span>{timeStr || '12:00:00'}</span>
         </div>
       </div>

@@ -83,19 +83,19 @@ export default function TicketsSupportLogCard({
   });
 
   return (
-    <div className="card-enterprise p-5 mb-6 font-sans">
+    <div className="card-surface p-5 mb-6 font-sans shadow-xs">
       {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-16 right-6 bg-slate-900 text-white text-xs px-4 py-2 rounded-md shadow-lg z-50 flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+        <div className="fixed top-16 right-6 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-lg shadow-md z-50 flex items-center gap-2 font-mono">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-[#E2E8F0]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-slate-200">
         <div className="flex items-start gap-2.5">
-          <div className="p-2 rounded bg-amber-50 text-[#F59E0B] border border-amber-200 shrink-0">
+          <div className="p-2 rounded-md bg-amber-50 text-amber-700 border border-amber-200 shrink-0">
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
@@ -103,18 +103,18 @@ export default function TicketsSupportLogCard({
               <h3 className="text-sm font-bold text-slate-900">
                 {title}
               </h3>
-              <span className="badge-pill badge-warning text-[10px]">
+              <span className="badge-warning text-[10px]">
                 {activeTicketsCount} Active
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-600 mt-0.5">
               {subtitle}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center space-x-1 border-b border-[#E2E8F0] sm:border-b-0">
+          <div className="flex items-center space-x-1 border-b border-slate-200 sm:border-b-0">
             {['ALL', 'ACTIVE', 'RESOLVED'].map(st => (
               <button
                 key={st}
@@ -140,27 +140,27 @@ export default function TicketsSupportLogCard({
         </div>
       </div>
 
-      {/* Tickets List Body (High Contrast White Cards) */}
+      {/* Tickets List Body */}
       <div className="space-y-2.5">
         {filteredTickets.length === 0 ? (
-          <div className="py-6 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0]">
+          <div className="py-6 text-center text-slate-500 text-xs bg-slate-50 rounded-lg border border-slate-200">
             No support tickets match the selected filter.
           </div>
         ) : (
           filteredTickets.map((tck) => (
             <div 
               key={tck.id} 
-              className="p-3.5 rounded-md bg-white border border-[#E2E8F0] hover:border-slate-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
+              className="p-3.5 rounded-lg bg-white border border-slate-200 hover:border-slate-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
             >
               <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-mono text-xs font-bold text-slate-900">
                     {tck.id}
                   </span>
-                  <span className="badge-pill badge-info text-[10px]">
+                  <span className="badge-info text-[10px]">
                     {tck.domain}
                   </span>
-                  <span className={`badge-pill text-[10px] ${
+                  <span className={`text-[10px] ${
                     tck.status === 'In Progress' ? 'badge-warning' :
                     tck.status === 'Resolved' ? 'badge-success' :
                     'badge-info'
@@ -179,7 +179,7 @@ export default function TicketsSupportLogCard({
                   <button
                     type="button"
                     onClick={() => handleStatusUpdate(tck.id, 'Resolved')}
-                    className="btn-secondary text-xs py-1 px-3 text-[#10B981] font-semibold"
+                    className="btn-secondary text-xs py-1 px-3 text-emerald-600 font-semibold"
                   >
                     Mark Resolved
                   </button>
@@ -200,12 +200,12 @@ export default function TicketsSupportLogCard({
 
       {/* Raise Ticket Modal */}
       {showIssueModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 font-sans">
-          <div className="bg-white border border-[#E2E8F0] w-full max-w-md rounded-lg p-6 shadow-xl space-y-4">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 font-sans">
+          <div className="bg-white border border-slate-200 w-full max-w-md rounded-lg p-6 shadow-lg space-y-4">
             
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-[#F59E0B]" />
+                <AlertTriangle className="w-4 h-4 text-blue-600" />
                 <h3 className="text-sm font-bold text-slate-900">
                   Raise New Support Ticket
                 </h3>
@@ -221,8 +221,8 @@ export default function TicketsSupportLogCard({
 
             <form onSubmit={handleRaiseTicket} className="space-y-3 text-xs">
               <div>
-                <label className="block font-medium text-slate-700 mb-1">
-                  Issue Title <span className="text-[#DC2626]">*</span>
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Issue Title <span className="text-rose-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -230,17 +230,17 @@ export default function TicketsSupportLogCard({
                   placeholder="e.g. Laser Projector HDMI Port Signal Loss"
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
+                  className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-medium text-slate-700 mb-1">Category Domain</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Category Domain</label>
                   <select
                     value={ticketDomain}
                     onChange={(e) => setTicketDomain(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value="events">Event AV & Stage</option>
                     <option value="transport">Transport Fleet</option>
@@ -249,11 +249,11 @@ export default function TicketsSupportLogCard({
                 </div>
 
                 <div>
-                  <label className="block font-medium text-slate-700 mb-1">Priority</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Priority</label>
                   <select
                     value={ticketPriority}
                     onChange={(e) => setTicketPriority(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -263,8 +263,8 @@ export default function TicketsSupportLogCard({
               </div>
 
               <div>
-                <label className="block font-medium text-slate-700 mb-1">
-                  Detailed Description <span className="text-[#DC2626]">*</span>
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Detailed Description <span className="text-rose-600">*</span>
                 </label>
                 <textarea
                   required
@@ -272,11 +272,11 @@ export default function TicketsSupportLogCard({
                   placeholder="Describe hardware fault, room location, or support requirement..."
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
+                  className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E2E8F0]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(false)}

@@ -199,35 +199,35 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
       <LiveCampusTicker />
 
       {toastMsg && (
-        <div className="fixed top-16 right-6 bg-zinc-900 text-zinc-50 font-semibold text-xs px-4 py-2.5 rounded-xl shadow-none border border-zinc-800 z-50 flex items-center gap-2">
+        <div className="fixed top-16 right-6 bg-slate-900 text-white font-semibold text-xs px-4 py-2.5 rounded-lg shadow-md border border-slate-700 z-50 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* HEADER BANNER */}
-      <div className="card-onyx p-6 space-y-3 font-sans">
+      <div className="card-surface p-6 space-y-3 font-sans shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2">
             {rawDomain === 'all' && (
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => setActiveTab('auditorium')}
-                  className={`btn-onyx-secondary text-xs ${activeTab === 'auditorium' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : ''}`}
+                  className={`btn-secondary text-xs ${activeTab === 'auditorium' ? 'bg-blue-50 text-blue-600 border-blue-200' : ''}`}
                 >
                   <Building2 className="w-3.5 h-3.5" />
                   <span>Auditorium Manager</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('transport')}
-                  className={`btn-onyx-secondary text-xs ${activeTab === 'transport' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : ''}`}
+                  className={`btn-secondary text-xs ${activeTab === 'transport' ? 'bg-blue-50 text-blue-600 border-blue-200' : ''}`}
                 >
                   <Bus className="w-3.5 h-3.5" />
                   <span>Transport Manager</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('maintenance')}
-                  className={`btn-onyx-secondary text-xs ${activeTab === 'maintenance' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : ''}`}
+                  className={`btn-secondary text-xs ${activeTab === 'maintenance' ? 'bg-blue-50 text-blue-600 border-blue-200' : ''}`}
                 >
                   <Wrench className="w-3.5 h-3.5" />
                   <span>Maintenance Manager</span>
@@ -236,13 +236,13 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
             )}
 
             <div>
-              <span className="badge-amber text-[10px] uppercase">
+              <span className="badge-info text-[10px] uppercase">
                 Auditorium & Event Command
               </span>
-              <h1 className="text-xl font-bold tracking-tight text-zinc-50 mt-1">
+              <h1 className="text-xl font-bold tracking-tight text-slate-900 mt-1">
                 Good morning, {currentUser?.full_name || 'Marcus Brody'}
               </h1>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-slate-600 mt-0.5">
                 Real-time auditorium occupancy, climate control approvals, and hardware telemetry dashboard.
               </p>
             </div>
@@ -252,7 +252,7 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
             <button
               onClick={fetchSubAdminData}
               disabled={isLoading}
-              className="btn-amber-primary text-xs py-1.5 px-3"
+              className="btn-primary text-xs py-1.5 px-3"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
               <span>Refresh Status</span>
@@ -270,17 +270,17 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
         <div className="space-y-6">
 
           {/* AUDITORIUM OVERVIEW SECTION */}
-          <div className="card-onyx p-6 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-zinc-800">
+          <div className="card-surface p-6 space-y-4 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-400">
+                <div className="p-2 bg-blue-50 border border-blue-200 rounded-md text-blue-600">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-sm font-semibold text-zinc-50">
+                  <h2 className="text-sm font-bold text-slate-900">
                     Auditorium Overview
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-slate-600">
                     Facility occupancy & automated climate control settings
                   </p>
                 </div>
@@ -288,13 +288,13 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-zinc-500" />
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
                   <input
                     type="text"
                     value={searchLookup}
                     onChange={(e) => setSearchLookup(e.target.value)}
                     placeholder="Search hall or capacity..."
-                    className="pl-8 pr-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500/50 min-w-[200px]"
+                    className="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 min-w-[200px]"
                   />
                 </div>
               </div>
@@ -308,18 +308,18 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                   <div
                     key={audi.id}
                     onClick={() => setSelectedAudi(audi)}
-                    className={`p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
+                    className={`p-3.5 rounded-lg border transition-all cursor-pointer flex flex-col justify-between ${
                       isBooked
-                        ? 'bg-zinc-950 border-rose-500/30'
-                        : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700'
+                        ? 'bg-slate-50 border-rose-200'
+                        : 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-zinc-50 text-xs">{audi.name}</span>
-                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-amber-400' : 'text-zinc-500'}`} />
+                        <span className="font-bold text-slate-900 text-xs">{audi.name}</span>
+                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-blue-600' : 'text-slate-400'}`} />
                       </div>
-                      <span className="text-[11px] font-mono text-zinc-400 block mt-1">
+                      <span className="text-[11px] font-mono text-slate-500 block mt-1">
                         Cap: {audi.capacity}
                       </span>
                     </div>
@@ -327,8 +327,8 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                     <div className="mt-3">
                       <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border block text-center uppercase tracking-wider ${
                         isBooked
-                          ? 'badge-rose'
-                          : 'badge-emerald'
+                          ? 'badge-error'
+                          : 'badge-success'
                       }`}>
                         {audi.status}
                       </span>
@@ -339,9 +339,9 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
               <button
                 onClick={() => setShowAddAudiModal(true)}
-                className="p-3.5 rounded-xl border border-dashed border-zinc-800 bg-zinc-950 hover:bg-zinc-900 transition-all flex flex-col items-center justify-center gap-1 text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                className="p-3.5 rounded-lg border border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition-all flex flex-col items-center justify-center gap-1 text-slate-600 cursor-pointer"
               >
-                <Plus className="w-4 h-4 text-amber-400" />
+                <Plus className="w-4 h-4 text-blue-600" />
                 <span className="font-medium text-xs">Add Hall</span>
               </button>
             </div>
@@ -359,18 +359,18 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
       {/* ADD NEW AUDITORIUM MODAL */}
       {showAddAudiModal && (
-        <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-xl p-5 shadow-none space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 w-full max-w-md rounded-lg p-5 shadow-lg space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-amber-400" />
-                <h3 className="text-sm font-semibold text-zinc-50">
+                <Building2 className="w-4 h-4 text-blue-600" />
+                <h3 className="text-sm font-bold text-slate-900">
                   Add New Auditorium
                 </h3>
               </div>
               <button
                 onClick={() => setShowAddAudiModal(false)}
-                className="p-1 rounded text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-100"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -378,8 +378,8 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
             <form onSubmit={handleAddAudiSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-zinc-400 font-medium mb-1">
-                  Auditorium Name <span className="text-rose-400">*</span>
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Auditorium Name <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -387,13 +387,13 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                   placeholder="e.g. Audi 6, Seminar Hall C"
                   value={newAudiForm.name}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, name: e.target.value })}
-                  className="w-full px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50"
+                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-400 font-medium mb-1">
-                  Seating Capacity <span className="text-rose-400">*</span>
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Seating Capacity <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -401,21 +401,21 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                   placeholder="e.g. 350"
                   value={newAudiForm.capacity}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, capacity: e.target.value })}
-                  className="w-full px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50"
+                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-zinc-800">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowAddAudiModal(false)}
-                  className="btn-onyx-secondary text-xs"
+                  className="btn-secondary text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn-amber-primary text-xs"
+                  className="btn-primary text-xs"
                 >
                   Create & Add Hall
                 </button>

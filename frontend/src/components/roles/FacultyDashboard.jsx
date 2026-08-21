@@ -170,31 +170,31 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
       
       {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-16 right-6 z-50 bg-zinc-900 text-zinc-50 px-4 py-2.5 rounded-xl shadow-none border border-zinc-800 text-xs font-mono font-semibold flex items-center gap-2">
+        <div className="fixed top-16 right-6 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-lg shadow-md border border-slate-700 text-xs font-mono font-semibold flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* HEADER BANNER */}
-      <div className="card-onyx p-6 font-sans">
+      <div className="card-surface p-6 font-sans shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           
           <div className="space-y-1">
             <div className="flex items-center space-x-2">
-              <span className="badge-amber text-[10px]">
+              <span className="badge-info text-[10px]">
                 FACULTY PORTAL
               </span>
-              <span className="text-xs text-zinc-400 font-mono">
+              <span className="text-xs text-slate-500 font-mono">
                 {department}
               </span>
             </div>
             
-            <h1 className="text-xl font-bold tracking-tight text-zinc-50 flex items-center gap-2">
-              Welcome back, <span className="text-amber-400">{currentUser?.full_name || professorName}</span>
-              <Sparkles className="w-4 h-4 text-amber-400" />
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+              Welcome back, <span className="text-blue-600">{currentUser?.full_name || professorName}</span>
+              <Sparkles className="w-4 h-4 text-blue-600" />
             </h1>
-            <p className="text-xs text-zinc-400 max-w-xl">
+            <p className="text-xs text-slate-600 max-w-xl">
               Welcome to your campus operations hub. Easily reserve classrooms, inspect shuttle schedules, apply for leave, and track support requests.
             </p>
           </div>
@@ -202,9 +202,9 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowIssueModal(true)}
-              className="btn-onyx-secondary text-xs"
+              className="btn-secondary text-xs"
             >
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+              <AlertTriangle className="w-3.5 h-3.5 text-blue-600" />
               <span>Report Facility Issue</span>
             </button>
           </div>
@@ -213,12 +213,12 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
       </div>
 
       {/* TAB NAVIGATION */}
-      <div className="flex items-center justify-between border-b border-zinc-800 pb-0 font-sans">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-0 font-sans">
         <div className="flex items-center space-x-1">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-3.5 py-2 text-xs font-medium cursor-pointer transition-colors flex items-center space-x-2 border-b-2 ${
-              activeTab === 'overview' ? 'border-amber-400 text-amber-400 font-semibold bg-zinc-900/60' : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              activeTab === 'overview' ? 'border-blue-600 text-blue-600 font-semibold bg-blue-50/50' : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
@@ -228,7 +228,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           <button
             onClick={() => setActiveTab('matrix')}
             className={`px-3.5 py-2 text-xs font-medium cursor-pointer transition-colors flex items-center space-x-2 border-b-2 ${
-              activeTab === 'matrix' ? 'border-amber-400 text-amber-400 font-semibold bg-zinc-900/60' : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              activeTab === 'matrix' ? 'border-blue-600 text-blue-600 font-semibold bg-blue-50/50' : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -238,7 +238,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           <button
             onClick={() => setActiveTab('transport')}
             className={`px-3.5 py-2 text-xs font-medium cursor-pointer transition-colors flex items-center space-x-2 border-b-2 ${
-              activeTab === 'transport' ? 'border-amber-400 text-amber-400 font-semibold bg-zinc-900/60' : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              activeTab === 'transport' ? 'border-blue-600 text-blue-600 font-semibold bg-blue-50/50' : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Bus className="w-3.5 h-3.5" />
@@ -246,8 +246,8 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           </button>
         </div>
 
-        <span className="text-xs font-mono text-zinc-400 hidden sm:inline-block">
-          Active Role: <strong className="text-amber-400">Faculty</strong>
+        <span className="text-xs font-mono text-slate-500 hidden sm:inline-block">
+          Active Role: <strong className="text-blue-600">Faculty</strong>
         </span>
       </div>
 
@@ -258,67 +258,67 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           {/* HORIZONTAL METRICS ROW */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             
-            <div className="card-onyx p-5 flex flex-col justify-between space-y-2">
+            <div className="card-surface p-5 flex flex-col justify-between space-y-2 shadow-xs">
               <div>
-                <span className="text-xs font-mono font-semibold text-zinc-400 uppercase tracking-wider block">
+                <span className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider block">
                   Attendance Rate
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-2xl font-mono font-bold text-zinc-50">{attendancePercent}%</span>
-                  <span className="badge-emerald text-[10px]">Optimal</span>
+                  <span className="text-2xl font-mono font-bold text-slate-900">{attendancePercent}%</span>
+                  <span className="badge-success text-[10px]">Optimal</span>
                 </div>
               </div>
-              <div className="w-full bg-zinc-950 h-1.5 rounded-full overflow-hidden mt-3 border border-zinc-800">
-                <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${attendancePercent}%` }} />
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-3 border border-slate-200">
+                <div className="bg-emerald-600 h-full rounded-full transition-all duration-500" style={{ width: `${attendancePercent}%` }} />
               </div>
             </div>
 
-            <div className="card-onyx p-5 flex flex-col justify-between">
+            <div className="card-surface p-5 flex flex-col justify-between shadow-xs">
               <div>
-                <span className="text-[10px] font-mono font-semibold text-zinc-400 uppercase tracking-wider block">
+                <span className="text-[10px] font-mono font-semibold text-slate-500 uppercase tracking-wider block">
                   Casual Leaves Used
                 </span>
                 <div className="flex items-baseline gap-1.5 mt-1">
-                  <span className="text-2xl font-bold text-zinc-50">{leavesTaken}</span>
-                  <span className="text-xs text-zinc-400 font-mono">days</span>
+                  <span className="text-2xl font-bold text-slate-900">{leavesTaken}</span>
+                  <span className="text-xs text-slate-500 font-mono">days</span>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-500 font-mono mt-2">15 Days Available in Term</p>
+              <p className="text-[10px] text-slate-500 font-mono mt-2">15 Days Available in Term</p>
             </div>
 
-            <div className="card-onyx p-5 flex flex-col justify-between">
+            <div className="card-surface p-5 flex flex-col justify-between shadow-xs">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-mono font-semibold text-zinc-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-mono font-semibold text-slate-500 uppercase tracking-wider block">
                     Active Support Tickets
                   </span>
                   <div className="flex items-baseline gap-1.5 mt-1">
-                    <span className="text-2xl font-bold text-amber-400">{activeTicketsCount}</span>
-                    <span className="text-xs text-zinc-400 font-mono">in dispatch</span>
+                    <span className="text-2xl font-bold text-blue-600">{activeTicketsCount}</span>
+                    <span className="text-xs text-slate-500 font-mono">in dispatch</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(true)}
-                  className="btn-amber-primary text-[11px] py-1 px-2.5"
+                  className="btn-primary text-[11px] py-1 px-2.5"
                 >
                   + Raise Ticket
                 </button>
               </div>
-              <p className="text-[10px] text-zinc-500 font-mono mt-2">IT Support & Maintenance Dispatch</p>
+              <p className="text-[10px] text-slate-500 font-mono mt-2">IT Support & Maintenance Dispatch</p>
             </div>
 
           </div>
 
           {/* ACADEMIC CALENDAR */}
-          <div className="card-onyx p-5 space-y-3 font-sans">
+          <div className="card-surface p-5 space-y-3 font-sans shadow-xs">
             
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
               <div className="flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-amber-400" />
-                <h4 className="text-xs font-semibold text-zinc-50 flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-blue-600" />
+                <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
                   Academic Calendar Grid
-                  <span className="badge-amber text-[9px]">Fall 2026</span>
+                  <span className="badge-info text-[9px]">Fall 2026</span>
                 </h4>
               </div>
 
@@ -329,11 +329,11 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                     setCalendarMonth(calendarMonth === 'August 2026' ? 'July 2026' : 'August 2026');
                     showToast('Updated calendar month view');
                   }}
-                  className="btn-onyx-secondary py-0.5 px-2 text-[10px]"
+                  className="btn-secondary py-0.5 px-2 text-[10px]"
                 >
                   ‹ Prev
                 </button>
-                <span className="text-[11px] font-mono font-semibold text-zinc-200 px-2 py-0.5">
+                <span className="text-[11px] font-mono font-bold text-slate-800 px-2 py-0.5">
                   {calendarMonth}
                 </span>
                 <button
@@ -342,7 +342,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                     setCalendarMonth(calendarMonth === 'August 2026' ? 'September 2026' : 'August 2026');
                     showToast('Updated calendar month view');
                   }}
-                  className="btn-onyx-secondary py-0.5 px-2 text-[10px]"
+                  className="btn-secondary py-0.5 px-2 text-[10px]"
                 >
                   Next ›
                 </button>
@@ -351,19 +351,19 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
               
-              <div className="lg:col-span-7 bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2">
-                <div className="flex items-center justify-between border-b border-zinc-800 pb-1">
-                  <span className="text-[10px] font-mono font-semibold uppercase text-zinc-400">
+              <div className="lg:col-span-7 bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-1">
+                  <span className="text-[10px] font-mono font-semibold uppercase text-slate-500">
                     Month View
                   </span>
-                  <span className="text-[10px] font-mono text-amber-400 font-semibold">
+                  <span className="text-[10px] font-mono text-blue-600 font-semibold">
                     Today: Aug 21
                   </span>
                 </div>
 
                 <div className="grid grid-cols-7 gap-1 text-center">
                   {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-                    <div key={i} className="text-[9px] font-mono font-semibold text-zinc-500 py-0.2">
+                    <div key={i} className="text-[9px] font-mono font-bold text-slate-500 py-0.2">
                       {d}
                     </div>
                   ))}
@@ -371,7 +371,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
                 <div className="grid grid-cols-7 gap-1">
                   {[...Array(6)].map((_, i) => (
-                    <div key={`off-${i}`} className="h-6 rounded bg-zinc-900/40 opacity-40 cursor-not-allowed" />
+                    <div key={`off-${i}`} className="h-6 rounded bg-slate-100 opacity-40 cursor-not-allowed" />
                   ))}
                   {[...Array(31)].map((_, idx) => {
                     const dayNum = idx + 1;
@@ -385,10 +385,10 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                         onClick={() => setSelectedCalendarDay(dayNum)}
                         className={`h-6 rounded border text-[10px] font-mono font-semibold flex flex-col items-center justify-center transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-amber-500 text-zinc-950 border-amber-500 font-bold'
+                            ? 'bg-blue-600 text-white border-blue-600 font-bold'
                             : isToday
-                            ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 font-bold'
-                            : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:bg-zinc-800'
+                            ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold'
+                            : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
                         }`}
                       >
                         <span>{dayNum}</span>
@@ -398,38 +398,38 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                 </div>
               </div>
 
-              <div className="lg:col-span-5 bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex flex-col justify-between space-y-2">
+              <div className="lg:col-span-5 bg-slate-50 p-3 rounded-lg border border-slate-200 flex flex-col justify-between space-y-2">
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between border-b border-zinc-800 pb-1">
-                    <span className="text-[11px] font-bold text-zinc-100">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-1">
+                    <span className="text-[11px] font-bold text-slate-900">
                       Aug {selectedCalendarDay} Agenda
                     </span>
-                    <span className="text-[10px] font-mono text-amber-400 font-semibold">
+                    <span className="text-[10px] font-mono text-blue-600 font-semibold">
                       Day #{selectedCalendarDay}
                     </span>
                   </div>
 
                   {academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).length > 0 ? (
                     academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).map(ev => (
-                      <div key={ev.id} className="p-2 bg-zinc-900 rounded-lg border border-zinc-800 space-y-0.5">
+                      <div key={ev.id} className="p-2 bg-white rounded border border-slate-200 space-y-0.5 shadow-2xs">
                         <div className="flex items-center justify-between">
-                          <span className="badge-amber text-[9px]">
+                          <span className="badge-info text-[9px]">
                             {ev.type}
                           </span>
-                          <span className="text-[9px] font-mono text-zinc-400">
+                          <span className="text-[9px] font-mono text-slate-500">
                             {ev.date}
                           </span>
                         </div>
-                        <h5 className="text-[11px] font-semibold text-zinc-100 truncate">{ev.title}</h5>
-                        <p className="text-[9px] text-zinc-400 font-mono flex items-center gap-1 truncate">
-                          <MapPin className="w-2.5 h-2.5 text-amber-400" /> {ev.venue}
+                        <h5 className="text-[11px] font-bold text-slate-900 truncate">{ev.title}</h5>
+                        <p className="text-[9px] text-slate-600 font-mono flex items-center gap-1 truncate">
+                          <MapPin className="w-2.5 h-2.5 text-blue-600" /> {ev.venue}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <div className="p-2 text-center text-[10px] text-zinc-400 font-mono">
-                      <p className="font-semibold text-zinc-200">Regular Classes</p>
-                      <p className="text-[9px] text-zinc-500">No scheduled exam on Aug {selectedCalendarDay}.</p>
+                    <div className="p-2 text-center text-[10px] text-slate-500 font-mono">
+                      <p className="font-semibold text-slate-800">Regular Classes</p>
+                      <p className="text-[9px] text-slate-500">No scheduled exam on Aug {selectedCalendarDay}.</p>
                     </div>
                   )}
                 </div>
@@ -437,7 +437,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                 <button
                   type="button"
                   onClick={() => showToast(`Added reminder for August ${selectedCalendarDay}, 2026!`)}
-                  className="btn-onyx-secondary w-full text-[10px] py-1"
+                  className="btn-secondary w-full text-[10px] py-1"
                 >
                   <Plus className="w-3 h-3" />
                   <span>Reminder for Aug {selectedCalendarDay}</span>
@@ -451,60 +451,60 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
 
             {/* CLASSROOM RESERVATION */}
-            <div className={`w-full card-onyx overflow-hidden ${
+            <div className={`w-full card-surface overflow-hidden shadow-xs ${
               activeExpand === 'classroom'
-                ? 'md:col-span-2 border-amber-500/50'
+                ? 'md:col-span-2 border-blue-500'
                 : 'md:col-span-1'
             }`}>
               <div
                 onClick={() => setActiveExpand(activeExpand === 'classroom' ? null : 'classroom')}
-                className="p-4 flex items-center justify-between cursor-pointer select-none bg-zinc-950 border-b border-zinc-800"
+                className="p-4 flex items-center justify-between cursor-pointer select-none bg-slate-50 border-b border-slate-200"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                  <div className="p-2 rounded-md bg-blue-50 border border-blue-200 text-blue-600">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-zinc-50 flex items-center gap-2">
+                    <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                       Classroom Reservation
                       {activeExpand === 'classroom' && (
-                        <span className="badge-amber text-[9px]">
+                        <span className="badge-info text-[9px]">
                           ACTIVE WORKSPACE
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-zinc-400">
+                    <p className="text-xs text-slate-600">
                       Reserve classrooms, lecture halls & audio-visual equipment
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400">
+                  <div className="p-1.5 rounded-md border border-slate-200 bg-white text-slate-600">
                     {activeExpand === 'classroom' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </div>
                 </div>
               </div>
 
               {activeExpand === 'classroom' && (
-                <div className="p-5 border-t border-zinc-800 space-y-4">
+                <div className="p-5 border-t border-slate-200 space-y-4">
                   <form onSubmit={handleClassroomSubmit} className="space-y-4 text-xs font-sans">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="md:col-span-2">
-                        <label className="block text-zinc-400 font-medium mb-1">Course / Event Title</label>
+                        <label className="block text-slate-700 font-semibold mb-1">Course / Event Title</label>
                         <input
                           type="text"
                           required
                           placeholder="e.g. CS-301 Advanced Data Structures Exam..."
                           value={classForm.eventName}
                           onChange={(e) => setClassForm({ ...classForm, eventName: e.target.value })}
-                          className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50"
+                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-zinc-400 font-medium mb-1">Priority & Category</label>
-                        <select className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50">
+                        <label className="block text-slate-700 font-semibold mb-1">Priority & Category</label>
+                        <select className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:border-blue-600">
                           <option value="exam">Midterm / Endterm Exam</option>
                           <option value="lecture">Regular Academic Lecture</option>
                           <option value="seminar">Research & Guest Seminar</option>
@@ -513,12 +513,12 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                     </div>
 
                     <div className="flex justify-between items-center pt-2">
-                      <span className="text-[11px] font-mono text-zinc-400">
-                        Status: <strong className="text-emerald-400 font-semibold">Pre-check Instant</strong>
+                      <span className="text-[11px] font-mono text-slate-600">
+                        Status: <strong className="text-emerald-600 font-semibold">Pre-check Instant</strong>
                       </span>
                       <button
                         type="submit"
-                        className="btn-amber-primary text-xs"
+                        className="btn-primary text-xs"
                       >
                         <span>Confirm Reservation</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -540,14 +540,14 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
       {/* TAB 3: SHUTTLE GPS RADAR */}
       {activeTab === 'transport' && (
-        <div className="card-onyx p-6 space-y-6">
+        <div className="card-surface p-6 space-y-6 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-zinc-50 flex items-center gap-2">
-                <Bus className="w-4 h-4 text-amber-400" />
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Bus className="w-4 h-4 text-blue-600" />
                 <span>Shuttle Bus Fleet Telemetry & GPS Tracker</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">Real-time shuttle driver telemetry, seat availability, speed & route operations</p>
+              <p className="text-xs text-slate-600 mt-0.5">Real-time shuttle driver telemetry, seat availability, speed & route operations</p>
             </div>
           </div>
         </div>
@@ -555,20 +555,20 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
       {/* RAISE CAMPUS ISSUE MODAL */}
       {showIssueModal && (
-        <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-xl p-5 shadow-none space-y-4">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 w-full max-w-md rounded-lg p-5 shadow-lg space-y-4">
             
-            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-400" />
-                <h3 className="text-sm font-semibold text-zinc-50">
+                <AlertTriangle className="w-4 h-4 text-blue-600" />
+                <h3 className="text-sm font-bold text-slate-900">
                   Raise Support Ticket
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowIssueModal(false)}
-                className="p-1 rounded text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-100"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -576,8 +576,8 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
             <form onSubmit={handleRaiseTicket} className="space-y-3 text-xs">
               <div>
-                <label className="block text-zinc-400 font-medium mb-1">
-                  Issue Title <span className="text-rose-400">*</span>
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Issue Title <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -585,13 +585,13 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                   placeholder="e.g. Projector HDMI Fault in Room CS-301"
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50"
+                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-400 font-medium mb-1">
-                  Detailed Description <span className="text-rose-400">*</span>
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Detailed Description <span className="text-rose-500">*</span>
                 </label>
                 <textarea
                   required
@@ -599,21 +599,21 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                   placeholder="Describe the issue..."
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-amber-500/50"
+                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-zinc-800">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(false)}
-                  className="btn-onyx-secondary text-xs"
+                  className="btn-secondary text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn-amber-primary text-xs"
+                  className="btn-primary text-xs"
                 >
                   Submit Ticket
                 </button>

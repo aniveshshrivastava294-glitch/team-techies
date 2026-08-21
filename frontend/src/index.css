@@ -7,8 +7,8 @@
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #09090b; /* bg-zinc-950 */
-    color: #fafafa; /* text-zinc-50 */
+    background-color: #F8FAFC; /* Canvas background */
+    color: #0F172A; /* Text primary */
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
@@ -16,189 +16,207 @@
   }
 }
 
-/* Premium Executive Onyx Custom Component Utilities */
-.card-onyx {
-  background-color: #18181b; /* bg-zinc-900 */
-  border: 1px solid #27272a; /* border-zinc-800 */
-  border-radius: 0.75rem; /* rounded-xl */
-  box-shadow: none !important;
-  padding: 1.5rem;
+/* Light Theme Component Utilities */
+.card-surface {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.5rem; /* 8px minimal radius */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  padding: 1.25rem;
 }
 
-/* Buttons */
-.btn-amber-primary {
-  background-color: #f59e0b; /* bg-amber-500 */
-  color: #09090b; /* text-zinc-950 */
+/* Primary Accent Button */
+.btn-primary {
+  background-color: #2563EB;
+  color: #FFFFFF;
   font-weight: 600;
   font-size: 0.75rem;
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem; /* 6px */
   transition: all 150ms ease-in-out;
-  box-shadow: none;
+  box-shadow: 0 1px 2px 0 rgba(37, 99, 235, 0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
   cursor: pointer;
+  border: 1px solid transparent;
 }
-.btn-amber-primary:hover {
-  background-color: #fbbf24; /* bg-amber-400 */
+.btn-primary:hover {
+  background-color: #1D4ED8;
 }
 
-.btn-onyx-secondary {
-  background-color: #27272a; /* bg-zinc-800 */
-  color: #e4e4e7; /* text-zinc-200 */
-  border: 1px solid #3f3f46; /* border-zinc-700 */
+/* Secondary Button */
+.btn-secondary {
+  background-color: #F1F5F9;
+  color: #334155;
+  border: 1px solid #E2E8F0;
   font-weight: 500;
   font-size: 0.75rem;
   padding: 0.375rem 0.875rem;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   transition: all 150ms ease-in-out;
-  box-shadow: none;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
   cursor: pointer;
 }
-.btn-onyx-secondary:hover {
-  background-color: #3f3f46; /* bg-zinc-700 */
-  color: #ffffff;
+.btn-secondary:hover {
+  background-color: #E2E8F0;
+  color: #0F172A;
 }
 
-.btn-onyx-ghost {
+/* Ghost Button */
+.btn-ghost {
   background-color: transparent;
-  color: #a1a1aa; /* text-zinc-400 */
+  color: #64748B;
   font-size: 0.75rem;
   padding: 0.375rem 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   transition: color 150ms ease-in-out, background-color 150ms ease-in-out;
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   cursor: pointer;
 }
-.btn-onyx-ghost:hover {
-  color: #f4f4f5; /* text-zinc-100 */
-  background-color: rgba(39, 39, 42, 0.6); /* bg-zinc-800/60 */
+.btn-ghost:hover {
+  color: #0F172A;
+  background-color: #F1F5F9;
 }
 
-/* Badges */
-.badge-amber {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: 0.375rem;
+/* Soft Status Badges (Light Tints) */
+.badge-success {
+  background-color: #F0FDF4;
+  color: #16A34A;
+  border: 1px solid #DCFCE7;
+  border-radius: 9999px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.625rem;
-  font-weight: 500;
-  padding: 0.125rem 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.badge-emerald {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  border-radius: 0.375rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 500;
-  padding: 0.125rem 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.badge-rose {
-  background-color: rgba(244, 63, 94, 0.1);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.2);
-  border-radius: 0.375rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 500;
-  padding: 0.125rem 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.badge-zinc {
-  background-color: #27272a;
-  color: #d4d4d8;
-  border: 1px solid #3f3f46;
-  border-radius: 0.375rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 500;
-  padding: 0.125rem 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-/* Tabs */
-.nav-onyx-active {
-  border-bottom: 2px solid #fbbf24;
-  color: #fbbf24;
   font-weight: 600;
-  background-color: #18181b;
+  padding: 0.125rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.nav-onyx-inactive {
-  border-bottom: 2px solid transparent;
-  color: #a1a1aa;
+.badge-warning {
+  background-color: #FFFBEB;
+  color: #D97706;
+  border: 1px solid #FEF3C7;
+  border-radius: 9999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
-.nav-onyx-inactive:hover {
-  color: #e4e4e7;
-  background-color: rgba(39, 39, 42, 0.4);
+
+.badge-error {
+  background-color: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FEE2E2;
+  border-radius: 9999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-info {
+  background-color: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #DBEAFE;
+  border-radius: 9999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-slate {
+  background-color: #F8FAFC;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Light Active Tab Indicator */
+.nav-tab-active {
+  border-bottom: 2px solid #2563EB;
+  color: #2563EB;
+  font-weight: 600;
+  background-color: #FFFFFF;
+}
+
+.nav-tab-inactive {
+  border-bottom: 2px solid transparent;
+  color: #64748B;
+}
+.nav-tab-inactive:hover {
+  color: #0F172A;
+  background-color: #F8FAFC;
 }
 
 /* Data Tables */
-.table-onyx {
+.table-light {
   width: 100%;
   text-align: left;
   border-collapse: collapse;
   font-size: 0.75rem;
+  background-color: #FFFFFF;
 }
 
-.table-onyx th {
-  background-color: #09090b;
-  color: #a1a1aa;
+.table-light th {
+  background-color: #F8FAFC;
+  color: #475569;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.625rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #27272a;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid #E2E8F0;
   font-weight: 600;
 }
 
-.table-onyx td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(39, 39, 42, 0.6);
-  color: #e4e4e7;
+.table-light td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid #F1F5F9;
+  color: #1E293B;
 }
 
-.table-onyx tr:hover td {
-  background-color: rgba(39, 39, 42, 0.4);
+.table-light tr:hover td {
+  background-color: #F8FAFC;
 }
 
-/* Custom Scrollbar for Onyx Theme */
+/* Custom Scrollbar for Light Theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #F8FAFC;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #94A3B8;
 }

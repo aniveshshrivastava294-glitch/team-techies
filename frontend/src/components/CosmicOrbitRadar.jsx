@@ -33,32 +33,32 @@ export default function CosmicOrbitRadar() {
   };
 
   return (
-    <div className="card-onyx p-5 font-sans space-y-4">
+    <div className="card-surface p-5 font-sans space-y-4 shadow-xs">
       
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
         <div className="flex items-center space-x-2.5">
-          <Satellite className="w-5 h-5 text-amber-400" />
+          <Satellite className="w-5 h-5 text-blue-600" />
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-zinc-50">Campus Fleet & Telemetry Tracker</h3>
-              <span className="badge-emerald text-[10px]">Connected</span>
+              <h3 className="text-sm font-bold text-slate-900">Campus Fleet & Telemetry Tracker</h3>
+              <span className="badge-success text-[10px]">Connected</span>
             </div>
-            <p className="text-xs text-zinc-400">Real-time GPS tracking for campus shuttles and IoT sensors.</p>
+            <p className="text-xs text-slate-600">Real-time GPS tracking for campus shuttles and IoT sensors.</p>
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="btn-onyx-secondary text-xs"
+            className="btn-secondary text-xs"
           >
-            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-amber-400" /> : <VolumeX className="w-3.5 h-3.5 text-zinc-500" />}
+            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-blue-600" /> : <VolumeX className="w-3.5 h-3.5 text-slate-400" />}
             <span>{soundEnabled ? 'Audio ON' : 'Audio Muted'}</span>
           </button>
           <button
             onClick={() => triggerDiagnosticPing(activeNode)}
-            className="btn-amber-primary text-xs"
+            className="btn-primary text-xs"
           >
             <Radio className="w-3.5 h-3.5" />
             <span>Ping Telemetry</span>
@@ -67,8 +67,8 @@ export default function CosmicOrbitRadar() {
       </div>
 
       {/* Fleet Telemetry Data Table */}
-      <div className="overflow-x-auto border border-zinc-800 rounded-xl">
-        <table className="table-onyx">
+      <div className="overflow-x-auto border border-slate-200 rounded-lg">
+        <table className="table-light">
           <thead>
             <tr>
               <th>Node Identifier</th>
@@ -86,15 +86,15 @@ export default function CosmicOrbitRadar() {
                 <tr
                   key={sat.id}
                   onClick={() => triggerDiagnosticPing(sat.id)}
-                  className={`cursor-pointer transition-colors ${isSelected ? 'bg-zinc-800/60 font-semibold' : ''}`}
+                  className={`cursor-pointer transition-colors ${isSelected ? 'bg-blue-50/60 font-semibold' : ''}`}
                 >
-                  <td className="font-mono text-zinc-100 font-bold">{sat.id}</td>
-                  <td className="text-zinc-100">{sat.name}</td>
-                  <td className="text-zinc-400 font-mono text-xs">{sat.category}</td>
-                  <td className="font-mono text-zinc-300">{sat.delay}</td>
-                  <td className="font-mono text-emerald-400 font-semibold">{sat.health}</td>
+                  <td className="font-mono text-slate-900 font-bold">{sat.id}</td>
+                  <td className="text-slate-900">{sat.name}</td>
+                  <td className="text-slate-500 font-mono text-xs">{sat.category}</td>
+                  <td className="font-mono text-slate-700">{sat.delay}</td>
+                  <td className="font-mono text-emerald-600 font-bold">{sat.health}</td>
                   <td>
-                    <span className="badge-emerald text-[10px]">
+                    <span className="badge-success text-[10px]">
                       <span>{sat.status}</span>
                     </span>
                   </td>

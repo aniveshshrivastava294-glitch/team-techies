@@ -45,17 +45,17 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
   const columns = tableData.length > 0 ? Object.keys(tableData[0]) : [];
 
   return (
-    <div className="card-enterprise p-5 mb-6 font-sans">
+    <div className="card-surface p-5 mb-6 font-sans shadow-xs">
       
       {/* Header & Category Tabs */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E2E8F0]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded bg-blue-50 border border-blue-200 text-[#2563EB]">
+          <div className="p-2 rounded-md bg-blue-50 border border-blue-200 text-blue-600">
             <Database className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-sm font-bold text-slate-900">Campus Data Inspector</h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-600 mt-0.5">
               Inspect underlying records across the 6 campus operational systems.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={`Search ${activeTab} records...`}
-            className="w-full bg-[#F8FAFC] border border-[#E2E8F0] text-slate-900 placeholder-slate-400 text-xs rounded pl-8 pr-3 py-1.5 focus:outline-none focus:border-[#2563EB]"
+            className="w-full bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs rounded-md pl-8 pr-3 py-1.5 focus:outline-none focus:border-blue-600"
           />
         </div>
         <span className="text-[11px] text-slate-500 font-mono">
@@ -100,16 +100,16 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
 
       {/* Data Table */}
       {loading ? (
-        <div className="py-8 text-center text-slate-400">
+        <div className="py-8 text-center text-slate-500">
           <p className="text-xs font-mono">Loading data records...</p>
         </div>
       ) : filteredData.length === 0 ? (
-        <div className="py-6 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0]">
+        <div className="py-6 text-center text-slate-500 text-xs bg-slate-50 rounded-lg border border-slate-200">
           No records found matching search query.
         </div>
       ) : (
-        <div className="overflow-x-auto border border-[#E2E8F0] rounded-md">
-          <table className="table-enterprise">
+        <div className="overflow-x-auto border border-slate-200 rounded-md">
+          <table className="table-light">
             <thead>
               <tr>
                 {columns.map((col, idx) => (

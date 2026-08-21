@@ -57,26 +57,26 @@ export default function KpiOverview({ kpis }) {
   ];
 
   return (
-    <section className="card-onyx p-0 mb-6 font-sans overflow-hidden">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-y sm:divide-y-0 sm:divide-x divide-zinc-800 overflow-x-auto">
+    <section className="card-surface p-0 mb-6 font-sans overflow-hidden shadow-xs">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 overflow-x-auto">
         {items.map((item, idx) => {
           const IconComponent = item.icon;
           return (
-            <div key={idx} className="p-4 space-y-1.5 hover:bg-zinc-800/40 transition-colors min-w-[130px]">
+            <div key={idx} className="p-4 space-y-1.5 hover:bg-slate-50 transition-colors min-w-[130px]">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-medium text-zinc-400 truncate">{item.title}</span>
-                <IconComponent className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                <span className="text-[11px] font-medium text-slate-600 truncate">{item.title}</span>
+                <IconComponent className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </div>
 
               <div className="flex items-baseline space-x-1">
-                <span className="text-xl font-bold text-zinc-50 tracking-tight">{item.mainValue}</span>
-                <span className="text-[10px] text-zinc-500 font-mono">{item.unit}</span>
+                <span className="text-xl font-bold text-slate-900 tracking-tight">{item.mainValue}</span>
+                <span className="text-[10px] text-slate-500 font-mono">{item.unit}</span>
               </div>
 
-              <div className="flex items-center justify-between text-[10px] text-zinc-400 font-mono pt-0.5">
+              <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono pt-0.5">
                 <span className="truncate pr-1">{item.subValue}</span>
                 <span className={`px-1.5 py-0.5 rounded text-[9px] font-semibold shrink-0 ${
-                  item.isAlert ? 'badge-rose' : 'badge-zinc'
+                  item.isAlert ? 'badge-error' : 'badge-slate'
                 }`}>
                   {item.badge}
                 </span>
