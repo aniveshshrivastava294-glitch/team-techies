@@ -94,18 +94,18 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
         <div className="space-y-6">
           {/* Pending Approvals & Universal AI Data Intaker */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 card-surface p-6 shadow-xs">
-              <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+            <div className="lg:col-span-8 card-surface p-6 shadow-2xs">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E4E4E7]">
                 <div className="flex items-center space-x-2.5">
-                  <UserCheck className="w-5 h-5 text-blue-600" />
+                  <UserCheck className="w-5 h-5 text-black" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-bold text-slate-900">Pending Staff Access Approvals</h2>
-                      <span className="badge-warning text-[10px]">
+                      <h2 className="text-sm font-bold text-[#09090B]">Pending Staff Access Approvals</h2>
+                      <span className="badge-mono-dark text-[10px]">
                         {pendingUsers.length} Action Required
                       </span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-0.5">
+                    <p className="text-xs text-[#52525B] mt-0.5">
                       Review and verify administrative clearance for newly registered department staff.
                     </p>
                   </div>
@@ -113,22 +113,22 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
               </div>
 
               {pendingUsers.length === 0 ? (
-                <div className="py-8 text-center text-slate-600 text-xs bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center space-x-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <div className="py-8 text-center text-[#52525B] text-xs bg-[#F4F4F5] rounded-lg border border-[#E4E4E7] flex items-center justify-center space-x-2 font-medium">
+                  <ShieldCheck className="w-4 h-4 text-black" />
                   <span>All staff registration requests have been reviewed and verified.</span>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-200">
+                <div className="divide-y divide-[#E4E4E7]">
                   {pendingUsers.map((user) => (
-                    <div key={user.id} className="py-3 flex items-center justify-between gap-3 hover:bg-slate-50 px-2 rounded-md transition-colors">
+                    <div key={user.id} className="py-3 flex items-center justify-between gap-3 hover:bg-[#FAFAFA] px-2 rounded-md transition-colors">
                       <div className="min-w-0">
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-bold text-slate-900 truncate">{user.full_name || user.email}</span>
-                          <span className="badge-warning font-mono text-[10px] uppercase">
+                          <span className="text-xs font-bold text-[#09090B] truncate">{user.full_name || user.email}</span>
+                          <span className="badge-mono font-mono text-[10px] uppercase">
                             {user.department_domain} Admin
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-500 font-mono mt-0.5">{user.email}</p>
+                        <p className="text-[11px] text-[#71717A] font-mono mt-0.5">{user.email}</p>
                       </div>
 
                       <div className="flex items-center space-x-2 shrink-0">
@@ -143,7 +143,7 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
                         <button
                           onClick={() => handleApproveUser(user.id, 'rejected')}
                           disabled={actionLoading === user.id}
-                          className="btn-secondary text-xs py-1 px-2.5 text-rose-600"
+                          className="btn-secondary text-xs py-1 px-2.5 text-black"
                         >
                           <X className="w-3.5 h-3.5" />
                           <span>Reject</span>
@@ -155,15 +155,15 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
               )}
             </div>
 
-            <div className="lg:col-span-4 card-surface p-6 flex flex-col justify-between space-y-4 shadow-xs">
+            <div className="lg:col-span-4 card-surface p-6 flex flex-col justify-between space-y-4 shadow-2xs">
               <div>
-                <div className="w-8 h-8 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-2.5">
+                <div className="w-8 h-8 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] flex items-center justify-center text-black mb-2.5">
                   <Sparkles className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-[#09090B] flex items-center gap-2">
                   Universal AI Data Intaker
                 </h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                <p className="text-xs text-[#52525B] mt-1 leading-relaxed">
                   Feed CSV, JSON, or unstructured text into Faculty, Transport, Energy, Classroom, or Maintenance databases with live placement guidance.
                 </p>
               </div>
@@ -188,18 +188,18 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
           
           {/* Top Pending Approvals & AI Intaker Card */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 card-surface p-6 shadow-xs">
-              <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+            <div className="lg:col-span-8 card-surface p-6 shadow-2xs">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E4E4E7]">
                 <div className="flex items-center space-x-2.5">
-                  <UserCheck className="w-5 h-5 text-blue-600" />
+                  <UserCheck className="w-5 h-5 text-black" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-bold text-slate-900">Pending Staff Access Approvals</h2>
-                      <span className="badge-warning text-[10px]">
+                      <h2 className="text-sm font-bold text-[#09090B]">Pending Staff Access Approvals</h2>
+                      <span className="badge-mono-dark text-[10px]">
                         {pendingUsers.length} Action Required
                       </span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-0.5">
+                    <p className="text-xs text-[#52525B] mt-0.5">
                       Review and verify administrative clearance for newly registered department staff.
                     </p>
                   </div>
@@ -207,22 +207,22 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
               </div>
 
               {pendingUsers.length === 0 ? (
-                <div className="py-6 text-center text-slate-600 text-xs bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center space-x-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <div className="py-6 text-center text-[#52525B] text-xs bg-[#F4F4F5] rounded-lg border border-[#E4E4E7] flex items-center justify-center space-x-2 font-medium">
+                  <ShieldCheck className="w-4 h-4 text-black" />
                   <span>All staff registration requests have been reviewed and verified.</span>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-200">
+                <div className="divide-y divide-[#E4E4E7]">
                   {pendingUsers.map((user) => (
-                    <div key={user.id} className="py-2.5 flex items-center justify-between gap-3 hover:bg-slate-50 px-2 rounded-md transition-colors">
+                    <div key={user.id} className="py-2.5 flex items-center justify-between gap-3 hover:bg-[#FAFAFA] px-2 rounded-md transition-colors">
                       <div className="min-w-0">
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-bold text-slate-900 truncate">{user.full_name || user.email}</span>
-                          <span className="badge-warning font-mono text-[10px] uppercase">
+                          <span className="text-xs font-bold text-[#09090B] truncate">{user.full_name || user.email}</span>
+                          <span className="badge-mono font-mono text-[10px] uppercase">
                             {user.department_domain} Admin
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-500 font-mono mt-0.5">{user.email}</p>
+                        <p className="text-[11px] text-[#71717A] font-mono mt-0.5">{user.email}</p>
                       </div>
 
                       <div className="flex items-center space-x-2 shrink-0">
@@ -237,7 +237,7 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
                         <button
                           onClick={() => handleApproveUser(user.id, 'rejected')}
                           disabled={actionLoading === user.id}
-                          className="btn-secondary text-xs py-1 px-2.5 text-rose-600"
+                          className="btn-secondary text-xs py-1 px-2.5 text-black"
                         >
                           <X className="w-3.5 h-3.5" />
                           <span>Reject</span>
@@ -249,18 +249,18 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
               )}
             </div>
 
-            <div className="lg:col-span-4 card-surface p-6 flex flex-col justify-between space-y-4 shadow-xs">
+            <div className="lg:col-span-4 card-surface p-6 flex flex-col justify-between space-y-4 shadow-2xs">
               <div>
-                <div className="w-8 h-8 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-2.5">
+                <div className="w-8 h-8 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] flex items-center justify-center text-black mb-2.5">
                   <Sparkles className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-[#09090B] flex items-center gap-2">
                   Universal AI Data Intaker
-                  <span className="badge-info text-[9px] font-mono">
+                  <span className="badge-mono text-[9px] font-mono">
                     AI Advisor
                   </span>
                 </h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                <p className="text-xs text-[#52525B] mt-1 leading-relaxed">
                   Feed CSV, JSON, or unstructured text into Faculty, Transport, Energy, Classroom, or Maintenance databases with live placement guidance.
                 </p>
               </div>

@@ -56,11 +56,11 @@ function DashboardRouter() {
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
-        <div className="py-12 text-center space-y-3 card-surface max-w-lg mx-auto my-8">
-          <h2 className="text-base font-bold text-slate-900">
+        <div className="py-12 text-center space-y-3 card-surface max-w-lg mx-auto my-8 p-6">
+          <h2 className="text-base font-bold text-[#09090B]">
             Welcome to Campus Orbit
           </h2>
-          <p className="text-xs text-slate-600 max-w-sm mx-auto">
+          <p className="text-xs text-[#52525B] max-w-sm mx-auto">
             Please sign in to access your administrative operations workspace.
           </p>
           <button
@@ -110,7 +110,7 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] flex flex-col font-sans">
       
       {/* Top Header Bar */}
       <Header

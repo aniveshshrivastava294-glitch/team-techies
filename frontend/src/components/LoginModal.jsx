@@ -37,25 +37,25 @@ export default function LoginModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs font-sans">
-      <div className="card-surface w-full max-w-md p-6 rounded-lg border border-slate-200 shadow-lg relative bg-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-sans">
+      <div className="card-surface w-full max-w-md p-6 rounded-lg border border-[#E4E4E7] shadow-xl relative bg-white">
         
         {/* Header */}
         <div className="text-center mb-4">
-          <div className="w-8 h-8 bg-blue-50 border border-blue-200 rounded-md flex items-center justify-center text-blue-600 mx-auto mb-2">
+          <div className="w-8 h-8 bg-[#F4F4F5] border border-[#E4E4E7] rounded-md flex items-center justify-center text-black mx-auto mb-2">
             <Lock className="w-4 h-4" />
           </div>
-          <h2 className="text-base font-bold text-slate-900 tracking-tight">
+          <h2 className="text-base font-bold text-[#09090B] tracking-tight">
             {isRegisterMode ? 'Register Campus Account' : 'Campus Orbit Authentication'}
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#52525B] mt-1">
             {isRegisterMode ? 'Faculty accounts auto-approve. Sub-Admins require administrator verification.' : 'Select a demo role below or sign in with credentials'}
           </p>
         </div>
 
         {/* Quick Demo Login Chips */}
-        <div className="mb-4 bg-slate-50 p-3 rounded-md border border-slate-200">
-          <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
+        <div className="mb-4 bg-[#F4F4F5] p-3 rounded-md border border-[#E4E4E7]">
+          <span className="text-[10px] font-mono font-bold text-[#52525B] uppercase tracking-wider block mb-1.5">
             Quick Demo Role Switcher:
           </span>
           <div className="grid grid-cols-2 gap-1.5 text-xs font-medium">
@@ -66,10 +66,10 @@ export default function LoginModal({ isOpen, onClose }) {
                   switchDemoRole(acc);
                   onClose();
                 }}
-                className="p-2 rounded-md border border-slate-200 bg-white hover:bg-slate-100 text-left transition-all cursor-pointer flex flex-col justify-between shadow-2xs"
+                className="p-2 rounded-md border border-[#E4E4E7] bg-white hover:bg-[#F4F4F5] text-left transition-all cursor-pointer flex flex-col justify-between shadow-2xs"
               >
-                <span className="font-bold text-slate-800 text-[11px] truncate">{acc.full_name.split(' ')[0]}</span>
-                <span className="text-[10px] text-slate-500 capitalize">
+                <span className="font-bold text-[#09090B] text-[11px] truncate">{acc.full_name.split(' ')[0]}</span>
+                <span className="text-[10px] text-[#52525B] capitalize">
                   {acc.role === 'sub_admin' ? `${acc.department_domain} Admin` : acc.role.replace('_', ' ')}
                   {acc.approval_status === 'pending' ? ' [Pending]' : ''}
                 </span>
@@ -79,7 +79,7 @@ export default function LoginModal({ isOpen, onClose }) {
         </div>
 
         {error && (
-          <div className="mb-4 p-2.5 badge-error w-full text-xs">
+          <div className="mb-4 p-2.5 badge-mono-dark w-full text-xs">
             {error}
           </div>
         )}
@@ -89,37 +89,37 @@ export default function LoginModal({ isOpen, onClose }) {
           
           {isRegisterMode && (
             <div>
-              <label className="block text-slate-700 font-semibold mb-1">Full Name</label>
+              <label className="block text-[#09090B] font-semibold mb-1">Full Name</label>
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Dr. Jane Doe"
-                className="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+                className="w-full bg-[#F4F4F5] border border-[#E4E4E7] rounded-md px-3 py-2 text-[#09090B] focus:bg-white focus:outline-none focus:border-black font-medium"
               />
             </div>
           )}
 
           <div>
-            <label className="block text-slate-700 font-semibold mb-1">Email Address</label>
+            <label className="block text-[#09090B] font-semibold mb-1">Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="user@demo.com"
-              className="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+              className="w-full bg-[#F4F4F5] border border-[#E4E4E7] rounded-md px-3 py-2 text-[#09090B] focus:bg-white focus:outline-none focus:border-black font-medium"
               required
             />
           </div>
 
           <div>
-            <label className="block text-slate-700 font-semibold mb-1">Password</label>
+            <label className="block text-[#09090B] font-semibold mb-1">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+              className="w-full bg-[#F4F4F5] border border-[#E4E4E7] rounded-md px-3 py-2 text-[#09090B] focus:bg-white focus:outline-none focus:border-black font-medium"
               required
             />
           </div>
@@ -127,11 +127,11 @@ export default function LoginModal({ isOpen, onClose }) {
           {isRegisterMode && (
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Role</label>
+                <label className="block text-[#09090B] font-semibold mb-1">Role</label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+                  className="w-full bg-[#F4F4F5] border border-[#E4E4E7] rounded-md px-3 py-2 text-[#09090B] focus:bg-white focus:outline-none focus:border-black font-medium"
                 >
                   <option value="faculty">Faculty (Auto-approved)</option>
                   <option value="sub_admin">Sub-Admin (Needs Approval)</option>
@@ -140,11 +140,11 @@ export default function LoginModal({ isOpen, onClose }) {
 
               {role === 'sub_admin' && (
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Domain</label>
+                  <label className="block text-[#09090B] font-semibold mb-1">Domain</label>
                   <select
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600"
+                    className="w-full bg-[#F4F4F5] border border-[#E4E4E7] rounded-md px-3 py-2 text-[#09090B] focus:bg-white focus:outline-none focus:border-black font-medium"
                   >
                     <option value="events">Events Admin</option>
                     <option value="transport">Transport Admin</option>
@@ -167,13 +167,13 @@ export default function LoginModal({ isOpen, onClose }) {
         </form>
 
         {/* Toggle Mode */}
-        <div className="mt-4 pt-3 border-t border-slate-200 text-center">
+        <div className="mt-4 pt-3 border-t border-[#E4E4E7] text-center">
           <button
             onClick={() => {
               setIsRegisterMode(!isRegisterMode);
               setError('');
             }}
-            className="text-xs text-blue-600 hover:text-blue-700 font-semibold cursor-pointer"
+            className="text-xs text-black hover:underline font-bold cursor-pointer"
           >
             {isRegisterMode ? 'Already have an account? Sign In' : 'Need a new role account? Register here'}
           </button>

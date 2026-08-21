@@ -45,17 +45,17 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
   const columns = tableData.length > 0 ? Object.keys(tableData[0]) : [];
 
   return (
-    <div className="card-surface p-5 mb-6 font-sans shadow-xs">
+    <div className="card-surface p-5 mb-6 font-sans shadow-2xs">
       
       {/* Header & Category Tabs */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E4E4E7]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-md bg-blue-50 border border-blue-200 text-blue-600">
+          <div className="p-2 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] text-black">
             <Database className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-slate-900">Campus Data Inspector</h2>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <h2 className="text-sm font-bold text-[#09090B]">Campus Data Inspector</h2>
+            <p className="text-xs text-[#52525B] mt-0.5">
               Inspect underlying records across the 6 campus operational systems.
             </p>
           </div>
@@ -84,32 +84,32 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
       {/* Search Input Bar */}
       <div className="flex items-center justify-between gap-3 mb-3">
         <div className="relative flex-1 max-w-xs">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-3.5 h-3.5 text-[#A1A1AA] absolute left-3 top-2.5" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={`Search ${activeTab} records...`}
-            className="w-full bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs rounded-md pl-8 pr-3 py-1.5 focus:outline-none focus:border-blue-600"
+            className="w-full bg-[#F4F4F5] border border-[#E4E4E7] text-[#09090B] placeholder-[#A1A1AA] text-xs rounded-md pl-8 pr-3 py-1.5 focus:outline-none focus:border-black font-medium"
           />
         </div>
-        <span className="text-[11px] text-slate-500 font-mono">
+        <span className="text-[11px] text-[#71717A] font-mono">
           Showing {filteredData.length} of {tableData.length} records
         </span>
       </div>
 
       {/* Data Table */}
       {loading ? (
-        <div className="py-8 text-center text-slate-500">
+        <div className="py-8 text-center text-[#71717A]">
           <p className="text-xs font-mono">Loading data records...</p>
         </div>
       ) : filteredData.length === 0 ? (
-        <div className="py-6 text-center text-slate-500 text-xs bg-slate-50 rounded-lg border border-slate-200">
+        <div className="py-6 text-center text-[#71717A] text-xs bg-[#F4F4F5] rounded-lg border border-[#E4E4E7]">
           No records found matching search query.
         </div>
       ) : (
-        <div className="overflow-x-auto border border-slate-200 rounded-md">
-          <table className="table-light">
+        <div className="overflow-x-auto border border-[#E4E4E7] rounded-md">
+          <table className="table-mono">
             <thead>
               <tr>
                 {columns.map((col, idx) => (
@@ -125,9 +125,9 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
                   {columns.map((col, cIdx) => (
                     <td key={cIdx} className="max-w-[200px] truncate font-mono">
                       {row[col] === null || row[col] === undefined ? (
-                        <span className="text-slate-400 italic">null</span>
+                        <span className="text-[#A1A1AA] italic">null</span>
                       ) : String(row[col]).startsWith('2026') || String(row[col]).includes('T') ? (
-                        <span className="text-slate-600">{new Date(row[col]).toLocaleDateString()}</span>
+                        <span className="text-[#52525B]">{new Date(row[col]).toLocaleDateString()}</span>
                       ) : (
                         String(row[col])
                       )}

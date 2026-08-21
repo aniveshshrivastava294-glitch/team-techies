@@ -66,22 +66,22 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="card-surface p-5 mb-6 font-sans shadow-xs">
+    <div className="card-surface p-5 mb-6 font-sans shadow-2xs">
       
       {/* Title & Pipeline Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E4E4E7]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-md bg-blue-50 border border-blue-200 text-blue-600">
+          <div className="p-2 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] text-black">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-slate-900">Natural-Language AI Query Engine</h2>
-              <span className="badge-info text-[10px]">
+              <h2 className="text-sm font-bold text-[#09090B]">Natural-Language AI Query Engine</h2>
+              <span className="badge-mono text-[10px]">
                 Groq + Gemini
               </span>
             </div>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <p className="text-xs text-[#52525B] mt-0.5">
               Translates queries to SQL, accesses domain tables, and synthesizes actionable recommendations.
             </p>
           </div>
@@ -90,8 +90,8 @@ export default function ChatWidget() {
 
       {/* Quick Prompt Chips */}
       <div className="flex flex-wrap items-center gap-1.5 mb-3">
-        <span className="text-xs text-slate-600 font-medium flex items-center gap-1 mr-1">
-          <Zap className="w-3.5 h-3.5 text-blue-600" />
+        <span className="text-xs text-[#52525B] font-semibold flex items-center gap-1 mr-1">
+          <Zap className="w-3.5 h-3.5 text-black" />
           Quick Prompts:
         </span>
         {quickPrompts.map((prompt, pIdx) => (
@@ -99,7 +99,7 @@ export default function ChatWidget() {
             key={pIdx}
             onClick={() => handleSend(prompt)}
             disabled={isSubmitting}
-            className="btn-secondary text-[11px] py-1 px-2.5 hover:text-blue-600"
+            className="btn-secondary text-[11px] py-1 px-2.5"
           >
             {prompt}
           </button>
@@ -107,15 +107,15 @@ export default function ChatWidget() {
       </div>
 
       {/* Chat Messages Box */}
-      <div className="bg-slate-50 rounded-lg border border-slate-200 p-3.5 h-[320px] overflow-y-auto space-y-3 mb-3">
+      <div className="bg-[#F4F4F5] rounded-lg border border-[#E4E4E7] p-3.5 h-[320px] overflow-y-auto space-y-3 mb-3">
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex items-start space-x-2.5 ${msg.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
             
             {/* Avatar Icon */}
             <div className={`p-1.5 rounded-md shrink-0 ${
               msg.role === 'user'
-                ? 'bg-blue-600 text-white font-bold'
-                : 'bg-white text-blue-600 border border-slate-200 shadow-2xs'
+                ? 'bg-black text-white font-bold'
+                : 'bg-white text-black border border-[#E4E4E7] shadow-2xs'
             }`}>
               {msg.role === 'user' ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
             </div>
@@ -123,8 +123,8 @@ export default function ChatWidget() {
             {/* Message Content Bubble */}
             <div className={`max-w-[85%] rounded-lg p-3 text-xs leading-relaxed ${
               msg.role === 'user'
-                ? 'bg-blue-600 text-white shadow-2xs'
-                : 'bg-white border border-slate-200 text-slate-800 shadow-2xs'
+                ? 'bg-black text-white shadow-2xs font-medium'
+                : 'bg-white border border-[#E4E4E7] text-[#09090B] shadow-2xs'
             }`}>
               
               {/* Message Text */}
@@ -134,20 +134,20 @@ export default function ChatWidget() {
 
               {/* Groq Text-to-SQL Block */}
               {msg.groqSql && (
-                <div className="mt-2 pt-2 border-t border-slate-100">
+                <div className="mt-2 pt-2 border-t border-[#F4F4F5]">
                   <button
                     onClick={() => setShowSqlIndex(showSqlIndex === idx ? null : idx)}
-                    className="flex items-center justify-between w-full px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-mono text-slate-700 hover:text-blue-600 transition-colors"
+                    className="flex items-center justify-between w-full px-2.5 py-1 bg-[#F4F4F5] border border-[#E4E4E7] rounded text-[10px] font-mono text-[#09090B] hover:bg-white transition-colors"
                   >
-                    <span className="flex items-center gap-1 font-semibold">
-                      <Code2 className="w-3 h-3 text-blue-600" />
+                    <span className="flex items-center gap-1 font-bold">
+                      <Code2 className="w-3 h-3 text-black" />
                       Groq Generated SQL
                     </span>
                     {showSqlIndex === idx ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                   </button>
 
                   {showSqlIndex === idx && (
-                    <div className="mt-1.5 p-2 bg-slate-900 text-blue-300 rounded text-[10px] font-mono border border-slate-800 overflow-x-auto">
+                    <div className="mt-1.5 p-2 bg-black text-white rounded text-[10px] font-mono border border-black overflow-x-auto">
                       <code>{msg.groqSql}</code>
                     </div>
                   )}
@@ -160,8 +160,8 @@ export default function ChatWidget() {
         ))}
 
         {isSubmitting && (
-          <div className="flex items-center space-x-2 text-slate-500 text-xs py-1 font-mono">
-            <div className="w-2 h-2 bg-blue-600 rounded-full animate-ping" />
+          <div className="flex items-center space-x-2 text-[#71717A] text-xs py-1 font-mono">
+            <div className="w-2 h-2 bg-black rounded-full animate-ping" />
             <span>AI pipeline executing Groq SQL translation and Gemini synthesis...</span>
           </div>
         )}
@@ -181,7 +181,7 @@ export default function ChatWidget() {
           onChange={(e) => setInputQuery(e.target.value)}
           placeholder="Ask operational questions e.g. 'Which rooms have high energy consumption?'"
           disabled={isSubmitting}
-          className="flex-1 bg-white border border-slate-200 text-slate-900 placeholder-slate-400 text-xs rounded-md px-3 py-2 focus:outline-none focus:border-blue-600"
+          className="flex-1 bg-white border border-[#E4E4E7] text-[#09090B] placeholder-[#A1A1AA] text-xs rounded-md px-3 py-2 focus:outline-none focus:border-black font-medium"
         />
         <button
           type="submit"

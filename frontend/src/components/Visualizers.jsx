@@ -45,12 +45,12 @@ export default function Visualizers({ kpis, anomalies }) {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white border border-slate-200 p-3 rounded-md text-xs shadow-md font-sans space-y-1">
-          <p className="font-bold text-slate-900 mb-1">{label}</p>
+        <div className="bg-white border border-[#E4E4E7] p-3 rounded-md text-xs shadow-2xs font-sans space-y-1">
+          <p className="font-bold text-[#09090B] mb-1">{label}</p>
           {payload.map((entry, idx) => (
-            <p key={idx} style={{ color: entry.color }} className="font-medium flex items-center justify-between gap-4">
+            <p key={idx} style={{ color: entry.color }} className="font-semibold flex items-center justify-between gap-4">
               <span>{entry.name}:</span>
-              <span className="font-mono font-bold text-slate-900">{entry.value}</span>
+              <span className="font-mono font-bold text-[#09090B]">{entry.value}</span>
             </p>
           ))}
         </div>
@@ -60,17 +60,17 @@ export default function Visualizers({ kpis, anomalies }) {
   };
 
   return (
-    <div className="card-surface p-5 mb-6 font-sans shadow-xs">
+    <div className="card-surface p-5 mb-6 font-sans shadow-2xs">
       
       {/* Header & Navigation Tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E4E4E7]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-md bg-blue-50 border border-blue-200 text-blue-600">
+          <div className="p-2 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] text-black">
             <BarChart3 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-slate-900">Campus Analytics & Trends</h2>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <h2 className="text-sm font-bold text-[#09090B]">Campus Analytics & Trends</h2>
+            <p className="text-xs text-[#52525B] mt-0.5">
               Interactive charts for room capacity, energy use, transit load, and maintenance tickets.
             </p>
           </div>
@@ -124,27 +124,27 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'attendance' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-900 font-bold">
+            <span className="text-[#09090B] font-bold">
               Planned Room Capacity vs Actual Attendance
             </span>
-            <span className="badge-error text-[10px]">
+            <span className="badge-mono-dark text-[10px]">
               SCI-104 Exceeds Limit (+75%)
             </span>
           </div>
           <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={capacityAttendanceData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="room" stroke="#64748B" fontSize={11} tickLine={false} />
-                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E4E7" />
+                <XAxis dataKey="room" stroke="#52525B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#52525B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-                <Bar dataKey="capacity" name="Room Capacity Limit" fill="#CBD5E1" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="capacity" name="Room Capacity Limit" fill="#E4E4E7" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="actual" name="Actual Attendance" radius={[4, 4, 0, 0]}>
                   {capacityAttendanceData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={entry.actual > entry.capacity ? '#DC2626' : '#2563EB'}
+                      fill={entry.actual > entry.capacity ? '#09090B' : '#52525B'}
                     />
                   ))}
                 </Bar>
@@ -158,31 +158,31 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'energy' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-900 font-bold">
+            <span className="text-[#09090B] font-bold">
               Power Demand (kWh) Across Time
             </span>
-            <span className="badge-warning text-[10px]">LIB-102 Overnight Spike: 48.7 kWh</span>
+            <span className="badge-mono-dark text-[10px]">LIB-102 Overnight Spike: 48.7 kWh</span>
           </div>
           <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={energyTimelineData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                 <defs>
                   <linearGradient id="colorLib" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#14B8A6" stopOpacity={0.4}/>
-                    <stop offset="95%" stopColor="#14B8A6" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#09090B" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#09090B" stopOpacity={0.0}/>
                   </linearGradient>
                   <linearGradient id="colorCS" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563EB" stopOpacity={0.4}/>
-                    <stop offset="95%" stopColor="#2563EB" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#52525B" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#52525B" stopOpacity={0.0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="time" stroke="#64748B" fontSize={11} />
-                <YAxis stroke="#64748B" fontSize={11} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E4E7" />
+                <XAxis dataKey="time" stroke="#52525B" fontSize={11} />
+                <YAxis stroke="#52525B" fontSize={11} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-                <Area type="monotone" dataKey="LIB102_kWh" name="Library LIB-102 (kWh)" stroke="#14B8A6" fillOpacity={1} fill="url(#colorLib)" />
-                <Area type="monotone" dataKey="CS301_kWh" name="Auditorium CS-301 (kWh)" stroke="#2563EB" fillOpacity={1} fill="url(#colorCS)" />
+                <Area type="monotone" dataKey="LIB102_kWh" name="Library LIB-102 (kWh)" stroke="#09090B" fillOpacity={1} fill="url(#colorLib)" />
+                <Area type="monotone" dataKey="CS301_kWh" name="Auditorium CS-301 (kWh)" stroke="#52525B" fillOpacity={1} fill="url(#colorCS)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -193,25 +193,25 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'transit' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-900 font-bold">
+            <span className="text-[#09090B] font-bold">
               Shuttle Seating Capacity vs Active Passengers
             </span>
-            <span className="badge-error text-[10px]">Shuttle 2: 145% Load</span>
+            <span className="badge-mono-dark text-[10px]">Shuttle 2: 145% Load</span>
           </div>
           <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={transitData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="route" stroke="#64748B" fontSize={11} tickLine={false} />
-                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E4E7" />
+                <XAxis dataKey="route" stroke="#52525B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#52525B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-                <Bar dataKey="capacity" name="Vehicle Capacity" fill="#CBD5E1" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="capacity" name="Vehicle Capacity" fill="#E4E4E7" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="passengers" name="Passenger Count" radius={[4, 4, 0, 0]}>
                   {transitData.map((entry, index) => (
                     <Cell
                       key={`cell-tr-${index}`}
-                      fill={entry.passengers > entry.capacity ? '#DC2626' : '#14B8A6'}
+                      fill={entry.passengers > entry.capacity ? '#09090B' : '#52525B'}
                     />
                   ))}
                 </Bar>
@@ -225,23 +225,23 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'maintenance' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-900 font-bold">
+            <span className="text-[#09090B] font-bold">
               Maintenance Tickets by Category & Severity
             </span>
-            <span className="text-slate-500 font-mono text-[11px]">Critical: HVAC CS-301</span>
+            <span className="text-[#52525B] font-mono text-[11px]">Critical: HVAC CS-301</span>
           </div>
           <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={maintenanceData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                <XAxis dataKey="category" stroke="#64748B" fontSize={11} tickLine={false} />
-                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E4E7" />
+                <XAxis dataKey="category" stroke="#52525B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#52525B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-                <Bar dataKey="Critical" stackId="a" fill="#DC2626" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="High" stackId="a" fill="#F59E0B" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Medium" stackId="a" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Low" stackId="a" fill="#2563EB" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Critical" stackId="a" fill="#09090B" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="High" stackId="a" fill="#52525B" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Medium" stackId="a" fill="#A1A1AA" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Low" stackId="a" fill="#E4E4E7" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
