@@ -20,6 +20,15 @@ export default function SubAdminDashboard({ currentUser }) {
   const [activeCalendarSlot, setActiveCalendarSlot] = useState(3);
   const [toastMsg, setToastMsg] = useState(null);
 
+  // Add New Auditorium Modal States
+  const [showAddAudiModal, setShowAddAudiModal] = useState(false);
+  const [newAudiForm, setNewAudiForm] = useState({
+    name: '',
+    capacity: '',
+    features: '4K Dual Projector, Dolby Surround Audio, Stage Lighting Grid',
+    acStatus: 'STANDBY'
+  });
+
   // Quick Query Assistant States
   const [assistantQuery, setAssistantQuery] = useState('');
   const [assistantResponse, setAssistantResponse] = useState(null);
@@ -27,11 +36,11 @@ export default function SubAdminDashboard({ currentUser }) {
 
   // Auditorium Fleet Initial Data
   const [auditoriums, setAuditoriums] = useState([
-    { id: 'audi-1', name: 'Audi 1', capacity: 500, status: 'Booked', acStatus: 'ON', currentEvent: 'CS-402 Cloud Computing' },
-    { id: 'audi-2', name: 'Audi 2', capacity: 400, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
-    { id: 'audi-3', name: 'Audi 3', capacity: 100, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
-    { id: 'audi-4', name: 'Audi 4', capacity: 50, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
-    { id: 'audi-5', name: 'Audi 5', capacity: 100, status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-1', name: 'Audi 1', capacity: 500, features: '4K Projector, Dolby Audio, Stage Lighting', status: 'Booked', acStatus: 'ON', currentEvent: 'CS-402 Cloud Computing' },
+    { id: 'audi-2', name: 'Audi 2', capacity: 400, features: 'Dual Displays, Wireless Mics, Climate AC', status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-3', name: 'Audi 3', capacity: 100, features: 'Interactive Smart Board, HD Audio', status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-4', name: 'Audi 4', capacity: 50, features: 'Conference Screen, Podiums, HVAC', status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
+    { id: 'audi-5', name: 'Audi 5', capacity: 100, features: 'Laser Projection, Wireless Mics', status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
   ]);
 
   // AC / Venue Approval Requests
@@ -96,6 +105,34 @@ export default function SubAdminDashboard({ currentUser }) {
       return req;
     }));
     showToast(`Request ${action === 'Approved' ? 'Approved' : 'Rejected'}.`);
+  };
+
+  const handleAddAudiSubmit = (e) => {
+    e.preventDefault();
+    if (!newAudiForm.name.trim() || !newAudiForm.capacity) {
+      showToast('Please specify Hall Name & Capacity!');
+      return;
+    }
+
+    const newHall = {
+      id: `audi-${Date.now()}`,
+      name: newAudiForm.name.trim(),
+      capacity: parseInt(newAudiForm.capacity, 10) || 100,
+      features: newAudiForm.features.trim() || '4K Projector, Surround Audio, HVAC Climate',
+      status: 'Available',
+      acStatus: newAudiForm.acStatus || 'STANDBY',
+      currentEvent: 'Vacant'
+    };
+
+    setAuditoriums(prev => [...prev, newHall]);
+    setShowAddAudiModal(false);
+    setNewAudiForm({
+      name: '',
+      capacity: '',
+      features: '4K Dual Projector, Dolby Surround Audio, Stage Lighting Grid',
+      acStatus: 'STANDBY'
+    });
+    showToast(`Successfully added ${newHall.name} (Cap: ${newHall.capacity})`);
   };
 
   const handleAssistantQuerySubmit = (e) => {
@@ -268,9 +305,14 @@ export default function SubAdminDashboard({ currentUser }) {
                       <span className="text-[11px] font-mono font-bold dark:text-slate-400 text-black block mt-1">
                         Cap: {audi.capacity}
                       </span>
+                      {audi.features && (
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5" title={audi.features}>
+                          {audi.features}
+                        </p>
+                      )}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-3">
                       <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border block text-center uppercase tracking-wider ${
                         isBooked
                           ? 'bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800'
@@ -283,21 +325,9 @@ export default function SubAdminDashboard({ currentUser }) {
                 );
               })}
 
-              {/* Add Hall Button */}
+              {/* Add Hall Button triggering Modal */}
               <button
-                onClick={() => {
-                  const nextNum = auditoriums.length + 1;
-                  const newAudi = {
-                    id: `audi-${nextNum}`,
-                    name: `Audi ${nextNum}`,
-                    capacity: 150,
-                    status: 'Available',
-                    acStatus: 'STANDBY',
-                    currentEvent: 'Vacant'
-                  };
-                  setAuditoriums([...auditoriums, newAudi]);
-                  showToast(`Added Audi ${nextNum}`);
-                }}
+                onClick={() => setShowAddAudiModal(true)}
                 className="p-4 rounded-2xl border border-dashed dark:border-slate-700 border-slate-300 dark:bg-slate-950 bg-slate-50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex flex-col items-center justify-center gap-1 text-slate-600 dark:text-slate-300 cursor-pointer"
               >
                 <Plus className="w-5 h-5 text-blue-600" />
@@ -698,6 +728,116 @@ export default function SubAdminDashboard({ currentUser }) {
             )}
           </div>
 
+        </div>
+      )}
+
+      {/* ================= ADD NEW AUDITORIUM MODAL DIALOG ================= */}
+      {showAddAudiModal && (
+        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 border-slate-200 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-5 relative">
+            <div className="flex items-center justify-between pb-3 border-b dark:border-slate-800 border-slate-200">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 rounded-xl text-blue-600 dark:text-blue-400">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black dark:text-white text-black">
+                    Add New Auditorium
+                  </h3>
+                  <p className="text-xs dark:text-slate-400 text-black font-medium">
+                    Register a new hall with capacity & feature specs
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowAddAudiModal(false)}
+                className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddAudiSubmit} className="space-y-4 text-xs">
+              {/* Hall Name */}
+              <div className="space-y-1.5">
+                <label className="block font-bold dark:text-slate-300 text-black">
+                  Auditorium Name <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Audi 6, Seminar Hall C"
+                  value={newAudiForm.name}
+                  onChange={(e) => setNewAudiForm({ ...newAudiForm, name: e.target.value })}
+                  className="w-full px-3.5 py-2.5 dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-300 rounded-xl text-xs dark:text-white text-black font-semibold focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              {/* Seating Capacity */}
+              <div className="space-y-1.5">
+                <label className="block font-bold dark:text-slate-300 text-black">
+                  Seating Capacity <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  required
+                  min="10"
+                  max="5000"
+                  placeholder="e.g. 350"
+                  value={newAudiForm.capacity}
+                  onChange={(e) => setNewAudiForm({ ...newAudiForm, capacity: e.target.value })}
+                  className="w-full px-3.5 py-2.5 dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-300 rounded-xl text-xs dark:text-white text-black font-semibold focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              {/* Hall Features */}
+              <div className="space-y-1.5">
+                <label className="block font-bold dark:text-slate-300 text-black">
+                  Equipment & Feature Specifications
+                </label>
+                <textarea
+                  rows="3"
+                  placeholder="e.g. 4K Dual Projectors, Dolby Surround Audio, Stage Lighting Grid, Central HVAC"
+                  value={newAudiForm.features}
+                  onChange={(e) => setNewAudiForm({ ...newAudiForm, features: e.target.value })}
+                  className="w-full px-3.5 py-2.5 dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-300 rounded-xl text-xs dark:text-white text-black font-medium focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              {/* Initial Climate AC Status */}
+              <div className="space-y-1.5">
+                <label className="block font-bold dark:text-slate-300 text-black">
+                  Initial AC Climate Mode
+                </label>
+                <select
+                  value={newAudiForm.acStatus}
+                  onChange={(e) => setNewAudiForm({ ...newAudiForm, acStatus: e.target.value })}
+                  className="w-full px-3.5 py-2.5 dark:bg-slate-950 bg-slate-50 border dark:border-slate-800 border-slate-300 rounded-xl text-xs dark:text-white text-black font-semibold focus:outline-none focus:border-blue-500"
+                >
+                  <option value="STANDBY">Eco Standby</option>
+                  <option value="ON">Climate ON (22°C)</option>
+                  <option value="OFF">Power OFF</option>
+                </select>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-2.5 pt-2 border-t dark:border-slate-800 border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setShowAddAudiModal(false)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-semibold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors cursor-pointer shadow-md"
+                >
+                  Create & Add Hall
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
