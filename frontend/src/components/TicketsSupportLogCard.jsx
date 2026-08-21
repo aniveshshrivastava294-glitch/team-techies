@@ -13,6 +13,18 @@ export default function TicketsSupportLogCard({
         { id: 'TCK-9088', title: 'Bus 4 (PB-01-AB-1004) AC Compressor Low Coolant Fault', domain: 'Vehicle Maintenance', status: 'Pending Dispatch', priority: 'Medium', time: '1 hour ago', date: 'Aug 21', requestor: 'Transport Admin' },
         { id: 'TCK-8940', title: 'Airport Road Shuttle Stop Solar Signage Battery Drain', domain: 'Station Logistics', status: 'Resolved', priority: 'Low', time: 'Yesterday', date: 'Aug 20', requestor: 'Fleet Control' }
       ];
+    } else if (adminDomain === 'energy') {
+      return [
+        { id: 'TCK-9310', title: 'Substation Beta Phase 3 Transformer Overheating Alert', domain: 'Electrical Grid', status: 'In Progress', priority: 'High', time: '8 mins ago', date: 'Aug 21', requestor: 'Energy Ops' },
+        { id: 'TCK-9244', title: 'Block C Rooftop Solar Inverter #2 MPPT Calibration', domain: 'Solar Generation', status: 'Pending Dispatch', priority: 'Medium', time: '1 hour ago', date: 'Aug 21', requestor: 'Grid Lead' },
+        { id: 'TCK-9105', title: 'Library Battery Storage Voltage Stabilization Check', domain: 'Battery Reserve', status: 'Resolved', priority: 'Low', time: 'Yesterday', date: 'Aug 20', requestor: 'Solar Tech' }
+      ];
+    } else if (adminDomain === 'classroom') {
+      return [
+        { id: 'TCK-8812', title: 'Block A Hall 301 4K Laser Projector Color Calibration', domain: 'Classroom AV', status: 'In Progress', priority: 'High', time: '12 mins ago', date: 'Aug 21', requestor: 'Prof. Sharma' },
+        { id: 'TCK-8790', title: 'Seminar Hall 204 Stage Wireless Mic Battery & Receiver Dip', domain: 'Audio Hardware', status: 'Pending Dispatch', priority: 'Medium', time: '2 hours ago', date: 'Aug 21', requestor: 'Dr. Mehta' },
+        { id: 'TCK-8633', title: 'Science Lab 105 Smartboard Touch Grid Sensor Cleaning', domain: 'Smartboard Hardware', status: 'Resolved', priority: 'Low', time: 'Yesterday', date: 'Aug 20', requestor: 'Lab Admin' }
+      ];
     } else {
       return [
         { id: 'TCK-8901', title: 'Main Audi 4K Laser Projector HDMI Port Signal Intermittent', domain: 'AV Tech Support', status: 'In Progress', priority: 'High', time: '10 mins ago', date: 'Aug 21', requestor: 'Prof. Chakraborty' },

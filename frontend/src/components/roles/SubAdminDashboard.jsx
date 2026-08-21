@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ChatWidget from '../ChatWidget';
 import TransportManagerInterface from './TransportManagerInterface';
 import MaintenanceManagerInterface from './MaintenanceManagerInterface';
+import EnergyManagerInterface from './EnergyManagerInterface';
+import ClassroomManagerInterface from './ClassroomManagerInterface';
 import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import LiveCampusTicker from '../LiveCampusTicker';
 import { 
@@ -23,6 +25,14 @@ export default function SubAdminDashboard({ currentUser }) {
 
   if (domain === 'maintenance') {
     return <MaintenanceManagerInterface />;
+  }
+
+  if (domain === 'energy') {
+    return <EnergyManagerInterface />;
+  }
+
+  if (domain === 'classroom' || domain === 'classes' || domain === 'class') {
+    return <ClassroomManagerInterface />;
   }
 
   // Active view tab state (for multi-domain / events view)
