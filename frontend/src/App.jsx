@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
-import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import LoginModal from './components/LoginModal';
 import PendingApprovalView from './components/PendingApprovalView';
@@ -111,38 +110,31 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
       
-      {/* Fixed Left Sidebar Navigation (#0F2747) */}
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Top Header & Horizontal Navigation Bar */}
+      <Header
+        onRefresh={fetchDashboardData}
+        isRefreshing={isRefreshing}
+        datasource={datasource}
+        onOpenLogin={() => setIsLoginOpen(true)}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
-      {/* Main Content Area Layout */}
-      <div className="flex-1 flex flex-col pl-64 min-w-0">
+      {/* Main Full-Width Content Area */}
+      <main className="flex-1 p-4 sm:p-6 space-y-6 max-w-7xl w-full mx-auto">
         
-        {/* Sticky White Top Bar (#FFFFFF) */}
-        <Header
-          onRefresh={fetchDashboardData}
-          isRefreshing={isRefreshing}
-          datasource={datasource}
-          onOpenLogin={() => setIsLoginOpen(true)}
-          activeTab={activeTab}
-        />
+        {currentUser && currentUser.approval_status !== 'pending' && (
+          <ConversationalHero currentUser={currentUser} />
+        )}
 
-        {/* Content Canvas Area (#F8FAFC) */}
-        <main className="flex-1 p-6 space-y-6 max-w-7xl w-full mx-auto">
-          
-          {currentUser && currentUser.approval_status !== 'pending' && (
-            <ConversationalHero currentUser={currentUser} />
-          )}
+        {renderRoleDashboard()}
 
-          {renderRoleDashboard()}
+      </main>
 
-        </main>
-
-        {/* Enterprise Footer */}
-        <InstitutionalFooter />
-
-      </div>
+      {/* Enterprise Footer */}
+      <InstitutionalFooter />
 
       {/* Persistent AI Assistant Drawer */}
       <FloatingAIAssistant currentUser={currentUser} />

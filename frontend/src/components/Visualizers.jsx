@@ -45,12 +45,12 @@ export default function Visualizers({ kpis, anomalies }) {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900/95 border border-slate-700/80 backdrop-blur-xl p-3.5 rounded-xl text-xs shadow-2xl font-sans space-y-1">
-          <p className="font-bold text-white mb-1">{label}</p>
+        <div className="bg-white border border-[#E2E8F0] p-3 rounded-md text-xs shadow-lg font-sans space-y-1">
+          <p className="font-bold text-slate-900 mb-1">{label}</p>
           {payload.map((entry, idx) => (
             <p key={idx} style={{ color: entry.color }} className="font-medium flex items-center justify-between gap-4">
               <span>{entry.name}:</span>
-              <span className="font-mono font-bold text-white">{entry.value}</span>
+              <span className="font-mono font-bold text-slate-900">{entry.value}</span>
             </p>
           ))}
         </div>
@@ -60,48 +60,48 @@ export default function Visualizers({ kpis, anomalies }) {
   };
 
   return (
-    <div className="glass-panel p-6 rounded-3xl mb-6">
+    <div className="card-enterprise p-5 mb-6 font-sans">
       
       {/* Header & Navigation Tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800/80">
-        <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-blue-600/20 border border-blue-500/30 rounded-2xl text-blue-400">
-            <BarChart3 className="w-5 h-5 stroke-[2.2]" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E2E8F0]">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 rounded bg-blue-50 border border-blue-200 text-[#2563EB]">
+            <BarChart3 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white tracking-tight">Cross-Domain Analytics & Visualizers</h2>
-            <p className="text-xs text-slate-400">
-              Interactive capacity limits, energy footprint, transit loads, & maintenance queue
+            <h2 className="text-sm font-bold text-slate-900">Campus Analytics & Trends</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Interactive charts for room capacity, energy use, transit load, and maintenance tickets.
             </p>
           </div>
         </div>
 
         {/* Tab Buttons */}
-        <div className="flex flex-wrap items-center gap-1 bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800/80">
+        <div className="flex items-center space-x-1 overflow-x-auto pb-1 sm:pb-0 whitespace-nowrap">
           <button
             onClick={() => setActiveChart('attendance')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-              activeChart === 'attendance' ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1.5 text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
+              activeChart === 'attendance' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>Capacity vs Attendance</span>
+            <span>Seat Capacity</span>
           </button>
 
           <button
             onClick={() => setActiveChart('energy')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-              activeChart === 'energy' ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1.5 text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
+              activeChart === 'energy' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <Zap className="w-3.5 h-3.5" />
-            <span>Energy vs Occupancy</span>
+            <span>Energy Use</span>
           </button>
 
           <button
             onClick={() => setActiveChart('transit')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-              activeChart === 'transit' ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1.5 text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
+              activeChart === 'transit' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <Bus className="w-3.5 h-3.5" />
@@ -110,12 +110,12 @@ export default function Visualizers({ kpis, anomalies }) {
 
           <button
             onClick={() => setActiveChart('maintenance')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-              activeChart === 'maintenance' ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1.5 text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
+              activeChart === 'maintenance' ? 'nav-tab-active' : 'nav-tab-inactive'
             }`}
           >
             <Wrench className="w-3.5 h-3.5" />
-            <span>Work Orders</span>
+            <span>Maintenance</span>
           </button>
         </div>
       </div>
@@ -124,28 +124,27 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'attendance' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-300 font-semibold">
-              Planned Seat Limit vs Actual Scanned Attendance
+            <span className="text-slate-700 font-semibold">
+              Planned Room Capacity vs Actual Attendance
             </span>
-            <span className="text-red-400 font-semibold flex items-center gap-1">
-              <ShieldAlert className="w-3.5 h-3.5" />
-              SCI-104 Exceeds Room Limit (+75%)
+            <span className="badge-pill badge-error text-[10px]">
+              SCI-104 Exceeds Limit (+75%)
             </span>
           </div>
-          <div className="h-[320px] w-full">
+          <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={capacityAttendanceData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="room" stroke="#94a3b8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} />
+              <BarChart data={capacityAttendanceData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                <XAxis dataKey="room" stroke="#64748B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar dataKey="capacity" name="Room Capacity Limit" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="actual" name="Actual Attendance" radius={[6, 6, 0, 0]}>
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                <Bar dataKey="capacity" name="Room Capacity Limit" fill="#94A3B8" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="actual" name="Actual Attendance" radius={[4, 4, 0, 0]}>
                   {capacityAttendanceData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={entry.actual > entry.capacity ? '#ef4444' : '#10b981'}
+                      fill={entry.actual > entry.capacity ? '#DC2626' : '#16A34A'}
                     />
                   ))}
                 </Bar>
@@ -159,31 +158,31 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'energy' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-300 font-semibold">
-              Time-Series Power Demand (kWh) vs Room Occupancy
+            <span className="text-slate-700 font-semibold">
+              Power Demand (kWh) Across Time
             </span>
-            <span className="text-amber-400 font-semibold">LIB-102 Overnight Spike: 48.7 kWh</span>
+            <span className="badge-pill badge-warning text-[10px]">LIB-102 Overnight Spike: 48.7 kWh</span>
           </div>
-          <div className="h-[320px] w-full">
+          <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={energyTimelineData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
+              <AreaChart data={energyTimelineData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                 <defs>
                   <linearGradient id="colorLib" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#F59E0B" stopOpacity={0.0}/>
                   </linearGradient>
                   <linearGradient id="colorCS" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#2563EB" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#2563EB" stopOpacity={0.0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="time" stroke="#94a3b8" fontSize={12} />
-                <YAxis stroke="#94a3b8" fontSize={12} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                <XAxis dataKey="time" stroke="#64748B" fontSize={11} />
+                <YAxis stroke="#64748B" fontSize={11} />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Area type="monotone" dataKey="LIB102_kWh" name="Library LIB-102 (kWh)" stroke="#f59e0b" fillOpacity={1} fill="url(#colorLib)" />
-                <Area type="monotone" dataKey="CS301_kWh" name="Auditorium CS-301 (kWh)" stroke="#3b82f6" fillOpacity={1} fill="url(#colorCS)" />
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                <Area type="monotone" dataKey="LIB102_kWh" name="Library LIB-102 (kWh)" stroke="#F59E0B" fillOpacity={1} fill="url(#colorLib)" />
+                <Area type="monotone" dataKey="CS301_kWh" name="Auditorium CS-301 (kWh)" stroke="#2563EB" fillOpacity={1} fill="url(#colorCS)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -194,25 +193,25 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'transit' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-300 font-semibold">
-              Shuttle Fleet Seating Capacity vs Active Passengers
+            <span className="text-slate-700 font-semibold">
+              Shuttle Seating Capacity vs Active Passengers
             </span>
-            <span className="text-red-400 font-semibold">Shuttle 2: 145% Overcrowding</span>
+            <span className="badge-pill badge-error text-[10px]">Shuttle 2: 145% Load</span>
           </div>
-          <div className="h-[320px] w-full">
+          <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={transitData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="route" stroke="#94a3b8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} />
+              <BarChart data={transitData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                <XAxis dataKey="route" stroke="#64748B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar dataKey="capacity" name="Vehicle Capacity" fill="#64748b" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="passengers" name="Active Passenger Count" radius={[6, 6, 0, 0]}>
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                <Bar dataKey="capacity" name="Vehicle Capacity" fill="#94A3B8" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="passengers" name="Passenger Count" radius={[4, 4, 0, 0]}>
                   {transitData.map((entry, index) => (
                     <Cell
                       key={`cell-tr-${index}`}
-                      fill={entry.passengers > entry.capacity ? '#ef4444' : '#06b6d4'}
+                      fill={entry.passengers > entry.capacity ? '#DC2626' : '#0284C7'}
                     />
                   ))}
                 </Bar>
@@ -226,23 +225,23 @@ export default function Visualizers({ kpis, anomalies }) {
       {activeChart === 'maintenance' && (
         <div>
           <div className="flex items-center justify-between mb-3 text-xs">
-            <span className="text-slate-300 font-semibold">
-              Work Orders Grouped by Department Domain & Severity
+            <span className="text-slate-700 font-semibold">
+              Maintenance Tickets by Category & Severity
             </span>
-            <span className="text-slate-400 font-medium">Critical Ticket: HVAC CS-301</span>
+            <span className="text-slate-500 font-mono text-[11px]">Critical: HVAC CS-301</span>
           </div>
-          <div className="h-[320px] w-full">
+          <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={maintenanceData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="category" stroke="#94a3b8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} />
+              <BarChart data={maintenanceData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                <XAxis dataKey="category" stroke="#64748B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar dataKey="Critical" stackId="a" fill="#ef4444" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="High" stackId="a" fill="#f59e0b" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="Medium" stackId="a" fill="#eab308" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="Low" stackId="a" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                <Bar dataKey="Critical" stackId="a" fill="#DC2626" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="High" stackId="a" fill="#F59E0B" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Medium" stackId="a" fill="#EAB308" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Low" stackId="a" fill="#2563EB" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

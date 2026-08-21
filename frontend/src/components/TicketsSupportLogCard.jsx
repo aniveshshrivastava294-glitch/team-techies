@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Plus, X, CheckCircle2, Clock, ShieldAlert, ArrowRight, Filter } from 'lucide-react';
+import { AlertTriangle, Plus, X, CheckCircle2 } from 'lucide-react';
 
 export default function TicketsSupportLogCard({ 
   adminDomain = 'events', 
-  title = 'Tickets Raised & Support Log',
-  subtitle = 'Track maintenance, IT support, AV repairs & facility tickets' 
+  title = 'Support & Maintenance Tickets',
+  subtitle = 'Track maintenance, IT support, AV repairs, and facility tickets' 
 }) {
   const [tickets, setTickets] = useState(() => {
     if (adminDomain === 'transport') {
@@ -66,12 +66,12 @@ export default function TicketsSupportLogCard({
     setShowIssueModal(false);
     setTicketTitle('');
     setTicketDesc('');
-    showToast(`Successfully logged ticket ${newTck.id}!`);
+    showToast(`Logged ticket ${newTck.id} successfully!`);
   };
 
   const handleStatusUpdate = (tckId, newStatus) => {
     setTickets(prev => prev.map(t => t.id === tckId ? { ...t, status: newStatus } : t));
-    showToast(`Ticket ${tckId} status updated to ${newStatus}`);
+    showToast(`Updated ticket ${tckId} status to ${newStatus}`);
   };
 
   const activeTicketsCount = tickets.filter(t => t.status !== 'Resolved').length;
@@ -83,110 +83,103 @@ export default function TicketsSupportLogCard({
   });
 
   return (
-    <div className="w-full rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl transition-all duration-300 overflow-hidden shadow-2xl">
+    <div className="card-enterprise p-5 mb-6 font-sans">
       {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-black/90 border border-amber-500/40 text-amber-300 font-mono text-xs px-4 py-2.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-amber-400" />
+        <div className="fixed top-16 right-6 bg-slate-900 text-white text-xs px-4 py-2 rounded-md shadow-lg z-50 flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* Header Bar */}
-      <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-white/5 bg-gradient-to-r from-amber-500/5 via-transparent to-transparent">
-        
-        {/* Top Row: Icon + Title + Active Count + Subtitle + Raise Ticket CTA */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 shrink-0 mt-0.5">
-              <AlertTriangle className="w-4 h-4 stroke-[1.5]" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-sm font-bold text-white tracking-tight">
-                  {title}
-                </h3>
-                <span className="text-[9px] font-mono font-bold px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded-full border border-amber-500/40 uppercase shrink-0">
-                  {activeTicketsCount} ACTIVE
-                </span>
-              </div>
-              <p className="text-[11px] text-zinc-400 font-medium font-mono line-clamp-1">
-                {subtitle}
-              </p>
-            </div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-[#E2E8F0]">
+        <div className="flex items-start gap-2.5">
+          <div className="p-2 rounded bg-amber-50 text-[#F59E0B] border border-amber-200 shrink-0">
+            <AlertTriangle className="w-4 h-4" />
           </div>
-
-          <button
-            type="button"
-            onClick={() => setShowIssueModal(true)}
-            className="px-3.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 shadow-sm"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Raise Ticket</span>
-          </button>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-sm font-bold text-slate-900">
+                {title}
+              </h3>
+              <span className="badge-pill badge-warning text-[10px]">
+                {activeTicketsCount} Active
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {subtitle}
+            </p>
+          </div>
         </div>
 
-        {/* Bottom Row: Status Filter Pills */}
-        <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/5">
-          <div className="flex items-center bg-black/50 p-1 rounded-xl border border-white/10 text-[10px] font-mono w-full sm:w-auto justify-between sm:justify-start">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center space-x-1 border-b border-[#E2E8F0] sm:border-b-0">
             {['ALL', 'ACTIVE', 'RESOLVED'].map(st => (
               <button
                 key={st}
                 type="button"
                 onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  statusFilter === st
-                    ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40'
-                    : 'text-zinc-400 hover:text-white'
+                className={`px-2.5 py-1 text-xs font-semibold cursor-pointer transition-colors ${
+                  statusFilter === st ? 'nav-tab-active' : 'nav-tab-inactive'
                 }`}
               >
                 {st}
               </button>
             ))}
           </div>
+
+          <button
+            type="button"
+            onClick={() => setShowIssueModal(true)}
+            className="btn-primary text-xs py-1 px-3"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Raise Ticket</span>
+          </button>
         </div>
       </div>
 
-      {/* Tickets List Body */}
-      <div className="p-5 sm:p-6 space-y-3 font-mono">
+      {/* Tickets List Body (High Contrast White Cards) */}
+      <div className="space-y-2.5">
         {filteredTickets.length === 0 ? (
-          <div className="py-8 text-center text-zinc-500 text-xs bg-black/40 rounded-2xl border border-white/5">
+          <div className="py-6 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0]">
             No support tickets match the selected filter.
           </div>
         ) : (
           filteredTickets.map((tck) => (
             <div 
               key={tck.id} 
-              className="p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-white/15 transition-all space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+              className="p-3.5 rounded-md bg-white border border-[#E2E8F0] hover:border-slate-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
             >
-              <div className="space-y-1">
+              <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-white/5 text-cyan-300 rounded-full border border-white/10">
+                  <span className="font-mono text-xs font-bold text-slate-900">
                     {tck.id}
                   </span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-amber-500/10 text-amber-300 rounded-full border border-amber-500/30">
+                  <span className="badge-pill badge-info text-[10px]">
                     {tck.domain}
                   </span>
-                  <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase ${
-                    tck.status === 'In Progress' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                    tck.status === 'Resolved' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                    'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                  <span className={`badge-pill text-[10px] ${
+                    tck.status === 'In Progress' ? 'badge-warning' :
+                    tck.status === 'Resolved' ? 'badge-success' :
+                    'badge-info'
                   }`}>
                     {tck.status}
                   </span>
                 </div>
-                <h5 className="text-xs font-bold text-white font-sans">{tck.title}</h5>
-                <p className="text-[10px] text-zinc-500">
+                <h5 className="text-xs font-bold text-slate-900 truncate">{tck.title}</h5>
+                <p className="text-[11px] text-slate-500 font-mono">
                   Logged by {tck.requestor} on {tck.date} • {tck.time}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
                 {tck.status !== 'Resolved' ? (
                   <button
                     type="button"
                     onClick={() => handleStatusUpdate(tck.id, 'Resolved')}
-                    className="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold transition-all cursor-pointer font-sans"
+                    className="btn-secondary text-xs py-1 px-3 text-[#10B981] font-semibold"
                   >
                     Mark Resolved
                   </button>
@@ -194,7 +187,7 @@ export default function TicketsSupportLogCard({
                   <button
                     type="button"
                     onClick={() => handleStatusUpdate(tck.id, 'In Progress')}
-                    className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-zinc-400 border border-white/10 rounded-full text-xs font-bold transition-all cursor-pointer font-sans"
+                    className="btn-secondary text-xs py-1 px-3 text-slate-600 font-medium"
                   >
                     Reopen
                   </button>
@@ -207,80 +200,60 @@ export default function TicketsSupportLogCard({
 
       {/* Raise Ticket Modal */}
       {showIssueModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-black/90 border border-white/10 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4 relative animate-in zoom-in-95 backdrop-blur-2xl">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 font-sans">
+          <div className="bg-white border border-[#E2E8F0] w-full max-w-md rounded-lg p-6 shadow-xl space-y-4">
             
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-white/5 border border-white/10 rounded-xl text-amber-400">
-                  <AlertTriangle className="w-4 h-4 stroke-[1.5]" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-white">
-                    Raise {adminDomain === 'transport' ? 'Transport' : 'Event'} Support Ticket
-                  </h3>
-                  <p className="text-[11px] text-zinc-400 font-mono">
-                    Dispatch issue to maintenance or tech team
-                  </p>
-                </div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-[#F59E0B]" />
+                <h3 className="text-sm font-bold text-slate-900">
+                  Raise New Support Ticket
+                </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowIssueModal(false)}
-                className="p-1 rounded-full hover:bg-white/10 text-zinc-400 cursor-pointer transition-all"
+                className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleRaiseTicket} className="space-y-3.5 text-xs font-sans">
-              
-              {/* Issue Title */}
-              <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">
-                  Issue Title <span className="text-amber-400">*</span>
+            <form onSubmit={handleRaiseTicket} className="space-y-3 text-xs">
+              <div>
+                <label className="block font-medium text-slate-700 mb-1">
+                  Issue Title <span className="text-[#DC2626]">*</span>
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder={adminDomain === 'transport' ? 'e.g. Bus 3 Tyre Pressure Low Sensor Warning' : 'e.g. Main Audi Stage Mic Wireless Dropouts'}
+                  placeholder="e.g. Laser Projector HDMI Port Signal Loss"
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                  className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
-              {/* Priority & Domain */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="block font-mono font-bold text-zinc-300">Category Domain</label>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block font-medium text-slate-700 mb-1">Category Domain</label>
                   <select
                     value={ticketDomain}
                     onChange={(e) => setTicketDomain(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                    className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
                   >
-                    {adminDomain === 'transport' ? (
-                      <>
-                        <option value="transport">Transport Fleet</option>
-                        <option value="maintenance">Vehicle Maintenance</option>
-                        <option value="station">Station Logistics</option>
-                      </>
-                    ) : (
-                      <>
-                        <option value="events">Event AV & Stage</option>
-                        <option value="maintenance">HVAC Climate</option>
-                        <option value="audi">Auditorium Hardware</option>
-                      </>
-                    )}
+                    <option value="events">Event AV & Stage</option>
+                    <option value="transport">Transport Fleet</option>
+                    <option value="maintenance">HVAC & Facility</option>
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block font-mono font-bold text-zinc-300">Priority</label>
+                <div>
+                  <label className="block font-medium text-slate-700 mb-1">Priority</label>
                   <select
                     value={ticketPriority}
                     onChange={(e) => setTicketPriority(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                    className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -289,33 +262,31 @@ export default function TicketsSupportLogCard({
                 </div>
               </div>
 
-              {/* Description */}
-              <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">
-                  Detailed Description <span className="text-amber-400">*</span>
+              <div>
+                <label className="block font-medium text-slate-700 mb-1">
+                  Detailed Description <span className="text-[#DC2626]">*</span>
                 </label>
                 <textarea
                   required
                   rows={3}
-                  placeholder="Describe hardware fault, bus route issue, or support requirement..."
+                  placeholder="Describe hardware fault, room location, or support requirement..."
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                  className="w-full px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-slate-900 focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/5">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E2E8F0]">
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(false)}
-                  className="px-4 py-2 bg-white/5 hover:bg-white/10 text-zinc-400 rounded-full font-mono font-bold cursor-pointer transition-all"
+                  className="btn-secondary text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-500/40 rounded-full font-bold transition-all cursor-pointer"
+                  className="btn-primary text-xs"
                 >
                   Submit Ticket
                 </button>

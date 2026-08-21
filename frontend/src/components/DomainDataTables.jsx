@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Database, Search, Building2, Calendar, Wrench, Bus, Zap, Users, Filter } from 'lucide-react';
+import { Database, Search, Building2, Calendar, Wrench, Bus, Zap, Users } from 'lucide-react';
 
-export default function DomainDataTables() {
-  const [activeTab, setActiveTab] = useState('classrooms');
+export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
+  const [activeTab, setActiveTab] = useState(defaultDomain);
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -45,34 +45,32 @@ export default function DomainDataTables() {
   const columns = tableData.length > 0 ? Object.keys(tableData[0]) : [];
 
   return (
-    <div className="glass-panel p-6 rounded-2xl border border-slate-800 mb-6">
+    <div className="card-enterprise p-5 mb-6 font-sans">
       
-      {/* Header & Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
-        <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-blue-600/20 border border-blue-500/30 rounded-xl text-blue-400">
-            <Database className="w-6 h-6" />
+      {/* Header & Category Tabs */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E2E8F0]">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 rounded bg-blue-50 border border-blue-200 text-[#2563EB]">
+            <Database className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white tracking-tight">Siloed Domain Datasets Inspector</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Inspect underlying raw PostgreSQL records across the 6 campus operational systems
+            <h2 className="text-sm font-bold text-slate-900">Campus Data Inspector</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Inspect underlying records across the 6 campus operational systems.
             </p>
           </div>
         </div>
 
         {/* Domain Selection Tabs */}
-        <div className="flex flex-wrap items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <div className="flex items-center space-x-1 overflow-x-auto pb-1 lg:pb-0 whitespace-nowrap">
           {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeTab === tab.id
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                className={`px-3 py-1.5 text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
+                  activeTab === tab.id ? 'nav-tab-active' : 'nav-tab-inactive'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -84,53 +82,52 @@ export default function DomainDataTables() {
       </div>
 
       {/* Search Input Bar */}
-      <div className="flex items-center justify-between gap-4 mb-4">
+      <div className="flex items-center justify-between gap-3 mb-3">
         <div className="relative flex-1 max-w-xs">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={`Filter ${activeTab} records...`}
-            className="w-full bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-xs rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-blue-500"
+            placeholder={`Search ${activeTab} records...`}
+            className="w-full bg-[#F8FAFC] border border-[#E2E8F0] text-slate-900 placeholder-slate-400 text-xs rounded pl-8 pr-3 py-1.5 focus:outline-none focus:border-[#2563EB]"
           />
         </div>
-        <span className="text-xs text-slate-400 font-mono">
+        <span className="text-[11px] text-slate-500 font-mono">
           Showing {filteredData.length} of {tableData.length} records
         </span>
       </div>
 
       {/* Data Table */}
       {loading ? (
-        <div className="py-12 text-center text-slate-400">
-          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-          <p className="text-xs">Fetching domain records from Supabase layer...</p>
+        <div className="py-8 text-center text-slate-400">
+          <p className="text-xs font-mono">Loading data records...</p>
         </div>
       ) : filteredData.length === 0 ? (
-        <div className="py-8 text-center text-slate-500 text-xs bg-slate-900/50 rounded-xl border border-slate-800">
-          No records found matching query filter.
+        <div className="py-6 text-center text-slate-500 text-xs bg-[#F8FAFC] rounded border border-[#E2E8F0]">
+          No records found matching search query.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/60">
-          <table className="w-full text-left border-collapse text-xs">
+        <div className="overflow-x-auto border border-[#E2E8F0] rounded-md">
+          <table className="table-enterprise">
             <thead>
-              <tr className="bg-slate-900/90 border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+              <tr>
                 {columns.map((col, idx) => (
-                  <th key={idx} className="px-4 py-3 font-semibold">
+                  <th key={idx}>
                     {col.replace('_', ' ')}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300 font-mono">
+            <tbody>
               {filteredData.map((row, rIdx) => (
-                <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
+                <tr key={rIdx}>
                   {columns.map((col, cIdx) => (
-                    <td key={cIdx} className="px-4 py-2.5 max-w-[220px] truncate">
+                    <td key={cIdx} className="max-w-[200px] truncate font-mono">
                       {row[col] === null || row[col] === undefined ? (
-                        <span className="text-slate-600 italic">null</span>
+                        <span className="text-slate-400 italic">null</span>
                       ) : String(row[col]).startsWith('2026') || String(row[col]).includes('T') ? (
-                        <span className="text-slate-400">{new Date(row[col]).toLocaleString()}</span>
+                        <span className="text-slate-600">{new Date(row[col]).toLocaleDateString()}</span>
                       ) : (
                         String(row[col])
                       )}
