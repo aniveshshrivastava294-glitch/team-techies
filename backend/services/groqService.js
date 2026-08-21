@@ -1,17 +1,10 @@
-// Groq Text-to-SQL Translation Service (groq-sdk) with Role Context Awareness
+// Groq Text-to-SQL Translation Service with Native REST Execution & RBAC Context
 require('dotenv').config();
 
 const groqApiKey = process.env.GROQ_API_KEY;
-let groqClient = null;
 
 if (groqApiKey && groqApiKey.trim() !== '') {
-    try {
-        const Groq = require('groq-sdk');
-        groqClient = new Groq({ apiKey: groqApiKey });
-        console.log('✅ Groq SDK initialized for RBAC.');
-    } catch (e) {
-        console.warn('⚠️ Groq SDK failed to initialize:', e.message);
-    }
+    console.log('✅ Groq Text-to-SQL API Key loaded.');
 } else {
     console.log('ℹ️ GROQ_API_KEY not set in .env. Using smart fallback RBAC Text-to-SQL engine for demo.');
 }
@@ -29,18 +22,29 @@ Database Schema:
 `;
 
 /**
- * Uses Groq to parse user question into safe, role-scoped SQL query
+ * Uses Groq API to parse user question into safe, role-scoped SQL query
  */
 async function translateToSQL(userQuery, userRole = 'faculty', departmentDomain = 'general') {
-    if (groqClient) {
+    const activeKey = process.env.GROQ_API_KEY;
+
+    if (activeKey && activeKey.trim() !== '') {
         try {
             const roleInstruction = getRolePromptInstruction(userRole, departmentDomain);
 
-            const completion = await groqClient.chat.completions.create({
-                messages: [
-                    {
-                        role: 'system',
-                        content: `You are an expert PostgreSQL DBA and SQL generator for a Campus Intelligence System.
+            const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${activeKey.trim()}`
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    temperature: 0.1,
+                    response_format: { type: 'json_object' },
+                    messages: [
+                        {
+                            role: 'system',
+                            content: `You are an expert PostgreSQL DBA and SQL generator for a Campus Intelligence System.
 Given the schema below, generate a clean, read-only SELECT query that answers the user prompt.
 
 USER ROLE CONTEXT:
@@ -54,29 +58,29 @@ IMPORTANT RULES:
 {"sql": "SELECT ...", "intent": "Brief description of query goal", "explanation": "Why this query was selected for this user role"}
 2. Only generate SELECT queries. Never write INSERT, UPDATE, DELETE, or DROP.
 3. Keep queries focused and relevant to the user's operational role domain.`
-                    },
-                    {
-                        role: 'user',
-                        content: userQuery
-                    }
-                ],
-                model: 'llama-3.3-70b-versatile',
-                temperature: 0.1,
-                response_format: { type: 'json_object' }
+                        },
+                        {
+                            role: 'user',
+                            content: userQuery
+                        }
+                    ]
+                })
             });
 
-            const content = completion.choices[0]?.message?.content;
+            const data = await res.json();
+            const content = data.choices?.[0]?.message?.content;
+
             if (content) {
                 const parsed = JSON.parse(content);
                 return {
                     sql: cleanSql(parsed.sql),
                     intent: parsed.intent || 'Execute role-based domain search',
-                    explanation: parsed.explanation || `Generated via Groq for ${userRole}`,
-                    provider: 'Groq (llama-3.3-70b-versatile)'
+                    explanation: parsed.explanation || `Generated via Groq Llama-3.3 for ${userRole}`,
+                    provider: 'Groq API (llama-3.3-70b-versatile)'
                 };
             }
         } catch (err) {
-            console.error('Groq Text-to-SQL API Error:', err.message);
+            console.error('Groq API Execution Error:', err.message);
         }
     }
 
