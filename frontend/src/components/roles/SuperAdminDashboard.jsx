@@ -122,24 +122,29 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
           )}
         </div>
 
-        {/* Right: AI Bulk Faculty Onboarding Hero Card */}
+        {/* Right: Universal Multi-Batch AI Data Intaker Hero Card */}
         <div className="lg:col-span-4 glass-panel p-6 rounded-2xl border border-purple-500/30 flex flex-col justify-between space-y-4">
           <div>
             <div className="w-10 h-10 bg-purple-600/20 border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-400 mb-3">
               <Sparkles className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-white tracking-tight">AI Bulk Faculty Extraction</h3>
+            <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              Universal Multi-Batch AI Data Intaker
+              <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 rounded-full">
+                AI Advisor
+              </span>
+            </h3>
             <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              Onboard dozens of faculty members instantly by uploading `.pdf` or `.xlsx` documents. Gemini API parses raw text into structured Supabase user records.
+              Feed CSV, JSON, or unstructured text unlimited times into Faculty, Transport, Energy, Classroom, or Maintenance databases. Features real-time AI placement guidance chatbox.
             </p>
           </div>
 
           <button
             onClick={() => setIsUploadOpen(true)}
-            className="w-full py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-purple-600/20 flex items-center justify-center space-x-2 cursor-pointer text-xs"
+            className="w-full py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-purple-600/20 flex items-center justify-center space-x-2 cursor-pointer text-xs font-mono"
           >
             <Upload className="w-4 h-4" />
-            <span>Open AI Document Dropzone</span>
+            <span>Open Universal AI Data Intaker</span>
           </button>
         </div>
 
