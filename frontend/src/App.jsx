@@ -4,6 +4,7 @@ import Header from './components/Header';
 import LoginModal from './components/LoginModal';
 import PendingApprovalView from './components/PendingApprovalView';
 import ConversationalHero from './components/ConversationalHero';
+import FloatingAIAssistant from './components/FloatingAIAssistant';
 import SuperAdminDashboard from './components/roles/SuperAdminDashboard';
 import FacultyDashboard from './components/roles/FacultyDashboard';
 import SubAdminDashboard from './components/roles/SubAdminDashboard';
@@ -56,10 +57,10 @@ function DashboardRouter() {
     if (!currentUser) {
       return (
         <div className="py-20 text-center space-y-4">
-          <h2 className="text-xl font-bold text-white">Please sign in to access your role workspace</h2>
+          <h2 className="text-xl font-bold text-white">Please sign in to access your Campus Orbit workspace</h2>
           <button
             onClick={() => setIsLoginOpen(true)}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all cursor-pointer"
           >
             Open Login & Quick Role Switcher
           </button>
@@ -104,7 +105,7 @@ function DashboardRouter() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
       
-      {/* Header */}
+      {/* Header with Plain Text Brand: Campus Orbit */}
       <Header
         onRefresh={fetchDashboardData}
         isRefreshing={isRefreshing}
@@ -112,8 +113,8 @@ function DashboardRouter() {
         onOpenLogin={() => setIsLoginOpen(true)}
       />
 
-      {/* Main Container with Hero & Role Router */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 pt-4">
+      {/* Main Container */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 pt-2">
         
         {/* Conversational Hero Bar for All Signed-In Users */}
         {currentUser && currentUser.approval_status !== 'pending' && (
@@ -125,13 +126,16 @@ function DashboardRouter() {
 
       </main>
 
+      {/* Persistent Omni-Agent Floating Assistant Widget on Every Screen */}
+      <FloatingAIAssistant currentUser={currentUser} />
+
       {/* Login / Demo Switcher Modal */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
       {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950 py-6 px-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Campus Orbit Agentic AI Platform (Problem SW-01-P)</span>
+          <span>Campus Orbit &bull; Intelligent Decision-Support Platform</span>
           <span className="text-slate-400">Gemini 2.5 API Function Calling & Groq Text-to-SQL</span>
         </div>
       </footer>
