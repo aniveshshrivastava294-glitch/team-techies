@@ -6,6 +6,8 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
+const leaveRoutes = require('./routes/leaveRoutes');
 
 const { isConnectedToSupabase, supabase, getLocalData } = require('./db');
 const { detectAnomalies } = require('./services/anomalyEngine');
@@ -18,10 +20,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Mount RBAC Routes
+// Mount RBAC & Feature Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/leaves', leaveRoutes);
 
 // -------------------------------------------------------------
 // 1. GET /api/kpis - Aggregated Statistics Across 6 Domains + Tickets

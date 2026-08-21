@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ChatWidget from '../ChatWidget';
+import RealtimeBookingMatrix from '../RealtimeBookingMatrix';
 import { Building2, Bus, Ticket, UserCheck, Calendar, Clock, Plus, Phone, CheckCircle2, AlertTriangle, Send } from 'lucide-react';
 
 export default function FacultyDashboard({ currentUser }) {
   const [activeTab, setActiveTab] = useState('venues');
-  const [venues, setVenues] = useState([]);
   const [buses, setBuses] = useState([]);
   const [userTickets, setUserTickets] = useState([]);
 
@@ -15,10 +15,9 @@ export default function FacultyDashboard({ currentUser }) {
   const [ticketVenue, setTicketVenue] = useState('CS-301');
   const [ticketSuccess, setTicketSuccess] = useState(false);
 
-  const [bookingEvent, setBookingEvent] = useState('');
-  const [bookingVenue, setBookingVenue] = useState('CS-301');
-  const [bookingAttendees, setBookingAttendees] = useState(50);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [leaveType, setLeaveType] = useState('Casual Leave');
+  const [leaveReason, setLeaveReason] = useState('');
+  const [leaveSuccess, setLeaveSuccess] = useState(false);
 
   useEffect(() => {
     fetchFacultyData();
@@ -26,11 +25,6 @@ export default function FacultyDashboard({ currentUser }) {
 
   const fetchFacultyData = async () => {
     try {
-      // Venues
-      const vRes = await fetch('/api/bookings/venues');
-      const vData = await vRes.json();
-      if (vData.status === 'success') setVenues(vData.venues || []);
-
       // Buses
       const bRes = await fetch('/api/domains/transportation');
       const bData = await bRes.json();
@@ -74,29 +68,29 @@ export default function FacultyDashboard({ currentUser }) {
     }
   };
 
-  const handleBookVenue = async (e) => {
+  const handleApplyLeave = async (e) => {
     e.preventDefault();
-    if (!bookingEvent) return;
+    if (!leaveReason) return;
 
     try {
-      const res = await fetch('/api/bookings', {
+      const res = await fetch('/api/leaves', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          event_name: bookingEvent,
-          room_number: bookingVenue,
-          expected_attendees: bookingAttendees,
-          organizer: currentUser?.full_name || currentUser?.email
+          faculty_email: currentUser?.email,
+          faculty_name: currentUser?.full_name,
+          leave_type: leaveType,
+          reason: leaveReason
         })
       });
       const data = await res.json();
       if (data.status === 'success') {
-        setBookingSuccess(true);
-        setBookingEvent('');
-        setTimeout(() => setBookingSuccess(false), 3000);
+        setLeaveSuccess(true);
+        setLeaveReason('');
+        setTimeout(() => setLeaveSuccess(false), 3000);
       }
     } catch (err) {
-      console.error('Booking error:', err);
+      console.error('Leave error:', err);
     }
   };
 
@@ -107,7 +101,7 @@ export default function FacultyDashboard({ currentUser }) {
       <div className="glass-panel p-6 rounded-2xl border border-blue-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <span className="px-2.5 py-0.5 text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full">
-            Faculty Workspace & Helper Portal
+            Faculty Workspace & Realtime Booking Portal
           </span>
           <h2 className="text-xl font-bold text-white tracking-tight mt-1">
             Welcome, {currentUser?.full_name || 'Prof. Elena Rostova'}
@@ -143,7 +137,7 @@ export default function FacultyDashboard({ currentUser }) {
           }`}
         >
           <Building2 className="w-4 h-4" />
-          <span>Classroom Availability & Venue Booking</span>
+          <span>Real-Time Venue Booking Matrix</span>
         </button>
 
         <button
@@ -153,7 +147,7 @@ export default function FacultyDashboard({ currentUser }) {
           }`}
         >
           <Bus className="w-4 h-4" />
-          <span>Bus Fleet Schedule (5-6 Buses)</span>
+          <span>Bus Fleet Schedule</span>
         </button>
 
         <button
@@ -163,109 +157,13 @@ export default function FacultyDashboard({ currentUser }) {
           }`}
         >
           <Ticket className="w-4 h-4" />
-          <span>Raise Issue / Ticket Form</span>
+          <span>Raise Issue / Leave Form</span>
         </button>
       </div>
 
-      {/* TAB 1: VENUES & BOOKING */}
+      {/* TAB 1: REALTIME BOOKING MATRIX */}
       {activeTab === 'venues' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
-          {/* Venues Grid */}
-          <div className="lg:col-span-7 glass-panel p-6 rounded-2xl border border-slate-800">
-            <h3 className="text-sm font-bold text-white mb-4 flex items-center justify-between">
-              <span>Real-Time Venue Availability & Capacities</span>
-              <span className="text-xs text-slate-400 font-normal">{venues.length} Venues Listed</span>
-            </h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1">
-              {venues.map((v) => (
-                <div key={v.id} className="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-white text-sm">{v.room_number}</span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
-                        v.is_available !== false
-                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                          : 'bg-red-500/20 text-red-300 border-red-500/30'
-                      }`}>
-                        {v.is_available !== false ? 'Available' : 'Reserved'}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-400">{v.building}</p>
-                  </div>
-
-                  <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
-                    <span>Capacity: <strong>{v.capacity} Seats</strong></span>
-                    <span className="text-slate-500">{v.room_type}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Booking Request Form */}
-          <div className="lg:col-span-5 glass-panel p-6 rounded-2xl border border-slate-800">
-            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-blue-400" />
-              <span>Submit Venue Reservation Request</span>
-            </h3>
-
-            {bookingSuccess && (
-              <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Booking request submitted to Event Sub-Admin for approval!</span>
-              </div>
-            )}
-
-            <form onSubmit={handleBookVenue} className="space-y-3 text-xs">
-              <div>
-                <label className="block text-slate-400 font-semibold mb-1">Event / Lecture Title</label>
-                <input
-                  type="text"
-                  value={bookingEvent}
-                  onChange={(e) => setBookingEvent(e.target.value)}
-                  placeholder="e.g. Advanced AI Research Seminar"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-400 font-semibold mb-1">Select Venue</label>
-                <select
-                  value={bookingVenue}
-                  onChange={(e) => setBookingVenue(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
-                >
-                  {venues.map(v => (
-                    <option key={v.id} value={v.room_number}>
-                      {v.room_number} ({v.building} - {v.capacity} Seats)
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-slate-400 font-semibold mb-1">Expected Attendees</label>
-                <input
-                  type="number"
-                  value={bookingAttendees}
-                  onChange={(e) => setBookingAttendees(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-md shadow-blue-600/20 cursor-pointer mt-2"
-              >
-                Submit Reservation Request
-              </button>
-            </form>
-          </div>
-
-        </div>
+        <RealtimeBookingMatrix currentUser={currentUser} />
       )}
 
       {/* TAB 2: BUS FLEET SCHEDULE */}
@@ -321,12 +219,12 @@ export default function FacultyDashboard({ currentUser }) {
         </div>
       )}
 
-      {/* TAB 3: RAISE ISSUE TICKET FORM */}
+      {/* TAB 3: RAISE ISSUE TICKET & APPLY LEAVE FORMS */}
       {activeTab === 'tickets' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Raise Issue Form */}
-          <div className="lg:col-span-5 glass-panel p-6 rounded-2xl border border-slate-800">
+          <div className="lg:col-span-6 glass-panel p-6 rounded-2xl border border-slate-800">
             <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <Plus className="w-4 h-4 text-amber-400" />
               <span>Raise Campus Issue Ticket</span>
@@ -335,11 +233,11 @@ export default function FacultyDashboard({ currentUser }) {
             {ticketSuccess && (
               <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Ticket raised! Routed directly to the Sub-Admin Maintenance Kanban board.</span>
+                <span>Ticket raised! Routed directly to Sub-Admin Kanban board.</span>
               </div>
             )}
 
-            <form onSubmit={handleRaiseTicket} className="space-y-3.5 text-xs">
+            <form onSubmit={handleRaiseTicket} className="space-y-3 text-xs">
               <div>
                 <label className="block text-slate-400 font-semibold mb-1">Issue Title</label>
                 <input
@@ -347,33 +245,23 @@ export default function FacultyDashboard({ currentUser }) {
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
                   placeholder="e.g. AC Malfunction in Room CS-301"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-blue-500"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Target Department Domain</label>
+                <label className="block text-slate-400 font-semibold mb-1">Department Domain</label>
                 <select
                   value={ticketDomain}
                   onChange={(e) => setTicketDomain(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-blue-500"
                 >
                   <option value="maintenance">Maintenance Sub-Admin (HVAC, Hardware, Repairs)</option>
+                  <option value="energy">Energy Sub-Admin (Electricity & Water Grid)</option>
                   <option value="transport">Transport Sub-Admin (Shuttle Overcrowding, Driver)</option>
                   <option value="events">Event Sub-Admin (Audio/Visual, Venue Setup)</option>
                 </select>
-              </div>
-
-              <div>
-                <label className="block text-slate-400 font-semibold mb-1">Venue / Location</label>
-                <input
-                  type="text"
-                  value={ticketVenue}
-                  onChange={(e) => setTicketVenue(e.target.value)}
-                  placeholder="e.g. CS-301 or Shuttle Stop #2"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
-                />
               </div>
 
               <div>
@@ -381,51 +269,69 @@ export default function FacultyDashboard({ currentUser }) {
                 <textarea
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  placeholder="Describe the operational flaw or maintenance issue..."
-                  rows={4}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
+                  placeholder="Describe the operational flaw..."
+                  rows={3}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-blue-500"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl transition-all shadow-md shadow-amber-600/20 flex items-center justify-center space-x-2 cursor-pointer"
+                className="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl transition-all shadow-md shadow-amber-600/20 cursor-pointer"
               >
-                <span>Submit Ticket to Sub-Admin</span>
-                <Send className="w-4 h-4" />
+                Submit Ticket
               </button>
             </form>
           </div>
 
-          {/* User Submitted Tickets List */}
-          <div className="lg:col-span-7 glass-panel p-6 rounded-2xl border border-slate-800">
-            <h3 className="text-sm font-bold text-white mb-4">Your Submitted Issue Tickets</h3>
-            {userTickets.length === 0 ? (
-              <div className="py-8 text-center text-slate-500 text-xs bg-slate-900/40 rounded-xl border border-slate-800">
-                No issue tickets raised yet.
-              </div>
-            ) : (
-              <div className="space-y-3 max-h-[420px] overflow-y-auto">
-                {userTickets.map((t, idx) => (
-                  <div key={idx} className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-xs">{t.title}</span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase border ${
-                        t.status === 'open' ? 'bg-red-500/20 text-red-300 border-red-500/30' : t.status === 'in-progress' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                      }`}>
-                        {t.status}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-300">{t.description}</p>
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/60 font-mono">
-                      <span>Venue: {t.venue_name}</span>
-                      <span>Assigned: {t.assigned_domain} Admin</span>
-                    </div>
-                  </div>
-                ))}
+          {/* Apply Leave Form */}
+          <div className="lg:col-span-6 glass-panel p-6 rounded-2xl border border-slate-800">
+            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+              <UserCheck className="w-4 h-4 text-blue-400" />
+              <span>Apply for Faculty Leave</span>
+            </h3>
+
+            {leaveSuccess && (
+              <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Leave application submitted to Attendance Sub-Admin queue!</span>
               </div>
             )}
+
+            <form onSubmit={handleApplyLeave} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-400 font-semibold mb-1">Leave Category</label>
+                <select
+                  value={leaveType}
+                  onChange={(e) => setLeaveType(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="Casual Leave">Casual Leave</option>
+                  <option value="Sick Leave">Sick Leave</option>
+                  <option value="Duty Leave">Duty Leave</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-semibold mb-1">Reason for Leave</label>
+                <textarea
+                  value={leaveReason}
+                  onChange={(e) => setLeaveReason(e.target.value)}
+                  placeholder="Explain reason for leave application..."
+                  rows={3}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-md shadow-blue-600/20 cursor-pointer"
+              >
+                Submit Leave Application
+              </button>
+            </form>
           </div>
 
         </div>

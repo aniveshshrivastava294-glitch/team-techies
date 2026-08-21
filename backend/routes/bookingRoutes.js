@@ -1,9 +1,25 @@
-// Venue Booking & Availability Routes
+// Real-Time Venue Booking Engine with AC vs Non-AC Conditional Approval & Conflict Checking
 const express = require('express');
 const router = express.Router();
 const { isConnectedToSupabase, supabase, getLocalData, mockStore } = require('../db');
 
-// GET /api/bookings/venues - Available Classrooms & Venues
+// GET /api/bookings - Fetch bookings matrix
+router.get('/', async (req, res) => {
+    try {
+        let bookings = [];
+        if (isConnectedToSupabase && supabase) {
+            const { data } = await supabase.from('bookings').select('*');
+            if (data) bookings = data;
+        } else {
+            bookings = getLocalData('bookings');
+        }
+        res.json({ status: 'success', count: bookings.length, bookings });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch bookings', message: err.message });
+    }
+});
+
+// GET /api/bookings/venues - Available Classrooms & Venues with AC / Non-AC types
 router.get('/venues', async (req, res) => {
     try {
         let rooms = [];
@@ -20,39 +36,79 @@ router.get('/venues', async (req, res) => {
     }
 });
 
-// POST /api/bookings - Submit Venue Booking Request
+// POST /api/bookings - Submit Venue Booking with Conflict Prevention & Conditional Logic
 router.post('/', async (req, res) => {
-    const { event_name, room_number, start_time, end_time, expected_attendees, organizer } = req.body;
+    const { event_name, room_number, date, time_slot, booked_by_email } = req.body;
 
-    if (!event_name || !room_number) {
-        return res.status(400).json({ error: 'Event name and Room number are required' });
+    if (!event_name || !room_number || !date || !time_slot) {
+        return res.status(400).json({ error: 'Event name, Room number, Date, and Time Slot are required' });
     }
 
     const rooms = getLocalData('classrooms');
     const room = rooms.find(r => r.room_number === room_number);
 
-    const newEvent = {
-        id: `e-${Date.now()}`,
+    const venue_id = room?.id || `20000000-0000-0000-0000-000000000001`;
+    const venue_type = room?.type || (room_number.includes('CS') || room_number.includes('ART') ? 'AC' : 'Non-AC');
+
+    // 1. Conflict Check: Look for existing bookings on same venue_id + date + time_slot
+    const existingBookings = getLocalData('bookings');
+    const conflict = existingBookings.find(b => 
+        (b.venue_id === venue_id || b.venue_name === room_number) &&
+        b.date === date &&
+        b.time_slot === time_slot &&
+        ['approved', 'pending'].includes(b.status)
+    );
+
+    if (conflict) {
+        return res.status(409).json({
+            error: 'DOUBLE_BOOKING_CONFLICT',
+            message: `Conflict: Room ${room_number} is already booked on ${date} during ${time_slot} by ${conflict.booked_by_email}.`
+        });
+    }
+
+    // 2. Conditional Approval Logic:
+    // Non-AC -> Auto-Approved instantly!
+    // AC -> Default to 'pending' (triggers Event Admin review)
+    const initialStatus = venue_type === 'Non-AC' ? 'approved' : 'pending';
+
+    const newBooking = {
+        id: `b-${Date.now()}`,
+        venue_id,
+        venue_name: room_number,
+        booked_by_email: booked_by_email || 'faculty@demo.com',
+        date,
+        time_slot,
+        status: initialStatus,
         event_name,
-        room_id: room?.id || room_number,
-        start_time: start_time || new Date().toISOString(),
-        end_time: end_time || new Date(Date.now() + 7200000).toISOString(),
-        expected_attendees: Number(expected_attendees) || 50,
-        organizer: organizer || 'Faculty Reservation',
-        status: 'Pending Approval',
+        venue_type,
         created_at: new Date().toISOString()
     };
 
     try {
         if (isConnectedToSupabase && supabase) {
-            const { data, error } = await supabase.from('events').insert([newEvent]).select().single();
+            const { data, error } = await supabase.from('bookings').insert([newBooking]).select().single();
             if (!error && data) {
-                return res.json({ status: 'success', booking: data });
+                return res.json({ status: 'success', booking: data, isAutoApproved: initialStatus === 'approved' });
+            }
+            if (error && error.code === '23505') { // Unique constraint violation
+                return res.status(409).json({
+                    error: 'DOUBLE_BOOKING_CONFLICT',
+                    message: `Database Conflict: ${room_number} slot ${time_slot} is already taken.`
+                });
             }
         }
 
-        mockStore.events.unshift(newEvent);
-        res.json({ status: 'success', booking: newEvent });
+        if (!mockStore.bookings) mockStore.bookings = [];
+        mockStore.bookings.unshift(newBooking);
+
+        res.json({
+            status: 'success',
+            booking: newBooking,
+            isAutoApproved: initialStatus === 'approved',
+            message: initialStatus === 'approved' 
+                ? `Booking auto-approved instantly for Non-AC venue ${room_number}!` 
+                : `AC Venue ${room_number} booking submitted for Event Sub-Admin approval.`
+        });
     } catch (err) {
         res.status(500).json({ error: 'Failed to submit booking', message: err.message });
     }
@@ -61,15 +117,15 @@ router.post('/', async (req, res) => {
 // PATCH /api/bookings/:id - Event Sub-Admin approves/rejects event booking
 router.patch('/:id', async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body; // 'Scheduled' | 'Cancelled'
+    const { status } = req.body; // 'approved' | 'rejected'
 
     try {
         if (isConnectedToSupabase && supabase) {
-            await supabase.from('events').update({ status }).eq('id', id);
+            await supabase.from('bookings').update({ status }).eq('id', id);
         }
 
-        const events = getLocalData('events');
-        const target = events.find(e => e.id === id);
+        const bookings = getLocalData('bookings');
+        const target = bookings.find(b => b.id === id);
         if (target) {
             target.status = status;
         }
