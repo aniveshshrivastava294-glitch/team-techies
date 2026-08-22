@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth, demoAccounts } from '../context/AuthContext';
-import { Clock, ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Clock, ShieldAlert, ArrowRight } from 'lucide-react';
 
 export default function PendingApprovalView() {
   const { currentUser, switchDemoRole } = useAuth();
@@ -8,23 +8,23 @@ export default function PendingApprovalView() {
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 font-sans">
-      <div className="inst-card p-8 rounded border border-stone-300 dark:border-stone-800 text-center space-y-5 bg-white dark:bg-stone-900 shadow-sm">
+      <div className="inst-card p-8 rounded-2xl border border-[#E8DCC8] text-center space-y-5 bg-[#F7EFE4] shadow-xs">
         
-        <div className="w-12 h-12 bg-[#C79A45]/10 border border-[#C79A45]/30 rounded flex items-center justify-center text-[#C79A45] mx-auto">
+        <div className="w-12 h-12 bg-[#C48A2E]/15 border border-[#C48A2E]/30 rounded-xl flex items-center justify-center text-[#C48A2E] mx-auto">
           <Clock className="w-6 h-6" />
         </div>
 
         <div>
-          <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+          <h2 className="text-xl font-bold text-[#2B1D12] tracking-tight">
             Account Approval Pending
           </h2>
-          <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 max-w-md mx-auto">
-            Welcome, <strong className="text-stone-900 dark:text-stone-100">{currentUser?.full_name || currentUser?.email}</strong>. Your requested account for department <span className="text-[#B5654A] font-bold uppercase">{currentUser?.department_domain}</span> is undergoing review by campus administration.
+          <p className="text-xs text-[#6B5A4A] mt-2 max-w-md mx-auto">
+            Welcome, <strong className="text-[#2B1D12]">{currentUser?.full_name || currentUser?.email}</strong>. Your requested account for department <span className="text-[#BC4800] font-bold uppercase">{currentUser?.department_domain}</span> is undergoing review by campus administration.
           </p>
         </div>
 
-        <div className="bg-stone-50 dark:bg-stone-950 p-4 rounded border border-stone-200 dark:border-stone-800 text-xs text-stone-600 dark:text-stone-400 space-y-1.5 text-left">
-          <div className="flex items-center space-x-2 text-[#C79A45] font-bold">
+        <div className="bg-[#FDF8F2] p-4 rounded-xl border border-[#E8DCC8] text-xs text-[#6B5A4A] space-y-1.5 text-left">
+          <div className="flex items-center space-x-2 text-[#C48A2E] font-bold">
             <ShieldAlert className="w-4 h-4" />
             <span>Admin Notice:</span>
           </div>
@@ -35,12 +35,12 @@ export default function PendingApprovalView() {
 
         {/* Demo Helper */}
         <div className="pt-2">
-          <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">
+          <p className="text-xs text-[#6B5A4A] mb-2 font-medium">
             Switch to the Super Admin account to approve this account right now:
           </p>
           <button
             onClick={() => switchDemoRole(superAccount)}
-            className="px-4 py-2 inst-button-primary text-xs inline-flex items-center space-x-2 cursor-pointer shadow-sm"
+            className="px-5 py-2.5 inst-button-primary text-xs inline-flex items-center space-x-2 cursor-pointer shadow-xs font-semibold"
           >
             <span>Switch to Super Admin (super@demo.com)</span>
             <ArrowRight className="w-4 h-4" />
@@ -51,3 +51,4 @@ export default function PendingApprovalView() {
     </div>
   );
 }
+
