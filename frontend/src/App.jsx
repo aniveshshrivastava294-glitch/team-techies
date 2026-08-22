@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider, useAuth, demoAccounts } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import LoginModal from './components/LoginModal';
@@ -9,11 +9,12 @@ import FloatingAIAssistant from './components/FloatingAIAssistant';
 import SuperAdminDashboard from './components/roles/SuperAdminDashboard';
 import FacultyDashboard from './components/roles/FacultyDashboard';
 import SubAdminDashboard from './components/roles/SubAdminDashboard';
-
 import InstitutionalFooter from './components/InstitutionalFooter';
+import { BACKDROP_IMAGES } from './config/backdropImages';
+import { LogIn, ArrowRight, Sparkles } from 'lucide-react';
 
 function DashboardRouter() {
-  const { currentUser } = useAuth();
+  const { currentUser, switchDemoRole } = useAuth();
   const [kpis, setKpis] = useState(null);
   const [anomalies, setAnomalies] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
@@ -59,19 +60,70 @@ function DashboardRouter() {
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
-        <div className="py-20 text-center space-y-4 inst-card max-w-xl mx-auto p-12 mt-8">
-          <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-stone-100">
-            Welcome to CampusOrbit
-          </h2>
-          <p className="text-sm text-stone-600 dark:text-stone-400 max-w-md mx-auto">
-            Please sign in to access your institutional campus workspace and administrative tools.
-          </p>
-          <button
-            onClick={() => setIsLoginOpen(true)}
-            className="px-6 py-2.5 inst-button-primary text-xs cursor-pointer shadow-sm"
-          >
-            Sign In / Switch Account Role
-          </button>
+        /* Full-Viewport Edge-to-Edge Photographic Hero Landing Page (No boxed card edges) */
+        <div className="relative w-full -mt-8 -mx-4 sm:-mx-6 min-h-[calc(100vh-65px)] flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-16 overflow-hidden">
+          {/* Full Screen Photography Backdrop */}
+          <img
+            src={BACKDROP_IMAGES.loginLanding.url}
+            alt={BACKDROP_IMAGES.loginLanding.alt}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+
+          {/* Warm Dark Brown Overlay (#2B1D12 at ~50-55% opacity) */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(135deg, rgba(43, 29, 18, 0.72) 0%, rgba(43, 29, 18, 0.52) 60%, rgba(43, 29, 18, 0.65) 100%)'
+            }}
+          />
+
+          {/* Hero Content Block - Sits Seamlessly On Top of Photo */}
+          <div className="relative z-10 max-w-2xl space-y-6 text-white">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDF8F2]/90 border border-[#E8DCC8] text-xs font-semibold text-[#2B1D12] shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#BC4800]" />
+              <span>PRESIDENCY UNIVERSITY</span>
+            </span>
+
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                CampusOrbit Operations Platform
+              </h1>
+              <p className="text-base sm:text-lg text-stone-200 font-normal leading-relaxed max-w-xl">
+                Unified cross-domain management for classroom scheduling, transit telemetry, energy sustainability, and facilities maintenance.
+              </p>
+            </div>
+
+            {/* CTA & Demo Role Switcher Bar */}
+            <div className="pt-2 space-y-4">
+              <div className="flex items-center gap-3 flex-wrap">
+                <button
+                  onClick={() => setIsLoginOpen(true)}
+                  className="px-6 py-3 bg-[#BC4800] hover:bg-[#9A3A00] text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer shadow-md inline-flex items-center gap-2"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Sign In / Switch Demo Role</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Direct Quick Role Switcher Chips */}
+              <div className="pt-3">
+                <p className="text-xs text-stone-300 mb-2 font-medium">Or explore instantly as demo role:</p>
+                <div className="flex flex-wrap gap-2">
+                  {demoAccounts.slice(0, 4).map((acc, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => switchDemoRole(acc)}
+                      className="px-3 py-1.5 rounded-full bg-[#FDF8F2]/90 hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] text-xs font-medium transition-colors cursor-pointer shadow-xs"
+                    >
+                      {acc.full_name.split(' ')[0]} ({acc.role === 'sub_admin' ? `${acc.department_domain} Admin` : acc.role.replace('_', ' ')})
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       );
     }
@@ -109,7 +161,7 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#231F1B] text-stone-800 dark:text-stone-200 flex flex-col transition-colors duration-200 relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-[#FDF8F2] text-[#2B1D12] flex flex-col transition-colors duration-150 relative overflow-x-hidden font-sans">
       
       {/* Header Navbar */}
       <Header
@@ -154,3 +206,4 @@ export default function App() {
     </ThemeProvider>
   );
 }
+

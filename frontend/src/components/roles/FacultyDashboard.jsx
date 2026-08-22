@@ -6,12 +6,14 @@ import {
   CalendarDays, User, AlertCircle, HelpCircle, LayoutDashboard, Maximize2, Minimize2,
   Filter as FilterIcon
 } from 'lucide-react';
+import SectionHero from '../SectionHero';
+import { BACKDROP_IMAGES } from '../../config/backdropImages';
 import ChatWidget from '../ChatWidget';
 import RealtimeBookingMatrix from '../RealtimeBookingMatrix';
 
 export default function FacultyDashboard({ currentUser }) {
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'matrix', 'transport', 'tickets'
-  const [activeExpand, setActiveExpand] = useState('classroom'); // 'classroom', 'venue', 'bus', or null
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'matrix', 'transport'
+  const [activeExpand, setActiveExpand] = useState('classroom'); // 'classroom', 'venue', 'bus', 'tickets' or null
   const [buses, setBuses] = useState([]);
   const [userTickets, setUserTickets] = useState([]);
   const [toastMsg, setToastMsg] = useState(null);
@@ -20,7 +22,7 @@ export default function FacultyDashboard({ currentUser }) {
   const [professorName, setProfessorName] = useState(currentUser?.full_name || 'Dr. Eleanor Vance');
   const [department, setDepartment] = useState('Department of Computer Science & Engineering');
 
-  // Metrics State (matching mockup structure)
+  // Metrics State
   const [attendancePercent, setAttendancePercent] = useState(96);
   const [leavesTaken, setLeavesTaken] = useState(5);
   const [activeTicketsCount, setActiveTicketsCount] = useState(3);
@@ -44,7 +46,7 @@ export default function FacultyDashboard({ currentUser }) {
     purpose: ''
   });
 
-  // Bus Fleet Interactive Selection & Telemetry Details
+  // Bus Fleet Interactive Selection
   const [busFleet, setBusFleet] = useState([
     { id: 'b1', label: 'Bus 1', busNo: 'BUS-101', loc: 'North Gate - Stop 2', capacity: 60, seatsLeft: 14, speed: '42 km/h', driver: 'Alex Rivera', phone: '+1 (555) 019-2831', status: 'On Schedule' },
     { id: 'b2', label: 'Bus 2', busNo: 'BUS-102', loc: 'Science Complex Quad', capacity: 60, seatsLeft: 5, speed: '38 km/h', driver: 'Sarah Jenkins', phone: '+1 (555) 019-4820', status: 'Peak Load' },
@@ -62,22 +64,17 @@ export default function FacultyDashboard({ currentUser }) {
   const [ticketDesc, setTicketDesc] = useState('');
   const [ticketDomain, setTicketDomain] = useState('maintenance');
 
-  // Leave Form State
-  const [leaveType, setLeaveType] = useState('Casual Leave');
-  const [leaveReason, setLeaveReason] = useState('');
-
   // Academic Calendar Filter & Selected Day State
-  const [calendarFilter, setCalendarFilter] = useState('All');
-  const [selectedCalendarDay, setSelectedCalendarDay] = useState(21); // Aug 21 (Today)
+  const [selectedCalendarDay, setSelectedCalendarDay] = useState(21);
   const [calendarMonth, setCalendarMonth] = useState('August 2026');
 
   const academicEvents = [
-    { id: 1, day: 25, title: 'Mid-Semester Examinations (Fall 2026)', date: 'Aug 25 - Aug 30, 2026', type: 'Exams', status: 'Upcoming', venue: 'Main Examination Halls A & B', badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/40', dotColor: 'bg-amber-400' },
-    { id: 2, day: 2, title: 'Faculty Senate Monthly Assembly & Curriculum Review', date: 'Sep 02, 2026 • 10:00 AM', type: 'Meetings', status: 'Scheduled', venue: 'Auditorium Hall B', badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40', dotColor: 'bg-cyan-400' },
-    { id: 3, day: 7, title: 'Labor Day - University Holiday', date: 'Sep 07, 2026 (All Day)', type: 'Holidays', status: 'Holiday', venue: 'Entire Campus Closed', badgeColor: 'bg-purple-500/20 text-purple-400 border-purple-500/40', dotColor: 'bg-purple-400' },
-    { id: 4, day: 15, title: 'Mid-Term Attendance & Marks Upload Deadline', date: 'Sep 15, 2026 • 05:00 PM', type: 'Grades', status: 'Deadline', venue: 'Faculty ERP Portal', badgeColor: 'bg-red-500/20 text-red-400 border-red-500/40', dotColor: 'bg-red-400' },
-    { id: 5, day: 22, title: 'International Science & Tech Innovation Symposium', date: 'Sep 22 - Sep 24, 2026', type: 'Events', status: 'Upcoming', venue: 'Main Convention Complex', badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40', dotColor: 'bg-emerald-400' },
-    { id: 6, day: 21, title: 'Faculty Office Hours & Research Mentorship Sync', date: 'Aug 21, 2026 • Today', type: 'Meetings', status: 'Active Today', venue: 'Faculty Cabin #304', badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40', dotColor: 'bg-cyan-400' }
+    { id: 1, day: 25, title: 'Mid-Semester Examinations (Fall 2026)', date: 'Aug 25 - Aug 30, 2026', type: 'Exams', status: 'Upcoming', venue: 'Main Examination Halls A & B', badgeColor: 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30', dotColor: 'bg-[#C48A2E]' },
+    { id: 2, day: 2, title: 'Faculty Senate Monthly Assembly & Curriculum Review', date: 'Sep 02, 2026 • 10:00 AM', type: 'Meetings', status: 'Scheduled', venue: 'Auditorium Hall B', badgeColor: 'bg-[#BC4800]/15 text-[#BC4800] border-[#BC4800]/30', dotColor: 'bg-[#BC4800]' },
+    { id: 3, day: 7, title: 'Labor Day - University Holiday', date: 'Sep 07, 2026 (All Day)', type: 'Holidays', status: 'Holiday', venue: 'Entire Campus Closed', badgeColor: 'bg-[#6B5A4A]/15 text-[#6B5A4A] border-[#6B5A4A]/30', dotColor: 'bg-[#6B5A4A]' },
+    { id: 4, day: 15, title: 'Mid-Term Attendance & Marks Upload Deadline', date: 'Sep 15, 2026 • 05:00 PM', type: 'Grades', status: 'Deadline', venue: 'Faculty ERP Portal', badgeColor: 'bg-[#A6402F]/15 text-[#A6402F] border-[#A6402F]/30', dotColor: 'bg-[#A6402F]' },
+    { id: 5, day: 22, title: 'International Science & Tech Innovation Symposium', date: 'Sep 22 - Sep 24, 2026', type: 'Events', status: 'Upcoming', venue: 'Main Convention Complex', badgeColor: 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30', dotColor: 'bg-[#4E7A51]' },
+    { id: 6, day: 21, title: 'Faculty Office Hours & Research Mentorship Sync', date: 'Aug 21, 2026 • Today', type: 'Meetings', status: 'Active Today', venue: 'Faculty Cabin #304', badgeColor: 'bg-[#BC4800]/15 text-[#BC4800] border-[#BC4800]/30', dotColor: 'bg-[#BC4800]' }
   ];
 
   const showToast = (msg) => {
@@ -171,120 +168,87 @@ export default function FacultyDashboard({ currentUser }) {
       }
     } catch (err) {
       console.error('Raise ticket error:', err);
-      showToast('Raised Issue Ticket disptached!');
+      showToast('Raised Issue Ticket dispatched!');
       setActiveTicketsCount(prev => prev + 1);
       setShowIssueModal(false);
     }
   };
 
-  // Apply Leave Submit
-  const handleApplyLeave = async (e) => {
-    e.preventDefault();
-    if (!leaveReason) return;
-
-    showToast(`Submitted ${leaveType} request!`);
-    setLeavesTaken(prev => prev + 1);
-    setLeaveReason('');
-  };
-
   return (
-    <div className="space-y-6 font-sans pb-12 relative animate-in fade-in duration-500">
+    <div className="space-y-6 font-sans pb-12 relative animate-in fade-in duration-300">
       
-      {/* Faint Radial Nebula Accents */}
-      <div className="absolute -top-12 left-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none star-pulse" />
-      <div className="absolute top-1/2 right-0 w-80 h-80 bg-purple-500/5 rounded-full blur-[140px] pointer-events-none star-pulse" style={{ animationDelay: '3s' }} />
-
       {/* Toast Alert Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 z-50 bg-black/90 text-white px-4 py-2.5 rounded-full shadow-2xl border border-cyan-500/40 text-xs font-mono font-bold flex items-center gap-2 backdrop-blur-2xl animate-in zoom-in-95">
-          <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+        <div className="fixed top-20 right-6 z-50 bg-[#2B1D12] text-white px-4 py-2.5 rounded-xl shadow-2xl border border-[#E8DCC8] text-xs font-medium flex items-center gap-2 animate-in zoom-in-95">
+          <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* ================= HEADER BANNER: FACULTY PORTAL GREETING ================= */}
-      <div className="p-6 rounded border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm relative overflow-hidden font-sans">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-          
-          <div className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider bg-stone-100 dark:bg-stone-800 text-[#B5654A] border border-stone-300 dark:border-stone-700 rounded flex items-center gap-1.5">
-                <User className="w-3 h-3 text-[#B5654A]" />
-                FACULTY PORTAL
-              </span>
-              <span className="text-xs text-stone-500 dark:text-stone-400 font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 font-mono">
-                {department}
-              </span>
-            </div>
-            
-            <h1 className="text-2xl font-serif font-bold tracking-tight text-stone-900 dark:text-stone-100 flex items-center gap-2">
-              Welcome, <span className="text-[#B5654A]">{currentUser?.full_name || professorName}</span>
-              <Sparkles className="w-5 h-5 text-[#B5654A]" />
-            </h1>
-            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-2xl font-medium">
-              Welcome to your campus dashboard! Easily book classrooms, check bus schedules, apply for leave, and submit support tickets.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setShowIssueModal(true)}
-              className="px-3.5 py-2 inst-button-secondary text-xs flex items-center gap-2 cursor-pointer"
-            >
-              <AlertTriangle className="w-4 h-4 text-[#C79A45]" />
-              <span>Report an Issue</span>
-            </button>
-          </div>
-
-        </div>
-      </div>
+      {/* ================= SECTION HERO: FACULTY PORTAL GREETING ================= */}
+      <SectionHero
+        image={BACKDROP_IMAGES.faculty}
+        category="Academic Instruction"
+        categoryIcon={User}
+        badgeText={department}
+        title={`Welcome, ${currentUser?.full_name || professorName}`}
+        subtitle="Manage classroom reservations, timetable schedules, student transport, and administrative tickets."
+      >
+        <button
+          onClick={() => setShowIssueModal(true)}
+          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 text-xs font-medium backdrop-blur-xs transition-colors cursor-pointer flex items-center gap-2"
+        >
+          <AlertTriangle className="w-3.5 h-3.5" />
+          <span>Report an Issue</span>
+        </button>
+      </SectionHero>
 
       {/* ================= NAVIGATION TABS ================= */}
-      <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center space-x-2 border ${
               activeTab === 'overview'
-                ? 'bg-[#B5654A] text-white border-[#B5654A]'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
+                ? 'bg-[#BC4800] text-white border-[#BC4800] shadow-xs'
+                : 'text-[#6B5A4A] hover:text-[#2B1D12] bg-[#F7EFE4] border-[#E8DCC8]'
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
-            <span>My Dashboard</span>
+            <span>Faculty Workspace</span>
           </button>
 
           <button
             onClick={() => setActiveTab('matrix')}
-            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center space-x-2 border ${
               activeTab === 'matrix'
-                ? 'bg-[#B5654A] text-white border-[#B5654A]'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
+                ? 'bg-[#BC4800] text-white border-[#BC4800] shadow-xs'
+                : 'text-[#6B5A4A] hover:text-[#2B1D12] bg-[#F7EFE4] border-[#E8DCC8]'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
-            <span>Book Classrooms</span>
+            <span>Classroom Matrix</span>
           </button>
 
           <button
             onClick={() => setActiveTab('transport')}
-            className={`px-4 py-1.5 text-xs font-bold rounded transition-colors cursor-pointer flex items-center space-x-2 border ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center space-x-2 border ${
               activeTab === 'transport'
-                ? 'bg-[#B5654A] text-white border-[#B5654A]'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-stone-800 border-stone-300 dark:border-stone-700'
+                ? 'bg-[#BC4800] text-white border-[#BC4800] shadow-xs'
+                : 'text-[#6B5A4A] hover:text-[#2B1D12] bg-[#F7EFE4] border-[#E8DCC8]'
             }`}
           >
             <Bus className="w-3.5 h-3.5" />
-            <span>Campus Bus Tracker</span>
+            <span>Campus Shuttle Fleet</span>
           </button>
         </div>
 
-        <span className="text-xs font-mono text-stone-500 hidden sm:inline-block">
-          Role: <strong className="text-[#B5654A]">Faculty</strong>
+        <span className="text-xs text-[#6B5A4A] hidden sm:inline-block">
+          Role: <strong className="text-[#BC4800]">Faculty</strong>
         </span>
       </div>
 
-      {/* ================= TAB 1: EXECUTIVE DASHBOARD VIEW (HORIZONTAL METRICS) ================= */}
+      {/* ================= TAB 1: EXECUTIVE DASHBOARD VIEW ================= */}
       {activeTab === 'overview' && (
         <div className="space-y-6 animate-in fade-in duration-300">
           
@@ -292,93 +256,92 @@ export default function FacultyDashboard({ currentUser }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             
             {/* ATTENDANCE CARD */}
-            <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2 hover:border-white/10 transition-all flex flex-col justify-between">
+            <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] space-y-2 shadow-xs flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider block">
-                  attendance rate
+                <span className="text-xs font-semibold text-[#6B5A4A] block">
+                  Attendance Rate
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl font-mono font-extrabold text-white tracking-tight">{attendancePercent}%</span>
-                  <span className="text-xs text-emerald-400 font-mono font-bold">optimal</span>
+                  <span className="text-3xl font-bold text-[#2B1D12] tracking-tight">{attendancePercent}%</span>
+                  <span className="text-xs text-[#4E7A51] font-semibold">Optimal</span>
                 </div>
               </div>
-              <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden mt-3">
-                <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${attendancePercent}%` }} />
+              <div className="w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden mt-3">
+                <div className="bg-[#4E7A51] h-full rounded-full transition-all duration-500" style={{ width: `${attendancePercent}%` }} />
               </div>
             </div>
 
             {/* LEAVES TAKEN CARD */}
-            <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2 hover:border-white/10 transition-all flex flex-col justify-between">
+            <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] space-y-2 shadow-xs flex flex-col justify-between">
               <div>
-                <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider block">
-                  casual leaves used
+                <span className="text-xs font-semibold text-[#6B5A4A] block">
+                  Casual Leaves Used
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl font-mono font-extrabold text-white tracking-tight">{leavesTaken}</span>
-                  <span className="text-xs text-zinc-500 font-mono">days</span>
+                  <span className="text-3xl font-bold text-[#2B1D12] tracking-tight">{leavesTaken}</span>
+                  <span className="text-xs text-[#6B5A4A]">days</span>
                 </div>
               </div>
-              <p className="text-[11px] text-zinc-500 font-mono mt-3">15 Days Available in Term</p>
+              <p className="text-xs text-[#6B5A4A] mt-3">15 Days Available in Term</p>
             </div>
 
             {/* ACTIVE TICKETS CARD */}
-            <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2 hover:border-white/10 transition-all flex flex-col justify-between">
+            <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] space-y-2 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider block">
-                    active support tickets
+                  <span className="text-xs font-semibold text-[#6B5A4A] block">
+                    Active Support Tickets
                   </span>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-3xl font-mono font-extrabold text-amber-400 tracking-tight">{activeTicketsCount}</span>
-                    <span className="text-xs text-amber-400/80 font-mono">in dispatch</span>
+                    <span className="text-3xl font-bold text-[#BC4800] tracking-tight">{activeTicketsCount}</span>
+                    <span className="text-xs text-[#BC4800]/80">in dispatch</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(true)}
-                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-amber-400 border border-amber-500/30 rounded-full text-xs font-mono font-bold transition-all cursor-pointer"
+                  className="px-3 py-1.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#BC4800] border border-[#BC4800]/30 rounded-full text-xs font-semibold transition-all cursor-pointer"
                 >
                   + Raise Ticket
                 </button>
               </div>
-              <p className="text-[11px] text-zinc-500 font-mono mt-2">IT Support & Maintenance Dispatch</p>
+              <p className="text-xs text-[#6B5A4A] mt-2">IT Support & Maintenance Dispatch</p>
             </div>
 
           </div>
 
-          {/* ================= ALWAYS-OPEN COMPACT MINI ACADEMIC CALENDAR ================= */}
-          <div className="p-4 sm:p-5 rounded-3xl border border-white/5 bg-white/[0.02] space-y-3 hover:border-white/10 transition-all backdrop-blur-xl">
+          {/* ================= COMPACT ACADEMIC CALENDAR ================= */}
+          <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] space-y-4 shadow-xs">
             
             {/* Widget Header */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/5 pb-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E8DCC8] pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-white/5 text-cyan-400 border border-white/10">
-                  <CalendarDays className="w-4 h-4 text-cyan-400 stroke-[1.5]" />
+                <div className="p-2 rounded-lg bg-[#BC4800]/15 text-[#BC4800] border border-[#BC4800]/30">
+                  <CalendarDays className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white tracking-tight flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
                     Academic Calendar
-                    <span className="text-[9px] font-mono font-bold px-2 py-0.2 bg-white/[0.03] text-emerald-400 rounded-full border border-white/10 uppercase">
-                      ALWAYS OPEN
+                    <span className="text-xs font-semibold px-2 py-0.5 bg-[#FDF8F2] text-[#4E7A51] rounded-full border border-[#E8DCC8]">
+                      Fall Term 2026
                     </span>
                   </h4>
-                  <p className="text-[10px] text-zinc-500 font-mono">Fall Term 2026 Grid</p>
                 </div>
               </div>
 
               {/* Month Navigator & Sync */}
-              <div className="flex items-center gap-1.5 font-mono">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setCalendarMonth(calendarMonth === 'August 2026' ? 'July 2026' : 'August 2026');
                     showToast('Updated calendar month view');
                   }}
-                  className="px-2.5 py-1 bg-white/[0.03] hover:bg-white/10 text-zinc-300 rounded-full text-[10px] font-bold transition-all border border-white/10 cursor-pointer"
+                  className="px-2.5 py-1 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] rounded-lg text-xs font-semibold border border-[#E8DCC8] cursor-pointer"
                 >
                   ‹ Prev
                 </button>
-                <span className="text-[11px] font-mono font-bold text-cyan-300 bg-white/[0.04] px-3 py-0.5 rounded-full border border-white/10">
+                <span className="text-xs font-bold text-[#2B1D12] bg-[#FDF8F2] px-3 py-1 rounded-lg border border-[#E8DCC8]">
                   {calendarMonth}
                 </span>
                 <button
@@ -387,31 +350,31 @@ export default function FacultyDashboard({ currentUser }) {
                     setCalendarMonth(calendarMonth === 'August 2026' ? 'September 2026' : 'August 2026');
                     showToast('Updated calendar month view');
                   }}
-                  className="px-2.5 py-1 bg-white/[0.03] hover:bg-white/10 text-zinc-300 rounded-full text-[10px] font-bold transition-all border border-white/10 cursor-pointer"
+                  className="px-2.5 py-1 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] rounded-lg text-xs font-semibold border border-[#E8DCC8] cursor-pointer"
                 >
                   Next ›
                 </button>
                 <button
                   type="button"
                   onClick={() => showToast('Synced Academic Calendar with Outlook & Google Calendar!')}
-                  className="px-3 py-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-full text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1 bg-[#BC4800]/15 hover:bg-[#BC4800]/25 text-[#BC4800] border border-[#BC4800]/30 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
                 >
-                  <Sparkles className="w-3 h-3 text-cyan-400" />
+                  <Sparkles className="w-3 h-3" />
                   <span>Sync</span>
                 </button>
               </div>
             </div>
 
             {/* 2-Column Ultra-Compact Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
               
               {/* Left: Mini Month Date Grid Matrix */}
-              <div className="lg:col-span-7 bg-black/40 p-3 rounded-2xl border border-white/5 space-y-2">
-                <div className="flex items-center justify-between border-b border-white/5 pb-1">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">
-                    Mini Month Grid
+              <div className="lg:col-span-7 bg-[#FDF8F2] p-4 rounded-xl border border-[#E8DCC8] space-y-2">
+                <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-1.5">
+                  <span className="text-xs font-semibold text-[#6B5A4A]">
+                    Monthly Schedule Grid
                   </span>
-                  <span className="text-[9px] font-mono text-cyan-400 font-bold bg-white/[0.04] px-2 py-0.5 rounded-full border border-white/10">
+                  <span className="text-xs text-[#BC4800] font-semibold bg-[#F7EFE4] px-2 py-0.5 rounded-full border border-[#E8DCC8]">
                     Today: Aug 21
                   </span>
                 </div>
@@ -419,7 +382,7 @@ export default function FacultyDashboard({ currentUser }) {
                 {/* Day Headers (Sun-Sat) */}
                 <div className="grid grid-cols-7 gap-1 text-center">
                   {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-                    <div key={i} className="text-[9px] font-mono font-bold text-zinc-500 uppercase py-0.2">
+                    <div key={i} className="text-xs font-semibold text-[#6B5A4A] py-0.5">
                       {d}
                     </div>
                   ))}
@@ -428,7 +391,7 @@ export default function FacultyDashboard({ currentUser }) {
                 {/* Days Grid */}
                 <div className="grid grid-cols-7 gap-1">
                   {[...Array(6)].map((_, i) => (
-                    <div key={`off-${i}`} className="h-6 rounded bg-white/[0.01] opacity-20 cursor-not-allowed" />
+                    <div key={`off-${i}`} className="h-7 rounded bg-[#F7EFE4]/40 opacity-40 cursor-not-allowed" />
                   ))}
                   {[...Array(31)].map((_, idx) => {
                     const dayNum = idx + 1;
@@ -443,16 +406,16 @@ export default function FacultyDashboard({ currentUser }) {
                         key={dayNum}
                         type="button"
                         onClick={() => setSelectedCalendarDay(dayNum)}
-                        className={`h-6 rounded-lg border text-[10px] font-mono font-bold flex flex-col items-center justify-center transition-all cursor-pointer relative ${
+                        className={`h-7 rounded-lg border text-xs font-semibold flex flex-col items-center justify-center transition-all cursor-pointer relative ${
                           isSelected
-                            ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 ring-1 ring-cyan-400/50 scale-105 z-10'
+                            ? 'bg-[#BC4800] border-[#BC4800] text-white shadow-xs scale-105 z-10'
                             : isToday
-                            ? 'bg-white/10 border-white/20 text-white font-black'
-                            : 'bg-white/[0.02] border-white/5 text-zinc-400 hover:border-white/20 hover:text-white'
+                            ? 'bg-[#F7EFE4] border-[#BC4800] text-[#BC4800] font-bold'
+                            : 'bg-[#F7EFE4] border-[#E8DCC8] text-[#2B1D12] hover:border-[#BC4800]/50'
                         }`}
                       >
                         <span>{dayNum}</span>
-                        {matchingEvents.length > 0 && (
+                        {matchingEvents.length > 0 && !isSelected && (
                           <span className={`w-1 h-1 rounded-full ${matchingEvents[0].dotColor} absolute bottom-0.5`} />
                         )}
                       </button>
@@ -462,38 +425,38 @@ export default function FacultyDashboard({ currentUser }) {
               </div>
 
               {/* Right: Selected Date Agenda */}
-              <div className="lg:col-span-5 bg-black/40 p-3 rounded-2xl border border-white/5 flex flex-col justify-between space-y-2">
+              <div className="lg:col-span-5 bg-[#FDF8F2] p-4 rounded-xl border border-[#E8DCC8] flex flex-col justify-between space-y-3">
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between border-b border-white/5 pb-1">
-                    <span className="text-[11px] font-bold text-white">
+                  <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-1.5">
+                    <span className="text-xs font-bold text-[#2B1D12]">
                       Aug {selectedCalendarDay} Agenda
                     </span>
-                    <span className="text-[9px] font-mono text-cyan-400 font-bold bg-white/[0.04] px-2 py-0.5 rounded-full border border-white/10">
+                    <span className="text-xs text-[#BC4800] font-semibold bg-[#F7EFE4] px-2 py-0.5 rounded-full border border-[#E8DCC8]">
                       Day #{selectedCalendarDay}
                     </span>
                   </div>
 
                   {academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).length > 0 ? (
                     academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).map(ev => (
-                      <div key={ev.id} className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                      <div key={ev.id} className="p-2.5 rounded-lg bg-[#F7EFE4] border border-[#E8DCC8] space-y-1">
                         <div className="flex items-center justify-between">
-                          <span className={`text-[8px] font-mono font-bold px-1.5 py-0.2 rounded-full border uppercase ${ev.badgeColor}`}>
+                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${ev.badgeColor}`}>
                             {ev.type}
                           </span>
-                          <span className="text-[9px] font-mono text-cyan-300">
+                          <span className="text-xs text-[#6B5A4A]">
                             {ev.date}
                           </span>
                         </div>
-                        <h5 className="text-[11px] font-extrabold text-white truncate">{ev.title}</h5>
-                        <p className="text-[9px] text-zinc-400 font-mono flex items-center gap-1 truncate">
-                          <MapPin className="w-2.5 h-2.5 text-cyan-400 stroke-[1.5]" /> {ev.venue}
+                        <h5 className="text-xs font-bold text-[#2B1D12] truncate">{ev.title}</h5>
+                        <p className="text-xs text-[#6B5A4A] flex items-center gap-1 truncate">
+                          <MapPin className="w-3 h-3 text-[#BC4800]" /> {ev.venue}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <div className="p-2 text-center text-[10px] text-zinc-500 space-y-0.5 font-mono">
-                      <p className="font-bold text-zinc-300">Regular Classes</p>
-                      <p className="text-[9px] text-zinc-500">No major exam on Aug {selectedCalendarDay}.</p>
+                    <div className="p-3 text-center text-xs text-[#6B5A4A] space-y-0.5">
+                      <p className="font-semibold text-[#2B1D12]">Regular Academic Schedule</p>
+                      <p className="text-xs text-[#6B5A4A]">Standard classroom lectures and office hours on Aug {selectedCalendarDay}.</p>
                     </div>
                   )}
                 </div>
@@ -501,10 +464,10 @@ export default function FacultyDashboard({ currentUser }) {
                 <button
                   type="button"
                   onClick={() => showToast(`Added reminder for August ${selectedCalendarDay}, 2026!`)}
-                  className="w-full py-1.5 bg-white/5 hover:bg-white/10 text-cyan-300 border border-white/10 rounded-xl text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
+                  className="w-full py-2 bg-[#F7EFE4] hover:bg-[#E8DCC8]/50 text-[#2B1D12] border border-[#E8DCC8] rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1 cursor-pointer"
                 >
-                  <Plus className="w-3 h-3" />
-                  <span>Reminder for Aug {selectedCalendarDay}</span>
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Set Reminder for Aug {selectedCalendarDay}</span>
                 </button>
               </div>
 
@@ -515,48 +478,48 @@ export default function FacultyDashboard({ currentUser }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full animate-in fade-in duration-300">
 
             {/* ================= 1. CLASSROOM RESERVATION ================= */}
-            <div className={`w-full rounded-3xl border transition-all duration-300 overflow-hidden ${
+            <div className={`w-full rounded-2xl border transition-all duration-300 overflow-hidden bg-[#F7EFE4] ${
               activeExpand === 'classroom'
-                ? 'md:col-span-2 border-cyan-500/40 bg-gradient-to-br from-black via-zinc-950 to-cyan-950/20 shadow-2xl ring-1 ring-cyan-500/20 backdrop-blur-2xl'
-                : 'md:col-span-1 border-white/5 bg-white/[0.02] hover:bg-white/[0.035] hover:border-white/15'
+                ? 'md:col-span-2 border-[#BC4800] shadow-xs'
+                : 'md:col-span-1 border-[#E8DCC8] hover:border-[#BC4800]/50'
             }`}>
               {/* Header Bar */}
               <div
                 onClick={() => setActiveExpand(activeExpand === 'classroom' ? null : 'classroom')}
-                className="p-5 sm:px-6 flex items-center justify-between cursor-pointer select-none"
+                className="p-5 flex items-center justify-between cursor-pointer select-none"
               >
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-2xl border transition-all ${
+                  <div className={`p-2.5 rounded-xl border transition-all ${
                     activeExpand === 'classroom'
-                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 scale-105'
-                      : 'bg-white/5 text-cyan-400 border-white/10'
+                      ? 'bg-[#BC4800] text-white border-[#BC4800]'
+                      : 'bg-[#FDF8F2] text-[#BC4800] border-[#E8DCC8]'
                   }`}>
-                    <Building2 className="w-5 h-5 stroke-[1.5]" />
+                    <Building2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
                       Classroom Reservation
                       {activeExpand === 'classroom' ? (
-                        <span className="text-[9px] font-mono font-bold px-2 py-0.5 bg-cyan-500/20 text-cyan-300 rounded-full border border-cyan-500/40 uppercase">
-                          ACTIVE WORKSPACE
+                        <span className="text-xs font-semibold px-2 py-0.5 bg-[#BC4800]/15 text-[#BC4800] rounded-full border border-[#BC4800]/30">
+                          Active Workspace
                         </span>
                       ) : (
-                        <span className="text-[10px] text-zinc-500 font-mono">
+                        <span className="text-xs text-[#6B5A4A]">
                           • CS-301 Audi, Halls & Labs
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-zinc-400 font-medium">
+                    <p className="text-xs text-[#6B5A4A] font-medium">
                       Reserve classrooms, lecture halls & audio-visual equipment
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-cyan-400 hidden sm:inline-block">
+                  <span className="text-xs font-semibold text-[#BC4800] hidden sm:inline-block">
                     {activeExpand === 'classroom' ? 'Minimize' : 'Expand'}
                   </span>
-                  <div className="p-2 rounded-xl border border-white/10 bg-white/5 text-zinc-400">
+                  <div className="p-2 rounded-lg border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
                     {activeExpand === 'classroom' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </div>
                 </div>
@@ -564,24 +527,24 @@ export default function FacultyDashboard({ currentUser }) {
 
               {/* Expanded Body Form */}
               {activeExpand === 'classroom' && (
-                <div className="px-6 pb-6 pt-2 border-t border-white/5 space-y-4 animate-in fade-in duration-300">
+                <div className="px-5 pb-5 pt-2 border-t border-[#E8DCC8] space-y-4 animate-in fade-in duration-300">
                   <form onSubmit={handleClassroomSubmit} className="space-y-4 text-xs font-sans">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="md:col-span-2">
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Course / Event Title</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Course / Event Title</label>
                         <input
                           type="text"
                           required
                           placeholder="e.g. CS-301 Advanced Data Structures Exam..."
                           value={classForm.eventName}
                           onChange={(e) => setClassForm({ ...classForm, eventName: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60 transition-all"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] transition-all"
                         />
                       </div>
 
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Priority & Category</label>
-                        <select className="w-full px-4 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60">
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Priority & Category</label>
+                        <select className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] focus:outline-none focus:border-[#BC4800]">
                           <option value="exam">Midterm / Endterm Exam</option>
                           <option value="lecture">Regular Academic Lecture</option>
                           <option value="seminar">Research & Guest Seminar</option>
@@ -592,11 +555,11 @@ export default function FacultyDashboard({ currentUser }) {
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Venue / Audi / Lab</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Venue / Audi / Lab</label>
                         <select
                           value={classForm.venue}
                           onChange={(e) => setClassForm({ ...classForm, venue: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                         >
                           <option value="CS-301 Auditorium">CS-301 Auditorium (Cap: 120)</option>
                           <option value="Classroom 102">Classroom 102 (Cap: 60)</option>
@@ -606,21 +569,21 @@ export default function FacultyDashboard({ currentUser }) {
                       </div>
 
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Date</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Date</label>
                         <input
                           type="date"
                           value={classForm.date}
                           onChange={(e) => setClassForm({ ...classForm, date: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
 
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Time Slot</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Time Slot</label>
                         <select
                           value={classForm.timeSlot}
                           onChange={(e) => setClassForm({ ...classForm, timeSlot: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                         >
                           <option value="09:00 AM - 11:00 AM">09:00 AM - 11:00 AM</option>
                           <option value="11:30 AM - 01:30 PM">11:30 AM - 01:30 PM</option>
@@ -630,49 +593,49 @@ export default function FacultyDashboard({ currentUser }) {
                       </div>
 
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Expected Capacity</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Expected Capacity</label>
                         <input
                           type="number"
                           placeholder="e.g. 60"
                           value={classForm.capacity}
                           onChange={(e) => setClassForm({ ...classForm, capacity: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
                     </div>
 
                     {/* AV Equipment Facilities */}
-                    <div className="p-4 rounded-2xl border border-white/5 bg-black/40 space-y-2.5">
-                      <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+                    <div className="p-4 rounded-xl border border-[#E8DCC8] bg-[#FDF8F2] space-y-2.5">
+                      <span className="text-xs font-semibold text-[#BC4800] block">
                         AV & Classroom Equipment
                       </span>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-zinc-300 font-medium">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[#2B1D12] font-medium">
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>4K Laser Projector</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>Wireless Mic & PA</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" className="accent-cyan-500 rounded" />
+                          <input type="checkbox" className="accent-[#BC4800] rounded" />
                           <span>Hybrid Stream Rig</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>AC Climate Control</span>
                         </label>
                       </div>
                     </div>
 
                     <div className="flex justify-between items-center pt-2">
-                      <span className="text-[11px] font-mono text-zinc-400">
-                        Status: <strong className="text-emerald-400 font-bold">Pre-check Instant</strong>
+                      <span className="text-xs text-[#6B5A4A]">
+                        Status: <strong className="text-[#4E7A51] font-semibold">Pre-check Instant</strong>
                       </span>
                       <button
                         type="submit"
-                        className="px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-full transition-all border border-white/15 cursor-pointer text-xs flex items-center gap-2"
+                        className="px-6 py-2.5 inst-button-primary rounded-lg font-semibold transition-all cursor-pointer text-xs flex items-center gap-2"
                       >
                         <span>Confirm Reservation</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -684,48 +647,48 @@ export default function FacultyDashboard({ currentUser }) {
             </div>
 
             {/* ================= 2. VENUE BOOKING ================= */}
-            <div className={`w-full rounded-3xl border transition-all duration-300 overflow-hidden ${
+            <div className={`w-full rounded-2xl border transition-all duration-300 overflow-hidden bg-[#F7EFE4] ${
               activeExpand === 'venue'
-                ? 'md:col-span-2 border-cyan-500/40 bg-gradient-to-br from-black via-zinc-950 to-cyan-950/20 shadow-2xl ring-1 ring-cyan-500/20 backdrop-blur-2xl'
-                : 'md:col-span-1 border-white/5 bg-white/[0.02] hover:bg-white/[0.035] hover:border-white/15'
+                ? 'md:col-span-2 border-[#BC4800] shadow-xs'
+                : 'md:col-span-1 border-[#E8DCC8] hover:border-[#BC4800]/50'
             }`}>
               {/* Header Bar */}
               <div
                 onClick={() => setActiveExpand(activeExpand === 'venue' ? null : 'venue')}
-                className="p-5 sm:px-6 flex items-center justify-between cursor-pointer select-none"
+                className="p-5 flex items-center justify-between cursor-pointer select-none"
               >
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-2xl border transition-all ${
+                  <div className={`p-2.5 rounded-xl border transition-all ${
                     activeExpand === 'venue'
-                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 scale-105'
-                      : 'bg-white/5 text-cyan-400 border-white/10'
+                      ? 'bg-[#BC4800] text-white border-[#BC4800]'
+                      : 'bg-[#FDF8F2] text-[#BC4800] border-[#E8DCC8]'
                   }`}>
-                    <CalendarIcon className="w-5 h-5 stroke-[1.5]" />
+                    <CalendarIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
                       Venue Booking
                       {activeExpand === 'venue' ? (
-                        <span className="text-[9px] font-mono font-bold px-2 py-0.5 bg-cyan-500/20 text-cyan-300 rounded-full border border-cyan-500/40 uppercase">
-                          ACTIVE WORKSPACE
+                        <span className="text-xs font-semibold px-2 py-0.5 bg-[#BC4800]/15 text-[#BC4800] rounded-full border border-[#BC4800]/30">
+                          Active Workspace
                         </span>
                       ) : (
-                        <span className="text-[10px] text-zinc-500 font-mono">
+                        <span className="text-xs text-[#6B5A4A]">
                           • Main Audi, Conference Hall & OAT
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-zinc-400 font-medium">
+                    <p className="text-xs text-[#6B5A4A] font-medium">
                       Book university auditoriums, conference centers & outdoor venues
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-cyan-400 hidden sm:inline-block">
+                  <span className="text-xs font-semibold text-[#BC4800] hidden sm:inline-block">
                     {activeExpand === 'venue' ? 'Minimize' : 'Expand'}
                   </span>
-                  <div className="p-2 rounded-xl border border-white/10 bg-white/5 text-zinc-400">
+                  <div className="p-2 rounded-lg border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
                     {activeExpand === 'venue' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </div>
                 </div>
@@ -733,15 +696,15 @@ export default function FacultyDashboard({ currentUser }) {
 
               {/* Expanded Body Form */}
               {activeExpand === 'venue' && (
-                <div className="px-6 pb-6 pt-2 border-t border-white/5 space-y-4 animate-in fade-in duration-300">
+                <div className="px-5 pb-5 pt-2 border-t border-[#E8DCC8] space-y-4 animate-in fade-in duration-300">
                   <form onSubmit={handleVenueSubmit} className="space-y-4 text-xs font-sans">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Venue Name</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Venue Name</label>
                         <select
                           value={venueForm.venueName}
                           onChange={(e) => setVenueForm({ ...venueForm, venueName: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                         >
                           <option value="Main Campus Auditorium">Main Campus Auditorium (Cap: 500)</option>
                           <option value="Science Complex Hall">Science Complex Hall (Cap: 250)</option>
@@ -751,101 +714,101 @@ export default function FacultyDashboard({ currentUser }) {
                       </div>
 
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Event Date</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Event Date</label>
                         <input
                           type="date"
                           value={venueForm.eventDate}
                           onChange={(e) => setVenueForm({ ...venueForm, eventDate: e.target.value })}
-                          className="w-full px-4 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Start Time</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Start Time</label>
                         <input
                           type="text"
                           placeholder="10:00 AM"
                           value={venueForm.startTime}
                           onChange={(e) => setVenueForm({ ...venueForm, startTime: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">End Time</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">End Time</label>
                         <input
                           type="text"
                           placeholder="02:00 PM"
                           value={venueForm.endTime}
                           onChange={(e) => setVenueForm({ ...venueForm, endTime: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">Expected Attendees</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">Expected Attendees</label>
                         <input
                           type="number"
-                          placeholder="Number of people"
+                          placeholder="e.g. 150"
                           value={venueForm.attendees}
                           onChange={(e) => setVenueForm({ ...venueForm, attendees: e.target.value })}
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
                       <div>
-                        <label className="block font-mono font-bold text-zinc-300 mb-1.5">VIP Parking Badges</label>
+                        <label className="block font-semibold text-[#2B1D12] mb-1.5">VIP Parking Badges</label>
                         <input
                           type="number"
                           placeholder="Passes count (e.g. 5)"
                           defaultValue="4"
-                          className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                          className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block font-mono font-bold text-zinc-300 mb-1.5">Purpose / Agenda Summary</label>
+                      <label className="block font-semibold text-[#2B1D12] mb-1.5">Purpose / Agenda Summary</label>
                       <textarea
                         rows={2}
                         placeholder="Detailed description of event, keynotes, guest speakers..."
                         value={venueForm.purpose}
                         onChange={(e) => setVenueForm({ ...venueForm, purpose: e.target.value })}
-                        className="w-full px-4 py-2 bg-black/60 border border-white/10 rounded-xl font-medium text-white focus:outline-none focus:border-cyan-500/60"
+                        className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                       />
                     </div>
 
                     {/* Logistics Requirements */}
-                    <div className="p-4 rounded-2xl border border-white/5 bg-black/40 space-y-2.5">
-                      <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+                    <div className="p-4 rounded-xl border border-[#E8DCC8] bg-[#FDF8F2] space-y-2.5">
+                      <span className="text-xs font-semibold text-[#BC4800] block">
                         Stage & Production Logistics
                       </span>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-zinc-300 font-medium">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[#2B1D12] font-medium">
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>Stage Lighting Rig</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>Surround Sound PA</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>VIP Front Reserved</span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="accent-cyan-500 rounded" />
+                          <input type="checkbox" defaultChecked className="accent-[#BC4800] rounded" />
                           <span>Post-Event Clean</span>
                         </label>
                       </div>
                     </div>
 
                     <div className="flex justify-between items-center pt-1">
-                      <span className="text-[11px] font-mono text-zinc-400">
-                        Clearance: <strong className="text-cyan-400 font-bold">Approved</strong>
+                      <span className="text-xs text-[#6B5A4A]">
+                        Clearance: <strong className="text-[#4E7A51] font-semibold">Available</strong>
                       </span>
                       <button
                         type="submit"
-                        className="px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-full transition-all border border-white/15 cursor-pointer text-xs flex items-center gap-2"
+                        className="px-6 py-2.5 inst-button-primary rounded-lg font-semibold transition-all cursor-pointer text-xs flex items-center gap-2"
                       >
                         <span>Confirm Venue Booking</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -857,48 +820,48 @@ export default function FacultyDashboard({ currentUser }) {
             </div>
 
             {/* ================= 3. BUS FLEET SCHEDULE ================= */}
-            <div className={`w-full rounded-3xl border transition-all duration-300 overflow-hidden ${
+            <div className={`w-full rounded-2xl border transition-all duration-300 overflow-hidden bg-[#F7EFE4] ${
               activeExpand === 'bus'
-                ? 'md:col-span-2 border-cyan-500/40 bg-gradient-to-br from-black via-zinc-950 to-cyan-950/20 shadow-2xl ring-1 ring-cyan-500/20 backdrop-blur-2xl'
-                : 'md:col-span-1 border-white/5 bg-white/[0.02] hover:bg-white/[0.035] hover:border-white/15'
+                ? 'md:col-span-2 border-[#BC4800] shadow-xs'
+                : 'md:col-span-1 border-[#E8DCC8] hover:border-[#BC4800]/50'
             }`}>
               {/* Header Bar */}
               <div
                 onClick={() => setActiveExpand(activeExpand === 'bus' ? null : 'bus')}
-                className="p-5 sm:px-6 flex items-center justify-between cursor-pointer select-none"
+                className="p-5 flex items-center justify-between cursor-pointer select-none"
               >
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-2xl border transition-all ${
+                  <div className={`p-2.5 rounded-xl border transition-all ${
                     activeExpand === 'bus'
-                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 scale-105'
-                      : 'bg-white/5 text-cyan-400 border-white/10'
+                      ? 'bg-[#BC4800] text-white border-[#BC4800]'
+                      : 'bg-[#FDF8F2] text-[#BC4800] border-[#E8DCC8]'
                   }`}>
-                    <Bus className="w-5 h-5 stroke-[1.5]" />
+                    <Bus className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
                       Bus Fleet Schedule & Telemetry
                       {activeExpand === 'bus' ? (
-                        <span className="text-[9px] font-mono font-bold px-2 py-0.5 bg-cyan-500/20 text-cyan-300 rounded-full border border-cyan-500/40 uppercase">
-                          ACTIVE WORKSPACE
+                        <span className="text-xs font-semibold px-2 py-0.5 bg-[#BC4800]/15 text-[#BC4800] rounded-full border border-[#BC4800]/30">
+                          Active Workspace
                         </span>
                       ) : (
-                        <span className="text-[10px] text-zinc-500 font-mono">
+                        <span className="text-xs text-[#6B5A4A]">
                           • {selectedBus.label} ({selectedBus.busNo})
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-zinc-400 font-medium">
+                    <p className="text-xs text-[#6B5A4A] font-medium">
                       Select shuttle buses, check driver contact details, seat availability & allocation
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-cyan-400 hidden sm:inline-block">
+                  <span className="text-xs font-semibold text-[#BC4800] hidden sm:inline-block">
                     {activeExpand === 'bus' ? 'Minimize' : 'Expand'}
                   </span>
-                  <div className="p-2 rounded-xl border border-white/10 bg-white/5 text-zinc-400">
+                  <div className="p-2 rounded-lg border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
                     {activeExpand === 'bus' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </div>
                 </div>
@@ -906,12 +869,12 @@ export default function FacultyDashboard({ currentUser }) {
 
               {/* Expanded Body Form */}
               {activeExpand === 'bus' && (
-                <div className="px-6 pb-6 pt-2 border-t border-white/5 space-y-4 animate-in fade-in duration-300">
+                <div className="px-5 pb-5 pt-2 border-t border-[#E8DCC8] space-y-4 animate-in fade-in duration-300">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     
                     {/* Left: Shuttle Select Pills */}
                     <div className="lg:col-span-7 space-y-3">
-                      <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider block">
+                      <span className="text-xs font-semibold text-[#6B5A4A] block">
                         Select Campus Shuttle Vehicle
                       </span>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -922,29 +885,29 @@ export default function FacultyDashboard({ currentUser }) {
                               key={bus.id}
                               type="button"
                               onClick={() => setSelectedBus(bus)}
-                              className={`p-3 rounded-2xl border text-xs font-mono transition-all cursor-pointer text-left space-y-1 ${
+                              className={`p-3 rounded-xl border text-xs transition-all cursor-pointer text-left space-y-1 ${
                                 isSelected
-                                  ? 'bg-white/10 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-bold'
-                                  : 'bg-black/40 border-white/5 text-zinc-400 hover:border-white/20 hover:text-white'
+                                  ? 'bg-[#FDF8F2] text-[#2B1D12] border-[#BC4800] ring-1 ring-[#BC4800] font-bold shadow-xs'
+                                  : 'bg-[#FDF8F2] border-[#E8DCC8] text-[#6B5A4A] hover:border-[#BC4800]/50'
                               }`}
                             >
-                              <div className="font-extrabold text-sm text-white">{bus.label}</div>
-                              <div className="text-[10px] text-zinc-400">{bus.busNo}</div>
-                              <div className="text-[10px] text-cyan-400 font-bold">{bus.seatsLeft} seats free</div>
+                              <div className="font-bold text-xs text-[#2B1D12]">{bus.label}</div>
+                              <div className="text-xs text-[#6B5A4A]">{bus.busNo}</div>
+                              <div className="text-xs text-[#4E7A51] font-semibold">{bus.seatsLeft} seats free</div>
                             </button>
                           );
                         })}
                       </div>
 
                       {/* Route Stops Indicator */}
-                      <div className="p-3 rounded-2xl border border-white/5 bg-black/40 space-y-1 text-xs">
-                        <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase block">Active Route Loop:</span>
-                        <div className="flex items-center gap-1.5 text-cyan-300 font-mono text-[10px] overflow-x-auto">
+                      <div className="p-3 rounded-xl border border-[#E8DCC8] bg-[#FDF8F2] space-y-1 text-xs">
+                        <span className="text-xs font-semibold text-[#6B5A4A] block">Active Route Loop:</span>
+                        <div className="flex items-center gap-1.5 text-[#6B5A4A] text-xs overflow-x-auto">
                           <span>Main Gate</span>
                           <span>➔</span>
                           <span>Hostel A</span>
                           <span>➔</span>
-                          <span className="text-white font-bold underline">CS Block</span>
+                          <span className="text-[#BC4800] font-bold">CS Block</span>
                           <span>➔</span>
                           <span>Science Complex</span>
                           <span>➔</span>
@@ -955,7 +918,7 @@ export default function FacultyDashboard({ currentUser }) {
                       <button
                         type="button"
                         onClick={handleBusBookingSubmit}
-                        className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-full border border-white/15 transition-all cursor-pointer flex items-center justify-center gap-2"
+                        className="w-full py-2.5 inst-button-primary font-semibold text-xs rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2"
                       >
                         <span>Submit Bus Allocation Request ({selectedBus.label})</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -963,51 +926,50 @@ export default function FacultyDashboard({ currentUser }) {
                     </div>
 
                     {/* Driver Telemetry Box */}
-                    <div className="lg:col-span-5 p-4 rounded-2xl border border-white/5 bg-black/60 text-white space-y-3 font-mono">
-                      <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                        <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-wider">
+                    <div className="lg:col-span-5 p-4 rounded-xl border border-[#E8DCC8] bg-[#FDF8F2] text-[#2B1D12] space-y-3">
+                      <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-2">
+                        <h4 className="text-xs font-bold text-[#BC4800]">
                           Bus Telemetry
                         </h4>
-                        <span className="flex h-2 w-2 relative">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+                        <span className="text-xs font-semibold px-2 py-0.5 bg-[#4E7A51]/15 text-[#4E7A51] rounded-full border border-[#4E7A51]/30">
+                          {selectedBus.status}
                         </span>
                       </div>
 
-                      <div className="space-y-2 text-xs text-zinc-300">
-                        <div className="flex justify-between items-center border-b border-white/5 pb-1.5">
-                          <span className="text-zinc-500">vehicle no:</span>
-                          <span className="text-cyan-300 font-bold">{selectedBus.busNo} ({selectedBus.label})</span>
+                      <div className="space-y-2 text-xs text-[#6B5A4A]">
+                        <div className="flex justify-between items-center border-b border-[#E8DCC8] pb-1.5">
+                          <span>Vehicle No:</span>
+                          <span className="text-[#2B1D12] font-semibold">{selectedBus.busNo} ({selectedBus.label})</span>
                         </div>
 
-                        <div className="flex justify-between items-center border-b border-white/5 pb-1.5">
-                          <span className="text-zinc-500">live location:</span>
-                          <span className="truncate max-w-[160px] text-white flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-cyan-400 inline stroke-[1.5]" /> {selectedBus.loc}
+                        <div className="flex justify-between items-center border-b border-[#E8DCC8] pb-1.5">
+                          <span>Live Location:</span>
+                          <span className="truncate max-w-[160px] text-[#2B1D12] font-semibold flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#BC4800] inline" /> {selectedBus.loc}
                           </span>
                         </div>
 
-                        <div className="flex justify-between items-center border-b border-white/5 pb-1.5">
-                          <span className="text-zinc-500">capacity / seats:</span>
-                          <span className="text-emerald-400 font-bold">{selectedBus.capacity} ({selectedBus.seatsLeft} free)</span>
+                        <div className="flex justify-between items-center border-b border-[#E8DCC8] pb-1.5">
+                          <span>Capacity / Seats:</span>
+                          <span className="text-[#4E7A51] font-semibold">{selectedBus.capacity} ({selectedBus.seatsLeft} free)</span>
                         </div>
 
-                        <div className="flex justify-between items-center border-b border-white/5 pb-1.5">
-                          <span className="text-zinc-500">battery:</span>
-                          <span className="text-emerald-400 font-bold">88% (EV Shuttle)</span>
+                        <div className="flex justify-between items-center border-b border-[#E8DCC8] pb-1.5">
+                          <span>Battery:</span>
+                          <span className="text-[#4E7A51] font-semibold">88% (EV Shuttle)</span>
                         </div>
 
-                        <div className="pt-1 text-xs text-zinc-400 flex items-center justify-between">
-                          <span>Driver: <strong className="text-white">{selectedBus.driver}</strong></span>
-                          <a href={`tel:${selectedBus.phone}`} className="text-cyan-300 hover:underline flex items-center gap-1">
-                            <Phone className="w-3 h-3 stroke-[1.5]" /> {selectedBus.phone}
+                        <div className="pt-1 text-xs text-[#6B5A4A] flex items-center justify-between">
+                          <span>Driver: <strong className="text-[#2B1D12]">{selectedBus.driver}</strong></span>
+                          <a href={`tel:${selectedBus.phone}`} className="text-[#BC4800] font-semibold hover:underline flex items-center gap-1">
+                            <Phone className="w-3 h-3" /> {selectedBus.phone}
                           </a>
                         </div>
                       </div>
 
-                      <div className="pt-2 text-[10px] text-zinc-500 flex justify-between border-t border-white/5">
+                      <div className="pt-2 text-xs text-[#6B5A4A] flex justify-between border-t border-[#E8DCC8]">
                         <span>GPS Sync: 12 Satellites</span>
-                        <span className="text-cyan-400">Active</span>
+                        <span className="text-[#4E7A51] font-semibold">Active</span>
                       </div>
                     </div>
                   </div>
@@ -1016,32 +978,32 @@ export default function FacultyDashboard({ currentUser }) {
             </div>
 
             {/* ================= 4. TICKETS RAISED & MAINTENANCE SUPPORT LOG ================= */}
-            <div className={`w-full rounded-3xl border transition-all duration-300 overflow-hidden ${
+            <div className={`w-full rounded-2xl border transition-all duration-300 overflow-hidden bg-[#F7EFE4] ${
               activeExpand === 'tickets'
-                ? 'md:col-span-2 border-amber-500/40 bg-gradient-to-br from-black via-zinc-950 to-amber-950/20 shadow-2xl ring-1 ring-amber-500/20 backdrop-blur-2xl'
-                : 'md:col-span-1 border-white/5 bg-white/[0.02] hover:bg-white/[0.035] hover:border-white/15'
+                ? 'md:col-span-2 border-[#BC4800] shadow-xs'
+                : 'md:col-span-1 border-[#E8DCC8] hover:border-[#BC4800]/50'
             }`}>
               {/* Header Bar */}
               <div
                 onClick={() => setActiveExpand(activeExpand === 'tickets' ? null : 'tickets')}
-                className="p-5 sm:px-6 flex items-center justify-between cursor-pointer select-none"
+                className="p-5 flex items-center justify-between cursor-pointer select-none"
               >
                 <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-2xl border transition-all ${
+                  <div className={`p-2.5 rounded-xl border transition-all ${
                     activeExpand === 'tickets'
-                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 scale-105'
-                      : 'bg-white/5 text-amber-400 border-white/10'
+                      ? 'bg-[#BC4800] text-white border-[#BC4800]'
+                      : 'bg-[#FDF8F2] text-[#BC4800] border-[#E8DCC8]'
                   }`}>
-                    <AlertTriangle className="w-5 h-5 stroke-[1.5]" />
+                    <AlertTriangle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
                       Tickets Raised & Support Log
-                      <span className="text-[9px] font-mono font-bold px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded-full border border-amber-500/40 uppercase">
-                        {activeTicketsCount} ACTIVE
+                      <span className="text-xs font-semibold px-2 py-0.5 bg-[#BC4800]/15 text-[#BC4800] rounded-full border border-[#BC4800]/30">
+                        {activeTicketsCount} Active
                       </span>
                     </h3>
-                    <p className="text-xs text-zinc-400 font-medium">
+                    <p className="text-xs text-[#6B5A4A] font-medium">
                       Track maintenance, IT support, AV repairs & facility tickets
                     </p>
                   </div>
@@ -1054,12 +1016,12 @@ export default function FacultyDashboard({ currentUser }) {
                       e.stopPropagation();
                       setShowIssueModal(true);
                     }}
-                    className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-amber-400 border border-amber-500/30 rounded-full text-xs font-mono font-bold transition-all cursor-pointer shrink-0 flex items-center gap-1"
+                    className="px-3 py-1.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#BC4800] border border-[#BC4800]/30 rounded-full text-xs font-semibold transition-all cursor-pointer shrink-0 flex items-center gap-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Raise Ticket</span>
                   </button>
-                  <div className="p-2 rounded-xl border border-white/10 bg-white/5 text-zinc-400">
+                  <div className="p-2 rounded-lg border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
                     {activeExpand === 'tickets' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </div>
                 </div>
@@ -1067,18 +1029,18 @@ export default function FacultyDashboard({ currentUser }) {
 
               {/* Expanded Body Form / Tickets Dispatch Log */}
               {activeExpand === 'tickets' && (
-                <div className="px-6 pb-6 pt-2 border-t border-white/5 space-y-4 animate-in fade-in duration-300 font-mono">
+                <div className="px-5 pb-5 pt-2 border-t border-[#E8DCC8] space-y-4 animate-in fade-in duration-300">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    <h4 className="text-xs font-bold text-[#2B1D12]">
                       Active Tickets Dispatch Log
                     </h4>
                     <button
                       type="button"
                       onClick={() => setShowIssueModal(true)}
-                      className="px-4 py-2 bg-white/10 hover:bg-white/20 text-amber-300 font-bold rounded-full text-xs transition-all flex items-center gap-1.5 cursor-pointer border border-amber-500/30"
+                      className="px-4 py-2 inst-button-primary text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <Plus className="w-4 h-4" />
-                      <span>+ Raise New Campus Ticket</span>
+                      <span>Raise New Ticket</span>
                     </button>
                   </div>
 
@@ -1088,32 +1050,32 @@ export default function FacultyDashboard({ currentUser }) {
                       { id: 'TCK-8854', title: 'Faculty Quad AC Unit Thermostat Sensor Calibration', domain: 'HVAC Maintenance', status: 'Pending Dispatch', priority: 'Medium', time: '2 hours ago', date: 'Aug 21' },
                       { id: 'TCK-8720', title: 'Shuttle Bus 102 Live Telemetry GPS Offline Sync', domain: 'Fleet Dispatch', status: 'Resolved', priority: 'Normal', time: 'Yesterday', date: 'Aug 20' }
                     ].map((tck) => (
-                      <div key={tck.id} className="p-4 rounded-2xl bg-black/60 border border-white/5 space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div key={tck.id} className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-white/5 text-cyan-300 rounded-full border border-white/10">
+                            <span className="text-xs font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#2B1D12] rounded border border-[#E8DCC8]">
                               {tck.id}
                             </span>
-                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-amber-500/10 text-amber-300 rounded-full border border-amber-500/30">
+                            <span className="text-xs font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#BC4800] rounded border border-[#E8DCC8]">
                               {tck.domain}
                             </span>
-                            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase ${
-                              tck.status === 'In Progress' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                              tck.status === 'Resolved' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                              'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                            <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
+                              tck.status === 'In Progress' ? 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30' :
+                              tck.status === 'Resolved' ? 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30' :
+                              'bg-[#BC4800]/15 text-[#BC4800] border-[#BC4800]/30'
                             }`}>
                               {tck.status}
                             </span>
                           </div>
-                          <h5 className="text-xs font-bold text-white font-sans">{tck.title}</h5>
-                          <p className="text-[10px] text-zinc-500">Logged on {tck.date} • {tck.time}</p>
+                          <h5 className="text-xs font-bold text-[#2B1D12]">{tck.title}</h5>
+                          <p className="text-xs text-[#6B5A4A]">Logged on {tck.date} • {tck.time}</p>
                         </div>
 
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
                             onClick={() => showToast(`Dispatched technician update for ticket ${tck.id}`)}
-                            className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 rounded-full text-xs font-bold transition-all cursor-pointer font-sans"
+                            className="px-3 py-1.5 bg-[#F7EFE4] hover:bg-[#E8DCC8]/50 text-[#2B1D12] border border-[#E8DCC8] rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                           >
                             Track Status
                           </button>
@@ -1136,14 +1098,14 @@ export default function FacultyDashboard({ currentUser }) {
 
       {/* ================= TAB 3: SHUTTLE GPS RADAR ================= */}
       {activeTab === 'transport' && (
-        <div className="p-6 rounded-3xl border border-white/5 bg-white/[0.02] space-y-6 backdrop-blur-2xl">
+        <div className="p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] space-y-6 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Bus className="w-4 h-4 text-cyan-400 stroke-[1.5]" />
+              <h3 className="text-sm font-bold text-[#2B1D12] flex items-center gap-2">
+                <Bus className="w-4 h-4 text-[#BC4800]" />
                 <span>Shuttle Bus Fleet Telemetry & GPS Radar</span>
               </h3>
-              <p className="text-xs text-zinc-400 font-medium mt-0.5">Real-time shuttle driver telemetry, seat availability, speed & route operations</p>
+              <p className="text-xs text-[#6B5A4A] font-medium mt-0.5">Real-time shuttle driver telemetry, seat availability, speed & route operations</p>
             </div>
           </div>
 
@@ -1155,41 +1117,41 @@ export default function FacultyDashboard({ currentUser }) {
                 <div
                   key={bus.id}
                   onClick={() => setSelectedBus(bus)}
-                  className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer space-y-3 ${
+                  className={`p-4 sm:p-5 rounded-xl border transition-all cursor-pointer space-y-3 bg-[#FDF8F2] ${
                     selectedBus.id === bus.id
-                      ? 'bg-white/10 border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/30'
-                      : 'bg-black/40 border-white/5 hover:border-white/15'
+                      ? 'border-[#BC4800] ring-1 ring-[#BC4800] shadow-xs'
+                      : 'border-[#E8DCC8] hover:border-[#BC4800]/50'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-white text-sm">{bus.busNo}</span>
-                    <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase ${
+                    <span className="font-bold text-[#2B1D12] text-xs">{bus.busNo}</span>
+                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
                       bus.status === 'Peak Load'
-                        ? 'bg-red-500/20 text-red-300 border-red-500/40'
+                        ? 'bg-[#A6402F]/15 text-[#A6402F] border-[#A6402F]/30'
                         : bus.status === 'Stationed'
-                        ? 'bg-white/5 text-zinc-400 border-white/10'
-                        : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                        ? 'bg-[#E8DCC8]/40 text-[#6B5A4A] border-[#E8DCC8]'
+                        : 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30'
                     }`}>
                       {bus.status}
                     </span>
                   </div>
 
                   <div>
-                    <h4 className="text-xs font-bold text-white">{bus.label}</h4>
-                    <p className="text-[11px] text-zinc-400 mt-1 flex items-center gap-1 font-mono">
-                      <MapPin className="w-3.5 h-3.5 text-cyan-400 stroke-[1.5]" />
+                    <h4 className="text-xs font-bold text-[#2B1D12]">{bus.label}</h4>
+                    <p className="text-xs text-[#6B5A4A] mt-1 flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-[#BC4800]" />
                       <span>{bus.loc}</span>
                     </p>
                   </div>
 
-                  <div className="pt-2 border-t border-white/5 text-xs font-mono space-y-1">
-                    <p className="text-zinc-400 flex items-center justify-between">
-                      <span>Driver: <strong className="text-white">{bus.driver}</strong></span>
-                      <span className="text-[10px] text-zinc-500">{bus.phone}</span>
+                  <div className="pt-2 border-t border-[#E8DCC8] text-xs space-y-1">
+                    <p className="text-[#6B5A4A] flex items-center justify-between">
+                      <span>Driver: <strong className="text-[#2B1D12]">{bus.driver}</strong></span>
+                      <span className="text-xs text-[#6B5A4A]">{bus.phone}</span>
                     </p>
-                    <p className="text-zinc-400 flex items-center justify-between">
-                      <span>Speed: <strong className="text-white">{bus.speed}</strong></span>
-                      <span className="text-cyan-400 font-bold">{bus.seatsLeft} seats left</span>
+                    <p className="text-[#6B5A4A] flex items-center justify-between">
+                      <span>Speed: <strong className="text-[#2B1D12]">{bus.speed}</strong></span>
+                      <span className="text-[#4E7A51] font-semibold">{bus.seatsLeft} seats left</span>
                     </p>
                   </div>
                 </div>
@@ -1197,56 +1159,54 @@ export default function FacultyDashboard({ currentUser }) {
             </div>
 
             {/* GPS Radar & Telemetry Display */}
-            <div className="lg:col-span-5 p-5 rounded-2xl border border-white/5 bg-black/60 text-white space-y-4 font-mono">
+            <div className="lg:col-span-5 p-5 rounded-xl border border-[#E8DCC8] bg-[#FDF8F2] text-[#2B1D12] space-y-4">
               
-              {/* Live GPS Radar Grid */}
-              <div className="w-full h-24 bg-black rounded-xl border border-white/10 relative overflow-hidden flex items-center justify-between px-4">
-                <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] opacity-10" />
+              {/* Live GPS Radar Display */}
+              <div className="w-full h-24 bg-[#F7EFE4] rounded-lg border border-[#E8DCC8] relative overflow-hidden flex items-center justify-between px-4">
                 <div className="flex items-center gap-3 relative z-10">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500" />
-                  </span>
+                  <div className="p-2 rounded-lg bg-[#BC4800]/15 text-[#BC4800] border border-[#BC4800]/30">
+                    <Bus className="w-4 h-4" />
+                  </div>
                   <div>
-                    <span className="text-xs text-cyan-400 font-bold block tracking-wider">GPS RADAR TELEMETRY</span>
-                    <span className="text-xs text-zinc-400">{selectedBus.loc}</span>
+                    <span className="text-xs font-bold text-[#2B1D12] block">GPS Radar Telemetry</span>
+                    <span className="text-xs text-[#6B5A4A]">{selectedBus.loc}</span>
                   </div>
                 </div>
                 <div className="text-right relative z-10">
-                  <span className="text-xs font-bold text-emerald-400 bg-white/5 px-2.5 py-1 rounded-full border border-white/10">
+                  <span className="text-xs font-semibold text-[#4E7A51] bg-[#4E7A51]/15 px-2.5 py-1 rounded-full border border-[#4E7A51]/30">
                     {selectedBus.speed}
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                <h4 className="font-bold text-white text-xs">Live Vehicle Telemetry: {selectedBus.label}</h4>
-                <span className="text-[9px] font-bold text-cyan-400 px-2 py-0.5 bg-white/5 rounded-full border border-white/10">
+              <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-2">
+                <h4 className="font-bold text-[#2B1D12] text-xs">Live Telemetry: {selectedBus.label}</h4>
+                <span className="text-xs font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
                   {selectedBus.status}
                 </span>
               </div>
 
-              <div className="space-y-2 text-xs text-zinc-300 pt-1">
-                <div className="flex justify-between p-2.5 bg-black/40 rounded-xl border border-white/5">
-                  <span className="text-zinc-500">Bus Registration:</span>
-                  <span className="font-bold text-white">{selectedBus.busNo}</span>
+              <div className="space-y-2 text-xs text-[#6B5A4A] pt-1">
+                <div className="flex justify-between p-2.5 bg-[#F7EFE4] rounded-lg border border-[#E8DCC8]">
+                  <span>Bus Registration:</span>
+                  <span className="font-bold text-[#2B1D12]">{selectedBus.busNo}</span>
                 </div>
 
-                <div className="flex justify-between p-2.5 bg-black/40 rounded-xl border border-white/5">
-                  <span className="text-zinc-500">Current Location:</span>
-                  <span className="text-white truncate max-w-[150px]">{selectedBus.loc}</span>
+                <div className="flex justify-between p-2.5 bg-[#F7EFE4] rounded-lg border border-[#E8DCC8]">
+                  <span>Current Location:</span>
+                  <span className="text-[#2B1D12] font-semibold truncate max-w-[150px]">{selectedBus.loc}</span>
                 </div>
 
-                <div className="flex justify-between p-2.5 bg-black/40 rounded-xl border border-white/5">
-                  <span className="text-zinc-500">Seat Occupancy:</span>
-                  <span className="text-cyan-400 font-bold">{selectedBus.capacity - selectedBus.seatsLeft} / {selectedBus.capacity} ({selectedBus.seatsLeft} Free)</span>
+                <div className="flex justify-between p-2.5 bg-[#F7EFE4] rounded-lg border border-[#E8DCC8]">
+                  <span>Seat Occupancy:</span>
+                  <span className="text-[#4E7A51] font-semibold">{selectedBus.capacity - selectedBus.seatsLeft} / {selectedBus.capacity} ({selectedBus.seatsLeft} Free)</span>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-white/5 text-xs text-zinc-400 flex items-center justify-between">
-                <span>Driver: <strong className="text-white">{selectedBus.driver}</strong></span>
-                <a href={`tel:${selectedBus.phone}`} className="flex items-center gap-1 text-cyan-300 font-bold hover:underline">
-                  <Phone className="w-3.5 h-3.5 stroke-[1.5]" /> Call Driver
+              <div className="pt-2 border-t border-[#E8DCC8] text-xs text-[#6B5A4A] flex items-center justify-between">
+                <span>Driver: <strong className="text-[#2B1D12]">{selectedBus.driver}</strong></span>
+                <a href={`tel:${selectedBus.phone}`} className="flex items-center gap-1 text-[#BC4800] font-semibold hover:underline">
+                  <Phone className="w-3.5 h-3.5" /> Call Driver
                 </a>
               </div>
 
@@ -1258,19 +1218,19 @@ export default function FacultyDashboard({ currentUser }) {
 
       {/* ================= RAISE CAMPUS ISSUE MODAL DIALOG ================= */}
       {showIssueModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-black/90 border border-white/10 w-full max-w-md rounded-3xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95 backdrop-blur-2xl">
+        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
+          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
             
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-white/5 border border-white/10 rounded-xl text-amber-400">
-                  <AlertTriangle className="w-4 h-4 stroke-[1.5]" />
+                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                  <AlertTriangle className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">
+                  <h3 className="text-sm font-bold text-[#2B1D12]">
                     Raise Campus Support Ticket
                   </h3>
-                  <p className="text-[11px] text-zinc-400 font-mono">
+                  <p className="text-xs text-[#6B5A4A]">
                     Dispatch ticket to Maintenance, Energy, or Transport
                   </p>
                 </div>
@@ -1278,7 +1238,7 @@ export default function FacultyDashboard({ currentUser }) {
               <button
                 type="button"
                 onClick={() => setShowIssueModal(false)}
-                className="p-1 rounded-full hover:bg-white/10 text-zinc-400 cursor-pointer transition-all"
+                className="p-1 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1288,8 +1248,8 @@ export default function FacultyDashboard({ currentUser }) {
               
               {/* Issue Title */}
               <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">
-                  Issue Title <span className="text-amber-400">*</span>
+                <label className="block font-semibold text-[#2B1D12]">
+                  Issue Title <span className="text-[#BC4800]">*</span>
                 </label>
                 <input
                   type="text"
@@ -1297,17 +1257,17 @@ export default function FacultyDashboard({ currentUser }) {
                   placeholder="e.g. Projector HDMI Fault in Room CS-301"
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] transition-all"
                 />
               </div>
 
               {/* Domain */}
               <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">Target Sub-Admin Domain</label>
+                <label className="block font-semibold text-[#2B1D12]">Target Sub-Admin Domain</label>
                 <select
                   value={ticketDomain}
                   onChange={(e) => setTicketDomain(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] focus:outline-none focus:border-[#BC4800] transition-all"
                 >
                   <option value="maintenance">Maintenance (AC, Projectors, Hardware)</option>
                   <option value="energy">Energy Sub-Admin (Power Supply)</option>
@@ -1318,8 +1278,8 @@ export default function FacultyDashboard({ currentUser }) {
 
               {/* Description */}
               <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">
-                  Detailed Description <span className="text-amber-400">*</span>
+                <label className="block font-semibold text-[#2B1D12]">
+                  Detailed Description <span className="text-[#BC4800]">*</span>
                 </label>
                 <textarea
                   required
@@ -1327,22 +1287,22 @@ export default function FacultyDashboard({ currentUser }) {
                   placeholder="Describe the issue..."
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60 transition-all"
+                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] transition-all"
                 />
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/5">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E8DCC8]">
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(false)}
-                  className="px-4 py-2 bg-white/5 hover:bg-white/10 text-zinc-400 rounded-full font-mono font-bold cursor-pointer transition-all"
+                  className="px-4 py-2 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-500/30 rounded-full font-bold transition-all cursor-pointer"
+                  className="px-5 py-2 inst-button-primary rounded-lg font-semibold transition-colors cursor-pointer shadow-xs"
                 >
                   Submit Ticket
                 </button>
@@ -1359,3 +1319,4 @@ export default function FacultyDashboard({ currentUser }) {
     </div>
   );
 }
+

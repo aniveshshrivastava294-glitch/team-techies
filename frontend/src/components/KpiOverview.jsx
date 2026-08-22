@@ -12,7 +12,6 @@ export default function KpiOverview({ kpis }) {
       subValue: `${kpis.totalCapacity || 0} capacity`,
       icon: Building2,
       trend: '+12%',
-      color: 'blue',
       badge: '98% operational'
     },
     {
@@ -22,7 +21,6 @@ export default function KpiOverview({ kpis }) {
       subValue: 'Across 4 complexes',
       icon: Calendar,
       trend: '+8%',
-      color: 'indigo',
       badge: 'Q3 schedule'
     },
     {
@@ -32,7 +30,6 @@ export default function KpiOverview({ kpis }) {
       subValue: `${kpis.criticalMaintenance || 0} critical priority`,
       icon: Wrench,
       trend: kpis.criticalMaintenance > 0 ? 'Alert' : '-15%',
-      color: kpis.criticalMaintenance > 0 ? 'red' : 'amber',
       badge: kpis.criticalMaintenance > 0 ? 'Action Required' : 'Optimal',
       hasAlert: kpis.criticalMaintenance > 0
     },
@@ -43,7 +40,6 @@ export default function KpiOverview({ kpis }) {
       subValue: `${kpis.transitUtilizationPercent || 0}% route load`,
       icon: Bus,
       trend: '+5%',
-      color: 'cyan',
       badge: '6 Bus Fleet'
     },
     {
@@ -53,7 +49,6 @@ export default function KpiOverview({ kpis }) {
       subValue: `${kpis.avgKwhPerRoom || 0} kWh / room`,
       icon: Zap,
       trend: '-4.2%',
-      color: 'amber',
       badge: 'Eco Mode Active'
     },
     {
@@ -63,48 +58,44 @@ export default function KpiOverview({ kpis }) {
       subValue: 'Campus Gate Scans',
       icon: Users,
       trend: '+18%',
-      color: 'emerald',
-      badge: '94.2% Attendance'
+      badge: '94.2% Rate'
     }
   ];
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5 mb-6 font-sans">
       {cards.map((card, idx) => {
         const IconComponent = card.icon;
 
         return (
           <div
             key={idx}
-            className="p-4 rounded border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm relative group hover:border-[#B5654A]/40 transition-colors"
+            className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs relative group hover:border-[#BC4800]/40 transition-colors"
           >
-            {/* Top Accent Line */}
-            <div className="absolute top-0 left-3 right-3 h-0.5 bg-[#B5654A]/30 group-hover:bg-[#B5654A] transition-colors" />
-
             {/* Top Bar: Icon + Badge */}
-            <div className="flex items-center justify-between mb-2 pt-1">
-              <div className="p-1.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300">
+            <div className="flex items-center justify-between mb-2.5">
+              <div className="p-1.5 rounded-lg bg-[#FDF8F2] border border-[#E8DCC8] text-[#2B1D12]">
                 <IconComponent className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
                 {card.badge}
               </span>
             </div>
 
             {/* Title */}
-            <p className="text-xs font-bold text-stone-600 dark:text-stone-400 tracking-tight font-sans">{card.title}</p>
+            <p className="text-xs font-medium text-[#6B5A4A]">{card.title}</p>
 
             {/* Metric Value */}
             <div className="flex items-baseline space-x-1.5 mt-1">
-              <h3 className="text-2xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">{card.mainValue}</h3>
-              <span className="text-xs font-mono text-stone-500">{card.unit}</span>
+              <h3 className="text-xl font-bold text-[#2B1D12]">{card.mainValue}</h3>
+              <span className="text-xs text-[#6B5A4A]">{card.unit}</span>
             </div>
 
             {/* Context Line */}
-            <div className="mt-2.5 pt-2 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[11px]">
-              <span className="text-stone-500 font-mono text-[10px] truncate">{card.subValue}</span>
-              <span className="font-mono text-[10px] font-bold text-[#B5654A] flex items-center gap-0.5">
-                {card.hasAlert ? <AlertTriangle className="w-3 h-3 text-[#A64B34] inline" /> : <ArrowUpRight className="w-3 h-3 inline" />}
+            <div className="mt-2.5 pt-2 border-t border-[#E8DCC8] flex items-center justify-between text-xs">
+              <span className="text-[#6B5A4A] text-[11px] truncate">{card.subValue}</span>
+              <span className={`text-[11px] font-semibold flex items-center gap-0.5 ${card.hasAlert ? 'text-[#A6402F]' : 'text-[#BC4800]'}`}>
+                {card.hasAlert ? <AlertTriangle className="w-3 h-3 text-[#A6402F] inline" /> : <ArrowUpRight className="w-3 h-3 inline" />}
                 <span>{card.trend}</span>
               </span>
             </div>
@@ -114,3 +105,4 @@ export default function KpiOverview({ kpis }) {
     </section>
   );
 }
+
