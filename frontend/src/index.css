@@ -9,8 +9,8 @@
     --surface: #FAF8F3;
     --sidebar-bg: #1C1917;
     --sidebar-hover: #292524;
-    --accent: #1C1917;
-    --accent-hover: #292524;
+    --accent: #1D4ED8;
+    --accent-brown: #92400E;
     --topbar: #FAF8F3;
     --text-primary: #1C1917;
     --text-secondary: #44403C;
@@ -72,6 +72,46 @@
   border-color: #292524;
 }
 
+.btn-primary-blue {
+  background-color: #1D4ED8;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  border: 1px solid #1D4ED8;
+}
+.btn-primary-blue:hover {
+  background-color: #1E40AF;
+  border-color: #1E40AF;
+}
+
+.btn-primary-brown {
+  background-color: #92400E;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  border: 1px solid #92400E;
+}
+.btn-primary-brown:hover {
+  background-color: #78350F;
+  border-color: #78350F;
+}
+
 .btn-secondary {
   background-color: #FAF8F3;
   color: #1C1917;
@@ -122,10 +162,38 @@
   gap: 0.25rem;
 }
 
+.badge-blue {
+  background-color: #EFF6FF;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+  font-size: 0.625rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-brown {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+  font-size: 0.625rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .badge-success, .badge-emerald {
-  background-color: #F0EBE1;
-  color: #1C1917;
-  border: 1px solid #1C1917;
+  background-color: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -137,9 +205,9 @@
 }
 
 .badge-warning, .badge-amber {
-  background-color: #292524;
-  color: #FAF8F3;
-  border: 1px solid #44403C;
+  background-color: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -151,9 +219,9 @@
 }
 
 .badge-error, .badge-rose {
-  background-color: #1C1917;
-  color: #FAF8F3;
-  border: 1px solid #1C1917;
+  background-color: #FFF1F2;
+  color: #9F1239;
+  border: 1px solid #FECDD3;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -208,10 +276,10 @@
 
 /* Nav Tabs */
 .nav-tab-active {
-  color: #1C1917;
-  border-bottom: 2px solid #1C1917;
+  color: #1D4ED8;
+  border-bottom: 2px solid #1D4ED8;
   font-weight: 800;
-  background-color: rgba(28, 25, 23, 0.04);
+  background-color: #EFF6FF;
 }
 .nav-tab-inactive {
   color: #57534E;
@@ -219,7 +287,7 @@
   font-weight: 600;
 }
 .nav-tab-inactive:hover {
-  color: #1C1917;
+  color: #1D4ED8;
 }
 
 /* Ticker Animation */

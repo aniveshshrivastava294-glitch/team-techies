@@ -103,30 +103,30 @@ export default function MaintenanceManagerInterface() {
 
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#1C1917] border border-[#292524] text-[#FAF8F3] font-mono text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2">
+        <div className="fixed top-20 right-6 bg-[#92400E] border border-[#78350F] text-white font-mono text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* Header Banner - Executive Obsidian */}
-      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#292524] shadow-md relative overflow-hidden">
+      {/* Header Banner - Executive Obsidian with Amber Accents */}
+      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#92400E] shadow-md relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
-              <span className="badge-mono-dark text-[10px]">
-                <Wrench className="w-3.5 h-3.5 text-white" />
+              <span className="badge-brown text-[10px]">
+                <Wrench className="w-3.5 h-3.5 text-[#92400E]" />
                 FACILITY & INFRASTRUCTURE COMMAND
               </span>
-              <span className="text-xs text-[#D6CEBE] font-bold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-white animate-ping inline-block" />
+              <span className="text-xs text-[#FDE68A] font-bold flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-[#F59E0B] animate-ping inline-block" />
                 Live Systems Monitor
               </span>
             </div>
             
             <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               Maintenance Manager Interface
-              <Sparkles className="w-5 h-5 text-white" />
+              <Sparkles className="w-5 h-5 text-[#F59E0B]" />
             </h1>
             <p className="text-xs text-[#D6CEBE] max-w-2xl font-medium leading-relaxed">
               Real-time HVAC climate diagnostics, electrical substation telemetry, elevator safety checks & work order dispatches.
@@ -136,7 +136,7 @@ export default function MaintenanceManagerInterface() {
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setShowCreateWoModal(true)}
-              className="btn-primary text-xs"
+              className="btn-primary-brown text-xs"
             >
               <Plus className="w-4 h-4" />
               <span>Create Work Order</span>
@@ -149,10 +149,10 @@ export default function MaintenanceManagerInterface() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-[#1C1917] tracking-tight flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-[#1C1917]" />
+            <Gauge className="w-4 h-4 text-[#92400E]" />
             Infrastructure Telemetry Matrix ({systems.length} Core Systems)
           </h2>
-          <span className="badge-mono-dark text-xs">
+          <span className="badge-brown text-xs">
             98.4% Operational Health
           </span>
         </div>
@@ -163,12 +163,12 @@ export default function MaintenanceManagerInterface() {
             return (
               <div 
                 key={sys.id} 
-                className="card-surface p-4 shadow-2xs space-y-3"
+                className={`card-surface p-4 shadow-2xs space-y-3 ${isWarning ? 'border-amber-300 bg-amber-50/20' : ''}`}
               >
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-bold text-[#1C1917]">{sys.name}</h3>
                   <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border uppercase ${
-                    isWarning ? 'badge-mono-dark' : 'badge-mono'
+                    isWarning ? 'badge-brown' : 'badge-emerald'
                   }`}>
                     {sys.status}
                   </span>
@@ -181,7 +181,7 @@ export default function MaintenanceManagerInterface() {
 
                 <div className="w-full bg-[#E6E0D2] h-1.5 rounded-full overflow-hidden border border-[#D6CEBE]">
                   <div 
-                    className="h-full rounded-full transition-all bg-[#1C1917]" 
+                    className={`h-full rounded-full transition-all ${isWarning ? 'bg-[#92400E]' : 'bg-emerald-600'}`}
                     style={{ width: `${sys.health}%` }} 
                   />
                 </div>
@@ -197,187 +197,166 @@ export default function MaintenanceManagerInterface() {
         {/* Left Column: Active Work Orders & Maintenance Dispatches */}
         <div className="card-surface p-5 shadow-2xs flex flex-col justify-between space-y-4">
           <div>
-            {/* Header Bar */}
-            <div className="pb-3 border-b border-[#E6E0D2] flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-md bg-[#F0EBE1] border border-[#E6E0D2] text-[#1C1917]">
-                  <Wrench className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-[#1C1917] tracking-tight">
-                    Active Work Orders & Maintenance Dispatches
-                  </h3>
-                  <p className="text-[11px] text-[#57534E] font-medium font-mono">
-                    Approve, reject, or assign technician dispatches
-                  </p>
-                </div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-3">
+              <div className="flex items-center space-x-2">
+                <Wrench className="w-4 h-4 text-[#92400E]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
+                  Active Work Orders & Maintenance Dispatches
+                </h3>
               </div>
-
-              <span className="badge-mono-dark text-[10px]">
-                {workOrders.filter(w => w.status === 'Pending Approval').length} Action Required
+              <span className="badge-brown text-[10px]">
+                {workOrders.length} Dispatches
               </span>
             </div>
 
-            {/* Work Orders List Body */}
-            <div className="space-y-3 pt-3">
+            <div className="divide-y divide-[#E6E0D2]">
               {workOrders.map((wo) => (
-                <div 
-                  key={wo.id}
-                  className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] hover:border-[#1C1917] transition-all space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="badge-mono text-[10px]">
-                        {wo.id}
-                      </span>
-                      <span className="badge-mono text-[10px]">
-                        {wo.system}
-                      </span>
-                      <span className={`text-[10px] ${
-                        wo.status === 'Approved' ? 'badge-mono-dark' :
-                        wo.status === 'Rejected' ? 'badge-mono' :
-                        'badge-mono-dark'
-                      }`}>
-                        {wo.status}
-                      </span>
+                <div key={wo.id} className="py-3 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-mono text-xs font-bold text-[#92400E]">{wo.id}</span>
+                        <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border ${
+                          wo.priority === 'Critical' ? 'badge-error' : wo.priority === 'High' ? 'badge-brown' : 'badge-mono'
+                        }`}>
+                          {wo.priority}
+                        </span>
+                      </div>
+                      <h4 className="text-xs font-bold text-[#1C1917] mt-0.5">{wo.title}</h4>
+                      <p className="text-[11px] text-[#57534E] font-mono mt-0.5">
+                        {wo.location} • {wo.technician}
+                      </p>
                     </div>
-                    <h4 className="text-xs font-bold text-[#1C1917]">{wo.title}</h4>
-                    <p className="text-[10px] text-[#57534E] font-mono">
-                      Location: <span className="text-[#1C1917] font-bold">{wo.location}</span> • Tech: <span className="text-[#1C1917] font-bold">{wo.technician}</span> • Date: {wo.date}
-                    </p>
-                  </div>
 
-                  <div className="flex items-center gap-2 shrink-0 font-sans">
-                    {wo.status === 'Pending Approval' ? (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => handleWoAction(wo.id, 'Approved')}
-                          className="btn-primary text-xs py-1 px-3"
-                        >
-                          <Check className="w-3.5 h-3.5" />
-                          <span>Approve</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleWoAction(wo.id, 'Rejected')}
-                          className="btn-secondary text-xs py-1 px-2.5 text-[#1C1917]"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                          <span>Reject</span>
-                        </button>
-                      </>
-                    ) : (
-                      <span className="badge-mono text-[10px]">
-                        Processed
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1 shrink-0">
+                      {wo.status === 'Pending Approval' ? (
+                        <>
+                          <button
+                            onClick={() => handleWoAction(wo.id, 'Approved')}
+                            className="btn-primary-brown text-[10px] py-1 px-2"
+                            title="Approve Work Order"
+                          >
+                            <Check className="w-3 h-3" />
+                            <span>Approve</span>
+                          </button>
+                          <button
+                            onClick={() => handleWoAction(wo.id, 'Rejected')}
+                            className="btn-secondary text-[10px] py-1 px-2"
+                            title="Reject Work Order"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </>
+                      ) : (
+                        <span className={`text-[10px] font-mono font-bold px-2 py-1 rounded border ${
+                          wo.status === 'Approved' ? 'badge-emerald' : 'badge-brown'
+                        }`}>
+                          {wo.status}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          <button
+            onClick={() => setShowCreateWoModal(true)}
+            className="btn-primary-brown w-full text-xs py-2 mt-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Dispatch New Maintenance Work Order</span>
+          </button>
         </div>
 
         {/* Right Column: Support Tickets Logger */}
-        <TicketsSupportLogCard 
-          adminDomain="maintenance" 
-          title="Maintenance & Infrastructure Support Tickets" 
-          subtitle="Track HVAC repairs, electrical substation alerts & plumbing tickets" 
-        />
+        <div>
+          <TicketsSupportLogCard currentUser={{ role: 'maintenance_manager', full_name: 'Sub-Admin Maintenance' }} />
+        </div>
 
       </div>
 
-      {/* Create Work Order Modal */}
+      {/* Modal: Create Work Order */}
       {showCreateWoModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-[#FAF8F3] border border-[#E6E0D2] w-full max-w-md rounded-lg p-6 shadow-xl space-y-4 relative">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2]">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-[#F0EBE1] border border-[#E6E0D2] rounded-md text-[#1C1917]">
-                  <Wrench className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-[#1C1917]">Create Infrastructure Work Order</h3>
-                  <p className="text-[11px] text-[#57534E] font-mono">Dispatch maintenance engineer to campus location</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowCreateWoModal(false)}
-                className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#F0EBE1]"
-              >
-                <X className="w-4 h-4" />
-              </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-sans">
+          <div className="card-surface w-full max-w-md p-6 rounded-lg border border-[#E6E0D2] shadow-xl relative bg-[#FAF8F3]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-4">
+              <h3 className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                <Wrench className="w-4 h-4 text-[#92400E]" />
+                Dispatch New Maintenance Work Order
+              </h3>
+              <button onClick={() => setShowCreateWoModal(false)} className="text-[#78716C] hover:text-[#1C1917]">×</button>
             </div>
 
-            <form onSubmit={handleCreateWoSubmit} className="space-y-3.5 text-xs">
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#1C1917]">Work Order Title <span className="text-[#1C1917]">*</span></label>
+            <form onSubmit={handleCreateWoSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Work Order Title / Description</label>
                 <input
                   type="text"
-                  required
-                  placeholder="e.g. Block A Generator Oil Filter Change"
                   value={newWoForm.title}
                   onChange={(e) => setNewWoForm({ ...newWoForm, title: e.target.value })}
-                  className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-medium"
+                  placeholder="e.g. Science Block HVAC Chiller 2 Coolant Leak Repair"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  required
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="block font-semibold text-[#1C1917]">System Domain</label>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">System Category</label>
                   <select
                     value={newWoForm.system}
                     onChange={(e) => setNewWoForm({ ...newWoForm, system: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none font-medium"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                   >
                     <option value="HVAC Climate">HVAC Climate</option>
                     <option value="Electrical Grid">Electrical Grid</option>
                     <option value="Elevators & Lifts">Elevators & Lifts</option>
-                    <option value="Water & Plumbing">Water & Plumbing</option>
+                    <option value="Plumbing & Pumps">Plumbing & Pumps</option>
+                    <option value="AV & Hardware">AV & Hardware</option>
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block font-semibold text-[#1C1917]">Priority</label>
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Priority</label>
                   <select
                     value={newWoForm.priority}
                     onChange={(e) => setNewWoForm({ ...newWoForm, priority: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none font-medium"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                   >
-                    <option value="Critical">Critical</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
                     <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Critical">Critical</option>
                   </select>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#1C1917]">Location <span className="text-[#1C1917]">*</span></label>
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Location / Building Room</label>
                 <input
                   type="text"
-                  required
-                  placeholder="e.g. Block C Substation / Elevator #2"
                   value={newWoForm.location}
                   onChange={(e) => setNewWoForm({ ...newWoForm, location: e.target.value })}
-                  className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none font-medium"
+                  placeholder="e.g. Block C Basement Plant Room"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  required
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#1C1917]">Assigned Technician</label>
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Assigned Lead Technician / Vendor</label>
                 <input
                   type="text"
-                  placeholder="e.g. Lead Engineer Ramesh"
                   value={newWoForm.technician}
                   onChange={(e) => setNewWoForm({ ...newWoForm, technician: e.target.value })}
-                  className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none font-medium"
+                  placeholder="e.g. Rajesh Kumar (Lead HVAC Engineer)"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E6E0D2]">
+              <div className="pt-2 flex items-center justify-end space-x-2">
                 <button
                   type="button"
                   onClick={() => setShowCreateWoModal(false)}
@@ -387,15 +366,16 @@ export default function MaintenanceManagerInterface() {
                 </button>
                 <button
                   type="submit"
-                  className="btn-primary text-xs"
+                  className="btn-primary-brown text-xs py-2 px-4"
                 >
-                  Dispatch Work Order
+                  Submit Work Order
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+
     </div>
   );
 }

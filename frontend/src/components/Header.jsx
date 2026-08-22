@@ -27,15 +27,15 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
         
         {/* Brand Name Typography */}
         <div className="flex items-center space-x-3 shrink-0">
-          <div className="w-7 h-7 rounded-md bg-[#1C1917] text-[#FAF8F3] flex items-center justify-center font-mono font-bold text-xs">
+          <div className="w-7 h-7 rounded-md bg-[#1D4ED8] text-white flex items-center justify-center font-mono font-extrabold text-xs shadow-2xs">
             CO
           </div>
           <div>
-            <h1 className="text-sm font-bold tracking-tight text-[#1C1917] leading-none">
+            <h1 className="text-sm font-extrabold tracking-tight text-[#1C1917] leading-none">
               Campus Orbit
             </h1>
-            <span className="text-[10px] text-[#78716C] font-mono tracking-wider uppercase">
-              EXECUTIVE BEIGE
+            <span className="text-[10px] text-[#1D4ED8] font-mono font-bold tracking-wider uppercase">
+              EXECUTIVE PORTAL
             </span>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search rooms, bus routes, tickets, or staff (⌘K)..."
-            className="w-full bg-[#F0EBE1] border border-[#E6E0D2] rounded-md pl-9 pr-12 py-1.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1C1917] focus:bg-[#FAF8F3] font-medium transition-all"
+            className="w-full bg-[#F0EBE1] border border-[#E6E0D2] rounded-md pl-9 pr-12 py-1.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1D4ED8] focus:bg-[#FAF8F3] font-medium transition-all"
           />
           <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[#78716C] bg-[#FAF8F3] px-1.5 py-0.5 rounded border border-[#E6E0D2]">
             ⌘K
@@ -58,8 +58,8 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
         {/* Status Indicator & Role Switcher */}
         <div className="flex items-center space-x-2">
           
-          <div className="hidden lg:flex items-center space-x-1.5 badge-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1C1917] animate-ping"></span>
+          <div className="hidden lg:flex items-center space-x-1.5 badge-blue">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1D4ED8] animate-ping"></span>
             <span>System Online</span>
           </div>
 
@@ -68,7 +68,7 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
               onClick={() => setShowRoleDropdown(!showRoleDropdown)}
               className="btn-secondary text-xs flex items-center space-x-1.5 py-1 px-2.5"
             >
-              <Shield className="w-3.5 h-3.5 text-[#1C1917]" />
+              <Shield className="w-3.5 h-3.5 text-[#1D4ED8]" />
               <span className="font-bold text-[#1C1917]">
                 {currentUser?.full_name?.split(' ')[0] || 'Guest'}
               </span>
@@ -80,7 +80,7 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
 
             {showRoleDropdown && (
               <div className="absolute right-0 mt-1 w-56 p-1.5 rounded-md border border-[#E6E0D2] bg-[#FAF8F3] shadow-md z-50 text-xs space-y-1">
-                <div className="px-2 py-1 text-[10px] font-mono text-[#78716C] uppercase tracking-wider border-b border-[#E6E0D2] mb-1">
+                <div className="px-2 py-1 text-[10px] font-mono text-[#78716C] uppercase tracking-wider border-b border-[#E6E0D2] mb-1 font-bold">
                   Switch Demo Role:
                 </div>
                 {demoAccounts.map((acc, idx) => (
@@ -91,11 +91,11 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
                       setShowRoleDropdown(false);
                     }}
                     className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs transition-colors flex items-center justify-between ${
-                      currentUser?.email === acc.email ? 'bg-[#1C1917] text-[#FAF8F3] font-bold' : 'hover:bg-[#F0EBE1] text-[#1C1917]'
+                      currentUser?.email === acc.email ? 'bg-[#1D4ED8] text-white font-bold' : 'hover:bg-[#F0EBE1] text-[#1C1917]'
                     }`}
                   >
                     <span>{acc.full_name.split(' ')[0]}</span>
-                    <span className="text-[10px] font-mono text-[#78716C] capitalize">
+                    <span className="text-[10px] font-mono text-[#78716C] capitalize font-semibold">
                       {acc.role === 'sub_admin' ? `${acc.department_domain}` : acc.role.replace('_', ' ')}
                     </span>
                   </button>
@@ -107,10 +107,10 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="p-1.5 text-[#78716C] hover:text-[#1C1917] rounded hover:bg-[#F0EBE1]"
+            className="p-1.5 text-[#78716C] hover:text-[#1D4ED8] rounded hover:bg-[#F0EBE1]"
             title="Refresh Data"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#1C1917]' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#1D4ED8]' : ''}`} />
           </button>
 
           {currentUser ? (
@@ -124,7 +124,7 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
           ) : (
             <button
               onClick={onOpenLogin}
-              className="btn-primary text-xs py-1 px-3"
+              className="btn-primary-blue text-xs py-1 px-3"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>
@@ -145,13 +145,13 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
               <button
                 key={item.id}
                 onClick={() => setActiveTab && setActiveTab(item.id)}
-                className={`py-2.5 px-3.5 text-xs font-semibold flex items-center space-x-2 border-b-2 transition-all cursor-pointer ${
+                className={`py-2.5 px-3.5 text-xs font-bold flex items-center space-x-2 border-b-2 transition-all cursor-pointer ${
                   isActive
-                    ? 'border-[#1C1917] text-[#1C1917] font-bold bg-[#F0EBE1]'
-                    : 'border-transparent text-[#57534E] hover:text-[#1C1917] hover:bg-[#F5F2EB]'
+                    ? 'border-[#1D4ED8] text-[#1D4ED8] bg-[#EFF6FF]'
+                    : 'border-transparent text-[#57534E] hover:text-[#1D4ED8] hover:bg-[#F5F2EB]'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1C1917]' : 'text-[#78716C]'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1D4ED8]' : 'text-[#78716C]'}`} />
                 <span>{item.label}</span>
               </button>
             );

@@ -11,7 +11,9 @@ export default function KpiOverview({ kpis }) {
       unit: 'halls',
       subValue: `${kpis.totalCapacity || 0} cap`,
       icon: Building2,
-      badge: '98% active'
+      badge: '98% active',
+      colorClass: 'text-blue-600',
+      badgeClass: 'badge-blue'
     },
     {
       title: 'Active Events',
@@ -19,7 +21,9 @@ export default function KpiOverview({ kpis }) {
       unit: 'events',
       subValue: '4 Complexes',
       icon: Calendar,
-      badge: 'Q3 Schedule'
+      badge: 'Q3 Schedule',
+      colorClass: 'text-indigo-600',
+      badgeClass: 'badge-blue'
     },
     {
       title: 'Maintenance',
@@ -28,7 +32,8 @@ export default function KpiOverview({ kpis }) {
       subValue: `${kpis.criticalMaintenance || 0} critical`,
       icon: Wrench,
       badge: kpis.criticalMaintenance > 0 ? 'Action Needed' : 'Optimal',
-      isAlert: kpis.criticalMaintenance > 0
+      colorClass: 'text-amber-700',
+      badgeClass: kpis.criticalMaintenance > 0 ? 'badge-error' : 'badge-brown'
     },
     {
       title: 'Transit Fleet',
@@ -36,7 +41,9 @@ export default function KpiOverview({ kpis }) {
       unit: 'riders',
       subValue: `${kpis.transitUtilizationPercent || 0}% load`,
       icon: Bus,
-      badge: '6 Shuttles'
+      badge: '6 Shuttles',
+      colorClass: 'text-amber-800',
+      badgeClass: 'badge-brown'
     },
     {
       title: 'Energy Grid',
@@ -44,7 +51,9 @@ export default function KpiOverview({ kpis }) {
       unit: 'kWh',
       subValue: `${kpis.avgKwhPerRoom || 0}/room`,
       icon: Zap,
-      badge: 'Eco Active'
+      badge: 'Eco Active',
+      colorClass: 'text-emerald-600',
+      badgeClass: 'badge-emerald'
     },
     {
       title: 'Gate Scans',
@@ -52,7 +61,9 @@ export default function KpiOverview({ kpis }) {
       unit: 'scans',
       subValue: '94.2% Attendance',
       icon: Users,
-      badge: 'Verified'
+      badge: 'Verified',
+      colorClass: 'text-blue-700',
+      badgeClass: 'badge-blue'
     }
   ];
 
@@ -65,7 +76,7 @@ export default function KpiOverview({ kpis }) {
             <div key={idx} className="p-4 space-y-1.5 hover:bg-[#F5F2EB] transition-colors min-w-[130px]">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-[#57534E] truncate">{item.title}</span>
-                <IconComponent className="w-3.5 h-3.5 text-[#78716C] shrink-0" />
+                <IconComponent className={`w-4 h-4 ${item.colorClass} shrink-0`} />
               </div>
 
               <div className="flex items-baseline space-x-1">
@@ -75,9 +86,7 @@ export default function KpiOverview({ kpis }) {
 
               <div className="flex items-center justify-between text-[10px] text-[#57534E] font-mono font-semibold pt-0.5">
                 <span className="truncate pr-1">{item.subValue}</span>
-                <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold shrink-0 ${
-                  item.isAlert ? 'badge-mono-dark' : 'badge-mono'
-                }`}>
+                <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold shrink-0 ${item.badgeClass}`}>
                   {item.badge}
                 </span>
               </div>

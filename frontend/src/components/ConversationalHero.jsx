@@ -1,129 +1,124 @@
 import React, { useState } from 'react';
-import { Search, Sparkles, ArrowRight } from 'lucide-react';
+import { Search, Sparkles, Building2, Bus, Zap, Wrench, ShieldAlert } from 'lucide-react';
 
-export default function ConversationalHero({ currentUser }) {
+export default function ConversationalHero({ onExecuteQuery }) {
   const [query, setQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [agentResult, setAgentResult] = useState(null);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [lastResult, setLastResult] = useState(null);
 
-  const suggestionPills = [
-    { label: "Reserve a Classroom", query: "Book room CS-301 for 2 PM today" },
-    { label: "Inspect Bus Telemetry", query: "Show active bus routes and schedules" },
-    { label: "Apply for Leave", query: "I need to apply for casual leave for tomorrow" },
-    { label: "Approve Access Requests", query: "Approve pending leave requests for faculty" }
+  const quickCapabilities = [
+    { label: 'Book Science Lab 102 for 2 PM', icon: Building2, colorClass: 'text-blue-600' },
+    { label: 'Show active HVAC tickets', icon: Wrench, colorClass: 'text-amber-700' },
+    { label: 'Check Shuttle 2 GPS delay', icon: Bus, colorClass: 'text-amber-800' },
+    { label: 'Audit library overnight power', icon: Zap, colorClass: 'text-emerald-600' },
+    { label: 'List capacity overbooking alerts', icon: ShieldAlert, colorClass: 'text-rose-600' }
   ];
 
-  const handleAskAgent = async (promptText) => {
-    const q = promptText || query;
-    if (!q || q.trim() === '') return;
+  const handleSearchSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!query || query.trim() === '' || isExecuting) return;
 
-    setIsLoading(true);
-    setAgentResult(null);
+    setIsExecuting(true);
+    setLastResult(null);
 
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: q,
-          userRole: currentUser?.role || 'faculty',
-          departmentDomain: currentUser?.department_domain || 'general'
-        })
+        body: JSON.stringify({ query: query.trim() })
       });
-
       const data = await res.json();
       if (data.status === 'success') {
-        setAgentResult(data);
+        setLastResult(data.gemini?.answer || 'Action dispatched.');
+      } else {
+        setLastResult(`⚠️ Execution issue: ${data.error || 'Server error'}`);
       }
     } catch (err) {
-      console.error('Hero agent error:', err);
+      setLastResult(`❌ Network error: ${err.message}`);
     } finally {
-      setIsLoading(false);
+      setIsExecuting(false);
     }
   };
 
   return (
-    <div className="card-surface p-6 space-y-4 font-sans text-center">
-      <div className="max-w-3xl mx-auto space-y-4">
-        
-        {/* Header Title */}
-        <div className="space-y-1.5">
-          <div className="inline-flex items-center space-x-2 badge-mono mb-1">
-            <Sparkles className="w-3.5 h-3.5 text-[#1C1917]" />
-            <span>AI Omni-Agent Intelligence</span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#1C1917] tracking-tight flex items-center justify-center gap-2">
-            <span>How can Campus AI assist your operations today?</span>
-          </h1>
-          <p className="text-xs text-[#57534E] max-w-lg mx-auto font-medium">
-            Execute actions in plain English — reserve classrooms, inspect shuttle telemetry, or approve staff access.
-          </p>
+    <section className="card-surface p-6 mb-6 font-sans shadow-2xs relative overflow-hidden">
+      
+      {/* Top Banner Tag */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center space-x-2">
+          <Sparkles className="w-4 h-4 text-[#1D4ED8]" />
+          <h2 className="text-xs font-mono font-bold text-[#1D4ED8] uppercase tracking-wider">
+            Natural-Language Campus Command AI
+          </h2>
         </div>
+        <span className="badge-blue text-[10px]">
+          Groq SQL + Gemini Synthesis
+        </span>
+      </div>
 
-        {/* Search Input Pill */}
-        <form onSubmit={(e) => { e.preventDefault(); handleAskAgent(); }} className="relative max-w-xl mx-auto pt-1">
-          <div className="relative flex items-center bg-[#F0EBE1] rounded-full border border-[#E6E0D2] focus-within:border-[#1C1917] focus-within:bg-[#FAF8F3] p-1.5 transition-colors shadow-2xs">
-            <Search className="w-4 h-4 text-[#78716C] absolute left-4 pointer-events-none" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="How can we assist you? e.g. Reserve CS-301 for tomorrow 10 AM..."
-              className="w-full bg-transparent border-0 rounded-full pl-10 pr-24 py-2 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none text-center font-bold"
-            />
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="absolute right-2 top-2 bottom-2 btn-primary text-xs px-4 rounded-full"
-            >
-              {isLoading ? (
-                <span className="font-mono text-[11px]">Processing...</span>
-              ) : (
-                <>
-                  <span>Ask AI</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+      {/* Main Heading */}
+      <h1 className="text-lg sm:text-xl font-extrabold text-[#1C1917] tracking-tight mb-1">
+        Direct Operations Search & Autonomous Tool Dispatch
+      </h1>
+      <p className="text-xs text-[#57534E] font-medium mb-4 max-w-3xl">
+        Type any operational instruction or query. The Omni-Agent automatically queries SQL tables, inspects telemetry, reserves classrooms, or opens dispatches.
+      </p>
 
-        {/* Quick Action Suggestion Chips */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-          {suggestionPills.map((pill, idx) => (
+      {/* Main Omnibox Form */}
+      <form onSubmit={handleSearchSubmit} className="relative mb-3">
+        <Search className="w-4 h-4 text-[#78716C] absolute left-3.5 top-3.5" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="e.g. 'Book Non-AC classroom CR-301 for tomorrow 11 AM' or 'Which shuttle is overloaded?'"
+          className="w-full bg-[#FAF8F3] border border-[#E6E0D2] rounded-md pl-10 pr-32 py-2.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1D4ED8] font-bold shadow-2xs"
+        />
+        <button
+          type="submit"
+          disabled={isExecuting || !query.trim()}
+          className="btn-primary-blue absolute right-1.5 top-1.5 bottom-1.5 text-xs px-4"
+        >
+          <span>{isExecuting ? 'Executing...' : 'Dispatch AI'}</span>
+        </button>
+      </form>
+
+      {/* Quick Tool Capability Pills */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        <span className="text-[10px] font-mono text-[#78716C] uppercase font-bold mr-1">
+          Quick Actions:
+        </span>
+        {quickCapabilities.map((cap, idx) => {
+          const Icon = cap.icon;
+          return (
             <button
               key={idx}
-              type="button"
-              onClick={() => { setQuery(pill.query); handleAskAgent(pill.query); }}
-              className="btn-secondary text-[11px] py-1 px-3"
+              onClick={() => {
+                setQuery(cap.label);
+              }}
+              className="btn-secondary text-[11px] py-1 px-2.5 flex items-center space-x-1.5"
             >
-              <span>{pill.label}</span>
+              <Icon className={`w-3 h-3 ${cap.colorClass}`} />
+              <span>{cap.label}</span>
             </button>
-          ))}
-        </div>
-
-        {/* Agent Execution Result Drawer */}
-        {agentResult && (
-          <div className="mt-4 p-4 rounded-lg border border-[#E6E0D2] bg-[#F0EBE1] text-left space-y-2.5 shadow-2xs">
-            <div className="flex items-center justify-between border-b border-[#E6E0D2] pb-2">
-              <span className="text-xs font-bold text-[#1C1917] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#1C1917]" />
-                <span>AI Omni-Agent Response</span>
-              </span>
-              {agentResult.toolExecuted && (
-                <span className="badge-mono text-[10px]">
-                  Executed: {agentResult.toolExecuted}
-                </span>
-              )}
-            </div>
-
-            <p className="text-xs text-[#1C1917] leading-relaxed font-sans whitespace-pre-line font-medium">
-              {agentResult.gemini?.answer || agentResult.query}
-            </p>
-          </div>
-        )}
-
+          );
+        })}
       </div>
-    </div>
+
+      {/* AI Execution Response Box */}
+      {lastResult && (
+        <div className="mt-4 p-3 bg-[#F0EBE1] rounded-md border border-[#E6E0D2] text-xs font-mono text-[#1C1917] space-y-1">
+          <div className="font-bold flex items-center justify-between border-b border-[#E6E0D2] pb-1">
+            <span className="flex items-center gap-1 text-[#1D4ED8]">
+              <Sparkles className="w-3.5 h-3.5" />
+              Omni-Agent Output:
+            </span>
+            <button onClick={() => setLastResult(null)} className="text-[#78716C] hover:text-[#1C1917]">×</button>
+          </div>
+          <p className="whitespace-pre-line text-[#1C1917] font-semibold pt-1">{lastResult}</p>
+        </div>
+      )}
+
+    </section>
   );
 }

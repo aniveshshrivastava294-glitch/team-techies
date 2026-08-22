@@ -72,204 +72,190 @@ export default function ClassroomManagerInterface() {
       <LiveCampusTicker />
 
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#1C1917] border border-[#292524] text-[#FAF8F3] font-mono text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2">
+        <div className="fixed top-20 right-6 bg-[#1D4ED8] border border-[#1E40AF] text-white font-mono text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* Header Banner - Executive Obsidian */}
-      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#292524] shadow-md relative overflow-hidden">
+      {/* Header Banner - Executive Obsidian with Blue Accents */}
+      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#1D4ED8] shadow-md relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
-              <span className="badge-mono-dark text-[10px]">
-                <Building2 className="w-3.5 h-3.5 text-white" />
+              <span className="badge-blue text-[10px]">
+                <Building2 className="w-3.5 h-3.5 text-[#1D4ED8]" />
                 ACADEMIC CLASSROOM & SMART LAB COMMAND
               </span>
-              <span className="text-xs text-[#D6CEBE] font-bold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-white animate-ping inline-block" />
+              <span className="text-xs text-[#93C5FD] font-bold flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-ping inline-block" />
                 38 Classrooms Live Synced
               </span>
             </div>
             
             <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               Classroom & Smart Space Interface
-              <Sparkles className="w-5 h-5 text-white" />
+              <Sparkles className="w-5 h-5 text-[#3B82F6]" />
             </h1>
             <p className="text-xs text-[#D6CEBE] max-w-2xl font-medium leading-relaxed">
               Real-time room occupancy, smartboard/projector power cycling, HVAC room setpoint management & automated schedule locks.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => {
                 setAutoClimateLock(!autoClimateLock);
-                showToast(`Automated Schedule Climate Lock ${!autoClimateLock ? 'Enabled' : 'Disabled'}`);
+                showToast(`Auto Climate Lock set to ${!autoClimateLock ? 'ENABLED' : 'DISABLED'}`);
               }}
-              className={`btn-secondary text-xs ${autoClimateLock ? 'bg-[#1C1917] text-white' : ''}`}
+              className={`btn-secondary text-xs ${autoClimateLock ? 'border-[#1D4ED8] text-[#1D4ED8] bg-[#EFF6FF] font-bold' : ''}`}
             >
-              {autoClimateLock ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
+              {autoClimateLock ? <Lock className="w-3.5 h-3.5 text-[#1D4ED8]" /> : <Unlock className="w-3.5 h-3.5 text-[#78716C]" />}
               <span>Auto Climate Lock: {autoClimateLock ? 'ON' : 'OFF'}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Classrooms Telemetry Grid */}
+      {/* Classroom Sensor Matrix */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-[#1C1917] tracking-tight flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-[#1C1917]" />
+            <Building2 className="w-4 h-4 text-[#1D4ED8]" />
             Classroom & Seminar Hall Sensor Matrix ({classrooms.length} Active Spaces)
           </h2>
-          <span className="badge-mono-dark text-xs flex items-center gap-1">
-            <Users className="w-3.5 h-3.5" />
-            177 Students Currently Seated
+          <span className="badge-blue text-xs">
+            {classrooms.reduce((acc, c) => acc + c.occupied, 0)} Students Currently Seated
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 font-mono">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {classrooms.map((room) => {
-            const isSession = room.status === 'In Session';
+            const isVacant = room.status === 'Vacant';
             return (
               <div 
-                key={room.id}
-                className="card-surface p-4 shadow-2xs space-y-2.5"
+                key={room.id} 
+                className={`card-surface p-4 shadow-2xs space-y-3 border-l-4 ${isVacant ? 'border-l-[#78716C]' : 'border-l-[#1D4ED8]'}`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="badge-mono text-[10px] font-bold">
+                  <span className="text-[10px] font-mono font-bold text-[#1D4ED8] bg-[#EFF6FF] px-2 py-0.5 rounded border border-[#BFDBFE]">
                     {room.id}
                   </span>
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase ${
-                    isSession ? 'badge-mono-dark' : 'badge-mono'
+                  <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border uppercase ${
+                    isVacant ? 'badge-mono' : 'badge-blue'
                   }`}>
                     {room.status}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-xs font-bold text-[#1C1917] font-sans">{room.name}</h3>
-                  <p className="text-[10px] text-[#57534E] font-medium truncate mt-0.5">{room.subject}</p>
+                  <h3 className="text-xs font-bold text-[#1C1917]">{room.name}</h3>
+                  <p className="text-[11px] text-[#57534E] font-mono font-semibold truncate">{room.subject}</p>
                 </div>
 
-                <div className="space-y-1 text-[10px] text-[#57534E] pt-1 border-t border-[#E6E0D2]">
-                  <div className="flex justify-between">
+                <div className="space-y-1.5 text-[11px] font-mono pt-1">
+                  <div className="flex items-center justify-between text-[#57534E]">
                     <span>Occupancy:</span>
                     <span className="text-[#1C1917] font-bold">{room.occupied} / {room.capacity}</span>
                   </div>
 
-                  <div className="flex justify-between">
-                    <span>Climate Setpoint:</span>
-                    <span className="text-[#1C1917] font-bold flex items-center gap-1">
-                      <Thermometer className="w-3 h-3 text-[#1C1917]" />
-                      {room.temp}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-1">
+                  <div className="flex items-center justify-between text-[#57534E]">
                     <span className="flex items-center gap-1">
-                      <Tv className="w-3 h-3 text-[#1C1917]" />
-                      Projector:
+                      <Thermometer className="w-3 h-3 text-[#1D4ED8]" />
+                      Climate Setpoint:
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => toggleProjector(room.id)}
-                      className="btn-secondary text-[9px] py-0.5 px-2"
-                    >
-                      {room.projector}
-                    </button>
+                    <span className="text-[#1C1917] font-bold">{room.temp}</span>
                   </div>
                 </div>
+
+                <div className="pt-2 border-t border-[#E6E0D2] flex items-center justify-between">
+                  <span className="text-[10px] text-[#57534E] font-mono font-semibold flex items-center gap-1">
+                    <Tv className="w-3 h-3 text-[#1D4ED8]" />
+                    Projector:
+                  </span>
+                  <button
+                    onClick={() => toggleProjector(room.id)}
+                    className="btn-secondary text-[10px] py-0.5 px-2"
+                  >
+                    {room.projector}
+                  </button>
+                </div>
+
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Side-by-Side Grid: Classroom Dispatches & Support Tickets */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch font-sans">
+      {/* Grid: AV Requests & Support Tickets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         
-        {/* Left Box: Classroom Maintenance & Hardware Dispatches */}
-        <div className="card-surface p-5 shadow-2xs flex flex-col justify-between space-y-4">
+        {/* Left Column: AV Tech Requests */}
+        <div className="card-surface p-5 shadow-2xs space-y-4 flex flex-col justify-between">
           <div>
-            <div className="pb-3 border-b border-[#E6E0D2] flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-md bg-[#F0EBE1] border border-[#E6E0D2] text-[#1C1917]">
-                  <Tv className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-[#1C1917] tracking-tight">
-                    Classroom Hardware & AV Tech Requests
-                  </h3>
-                  <p className="text-[11px] text-[#57534E] font-medium font-mono">
-                    Manage smartboard fixes, HDMI audio hiss & climate setpoint resets
-                  </p>
-                </div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-3">
+              <div className="flex items-center space-x-2">
+                <Tv className="w-4 h-4 text-[#1D4ED8]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
+                  Classroom Hardware & AV Tech Requests
+                </h3>
               </div>
-
-              <span className="badge-mono-dark text-[10px]">
-                {classScheduleDispatches.filter(d => d.status !== 'Resolved').length} ACTION REQUIRED
+              <span className="badge-blue text-[10px]">
+                {classScheduleDispatches.length} Action Required
               </span>
             </div>
 
-            <div className="space-y-3 pt-3 font-mono">
+            <div className="divide-y divide-[#E6E0D2]">
               {classScheduleDispatches.map((disp) => (
-                <div 
-                  key={disp.id}
-                  className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] hover:border-[#1C1917] transition-all space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="badge-mono text-[10px]">
-                        {disp.id}
-                      </span>
-                      <span className="badge-mono text-[10px]">
-                        {disp.room}
-                      </span>
-                      <span className={`text-[10px] ${
-                        disp.status === 'Resolved' ? 'badge-mono-dark' : 'badge-mono'
-                      }`}>
-                        {disp.status}
-                      </span>
+                <div key={disp.id} className="py-3 space-y-1.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-mono text-xs font-bold text-[#1D4ED8]">{disp.id}</span>
+                        <span className="badge-blue text-[9px]">{disp.room}</span>
+                      </div>
+                      <h4 className="text-xs font-bold text-[#1C1917] mt-0.5">{disp.title}</h4>
                     </div>
-                    <h4 className="text-xs font-bold text-[#1C1917] font-sans">{disp.title}</h4>
-                    <p className="text-[10px] text-[#57534E]">
-                      Room: <span className="text-[#1C1917] font-bold">{disp.room}</span> • Date: {disp.date}
-                    </p>
-                  </div>
 
-                  <div className="flex items-center gap-2 shrink-0 font-sans">
-                    {disp.status !== 'Resolved' ? (
-                      <button
-                        type="button"
-                        onClick={() => handleClassDispatch(disp.id, 'Resolved')}
-                        className="btn-primary text-xs py-1 px-3"
-                      >
-                        <Check className="w-3.5 h-3.5" />
-                        <span>Resolve</span>
-                      </button>
-                    ) : (
-                      <span className="badge-mono text-[10px]">
-                        Resolved
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1 shrink-0">
+                      {disp.status === 'Pending Tech' ? (
+                        <button
+                          onClick={() => handleClassDispatch(disp.id, 'Resolved')}
+                          className="btn-primary-blue text-[10px] py-1 px-2"
+                        >
+                          <Check className="w-3 h-3" />
+                          <span>Resolve</span>
+                        </button>
+                      ) : (
+                        <span className="badge-blue text-[10px]">
+                          {disp.status}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          <div className="bg-[#EFF6FF] p-3 rounded border border-[#BFDBFE] text-xs font-mono text-[#1E40AF] space-y-1">
+            <span className="font-bold flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8]" />
+              Smart Class Automated Rules:
+            </span>
+            <p className="text-[#1E40AF] font-semibold">
+              Projectors automatically power down 15 minutes after class conclusion when room occupancy sensors drop to 0.
+            </p>
+          </div>
         </div>
 
-        {/* Right Box: Classroom Support Tickets */}
-        <TicketsSupportLogCard 
-          adminDomain="classroom" 
-          title="Classroom & Lab Support Tickets" 
-          subtitle="Track smartboard repairs, seating maintenance & AV hardware dispatches" 
-        />
+        {/* Right Column: Support Tickets Logger */}
+        <div>
+          <TicketsSupportLogCard currentUser={{ role: 'classroom_manager', full_name: 'Sub-Admin Academic' }} />
+        </div>
 
       </div>
+
     </div>
   );
 }

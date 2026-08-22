@@ -255,30 +255,30 @@ export default function TransportManagerInterface() {
 
       {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 z-50 bg-[#1C1917] text-[#FAF8F3] px-4 py-2.5 rounded-md shadow-md border border-[#292524] text-xs font-mono font-bold flex items-center gap-2">
+        <div className="fixed top-20 right-6 z-50 bg-[#92400E] text-white px-4 py-2.5 rounded-md shadow-md border border-[#78350F] text-xs font-mono font-bold flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* HEADER BANNER */}
-      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#292524] shadow-md relative overflow-hidden">
+      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#92400E] shadow-md relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
-              <span className="badge-mono-dark text-[10px]">
-                <Bus className="w-3.5 h-3.5 text-white" />
+              <span className="badge-brown text-[10px]">
+                <Bus className="w-3.5 h-3.5 text-[#92400E]" />
                 TRANSIT COMMAND
               </span>
-              <span className="text-xs text-[#D6CEBE] font-bold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-white animate-ping inline-block" />
+              <span className="text-xs text-[#FDE68A] font-bold flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-[#F59E0B] animate-ping inline-block" />
                 Live Fleet Manager
               </span>
             </div>
             
             <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               Transport Manager Interface
-              <Sparkles className="w-5 h-5 text-white" />
+              <Sparkles className="w-5 h-5 text-[#F59E0B]" />
             </h1>
             <p className="text-xs text-[#D6CEBE] max-w-2xl font-medium leading-relaxed">
               Real-time bus occupancy, arrival/departure schedules, faculty booking approvals & city bus requirements.
@@ -299,406 +299,368 @@ export default function TransportManagerInterface() {
 
             <button
               onClick={() => setShowAddBusModal(true)}
-              className="btn-primary text-xs"
+              className="btn-primary-brown text-xs"
             >
               <Plus className="w-4 h-4" />
-              <span>Add New Bus</span>
+              <span>Add Vehicle to Fleet</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* ACTIVE BUS FLEET MATRIX */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-[#1C1917] tracking-tight flex items-center gap-2">
-            <Bus className="w-4 h-4 text-[#1C1917]" />
-            Active Bus Fleet Matrix ({busFleet.length} Buses)
-          </h2>
-
-          <div className="flex items-center space-x-1">
-            {['ALL', 'ON ROUTE', 'STATIONED', 'MAINTENANCE'].map((st) => (
-              <button
-                key={st}
-                onClick={() => setFilterStatus(st)}
-                className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all cursor-pointer ${
-                  filterStatus === st
-                    ? 'bg-[#1C1917] text-white'
-                    : 'text-[#57534E] hover:text-[#1C1917]'
-                }`}
-              >
-                {st}
-              </button>
-            ))}
+      {/* Fleet Summary Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <div className="card-surface p-4 border-l-4 border-l-amber-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">Total Shuttles</span>
+            <Bus className="w-4 h-4 text-amber-700" />
           </div>
+          <p className="text-xl font-bold text-[#1C1917] mt-1">{busFleet.length}</p>
+          <span className="text-[10px] text-[#78716C] font-mono font-semibold">Active Fleet Register</span>
         </div>
 
-        {/* Fleet Grid */}
-        {filteredBuses.length === 0 ? (
-          <div className="p-8 text-center rounded-lg border border-[#E6E0D2] bg-[#FAF8F3] space-y-2">
-            <p className="text-xs font-bold text-[#1C1917]">No buses in fleet matrix matching filter.</p>
+        <div className="card-surface p-4 border-l-4 border-l-emerald-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">On Route Now</span>
+            <Navigation className="w-4 h-4 text-emerald-600" />
           </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {filteredBuses.map((bus) => {
-              const isSelected = bus.id === selectedBusId;
-              const occPct = Math.round((bus.occupied / bus.capacity) * 100);
+          <p className="text-xl font-bold text-[#1C1917] mt-1">
+            {busFleet.filter(b => b.status === 'On Route').length}
+          </p>
+          <span className="text-[10px] text-emerald-700 font-mono font-bold">GPS Beacon Active</span>
+        </div>
 
-              return (
-                <div
-                  key={bus.id}
-                  onClick={() => setSelectedBusId(bus.id)}
-                  className={`p-3.5 rounded-lg border transition-all cursor-pointer space-y-2 relative shadow-2xs ${
-                    isSelected
-                      ? 'bg-[#F0EBE1] border-[#1C1917]'
-                      : 'bg-[#FAF8F3] border-[#E6E0D2] hover:border-[#1C1917]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-[#1C1917] truncate">
-                      {bus.busNumber}
-                    </h3>
-                    
-                    <div className="flex items-center space-x-1">
-                      <span className="badge-mono text-[9px] uppercase font-bold">
-                        {bus.status}
-                      </span>
-                      <button
-                        onClick={(e) => handleDeleteBus(e, bus.id, bus.busNumber)}
-                        className="p-1 rounded text-[#78716C] hover:text-black transition-all cursor-pointer ml-1"
-                        title="Remove bus"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 text-[11px] font-bold text-[#1C1917]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#57534E] font-medium">Capacity:</span>
-                      <span className="font-bold">{bus.capacity}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#57534E] font-medium">Dist:</span>
-                      <span className="font-bold uppercase truncate max-w-[90px]">{bus.dist}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center pt-0.5 border-t border-[#E6E0D2] text-[10px]">
-                      <span className="text-[#57534E] font-medium">Plate:</span>
-                      <span className="font-mono font-bold text-[#1C1917]">{bus.numberPlate || 'N/A'}</span>
-                    </div>
-                  </div>
-
-                  <div className="w-full bg-[#E6E0D2] h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-[#1C1917] transition-all duration-500"
-                      style={{ width: `${occPct}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+        <div className="card-surface p-4 border-l-4 border-l-blue-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">Passenger Riders</span>
+            <Users className="w-4 h-4 text-blue-600" />
           </div>
-        )}
+          <p className="text-xl font-bold text-[#1C1917] mt-1">
+            {busFleet.reduce((acc, b) => acc + (b.occupied || 0), 0)}
+          </p>
+          <span className="text-[10px] text-blue-700 font-mono font-bold">Live Scan Ingress</span>
+        </div>
+
+        <div className="card-surface p-4 border-l-4 border-l-rose-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">Pending Bookings</span>
+            <Clock className="w-4 h-4 text-rose-600" />
+          </div>
+          <p className="text-xl font-bold text-[#1C1917] mt-1">
+            {bookingRequests.filter(r => r.status === 'Pending').length}
+          </p>
+          <span className="text-[10px] text-rose-700 font-mono font-bold">Requires Approval</span>
+        </div>
       </div>
 
-      {/* TWO-COLUMN DASHBOARD LAYOUT */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-
-        {/* LEFT COLUMN: Arrival/Departure Schedules */}
-        <div className="lg:col-span-6 card-surface p-5 space-y-4 shadow-2xs">
-          
-          <div className="border-b pb-3 border-[#E6E0D2]">
-            <h3 className="text-sm font-bold text-[#1C1917] tracking-tight flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-[#1C1917]" />
-              Arrival and Departure Time Schedules
-            </h3>
-            <p className="text-xs text-[#57534E] font-medium mt-0.5">
-              Select a bus to inspect morning and evening shift schedules
-            </p>
+      {/* Main Bus Fleet Matrix Table */}
+      <div className="card-surface p-5 shadow-2xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E6E0D2]">
+          <div className="flex items-center space-x-2">
+            <Bus className="w-4 h-4 text-[#92400E]" />
+            <h2 className="text-sm font-bold text-[#1C1917]">
+              Shuttle Fleet Roster & Live Timetable Matrix
+            </h2>
+            <span className="badge-brown text-[10px]">
+              {filteredBuses.length} Vehicles
+            </span>
           </div>
 
-          {busFleet.length > 0 && activeBus ? (
-            <>
-              <div className="relative">
-                <select
-                  value={selectedBusId || ''}
-                  onChange={(e) => setSelectedBusId(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs font-bold text-[#1C1917] focus:outline-none focus:border-[#1C1917]"
-                >
-                  {busFleet.map((b) => (
-                    <option key={b.id} value={b.id}>
-                      {b.busNumber} (Plate: {b.numberPlate} — Dist: {b.dist})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-3 pt-1">
-                <h4 className="text-xs font-bold text-[#1C1917] tracking-tight flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-[#1C1917]" />
-                  Schedule details for <span className="text-[#1C1917] font-bold">{activeBus.busNumber}</span>
-                </h4>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  <div className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] space-y-1">
-                    <label className="block font-bold text-[#57534E] uppercase text-[10px]">
-                      Morning departure
-                    </label>
-                    <div className="font-bold text-sm text-[#1C1917]">
-                      {activeBus.morningDep}
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] space-y-1">
-                    <label className="block font-bold text-[#57534E] uppercase text-[10px]">
-                      Morning Arrival
-                    </label>
-                    <div className="font-bold text-sm text-[#1C1917]">
-                      {activeBus.morningArr}
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] space-y-1">
-                    <label className="block font-bold text-[#57534E] uppercase text-[10px]">
-                      Evening Departure
-                    </label>
-                    <div className="font-bold text-sm text-[#1C1917]">
-                      {activeBus.eveDep}
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] space-y-1">
-                    <label className="block font-bold text-[#57534E] uppercase text-[10px]">
-                      Evening Arrival
-                    </label>
-                    <div className="font-bold text-sm text-[#1C1917]">
-                      {activeBus.eveArr}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="py-6 text-center text-xs text-[#57534E] font-medium">
-              No bus selected. Register a bus to inspect timetable.
+          {/* Search & Filter */}
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-[#78716C] absolute left-2.5 top-2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search bus, route..."
+                className="bg-[#F0EBE1] border border-[#E6E0D2] rounded-md pl-8 pr-2 py-1 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#92400E] font-bold"
+              />
             </div>
-          )}
-
+            
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-[#F0EBE1] border border-[#E6E0D2] rounded-md px-2 py-1 text-xs text-[#1C1917] font-bold focus:outline-none"
+            >
+              <option value="ALL">All Status</option>
+              <option value="ON ROUTE">On Route</option>
+              <option value="STATIONED">Stationed</option>
+              <option value="MAINTENANCE">Maintenance</option>
+            </select>
+          </div>
         </div>
 
-        {/* RIGHT COLUMN: Bus Booking Req & Events */}
-        <div className="lg:col-span-6 space-y-5">
+        {/* Bus Table */}
+        <div className="overflow-x-auto border border-[#E6E0D2] rounded-md">
+          <table className="table-mono">
+            <thead>
+              <tr>
+                <th>Bus Identifier</th>
+                <th>Route Tag</th>
+                <th>Plate Number</th>
+                <th>Status</th>
+                <th>Occupancy</th>
+                <th>Morning Schedule</th>
+                <th>Evening Schedule</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredBuses.map((bus) => {
+                const isSelected = bus.id === selectedBusId;
+                const isOverloaded = bus.occupied > bus.capacity;
 
-          {/* CARD 1: BUS BOOKING REQUESTS */}
-          <div className="card-surface p-5 shadow-2xs space-y-3">
-            
-            <div className="flex items-center justify-between pb-2 border-b border-[#E6E0D2]">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-[#1C1917] tracking-tight">
-                  Bus Booking Requests
-                </h3>
-                <span className="badge-mono-dark text-[10px]">
-                  {bookingRequests.filter(r => r.status === 'Pending').length} Pending
-                </span>
+                return (
+                  <tr
+                    key={bus.id}
+                    onClick={() => setSelectedBusId(bus.id)}
+                    className={`cursor-pointer transition-colors ${isSelected ? 'bg-[#F0EBE1] font-bold' : ''}`}
+                  >
+                    <td className="font-bold text-[#1C1917] flex items-center gap-2">
+                      <Bus className={`w-3.5 h-3.5 ${isSelected ? 'text-[#92400E]' : 'text-[#78716C]'}`} />
+                      <span>{bus.busNumber}</span>
+                    </td>
+
+                    <td className="font-mono text-xs text-[#57534E] font-semibold">{bus.dist}</td>
+                    <td className="font-mono text-xs text-[#57534E] font-semibold">{bus.numberPlate}</td>
+
+                    <td>
+                      <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${
+                        bus.status === 'On Route' ? 'badge-emerald' : bus.status === 'Maintenance' ? 'badge-error' : 'badge-brown'
+                      }`}>
+                        {bus.status}
+                      </span>
+                    </td>
+
+                    <td>
+                      <div className="flex items-center space-x-2">
+                        <span className={`font-mono font-bold text-xs ${isOverloaded ? 'text-rose-700' : 'text-[#1C1917]'}`}>
+                          {bus.occupied} / {bus.capacity}
+                        </span>
+                        {isOverloaded && (
+                          <span className="badge-error text-[9px]">OVERLOAD</span>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="font-mono text-[11px] text-[#57534E] font-semibold">
+                      {bus.morningDep} → {bus.morningArr}
+                    </td>
+
+                    <td className="font-mono text-[11px] text-[#57534E] font-semibold">
+                      {bus.eveDep} → {bus.eveArr}
+                    </td>
+
+                    <td>
+                      <button
+                        onClick={(e) => handleDeleteBus(e, bus.id, bus.busNumber)}
+                        className="text-[#78716C] hover:text-rose-700 p-1 rounded"
+                        title="Remove vehicle"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Selected Bus Inspection & Timetable Detail */}
+      {activeBus && (
+        <div className="card-surface p-5 shadow-2xs space-y-3 bg-[#F0EBE1]/50 border-amber-200">
+          <div className="flex items-center justify-between pb-2 border-b border-[#E6E0D2]">
+            <div className="flex items-center space-x-2">
+              <Navigation className="w-4 h-4 text-[#92400E]" />
+              <h3 className="text-sm font-bold text-[#1C1917]">
+                Live Inspector: {activeBus.busNumber} ({activeBus.numberPlate})
+              </h3>
+            </div>
+            <span className="badge-brown text-[10px]">
+              Route Tag: {activeBus.dist}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+            <div className="bg-[#FAF8F3] p-3 rounded border border-[#E6E0D2]">
+              <span className="text-[#57534E] block mb-1 font-bold">Occupancy Gauge</span>
+              <div className="flex items-baseline space-x-2">
+                <span className="text-xl font-bold text-[#1C1917]">{activeBus.occupied}</span>
+                <span className="text-xs text-[#78716C]">/ {activeBus.capacity} Capacity Limit</span>
               </div>
-
-              <button
-                onClick={() => setShowAddReqModal(true)}
-                className="btn-primary text-xs py-1 px-2.5"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add Req</span>
-              </button>
             </div>
 
-            {/* List of Requests */}
-            {bookingRequests.length === 0 ? (
-              <p className="text-xs text-[#57534E] py-3 text-center">No pending bus booking requests.</p>
-            ) : (
-              <div className="space-y-2">
-                {bookingRequests.map((req) => (
-                  <div
-                    key={req.id}
-                    className="p-3 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] flex items-center justify-between gap-2 shadow-2xs"
-                  >
-                    <div className="space-y-0.5 text-xs font-bold text-[#1C1917] truncate">
-                      <p className="font-bold text-xs text-[#1C1917] truncate">{req.requestor} ({req.department})</p>
-                      <p className="text-[#57534E] text-[11px] truncate">
-                        date: <span className="font-bold text-[#1C1917]">{req.date}</span> &bull; day: <span className="font-bold text-[#1C1917]">{req.day}</span>
-                      </p>
-                      <p className="text-[10px] text-[#57534E] font-semibold truncate">
-                        {req.purpose} &bull; <span className="font-mono text-[#1C1917]">{req.busType}</span>
+            <div className="bg-[#FAF8F3] p-3 rounded border border-[#E6E0D2]">
+              <span className="text-[#57534E] block mb-1 font-bold">Morning Schedule</span>
+              <p className="text-[#1C1917] font-bold">Departs: {activeBus.morningDep}</p>
+              <p className="text-[#57534E] font-semibold">Arrives: {activeBus.morningArr}</p>
+            </div>
+
+            <div className="bg-[#FAF8F3] p-3 rounded border border-[#E6E0D2]">
+              <span className="text-[#57534E] block mb-1 font-bold">Evening Schedule</span>
+              <p className="text-[#1C1917] font-bold">Departs: {activeBus.eveDep}</p>
+              <p className="text-[#57534E] font-semibold">Arrives: {activeBus.eveArr}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Grid: Faculty Booking Requests & Support Tickets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        
+        {/* Faculty Booking Requests List */}
+        <div className="card-surface p-5 shadow-2xs space-y-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-3">
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-4 h-4 text-[#92400E]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
+                  Faculty Bus Excursion Booking Requests
+                </h3>
+              </div>
+              <span className="badge-brown text-[10px]">
+                {bookingRequests.length} Pending
+              </span>
+            </div>
+
+            <div className="divide-y divide-[#E6E0D2]">
+              {bookingRequests.map((req) => (
+                <div key={req.id} className="py-3 space-y-1.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <h4 className="text-xs font-bold text-[#1C1917]">{req.requestor}</h4>
+                        <span className="badge-brown text-[9px]">{req.department}</span>
+                      </div>
+                      <p className="text-xs font-medium text-[#1C1917] mt-0.5">{req.purpose}</p>
+                      <p className="text-[11px] text-[#57534E] font-mono mt-0.5">
+                        Date: {req.date} ({req.day}) • {req.busType}
                       </p>
                     </div>
 
-                    <div className="flex items-center space-x-1 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0">
                       {req.status === 'Pending' ? (
                         <>
                           <button
                             onClick={() => handleBookingAction(req.id, 'Approved')}
-                            className="btn-primary text-xs py-1 px-2"
-                            title="Approve request"
+                            className="btn-primary-brown text-[10px] py-1 px-2"
+                            title="Approve Excursion"
                           >
-                            <Check className="w-3.5 h-3.5" />
+                            <Check className="w-3 h-3" />
+                            <span>Approve</span>
                           </button>
                           <button
                             onClick={() => handleBookingAction(req.id, 'Rejected')}
-                            className="btn-secondary text-xs py-1 px-2 text-[#1C1917]"
-                            title="Reject request"
+                            className="btn-secondary text-[10px] py-1 px-2"
+                            title="Reject Excursion"
                           >
-                            <X className="w-3.5 h-3.5" />
+                            <X className="w-3 h-3" />
                           </button>
                         </>
                       ) : (
-                        <button
-                          onClick={() => handleBookingAction(req.id, 'Pending')}
-                          className="btn-secondary text-[10px] py-0.5 px-2"
-                        >
-                          Reset
-                        </button>
+                        <span className={`text-[10px] font-mono font-bold px-2 py-1 rounded border ${
+                          req.status === 'Approved' ? 'badge-emerald' : 'badge-brown'
+                        }`}>
+                          {req.status}
+                        </span>
                       )}
 
                       <button
                         onClick={() => handleDeleteBookingReq(req.id, req.requestor)}
-                        className="p-1 text-[#78716C] hover:text-[#1C1917]"
-                        title="Delete request"
+                        className="text-[#78716C] hover:text-rose-700 p-1"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-
-          </div>
-
-          {/* CARD 2: EVENTS THAT REQUIRE CITY BUS */}
-          <div className="card-surface p-5 shadow-2xs space-y-3">
-            
-            <div className="border-b pb-2 border-[#E6E0D2]">
-              <h3 className="text-sm font-bold text-[#1C1917] tracking-tight">
-                Events Requiring City Bus Allocation
-              </h3>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              {cityBusEvents.map((evt) => (
-                <div
-                  key={evt.id}
-                  className="p-3 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] flex items-center justify-between gap-2 font-bold shadow-2xs"
-                >
-                  <div className="truncate">
-                    <span className="block text-[#1C1917] truncate text-xs font-bold">{evt.title}</span>
-                    <span className="text-[10px] text-[#57534E] font-mono">{evt.date}</span>
-                  </div>
-                  <span className="badge-mono text-[10px] font-bold shrink-0">
-                    {evt.busCount} City Buses
-                  </span>
                 </div>
               ))}
             </div>
-
-            <form onSubmit={handleAddCityBusEvent} className="pt-1 flex items-center gap-2">
-              <input
-                type="text"
-                placeholder="Enter event name requiring city bus..."
-                value={newEventTitle}
-                onChange={(e) => setNewEventTitle(e.target.value)}
-                className="flex-1 px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs font-bold text-[#1C1917] focus:outline-none focus:border-[#1C1917]"
-              />
-              <button
-                type="submit"
-                className="btn-primary text-xs py-1.5 px-3"
-              >
-                Add Event
-              </button>
-            </form>
-
           </div>
 
+          <button
+            onClick={() => setShowAddReqModal(true)}
+            className="btn-primary-brown w-full text-xs py-2 mt-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Submit Faculty Excursion Bus Request</span>
+          </button>
+        </div>
+
+        {/* Support Tickets Logger */}
+        <div>
+          <TicketsSupportLogCard currentUser={{ role: 'transport_manager', full_name: 'Sub-Admin Transport' }} />
         </div>
 
       </div>
 
-      {/* TRANSPORT ADMIN TICKETS & SUPPORT LOG */}
-      <TicketsSupportLogCard 
-        adminDomain="transport" 
-        title="Transport Admin Tickets & Support Log" 
-        subtitle="Track bus maintenance, driver telemetry, shuttle GPS & transit logistics tickets" 
-      />
-
-      {/* ADD NEW BUS MODAL */}
+      {/* Modal: Add Bus */}
       {showAddBusModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-[#FAF8F3] border border-[#E6E0D2] w-full max-w-md rounded-lg p-5 shadow-xl space-y-4 relative">
-            <div className="flex items-center justify-between pb-2 border-b border-[#E6E0D2]">
-              <div className="flex items-center gap-2">
-                <Bus className="w-4 h-4 text-[#1C1917]" />
-                <h3 className="text-sm font-bold text-[#1C1917]">
-                  Register New Bus in Fleet
-                </h3>
-              </div>
-              <button
-                onClick={() => setShowAddBusModal(false)}
-                className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#F0EBE1]"
-              >
-                <X className="w-4 h-4" />
-              </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-sans">
+          <div className="card-surface w-full max-w-md p-6 rounded-lg border border-[#E6E0D2] shadow-xl relative bg-[#FAF8F3]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-4">
+              <h3 className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                <Bus className="w-4 h-4 text-[#92400E]" />
+                Register Vehicle into Fleet Matrix
+              </h3>
+              <button onClick={() => setShowAddBusModal(false)} className="text-[#78716C] hover:text-[#1C1917]">×</button>
             </div>
 
             <form onSubmit={handleAddBusSubmit} className="space-y-3 text-xs">
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#1C1917]">
-                  Bus Identifier / Number <span className="text-[#1C1917]">*</span>
-                </label>
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Bus Name / Identifier</label>
                 <input
                   type="text"
-                  required
-                  placeholder="e.g. Bus 11"
                   value={newBusForm.busNumber}
                   onChange={(e) => setNewBusForm({ ...newBusForm, busNumber: e.target.value })}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] font-bold focus:outline-none focus:border-[#1C1917]"
+                  placeholder="e.g. Bus 11 (Express Shuttle)"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  required
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
-                <div className="space-y-1">
-                  <label className="block font-semibold text-[#1C1917]">Seating Capacity</label>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Route / Distance Tag</label>
+                  <input
+                    type="text"
+                    value={newBusForm.dist}
+                    onChange={(e) => setNewBusForm({ ...newBusForm, dist: e.target.value })}
+                    placeholder="e.g. North Campus Loop"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Seating Capacity</label>
                   <input
                     type="number"
                     value={newBusForm.capacity}
                     onChange={(e) => setNewBusForm({ ...newBusForm, capacity: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] font-bold focus:outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="block font-semibold text-[#1C1917]">Distance / Route Tag <span className="text-[#1C1917]">*</span></label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. ptk / Airport Rd"
-                    value={newBusForm.dist}
-                    onChange={(e) => setNewBusForm({ ...newBusForm, dist: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] font-bold focus:outline-none"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                    min="10"
+                    max="100"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#1C1917]">Number Plate</label>
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">License Plate Number</label>
                 <input
                   type="text"
-                  placeholder="e.g. PB-01-AB-1011"
                   value={newBusForm.numberPlate}
                   onChange={(e) => setNewBusForm({ ...newBusForm, numberPlate: e.target.value })}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] font-bold focus:outline-none"
+                  placeholder="e.g. PB-01-AB-9988"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E6E0D2]">
+              <div className="pt-2 flex items-center justify-end space-x-2">
                 <button
                   type="button"
                   onClick={() => setShowAddBusModal(false)}
@@ -708,15 +670,96 @@ export default function TransportManagerInterface() {
                 </button>
                 <button
                   type="submit"
-                  className="btn-primary text-xs"
+                  className="btn-primary-brown text-xs py-2 px-4"
                 >
-                  Register Bus
+                  Add Vehicle
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+
+      {/* Modal: Add Faculty Excursion Request */}
+      {showAddReqModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-sans">
+          <div className="card-surface w-full max-w-md p-6 rounded-lg border border-[#E6E0D2] shadow-xl relative bg-[#FAF8F3]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-4">
+              <h3 className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#92400E]" />
+                Submit Excursion Bus Booking
+              </h3>
+              <button onClick={() => setShowAddReqModal(false)} className="text-[#78716C] hover:text-[#1C1917]">×</button>
+            </div>
+
+            <form onSubmit={handleAddBookingReqSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Faculty / Requestor Name</label>
+                <input
+                  type="text"
+                  value={newReqForm.requestor}
+                  onChange={(e) => setNewReqForm({ ...newReqForm, requestor: e.target.value })}
+                  placeholder="e.g. Dr. Ananya Sharma"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Department</label>
+                  <input
+                    type="text"
+                    value={newReqForm.department}
+                    onChange={(e) => setNewReqForm({ ...newReqForm, department: e.target.value })}
+                    placeholder="e.g. Computer Science"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Date</label>
+                  <input
+                    type="date"
+                    value={newReqForm.date}
+                    onChange={(e) => setNewReqForm({ ...newReqForm, date: e.target.value })}
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Excursion Purpose / Destination</label>
+                <input
+                  type="text"
+                  value={newReqForm.purpose}
+                  onChange={(e) => setNewReqForm({ ...newReqForm, purpose: e.target.value })}
+                  placeholder="e.g. Science Park Planetarium Field Trip"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  required
+                />
+              </div>
+
+              <div className="pt-2 flex items-center justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddReqModal(false)}
+                  className="btn-secondary text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary-brown text-xs py-2 px-4"
+                >
+                  Submit Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
