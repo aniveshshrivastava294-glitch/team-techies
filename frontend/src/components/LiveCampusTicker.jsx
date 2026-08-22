@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, Clock, Wifi } from 'lucide-react';
+import { Activity, Radio, Zap, Shield, Sparkles, Clock, Wifi } from 'lucide-react';
 
 export default function LiveCampusTicker() {
   const [timeStr, setTimeStr] = useState('');
@@ -16,25 +16,25 @@ export default function LiveCampusTicker() {
   }, []);
 
   const tickerItems = [
-    "Solar Grid Substation Alpha operating at 98.4% capacity (415V Stable)",
-    "City Bus #101 arrived at Main Transit Gate • 38/50 Occupied",
-    "Auditorium 1 Climate Control calibrated to 22.0°C (CS-402 Lecture in session)",
-    "Campus Satellite Telemetry Link Verified • 0 Faults Reported Across Mesh",
-    "Elevators & Lifts: Tower B Lift #3 Tension Calibration Scheduled for 16:00",
-    "Campus Carbon Footprint Offset: 1.4 Tons Reduced Today"
+    "⚡ Solar Grid Substation Alpha operating at 98.4% capacity (415V Stable)",
+    "🚌 City Bus #101 arrived at Main Transit Gate • 38/50 Occupied",
+    "🏛️ Auditorium 1 Climate Control calibrated to 22.0°C (CS-402 Lecture in session)",
+    "🔒 Quantum Satellite Telemetry Link Verified • 0 Faults Reported Across Mesh",
+    "🔧 Elevators & Lifts: Tower B Lift #3 Tension Calibration Scheduled for 16:00",
+    "🌱 Campus Carbon Footprint Offset: 1.4 Tons Reduced Today"
   ];
 
   return (
-    <div className="w-full rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] px-4 py-2 flex items-center justify-between gap-4 font-sans text-xs text-[#2B1D12] shadow-xs overflow-hidden relative">
+    <div className="w-full rounded-md border border-slate-200 bg-white px-4 py-2 flex items-center justify-between gap-4 font-mono text-xs text-slate-800 shadow-xs overflow-hidden relative font-sans">
       
       {/* Left Badge */}
-      <div className="flex items-center gap-2 shrink-0 z-10 bg-[#F7EFE4] pr-3 border-r border-[#E8DCC8]">
+      <div className="flex items-center gap-2 shrink-0 z-10 bg-white pr-3 border-r border-slate-200 font-mono">
         <span className="relative flex h-2 w-2">
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4E7A51]" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
         </span>
-        <span className="font-semibold text-xs text-[#2B1D12] flex items-center gap-1.5">
-          <Radio className="w-3.5 h-3.5 text-[#BC4800]" />
-          Live Campus Feed
+        <span className="font-bold text-[10px] text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Radio className="w-3.5 h-3.5 text-blue-600" />
+          SYSTEM STATUS FEED
         </span>
       </div>
 
@@ -42,8 +42,8 @@ export default function LiveCampusTicker() {
       <div className="overflow-hidden relative w-full flex items-center">
         <div className="animate-marquee whitespace-nowrap flex items-center gap-10">
           {tickerItems.concat(tickerItems).map((item, idx) => (
-            <span key={idx} className="inline-flex items-center gap-2 text-[#6B5A4A] text-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E3A857]" />
+            <span key={idx} className="inline-flex items-center gap-2 text-slate-600 font-sans text-xs hover:text-blue-600 transition-colors cursor-pointer">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
               <span>{item}</span>
             </span>
           ))}
@@ -51,14 +51,14 @@ export default function LiveCampusTicker() {
       </div>
 
       {/* Right Stats & Clock */}
-      <div className="flex items-center gap-3 shrink-0 z-10 bg-[#F7EFE4] pl-3 border-l border-[#E8DCC8] text-xs">
-        <div className="hidden sm:flex items-center gap-1.5 text-[#4E7A51] font-medium">
+      <div className="flex items-center gap-3 shrink-0 z-10 bg-white pl-3 border-l border-slate-200 text-[11px] font-mono">
+        <div className="hidden sm:flex items-center gap-1.5 text-emerald-600 font-bold">
           <Wifi className="w-3.5 h-3.5" />
           <span>{networkSpeed}</span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-[#2B1D12] font-medium px-2.5 py-0.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-full">
-          <Clock className="w-3.5 h-3.5 text-[#BC4800]" />
+        <div className="flex items-center gap-1.5 text-slate-800 font-bold px-2 py-0.5 bg-slate-100 border border-slate-200 rounded">
+          <Clock className="w-3.5 h-3.5 text-blue-600" />
           <span>{timeStr || '12:00:00'}</span>
         </div>
       </div>
@@ -66,4 +66,3 @@ export default function LiveCampusTicker() {
     </div>
   );
 }
-

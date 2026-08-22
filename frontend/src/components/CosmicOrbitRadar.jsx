@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
-import { 
-  Radio, Satellite, Cpu, ShieldCheck, 
-  Volume2, VolumeX, Globe
-} from 'lucide-react';
+import { Satellite, Radio, Volume2, VolumeX } from 'lucide-react';
 
 export default function CosmicOrbitRadar() {
-  const [orbitSpeed, setOrbitSpeed] = useState(24);
   const [activeNode, setActiveNode] = useState('SAT-ALPHA-01');
   const [soundEnabled, setSoundEnabled] = useState(false);
-  const [pingPulse, setPingPulse] = useState(false);
-  const [satellites] = useState([
-    { id: 'SAT-ALPHA-01', name: 'Alpha Telemetry', angle: 45, radius: 110, status: 'Online', delay: '12ms', health: '99.8%' },
-    { id: 'SAT-BETA-02', name: 'Beta Transit GPS', angle: 160, radius: 85, status: 'Online', delay: '8ms', health: '100%' },
-    { id: 'SAT-GAMMA-03', name: 'Gamma HVAC Sensor', angle: 280, radius: 135, status: 'Active', delay: '15ms', health: '97.4%' },
+  const [satellites, setSatellites] = useState([
+    { id: 'SAT-ALPHA-01', name: 'Alpha Telemetry Hub', category: 'Transit GPS', delay: '12ms', health: '99.8%', status: 'Online' },
+    { id: 'SAT-BETA-02', name: 'Beta Transit GPS', category: 'Bus Fleet', delay: '8ms', health: '100%', status: 'Online' },
+    { id: 'SAT-GAMMA-03', name: 'Gamma HVAC Telemetry', category: 'Facility Sensor', delay: '15ms', health: '97.4%', status: 'Active' },
   ]);
 
   const triggerDiagnosticPing = (nodeId) => {
     setActiveNode(nodeId);
-    setPingPulse(true);
-    setTimeout(() => setPingPulse(false), 1200);
-
     if (soundEnabled) {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -28,191 +20,91 @@ export default function CosmicOrbitRadar() {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(880, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + 0.15);
       } catch (e) {
-        console.log('Web Audio API synth:', e);
+        console.log('Audio API:', e);
       }
     }
   };
 
   return (
-    <div className="w-full rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] p-5 shadow-xs relative overflow-hidden font-sans">
+    <div className="card-surface p-5 font-sans space-y-4 shadow-2xs">
       
-      <div className="relative z-10 space-y-5">
-        
-        {/* Widget Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#E8DCC8]">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
-              <Satellite className="w-5 h-5" />
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E6E0D2]">
+        <div className="flex items-center space-x-2.5">
+          <Satellite className="w-5 h-5 text-[#1C1917]" />
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-[#1C1917]">Campus Fleet & Telemetry Tracker</h3>
+              <span className="badge-mono-dark text-[10px]">Connected</span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
-                  Live Campus Fleet Tracker
-                </h3>
-                <span className="px-2 py-0.5 text-xs font-semibold uppercase bg-[#4E7A51]/15 text-[#4E7A51] border border-[#4E7A51]/30 rounded-full">
-                  Connected
-                </span>
-              </div>
-              <p className="text-xs text-[#6B5A4A] font-medium">Real-time location, bus status, and room sensor monitoring.</p>
-            </div>
-          </div>
-
-          {/* Interactive Controls */}
-          <div className="flex items-center gap-2 text-xs">
-            <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className={`p-1.5 px-3 rounded-lg border text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
-                soundEnabled 
-                  ? 'bg-[#BC4800]/15 text-[#BC4800] border-[#BC4800]/30 font-semibold' 
-                  : 'bg-[#FDF8F2] text-[#6B5A4A] border-[#E8DCC8]'
-              }`}
-              title="Toggle Sound"
-            >
-              {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-              <span>{soundEnabled ? 'Sound ON' : 'Sound Off'}</span>
-            </button>
-
-            <button
-              onClick={() => triggerDiagnosticPing(activeNode)}
-              className="px-3.5 py-1.5 inst-button-primary text-xs flex items-center gap-1.5 cursor-pointer rounded-lg font-semibold shadow-xs"
-            >
-              <Radio className="w-3.5 h-3.5" />
-              <span>Refresh Status</span>
-            </button>
+            <p className="text-xs text-[#57534E] font-medium">Real-time GPS tracking for campus shuttles and IoT sensors.</p>
           </div>
         </div>
 
-        {/* Orbit Radar Display Matrix */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-          
-          {/* Left: Interactive Orbital Visualizer Graphic */}
-          <div className="lg:col-span-2 relative flex items-center justify-center p-8 bg-[#FDF8F2] border border-[#E8DCC8] rounded-2xl min-h-[300px] overflow-hidden">
-            
-            {/* Concentric Radar Orbit Rings */}
-            <div className="absolute w-[260px] h-[260px] border border-[#E8DCC8] rounded-full animate-spin-slow pointer-events-none" />
-            <div className="absolute w-[190px] h-[190px] border border-dashed border-[#E8DCC8] rounded-full animate-spin-reverse pointer-events-none" />
-            <div className="absolute w-[120px] h-[120px] border border-[#E8DCC8] rounded-full pointer-events-none" />
-            
-            {/* Center Core Hub */}
-            <div className="relative z-20 w-14 h-14 rounded-full bg-[#BC4800] p-0.5 shadow-xs flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
-                 onClick={() => triggerDiagnosticPing('CAMPUS-HUB-CORE')}>
-              <div className="w-full h-full bg-[#BC4800] rounded-full flex items-center justify-center text-white">
-                <Globe className="w-6 h-6 animate-pulse" />
-              </div>
-            </div>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="btn-secondary text-xs"
+          >
+            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-[#1C1917]" /> : <VolumeX className="w-3.5 h-3.5 text-[#78716C]" />}
+            <span>{soundEnabled ? 'Audio ON' : 'Audio Muted'}</span>
+          </button>
+          <button
+            onClick={() => triggerDiagnosticPing(activeNode)}
+            className="btn-primary text-xs"
+          >
+            <Radio className="w-3.5 h-3.5" />
+            <span>Ping Telemetry</span>
+          </button>
+        </div>
+      </div>
 
-            {/* Diagnostic Ping Ripple */}
-            {pingPulse && (
-              <div className="absolute w-24 h-24 rounded-full border-2 border-[#BC4800] animate-beacon-ping pointer-events-none z-10" />
-            )}
-
-            {/* Orbiting Satellite Nodes */}
+      {/* Fleet Telemetry Data Table */}
+      <div className="overflow-x-auto border border-[#E6E0D2] rounded-lg">
+        <table className="table-mono">
+          <thead>
+            <tr>
+              <th>Node Identifier</th>
+              <th>Telemetry Beacon</th>
+              <th>Category</th>
+              <th>Latency</th>
+              <th>System Health</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
             {satellites.map((sat) => {
-              const rad = (sat.angle * Math.PI) / 180;
-              const x = Math.cos(rad) * sat.radius;
-              const y = Math.sin(rad) * sat.radius;
               const isSelected = activeNode === sat.id;
-
               return (
-                <div
+                <tr
                   key={sat.id}
                   onClick={() => triggerDiagnosticPing(sat.id)}
-                  style={{ transform: `translate(${x}px, ${y}px)` }}
-                  className={`absolute z-30 p-2 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2 ${
-                    isSelected 
-                      ? 'bg-[#F7EFE4] border-[#BC4800] ring-1 ring-[#BC4800] text-[#2B1D12] shadow-xs' 
-                      : 'bg-[#FDF8F2] border-[#E8DCC8] text-[#6B5A4A] hover:border-[#BC4800]/50 hover:text-[#2B1D12]'
-                  }`}
+                  className={`cursor-pointer transition-colors ${isSelected ? 'bg-[#F0EBE1] font-bold' : ''}`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-[#BC4800]' : 'bg-[#4E7A51]'}`} />
-                  <span className="text-xs font-semibold whitespace-nowrap">{sat.id}</span>
-                </div>
+                  <td className="font-mono text-[#1C1917] font-bold">{sat.id}</td>
+                  <td className="text-[#1C1917] font-bold">{sat.name}</td>
+                  <td className="text-[#57534E] font-mono text-xs font-semibold">{sat.category}</td>
+                  <td className="font-mono text-[#57534E] font-semibold">{sat.delay}</td>
+                  <td className="font-mono text-[#1C1917] font-bold">{sat.health}</td>
+                  <td>
+                    <span className="badge-mono text-[10px]">
+                      <span>{sat.status}</span>
+                    </span>
+                  </td>
+                </tr>
               );
             })}
-          </div>
-
-          {/* Right: Selected Node Telemetry Readout Panel */}
-          <div className="space-y-4">
-            <div className="p-4 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-3">
-              <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-2">
-                <span className="text-xs text-[#6B5A4A] font-medium">Active Node:</span>
-                <span className="text-xs font-bold text-[#BC4800]">{activeNode}</span>
-              </div>
-
-              <div className="space-y-2 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-[#6B5A4A]">Node Status:</span>
-                  <span className="text-[#4E7A51] font-semibold flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Optimal 100%
-                  </span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-[#6B5A4A]">Latency:</span>
-                  <span className="text-[#2B1D12] font-semibold">12ms (Direct Sync)</span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-[#6B5A4A]">Sync Velocity:</span>
-                  <span className="text-[#BC4800] font-semibold">{orbitSpeed} rpm</span>
-                </div>
-              </div>
-
-              {/* Speed Slider */}
-              <div className="pt-2 space-y-1">
-                <label className="text-xs text-[#6B5A4A] flex justify-between">
-                  <span>Orbit Sync Speed</span>
-                  <span className="text-[#BC4800] font-semibold">{orbitSpeed} RPM</span>
-                </label>
-                <input
-                  type="range"
-                  min="5"
-                  max="60"
-                  value={orbitSpeed}
-                  onChange={(e) => setOrbitSpeed(parseInt(e.target.value))}
-                  className="w-full h-1 bg-[#E8DCC8] rounded-lg appearance-none cursor-pointer accent-[#BC4800]"
-                />
-              </div>
-            </div>
-
-            {/* Satellites List Switcher */}
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-[#2B1D12]">Telemetry Beacons</span>
-              <div className="space-y-1.5">
-                {satellites.map(s => (
-                  <button
-                    key={s.id}
-                    onClick={() => triggerDiagnosticPing(s.id)}
-                    className={`w-full p-2.5 rounded-lg border text-left text-xs transition-all flex items-center justify-between cursor-pointer ${
-                      activeNode === s.id
-                        ? 'bg-[#FDF8F2] border-[#BC4800] text-[#2B1D12] font-bold shadow-xs'
-                        : 'bg-[#FDF8F2] border-[#E8DCC8] text-[#6B5A4A] hover:bg-[#F7EFE4]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Cpu className="w-3.5 h-3.5 text-[#BC4800]" />
-                      <span>{s.name}</span>
-                    </div>
-                    <span className="text-xs text-[#6B5A4A]">{s.delay}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
+          </tbody>
+        </table>
       </div>
+
     </div>
   );
 }
-

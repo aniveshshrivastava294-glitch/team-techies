@@ -170,6 +170,63 @@ async function handleApproveLeave({ leave_id_or_name, status }) {
     };
 }
 
+async function handleApproveUserAccount({ user_email_or_name, status }) {
+    console.log(`🤖 [Agent Executed Tool]: approveUserAccount(target="${user_email_or_name}", status=${status})`);
+    const targetStatus = status || 'approved';
+    const users = getLocalData('users');
+
+    const targetUser = users.find(u => 
+        u.email.toLowerCase().includes(user_email_or_name.toLowerCase()) ||
+        (u.full_name && u.full_name.toLowerCase().includes(user_email_or_name.toLowerCase()))
+    );
+
+    if (!targetUser) {
+        return { status: 'NOT_FOUND', message: `Could not find pending user account for '${user_email_or_name}'.` };
+    }
+
+    targetUser.approval_status = targetStatus;
+    if (isConnectedToSupabase && supabase) {
+        await supabase.from('users').update({ approval_status: targetStatus }).eq('id', targetUser.id);
+    }
+
+    return {
+        status: 'SUCCESS',
+        userId: targetUser.id,
+        userEmail: targetUser.email,
+        newStatus: targetStatus,
+        message: `Cleared administrative access clearance for ${targetUser.full_name || targetUser.email}. Account is now ${targetStatus.toUpperCase()}.`
+    };
+}
+
+async function handleUpdateShuttleStatus({ route_id_or_name, status, passenger_count }) {
+    console.log(`🤖 [Agent Executed Tool]: updateShuttleStatus(route="${route_id_or_name}")`);
+    const transport = getLocalData('transportation');
+    const target = transport.find(t => 
+        t.id === route_id_or_name ||
+        t.route_name.toLowerCase().includes(route_id_or_name.toLowerCase()) ||
+        t.bus_number.toLowerCase().includes(route_id_or_name.toLowerCase())
+    );
+
+    if (!target) {
+        return { status: 'NOT_FOUND', message: `Could not locate transit shuttle '${route_id_or_name}'.` };
+    }
+
+    if (status) target.status = status;
+    if (passenger_count) target.passenger_count = Number(passenger_count);
+
+    if (isConnectedToSupabase && supabase) {
+        await supabase.from('transportation').update({ status: target.status, passenger_count: target.passenger_count }).eq('id', target.id);
+    }
+
+    return {
+        status: 'SUCCESS',
+        route: target.route_name,
+        bus_number: target.bus_number,
+        newStatus: target.status,
+        message: `Updated shuttle dispatch for ${target.route_name} (${target.bus_number}). Status: ${target.status}, Load: ${target.passenger_count} riders.`
+    };
+}
+
 // -------------------------------------------------------------
 // 2. MAIN AGENTIC CHAT ROUTER WITH GEMINI FUNCTION CALLING
 // -------------------------------------------------------------
@@ -179,7 +236,6 @@ async function processAgentChat(userQuery, userRole = 'faculty', departmentDomai
 
     if (key && key.trim() !== '' && ai) {
         try {
-            // Function Declaration Specs for Gemini API
             const toolDeclarations = [
                 {
                     name: 'checkVenueAvailability',
@@ -188,8 +244,8 @@ async function processAgentChat(userQuery, userRole = 'faculty', departmentDomai
                         type: Type.OBJECT,
                         properties: {
                             date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format (or "today", "tomorrow")' },
-                            time_slot: { type: Type.STRING, description: 'Time slot e.g. "14:00 - 15:30" or "09:00 - 10:30"' },
-                            room_type: { type: Type.STRING, description: 'Optional room type e.g. "Lecture Hall", "Auditorium", "Lab"' }
+                            time_slot: { type: Type.STRING, description: 'Time slot e.g. "14:00 - 15:30"' },
+                            room_type: { type: Type.STRING, description: 'Optional room type e.g. "Lecture Hall", "Auditorium"' }
                         }
                     }
                 },
@@ -224,7 +280,7 @@ async function processAgentChat(userQuery, userRole = 'faculty', departmentDomai
                 },
                 {
                     name: 'approveLeave',
-                    description: 'Approves or rejects a faculty leave request (Attendance Admin tool).',
+                    description: 'Approves or rejects a faculty leave request.',
                     parameters: {
                         type: Type.OBJECT,
                         properties: {
@@ -232,6 +288,31 @@ async function processAgentChat(userQuery, userRole = 'faculty', departmentDomai
                             status: { type: Type.STRING, description: '"approved" or "rejected"' }
                         },
                         required: ['leave_id_or_name', 'status']
+                    }
+                },
+                {
+                    name: 'approveUserAccount',
+                    description: 'Grants administrative access clearance for pending staff member accounts (Super Admin tool).',
+                    parameters: {
+                        type: Type.OBJECT,
+                        properties: {
+                            user_email_or_name: { type: Type.STRING, description: 'Staff email or name awaiting clearance' },
+                            status: { type: Type.STRING, description: '"approved" or "rejected"' }
+                        },
+                        required: ['user_email_or_name']
+                    }
+                },
+                {
+                    name: 'updateShuttleStatus',
+                    description: 'Updates bus fleet shuttle status or ridership count (Transport Admin tool).',
+                    parameters: {
+                        type: Type.OBJECT,
+                        properties: {
+                            route_id_or_name: { type: Type.STRING, description: 'Bus route or shuttle name' },
+                            status: { type: Type.STRING, description: '"Active", "Delayed", or "Maintenance"' },
+                            passenger_count: { type: Type.NUMBER, description: 'Current riders count' }
+                        },
+                        required: ['route_id_or_name']
                     }
                 }
             ];
@@ -283,6 +364,8 @@ INSTRUCTIONS:
                 else if (call.name === 'bookVenue') toolResult = await handleBookVenue(call.args);
                 else if (call.name === 'raiseTicket') toolResult = await handleRaiseTicket(call.args);
                 else if (call.name === 'approveLeave') toolResult = await handleApproveLeave(call.args);
+                else if (call.name === 'approveUserAccount') toolResult = await handleApproveUserAccount(call.args);
+                else if (call.name === 'updateShuttleStatus') toolResult = await handleUpdateShuttleStatus(call.args);
 
                 // Second synthesis turn with tool execution output
                 const followUpResponse = await ai.models.generateContent({

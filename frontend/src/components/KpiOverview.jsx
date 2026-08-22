@@ -1,108 +1,99 @@
 import React from 'react';
-import { Building2, Calendar, Wrench, Bus, Zap, Users, AlertTriangle, ArrowUpRight } from 'lucide-react';
+import { Building2, Calendar, Wrench, Bus, Zap, Users } from 'lucide-react';
 
 export default function KpiOverview({ kpis }) {
   if (!kpis) return null;
 
-  const cards = [
+  const items = [
     {
-      title: 'Classrooms & Venues',
+      title: 'Classrooms',
       mainValue: `${kpis.totalClassrooms || 0}`,
       unit: 'halls',
-      subValue: `${kpis.totalCapacity || 0} capacity`,
+      subValue: `${kpis.totalCapacity || 0} cap`,
       icon: Building2,
-      trend: '+12%',
-      badge: '98% operational'
+      badge: '98% active',
+      colorClass: 'text-blue-600',
+      badgeClass: 'badge-blue'
     },
     {
-      title: 'Campus Events',
+      title: 'Active Events',
       mainValue: `${kpis.scheduledEvents || 0}`,
-      unit: 'active',
-      subValue: 'Across 4 complexes',
+      unit: 'events',
+      subValue: '4 Complexes',
       icon: Calendar,
-      trend: '+8%',
-      badge: 'Q3 schedule'
+      badge: 'Q3 Schedule',
+      colorClass: 'text-indigo-600',
+      badgeClass: 'badge-blue'
     },
     {
-      title: 'Facility Maintenance',
+      title: 'Maintenance',
       mainValue: `${kpis.openMaintenance || 0}`,
       unit: 'tickets',
-      subValue: `${kpis.criticalMaintenance || 0} critical priority`,
+      subValue: `${kpis.criticalMaintenance || 0} critical`,
       icon: Wrench,
-      trend: kpis.criticalMaintenance > 0 ? 'Alert' : '-15%',
-      badge: kpis.criticalMaintenance > 0 ? 'Action Required' : 'Optimal',
-      hasAlert: kpis.criticalMaintenance > 0
+      badge: kpis.criticalMaintenance > 0 ? 'Action Needed' : 'Optimal',
+      colorClass: 'text-amber-700',
+      badgeClass: kpis.criticalMaintenance > 0 ? 'badge-error' : 'badge-brown'
     },
     {
-      title: 'Shuttle Ridership',
+      title: 'Transit Fleet',
       mainValue: `${kpis.transitRiders || 0}`,
       unit: 'riders',
-      subValue: `${kpis.transitUtilizationPercent || 0}% route load`,
+      subValue: `${kpis.transitUtilizationPercent || 0}% load`,
       icon: Bus,
-      trend: '+5%',
-      badge: '6 Bus Fleet'
+      badge: '6 Shuttles',
+      colorClass: 'text-amber-800',
+      badgeClass: 'badge-brown'
     },
     {
-      title: 'Energy Usage',
+      title: 'Energy Grid',
       mainValue: `${kpis.totalEnergyKwh || 0}`,
       unit: 'kWh',
-      subValue: `${kpis.avgKwhPerRoom || 0} kWh / room`,
+      subValue: `${kpis.avgKwhPerRoom || 0}/room`,
       icon: Zap,
-      trend: '-4.2%',
-      badge: 'Eco Mode Active'
+      badge: 'Eco Active',
+      colorClass: 'text-emerald-600',
+      badgeClass: 'badge-emerald'
     },
     {
-      title: 'Daily Check-ins',
+      title: 'Gate Scans',
       mainValue: `${kpis.dailyAttendanceCount || 0}`,
       unit: 'scans',
-      subValue: 'Campus Gate Scans',
+      subValue: '94.2% Attendance',
       icon: Users,
-      trend: '+18%',
-      badge: '94.2% Rate'
+      badge: 'Verified',
+      colorClass: 'text-blue-700',
+      badgeClass: 'badge-blue'
     }
   ];
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5 mb-6 font-sans">
-      {cards.map((card, idx) => {
-        const IconComponent = card.icon;
-
-        return (
-          <div
-            key={idx}
-            className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs relative group hover:border-[#BC4800]/40 transition-colors"
-          >
-            {/* Top Bar: Icon + Badge */}
-            <div className="flex items-center justify-between mb-2.5">
-              <div className="p-1.5 rounded-lg bg-[#FDF8F2] border border-[#E8DCC8] text-[#2B1D12]">
-                <IconComponent className="w-3.5 h-3.5" />
+    <section className="card-surface p-0 mb-6 font-sans overflow-hidden shadow-2xs">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-y sm:divide-y-0 sm:divide-x divide-[#E6E0D2] overflow-x-auto">
+        {items.map((item, idx) => {
+          const IconComponent = item.icon;
+          return (
+            <div key={idx} className="p-4 space-y-1.5 hover:bg-[#F5F2EB] transition-colors min-w-[130px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-[#57534E] truncate">{item.title}</span>
+                <IconComponent className={`w-4 h-4 ${item.colorClass} shrink-0`} />
               </div>
-              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
-                {card.badge}
-              </span>
-            </div>
 
-            {/* Title */}
-            <p className="text-xs font-medium text-[#6B5A4A]">{card.title}</p>
+              <div className="flex items-baseline space-x-1">
+                <span className="text-xl font-bold text-[#1C1917] tracking-tight">{item.mainValue}</span>
+                <span className="text-[10px] text-[#78716C] font-mono font-semibold">{item.unit}</span>
+              </div>
 
-            {/* Metric Value */}
-            <div className="flex items-baseline space-x-1.5 mt-1">
-              <h3 className="text-xl font-bold text-[#2B1D12]">{card.mainValue}</h3>
-              <span className="text-xs text-[#6B5A4A]">{card.unit}</span>
+              <div className="flex items-center justify-between text-[10px] text-[#57534E] font-mono font-semibold pt-0.5">
+                <span className="truncate pr-1">{item.subValue}</span>
+                <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold shrink-0 ${item.badgeClass}`}>
+                  {item.badge}
+                </span>
+              </div>
             </div>
-
-            {/* Context Line */}
-            <div className="mt-2.5 pt-2 border-t border-[#E8DCC8] flex items-center justify-between text-xs">
-              <span className="text-[#6B5A4A] text-[11px] truncate">{card.subValue}</span>
-              <span className={`text-[11px] font-semibold flex items-center gap-0.5 ${card.hasAlert ? 'text-[#A6402F]' : 'text-[#BC4800]'}`}>
-                {card.hasAlert ? <AlertTriangle className="w-3 h-3 text-[#A6402F] inline" /> : <ArrowUpRight className="w-3 h-3 inline" />}
-                <span>{card.trend}</span>
-              </span>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </section>
   );
 }
-

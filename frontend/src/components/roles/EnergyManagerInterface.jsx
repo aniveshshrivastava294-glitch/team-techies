@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import SectionHero from '../SectionHero';
-import { BACKDROP_IMAGES } from '../../config/backdropImages';
 import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import LiveCampusTicker from '../LiveCampusTicker';
 import { 
-  Zap, Sun, CheckCircle2, Gauge, BatteryCharging, Leaf, Check
+  Zap, Sun, ShieldAlert, CheckCircle2, AlertTriangle, RefreshCw, 
+  Activity, Gauge, BatteryCharging, Leaf, Sparkles, Check, X, Sliders, Cpu, ArrowRight
 } from 'lucide-react';
 
 export default function EnergyManagerInterface() {
@@ -17,7 +16,6 @@ export default function EnergyManagerInterface() {
     setTimeout(() => setToastMsg(null), 3500);
   };
 
-  // Substation & Power Grid Telemetry State
   const [powerGrids, setPowerGrids] = useState([
     { id: 'grid-1', name: 'Main Solar Array (Rooftop Block A-D)', output: '148.5 kW', capacity: '160 kW', status: 'Optimal', health: 96, carbonSaved: '2.4 Tons/Day' },
     { id: 'grid-2', name: 'Substation Alpha (High Voltage Grid)', output: '415V Stable', capacity: '500 kVA', status: 'Optimal', health: 99, carbonSaved: 'Grid Feed' },
@@ -25,7 +23,6 @@ export default function EnergyManagerInterface() {
     { id: 'grid-4', name: 'Substation Beta (HVAC Dedicated)', output: '382V Heavy Load', capacity: '400 kVA', status: 'High Load Alert', health: 74, carbonSaved: 'Peak Shave Active' }
   ]);
 
-  // Active Energy Anomaly Dispatches
   const [energyDispatches, setEnergyDispatches] = useState([
     {
       id: 'ENG-102',
@@ -62,61 +59,76 @@ export default function EnergyManagerInterface() {
   };
 
   return (
-    <div className="space-y-6 font-sans animate-in fade-in duration-300 pb-10 relative">
+    <div className="space-y-6 font-sans pb-10 relative">
       
-      {/* Toast Alert Banner */}
+      <LiveCampusTicker />
+
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
-          <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
+        <div className="fixed top-20 right-6 bg-emerald-800 border border-emerald-900 text-white font-mono text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* ================= SECTION HERO: ENERGY & SUSTAINABILITY BACKDROP ================= */}
-      <SectionHero
-        image={BACKDROP_IMAGES.energy}
-        category="Sustainability & Grid"
-        categoryIcon={Zap}
-        badgeText="Grid Active: 98.6% Efficiency"
-        title="Energy & Solar Grid Interface"
-        subtitle="Real-time rooftop solar generation, battery storage telemetry, power surge alerts & carbon footprint offset analytics."
-      >
-        <button
-          onClick={() => {
-            setSolarOptimizerActive(!solarOptimizerActive);
-            showToast(`Solar AI Optimizer ${!solarOptimizerActive ? 'Enabled' : 'Disabled'}`);
-          }}
-          className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-xs transition-colors cursor-pointer flex items-center gap-1.5"
-        >
-          <Sun className="w-3.5 h-3.5" />
-          <span>Solar AI: {solarOptimizerActive ? 'ON' : 'OFF'}</span>
-        </button>
+      {/* Header Banner - Executive Obsidian with Emerald Accents */}
+      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-emerald-800 shadow-md relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="badge-emerald text-[10px]">
+                <Zap className="w-3.5 h-3.5 text-emerald-800" />
+                SMART ENERGY & SUSTAINABILITY COMMAND
+              </span>
+              <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+                Grid Active: 98.6% Efficiency
+              </span>
+            </div>
+            
+            <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              Energy & Solar Grid Interface
+              <Sparkles className="w-5 h-5 text-emerald-400" />
+            </h1>
+            <p className="text-xs text-[#D6CEBE] max-w-2xl font-medium leading-relaxed">
+              Real-time rooftop solar generation, battery storage telemetry, power surge alerts & carbon footprint offset analytics.
+            </p>
+          </div>
 
-        <button
-          onClick={() => {
-            setPeakShavingActive(!peakShavingActive);
-            showToast(`Peak Load Shaving ${!peakShavingActive ? 'Activated' : 'Standby'}`);
-          }}
-          className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-xs transition-colors cursor-pointer flex items-center gap-1.5"
-        >
-          <BatteryCharging className="w-3.5 h-3.5" />
-          <span>Peak Shave: {peakShavingActive ? 'ACTIVE' : 'STANDBY'}</span>
-        </button>
-      </SectionHero>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <button
+              onClick={() => {
+                setSolarOptimizerActive(!solarOptimizerActive);
+                showToast(`Solar Optimizer ${!solarOptimizerActive ? 'Enabled' : 'Disabled'}`);
+              }}
+              className={`btn-secondary text-xs ${solarOptimizerActive ? 'border-emerald-500 text-emerald-800 bg-emerald-50 font-bold' : ''}`}
+            >
+              <Sun className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Solar Optimizer: {solarOptimizerActive ? 'ON' : 'OFF'}</span>
+            </button>
 
-      {/* Live Campus Orbit Telemetry Ticker */}
-      <LiveCampusTicker />
+            <button
+              onClick={() => {
+                setPeakShavingActive(!peakShavingActive);
+                showToast(`Auto Peak Shaving ${!peakShavingActive ? 'Enabled' : 'Disabled'}`);
+              }}
+              className={`btn-secondary text-xs ${peakShavingActive ? 'border-emerald-500 text-emerald-800 bg-emerald-50 font-bold' : ''}`}
+            >
+              <Leaf className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Peak Shaving: {peakShavingActive ? 'AUTO' : 'MANUAL'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
-      {/* Substation & Solar Telemetry Grid */}
+      {/* Solar & Power Grid Telemetry Matrix */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-[#BC4800]" />
-            Power Grid & Solar Array Telemetry ({powerGrids.length} Sub-Systems)
+          <h2 className="text-sm font-bold text-[#1C1917] tracking-tight flex items-center gap-2">
+            <BatteryCharging className="w-4 h-4 text-emerald-600" />
+            Solar & Substation Power Grid Matrix ({powerGrids.length} Subsystems)
           </h2>
-          <span className="text-xs text-[#2B1D12] font-semibold px-2.5 py-1 bg-[#FDF8F2] border border-[#E8DCC8] rounded-full flex items-center gap-1">
-            <Leaf className="w-3.5 h-3.5 text-[#4E7A51]" />
-            1.4 Tons CO2 Offset Today
+          <span className="badge-emerald text-xs">
+            148.5 kW Active Generation
           </span>
         </div>
 
@@ -125,125 +137,112 @@ export default function EnergyManagerInterface() {
             const isHigh = grid.status.includes('High Load');
             return (
               <div 
-                key={grid.id}
-                className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-2"
+                key={grid.id} 
+                className={`card-surface p-4 shadow-2xs space-y-3 border-l-4 ${isHigh ? 'border-l-rose-600 border-rose-200' : 'border-l-emerald-600 border-emerald-200'}`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#6B5A4A] font-semibold bg-[#FDF8F2] px-2 py-0.5 rounded border border-[#E8DCC8]">{grid.id}</span>
-                  <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
-                    isHigh ? 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30' : 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30'
+                  <h3 className="text-xs font-bold text-[#1C1917] truncate">{grid.name}</h3>
+                  <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border uppercase shrink-0 ${
+                    isHigh ? 'badge-error' : 'badge-emerald'
                   }`}>
                     {grid.status}
                   </span>
                 </div>
 
-                <h3 className="text-xs font-bold text-[#2B1D12] mt-2">{grid.name}</h3>
-
-                <div className="mt-3 flex items-center justify-between text-xs">
-                  <span className="text-[#6B5A4A]">Current Output:</span>
-                  <span className="text-[#BC4800] font-bold">{grid.output}</span>
+                <div className="flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-[#57534E] font-semibold">{grid.capacity}</span>
+                  <span className="text-emerald-700 font-bold">{grid.output}</span>
                 </div>
 
-                <div className="mt-2 w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-[#E6E0D2] h-1.5 rounded-full overflow-hidden border border-[#D6CEBE]">
                   <div 
-                    className={`h-full rounded-full transition-all ${isHigh ? 'bg-[#C48A2E]' : 'bg-[#4E7A51]'}`} 
+                    className={`h-full rounded-full transition-all ${isHigh ? 'bg-rose-600' : 'bg-emerald-600'}`} 
                     style={{ width: `${grid.health}%` }} 
                   />
                 </div>
+
+                <p className="text-[10px] text-emerald-800 font-mono font-bold flex items-center gap-1">
+                  <Leaf className="w-3 h-3 text-emerald-600" />
+                  {grid.carbonSaved}
+                </p>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Side-by-Side Grid: Active Energy Dispatches & Energy Support Tickets */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch font-sans">
+      {/* Grid Layout: Power Dispatches & Support Ticket Logger */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         
-        {/* Left Box: Energy Load Control Dispatches */}
-        <div className="w-full rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs overflow-hidden flex flex-col justify-between">
+        {/* Left Column: Power Surge Incident Dispatches */}
+        <div className="card-surface p-5 shadow-2xs space-y-4 flex flex-col justify-between">
           <div>
-            {/* Header Bar */}
-            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-[#E8DCC8]">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg border border-[#BC4800]/30 bg-[#BC4800]/15 text-[#BC4800] shrink-0">
-                    <Zap className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
-                      Active Power Load & Energy Dispatches
-                    </h3>
-                    <p className="text-xs text-[#6B5A4A] font-medium line-clamp-1">
-                      Manage power surge alerts, peak load shaving & solar inverters
-                    </p>
-                  </div>
-                </div>
-
-                <span className="text-xs font-semibold px-2.5 py-0.5 inst-badge-ochre shrink-0">
-                  {energyDispatches.filter(d => d.status !== 'Optimized').length} Action Required
-                </span>
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-3">
+              <div className="flex items-center space-x-2">
+                <Zap className="w-4 h-4 text-emerald-600" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
+                  Power Surge & Grid Load Control Dispatches
+                </h3>
               </div>
+              <span className="badge-emerald text-[10px]">
+                {energyDispatches.length} Events
+              </span>
             </div>
 
-            {/* Dispatches List */}
-            <div className="p-4 sm:p-5 space-y-3">
+            <div className="divide-y divide-[#E6E0D2]">
               {energyDispatches.map((disp) => (
-                <div 
-                  key={disp.id}
-                  className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 flex-wrap text-xs">
-                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded">
-                        {disp.id}
-                      </span>
-                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#BC4800] border border-[#E8DCC8] rounded">
-                        {disp.substation}
-                      </span>
-                      <span className={`font-semibold px-2.5 py-0.5 rounded-full border ${
-                        disp.status === 'Optimized' ? 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30' :
-                        'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30'
-                      }`}>
-                        {disp.status}
-                      </span>
+                <div key={disp.id} className="py-3 space-y-1.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-mono text-xs font-bold text-emerald-800">{disp.id}</span>
+                        <span className="badge-emerald text-[9px]">{disp.substation}</span>
+                      </div>
+                      <h4 className="text-xs font-bold text-[#1C1917] mt-0.5">{disp.title}</h4>
+                      <p className="text-[11px] text-emerald-700 font-mono font-bold mt-0.5">
+                        Impact: {disp.savingImpact}
+                      </p>
                     </div>
-                    <h4 className="text-xs font-bold text-[#2B1D12]">{disp.title}</h4>
-                    <p className="text-xs text-[#6B5A4A]">
-                      Target Savings: <span className="text-[#4E7A51] font-semibold">{disp.savingImpact}</span> • Date: {disp.date}
-                    </p>
-                  </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    {disp.status !== 'Optimized' ? (
-                      <button
-                        type="button"
-                        onClick={() => handleDispatchAction(disp.id, 'Optimized')}
-                        className="px-3.5 py-1.5 bg-[#4E7A51] hover:bg-[#3D6140] text-white rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1"
-                      >
-                        <Check className="w-3.5 h-3.5" />
-                        <span>Optimize</span>
-                      </button>
-                    ) : (
-                      <span className="px-2.5 py-1 bg-[#F7EFE4] text-[#6B5A4A] border border-[#E8DCC8] rounded-full text-xs font-semibold">
-                        Optimized
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1 shrink-0">
+                      {disp.status === 'Pending Dispatch' ? (
+                        <button
+                          onClick={() => handleDispatchAction(disp.id, 'Optimized')}
+                          className="btn-secondary border-emerald-400 text-emerald-800 hover:bg-emerald-50 text-[10px] py-1 px-2"
+                        >
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span>Dispatch Fix</span>
+                        </button>
+                      ) : (
+                        <span className="badge-emerald text-[10px]">
+                          {disp.status}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          <div className="bg-emerald-50 p-3 rounded border border-emerald-200 text-xs font-mono text-emerald-900 space-y-1">
+            <span className="font-bold flex items-center gap-1">
+              <Leaf className="w-3.5 h-3.5 text-emerald-700" />
+              Sustainability Metric:
+            </span>
+            <p className="text-emerald-800 font-semibold">
+              Today's solar array offset has saved 2.4 Tons of CO2 and reduced grid peak draw by 18.5%.
+            </p>
+          </div>
         </div>
 
-        {/* Right Box: Energy Support Tickets */}
-        <TicketsSupportLogCard 
-          adminDomain="energy" 
-          title="Energy & Solar Support Tickets" 
-          subtitle="Track solar inverter faults, substation maintenance & power meter calibration" 
-        />
+        {/* Right Column: Support Tickets Logger */}
+        <div>
+          <TicketsSupportLogCard currentUser={{ role: 'energy_manager', full_name: 'Sub-Admin Energy' }} />
+        </div>
 
       </div>
+
     </div>
   );
 }
-
