@@ -10,6 +10,7 @@ import RealtimeBookingMatrix from '../RealtimeBookingMatrix';
 import CosmicOrbitRadar from '../CosmicOrbitRadar';
 import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import { UserCheck, ShieldCheck, Check, X, Sparkles, Upload } from 'lucide-react';
+import { getApiUrl } from '../../apiConfig';
 
 export default function SuperAdminDashboard({ kpis, anomalies, recommendations, isRefreshing, onRefresh, activeTab = 'overview', setActiveTab }) {
   const [pendingUsers, setPendingUsers] = useState([]);
@@ -22,7 +23,7 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
 
   const fetchPendingUsers = async () => {
     try {
-      const res = await fetch('/api/auth/pending-users');
+      const res = await fetch(getApiUrl('/api/auth/pending-users'));
       const data = await res.json();
       if (data.status === 'success') {
         setPendingUsers(data.pending || []);
@@ -35,7 +36,7 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
   const handleApproveUser = async (userId, status) => {
     setActionLoading(userId);
     try {
-      const res = await fetch('/api/auth/approve-user', {
+      const res = await fetch(getApiUrl('/api/auth/approve-user'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, status })

@@ -74,11 +74,11 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
   const fetchFacultyData = async () => {
     try {
-      const bRes = await fetch('/api/domains/transportation');
+      const bRes = await fetch(getApiUrl('/api/domains/transportation'));
       const bData = await bRes.json();
       if (bData.status === 'success' && bData.records?.length > 0) setBuses(bData.records);
 
-      const tRes = await fetch(`/api/tickets?userEmail=${currentUser?.email}`);
+      const tRes = await fetch(getApiUrl(`/api/tickets?userEmail=${currentUser?.email}`));
       const tData = await tRes.json();
       if (tData.status === 'success') setUserTickets(tData.tickets || []);
     } catch (e) {
@@ -107,7 +107,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
     if (!ticketTitle || !ticketDesc) return;
 
     try {
-      const res = await fetch('/api/tickets', {
+      const res = await fetch(getApiUrl('/api/tickets'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

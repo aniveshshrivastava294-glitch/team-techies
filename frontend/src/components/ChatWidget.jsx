@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, Zap, Code2, Sparkles, ChevronDown, ChevronUp, Bot, User } from 'lucide-react';
+import { getApiUrl } from '../apiConfig';
 
 export default function ChatWidget() {
   const [inputQuery, setInputQuery] = useState('');
@@ -30,11 +31,16 @@ export default function ChatWidget() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch(getApiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: textToSubmit })
       });
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`API endpoint unavailable (HTTP ${response.status}). Check VITE_API_BASE_URL or backend host.`);
+      }
 
       const data = await response.json();
 

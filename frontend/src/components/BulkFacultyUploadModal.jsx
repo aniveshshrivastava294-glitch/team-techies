@@ -109,7 +109,7 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
 
     try {
       // Simulate/perform multi-batch ingestion endpoint
-      const res = await fetch('/api/upload/upload-faculty', {
+      const res = await fetch(getApiUrl('/api/upload/upload-faculty'), {
         method: 'POST',
         body: file ? formData : JSON.stringify({ rawText, targetEntity }),
         headers: file ? {} : { 'Content-Type': 'application/json' }

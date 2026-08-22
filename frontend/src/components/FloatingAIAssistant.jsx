@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Bot, User, CheckCircle2 } from 'lucide-react';
+import { getApiUrl } from '../apiConfig';
 
 export default function FloatingAIAssistant({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +42,7 @@ export default function FloatingAIAssistant({ currentUser }) {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch(getApiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -51,7 +52,13 @@ export default function FloatingAIAssistant({ currentUser }) {
         })
       });
 
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`API endpoint unavailable (HTTP ${res.status}). Verify VITE_API_BASE_URL or backend URL.`);
+      }
+
       const data = await res.json();
+
 
       if (data.status === 'success') {
         const aiText = data.gemini?.answer || 'Action completed successfully.';

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserCheck, AlertTriangle, CheckCircle2, Clock, Check, X, ShieldAlert } from 'lucide-react';
+import { getApiUrl } from '../apiConfig';
 
 export default function AttendanceAdminWidget() {
   const [checkins, setCheckins] = useState(null);
@@ -17,12 +18,12 @@ export default function AttendanceAdminWidget() {
     setIsLoading(true);
     try {
       // Fetch Daily Staff Check-ins & Anomaly Alerts
-      const cRes = await fetch('/api/leaves/daily-checkins');
+      const cRes = await fetch(getApiUrl('/api/leaves/daily-checkins'));
       const cData = await cRes.json();
       if (cData.status === 'success') setCheckins(cData);
 
       // Fetch Faculty Leave Requests
-      const lRes = await fetch('/api/leaves');
+      const lRes = await fetch(getApiUrl('/api/leaves'));
       const lData = await lRes.json();
       if (lData.status === 'success') setLeaves(lData.leaves || []);
     } catch (e) {
@@ -38,7 +39,7 @@ export default function AttendanceAdminWidget() {
     const { leave, status } = selectedLeaveAction;
 
     try {
-      const res = await fetch(`/api/leaves/${leave.id}`, {
+      const res = await fetch(getApiUrl(`/api/leaves/${leave.id}`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

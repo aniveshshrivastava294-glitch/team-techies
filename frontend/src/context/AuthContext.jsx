@@ -77,7 +77,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(getApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -103,7 +103,7 @@ export function AuthProvider({ children }) {
 
   const register = async (email, password, role, department_domain, full_name) => {
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch(getApiUrl('/api/auth/register'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, role, department_domain, full_name })

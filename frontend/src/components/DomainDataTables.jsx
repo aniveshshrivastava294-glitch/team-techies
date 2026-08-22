@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Database, Search, Building2, Calendar, Wrench, Bus, Zap, Users } from 'lucide-react';
+import { getApiUrl } from '../apiConfig';
 
 export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
   const [activeTab, setActiveTab] = useState(defaultDomain);
@@ -23,7 +24,7 @@ export default function DomainDataTables({ defaultDomain = 'classrooms' }) {
   const fetchDomainData = async (domain) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/domains/${domain}`);
+      const res = await fetch(getApiUrl(`/api/domains/${domain}`));
       const data = await res.json();
       if (data.status === 'success') {
         setTableData(data.records || []);

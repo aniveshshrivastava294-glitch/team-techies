@@ -10,6 +10,7 @@ import SuperAdminDashboard from './components/roles/SuperAdminDashboard';
 import FacultyDashboard from './components/roles/FacultyDashboard';
 import SubAdminDashboard from './components/roles/SubAdminDashboard';
 import InstitutionalFooter from './components/InstitutionalFooter';
+import { getApiUrl } from './apiConfig';
 
 function DashboardRouter() {
   const { currentUser } = useAuth();
@@ -24,20 +25,20 @@ function DashboardRouter() {
   const fetchDashboardData = async () => {
     setIsRefreshing(true);
     try {
-      const kpiRes = await fetch('/api/kpis');
+      const kpiRes = await fetch(getApiUrl('/api/kpis'));
       const kpiData = await kpiRes.json();
       if (kpiData.status === 'success') {
         setKpis(kpiData.kpis);
         setDatasource(kpiData.datasource);
       }
 
-      const anomRes = await fetch('/api/anomalies');
+      const anomRes = await fetch(getApiUrl('/api/anomalies'));
       const anomData = await anomRes.json();
       if (anomData.status === 'success') {
         setAnomalies(anomData.anomalies || []);
       }
 
-      const recRes = await fetch('/api/recommendations');
+      const recRes = await fetch(getApiUrl('/api/recommendations'));
       const recData = await recRes.json();
       if (recData.status === 'success') {
         setRecommendations(recData.recommendations || []);

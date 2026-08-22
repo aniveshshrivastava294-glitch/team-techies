@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, CheckCircle2, AlertCircle, Building2, Check, Lock } from 'lucide-react';
+import { Calendar, Clock, CheckCircle2, AlertCircle, Building2, Check, Lock, User, RefreshCw, ShieldAlert, Sparkles } from 'lucide-react';
+import { getApiUrl } from '../apiConfig';
 
 export default function RealtimeBookingMatrix({ currentUser }) {
   const [venues, setVenues] = useState([]);
   const [bookings, setBookings] = useState([]);
-  const [selectedVenue, setSelectedVenue] = useState('');
+  const [selectedVenue, setSelectedVenue] = useState('CS-301');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [eventName, setEventName] = useState('');
   
@@ -13,21 +14,22 @@ export default function RealtimeBookingMatrix({ currentUser }) {
 
   const timeSlots = [
     "09:00 - 10:30",
-    "11:00 - 12:30",
+    "10:45 - 12:15",
+    "12:30 - 14:00",
     "14:00 - 15:30",
-    "16:00 - 17:30"
+    "15:45 - 17:15"
   ];
 
   useEffect(() => {
     fetchVenueMatrix();
 
-    const interval = setInterval(fetchBookingsData, 3000);
+    const interval = setInterval(fetchBookingsData, 8000);
     return () => clearInterval(interval);
   }, []);
 
   const fetchVenueMatrix = async () => {
     try {
-      const vRes = await fetch('/api/bookings/venues');
+      const vRes = await fetch(getApiUrl('/api/bookings/venues'));
       const vData = await vRes.json();
       if (vData.status === 'success' && vData.venues?.length > 0) {
         setVenues(vData.venues);
@@ -41,7 +43,7 @@ export default function RealtimeBookingMatrix({ currentUser }) {
 
   const fetchBookingsData = async () => {
     try {
-      const bRes = await fetch('/api/bookings');
+      const bRes = await fetch(getApiUrl('/api/bookings'));
       const bData = await bRes.json();
       if (bData.status === 'success') {
         setBookings(bData.bookings || []);
@@ -73,7 +75,7 @@ export default function RealtimeBookingMatrix({ currentUser }) {
     setBookingStatus(null);
 
     try {
-      const res = await fetch('/api/bookings', {
+      const res = await fetch(getApiUrl('/api/bookings'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

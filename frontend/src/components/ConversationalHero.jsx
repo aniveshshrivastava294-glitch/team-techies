@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Sparkles, Building2, Bus, Zap, Wrench, ShieldAlert } from 'lucide-react';
+import { getApiUrl } from '../apiConfig';
 
 export default function ConversationalHero({ onExecuteQuery }) {
   const [query, setQuery] = useState('');
@@ -22,11 +23,17 @@ export default function ConversationalHero({ onExecuteQuery }) {
     setLastResult(null);
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch(getApiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: query.trim() })
       });
+      
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`API endpoint unavailable (HTTP ${res.status}). Verify VITE_API_BASE_URL or backend URL.`);
+      }
+
       const data = await res.json();
       if (data.status === 'success') {
         setLastResult(data.gemini?.answer || 'Action dispatched.');
