@@ -211,7 +211,7 @@ export default function SubAdminDashboard({ currentUser }) {
 
       {/* ================= SECTION HERO: AUDITORIUM & EVENT COMMAND ================= */}
       <SectionHero
-        image={BACKDROP_IMAGES.classrooms}
+        image={BACKDROP_IMAGES.events || BACKDROP_IMAGES.classrooms}
         category="Auditorium & Events"
         categoryIcon={Building2}
         badgeText="Venue Scheduling"

@@ -72,7 +72,7 @@ export const demoAccounts = [
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('campus_orbit_user');
-    return saved ? JSON.parse(saved) : demoAccounts[3]; // Default to Transport Admin for immediate preview of Transport Manager Interface
+    return saved ? JSON.parse(saved) : demoAccounts[2]; // Default to Events Admin for immediate preview of Auditorium & Event Manager Interface
   });
 
   const login = async (email, password) => {

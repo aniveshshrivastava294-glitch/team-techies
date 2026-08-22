@@ -31,11 +31,11 @@ export const BACKDROP_IMAGES = {
     caption: 'Academic Faculty & Instruction'
   },
 
-  // Classrooms / Timetable / Auditorium: Empty/lightly occupied modern lecture hall
+  // Classrooms / Timetable / Academic Spaces: Presidency University lecture hall & classroom instruction
   classrooms: {
-    url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1920&q=80',
-    alt: 'Modern university lecture hall interior',
-    credit: 'Unsplash - Lecture Hall & Classrooms',
+    url: '/presidency_classroom_admin.jpg',
+    alt: 'Presidency University Classroom Instruction & Lecture Hall',
+    credit: 'Presidency University Classroom',
     caption: 'Classrooms & Smart Learning Spaces'
   },
 
@@ -77,6 +77,14 @@ export const BACKDROP_IMAGES = {
     alt: 'Clean neutral study workspace texture',
     credit: 'Unsplash - Minimal Workspace',
     caption: 'Campus Decision Intelligence'
+  },
+
+  // Events & Auditorium Section: Presidency University student awards event
+  events: {
+    url: '/presidency_event_admin.jpg',
+    alt: 'Presidency University Event & Student Awards Ceremony',
+    credit: 'Presidency University Campus Event',
+    caption: 'Auditorium & Event Management Command'
   }
 };
 
