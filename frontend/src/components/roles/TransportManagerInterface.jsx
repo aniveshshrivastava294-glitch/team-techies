@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import SectionHero from '../SectionHero';
-import { BACKDROP_IMAGES } from '../../config/backdropImages';
 import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import LiveCampusTicker from '../LiveCampusTicker';
 import {
-  Bus, Clock, Plus, Check, X, Calendar,
-  CheckCircle2, Trash2
+  Bus, Search, Plus, Check, X, Clock, MapPin, Users, Calendar,
+  Edit2, AlertCircle, ShieldAlert, Sparkles, CheckCircle2, Navigation,
+  Radio, ArrowRight, Zap, RefreshCw, Trash2, CreditCard
 } from 'lucide-react';
 
 export default function TransportManagerInterface() {
-  // Filter States
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Bus Fleet Initial State
   const [busFleet, setBusFleet] = useState([
     {
       id: 'b1', busNumber: 'Bus 1', capacity: 50, dist: 'ptk', numberPlate: 'PB-01-AB-1001',
@@ -109,6 +106,7 @@ export default function TransportManagerInterface() {
     { id: 'evt-3', title: 'National Science Symposium Transport', busCount: 3, date: '2026-09-02', location: 'Convention Center' }
   ]);
   const [newEventTitle, setNewEventTitle] = useState('');
+  const [newEventBuses, setNewEventBuses] = useState(2);
 
   const [showAddBusModal, setShowAddBusModal] = useState(false);
   const [toastMsg, setToastMsg] = useState(null);
@@ -143,7 +141,7 @@ export default function TransportManagerInterface() {
   const handleClearAllBuses = () => {
     setBusFleet([]);
     setSelectedBusId(null);
-    showToast('Cleared all buses from matrix.');
+    showToast('Cleared all buses from fleet matrix.');
   };
 
   const filteredBuses = busFleet.filter(b => {
@@ -154,9 +152,10 @@ export default function TransportManagerInterface() {
     return matchesStatus && matchesSearch;
   });
 
-  const handleBookingAction = (reqId, status) => {
-    setBookingRequests(prev => prev.map(r => r.id === reqId ? { ...r, status: status } : r));
-    showToast(`Booking request ${status.toLowerCase()} successfully!`);
+  const handleBookingAction = (reqId, action) => {
+    setBookingRequests(prev => prev.map(r => r.id === reqId ? { ...r, status: action } : r));
+    const req = bookingRequests.find(r => r.id === reqId);
+    showToast(`Request by ${req?.requestor} set to ${action}!`);
   };
 
   const handleDeleteBookingReq = (reqId, requestor) => {
@@ -166,10 +165,7 @@ export default function TransportManagerInterface() {
 
   const handleAddBookingReqSubmit = (e) => {
     e.preventDefault();
-    if (!newReqForm.requestor.trim() || !newReqForm.purpose.trim()) {
-      showToast('Please enter Requestor Name & Purpose!');
-      return;
-    }
+    if (!newReqForm.requestor.trim()) return;
 
     const createdReq = {
       id: `req-${Date.now()}`,
@@ -177,7 +173,7 @@ export default function TransportManagerInterface() {
       department: newReqForm.department.trim() || 'General Academic',
       date: newReqForm.date,
       day: newReqForm.day,
-      purpose: newReqForm.purpose.trim(),
+      purpose: newReqForm.purpose.trim() || 'Academic Transport Request',
       busType: newReqForm.busType,
       status: 'Pending'
     };
@@ -192,40 +188,23 @@ export default function TransportManagerInterface() {
       purpose: '',
       busType: 'Bus 1 (50 Seater)'
     });
-    showToast(`Booking request submitted for ${createdReq.requestor}!`);
-  };
-
-  const handleAddCityBusEvent = (e) => {
-    e.preventDefault();
-    if (!newEventTitle.trim()) return;
-
-    const newEvt = {
-      id: `evt-${Date.now()}`,
-      title: newEventTitle.trim(),
-      busCount: 2,
-      date: '2026-09-04',
-      location: 'Main University Campus'
-    };
-
-    setCityBusEvents(prev => [...prev, newEvt]);
-    setNewEventTitle('');
-    showToast(`Added event: "${newEvt.title}"`);
+    showToast(`Added new booking request for ${createdReq.requestor}!`);
   };
 
   const handleAddBusSubmit = (e) => {
     e.preventDefault();
-    if (!newBusForm.busNumber.trim() || !newBusForm.dist.trim() || !newBusForm.numberPlate.trim()) {
-      showToast('Please fill all bus details (Bus Number, Dist, Plate)');
+    if (!newBusForm.busNumber.trim() || !newBusForm.dist.trim()) {
+      showToast('Please enter Bus Number and Distance Tag!');
       return;
     }
 
-    const newBus = {
+    const createdBus = {
       id: `b-${Date.now()}`,
       busNumber: newBusForm.busNumber.trim(),
-      capacity: parseInt(newBusForm.capacity) || 30,
+      capacity: parseInt(newBusForm.capacity, 10) || 30,
       dist: newBusForm.dist.trim(),
-      numberPlate: newBusForm.numberPlate.trim(),
-      status: newBusForm.status,
+      numberPlate: newBusForm.numberPlate.trim() || `PB-01-AB-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: newBusForm.status || 'Stationed',
       occupied: 0,
       morningDep: newBusForm.morningDep,
       morningArr: newBusForm.morningArr,
@@ -233,9 +212,9 @@ export default function TransportManagerInterface() {
       eveArr: newBusForm.eveArr
     };
 
-    setBusFleet(prev => [...prev, newBus]);
+    setBusFleet(prev => [...prev, createdBus]);
+    if (!selectedBusId) setSelectedBusId(createdBus.id);
     setShowAddBusModal(false);
-    setSelectedBusId(newBus.id);
     setNewBusForm({
       busNumber: '',
       capacity: 30,
@@ -247,633 +226,535 @@ export default function TransportManagerInterface() {
       eveDep: '04:30 PM',
       eveArr: '06:00 PM (*approx*)'
     });
-    showToast(`Added ${newBus.busNumber} to transport fleet!`);
+    showToast(`Registered ${createdBus.busNumber} (${createdBus.numberPlate}) into Fleet Matrix!`);
+  };
+
+  const handleAddCityBusEvent = (e) => {
+    e.preventDefault();
+    if (!newEventTitle.trim()) return;
+
+    const newEvt = {
+      id: `evt-${Date.now()}`,
+      title: newEventTitle.trim(),
+      busCount: parseInt(newEventBuses, 10) || 1,
+      date: '2026-09-01',
+      location: 'Campus Event Venue'
+    };
+
+    setCityBusEvents(prev => [...prev, newEvt]);
+    setNewEventTitle('');
+    setNewEventBuses(2);
+    showToast(`Added City Bus Event Requirement!`);
   };
 
   return (
-    <div className="space-y-6 font-sans animate-in fade-in duration-300">
+    <div className="space-y-6 font-sans pb-10 relative">
       
-      {/* Toast Alert */}
+      {/* Live Campus Orbit Telemetry Ticker */}
+      <LiveCampusTicker />
+
+      {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
-          <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
+        <div className="fixed top-20 right-6 z-50 bg-[#92400E] text-white px-4 py-2.5 rounded-md shadow-md border border-[#78350F] text-xs font-mono font-bold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* ================= SECTION HERO: TRANSPORT BACKDROP ================= */}
-      <SectionHero
-        image={BACKDROP_IMAGES.transport}
-        category="Fleet & Logistics"
-        categoryIcon={Bus}
-        badgeText={`${busFleet.length} Buses in Fleet`}
-        title="Transit & Fleet Logistics Command"
-        subtitle="Manage daily student bus routes, live GPS telemetry, special faculty vehicle reservations & transit maintenance tickets."
-      >
-        {busFleet.length > 0 && (
-          <button
-            onClick={handleClearAllBuses}
-            className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-medium rounded-lg transition-colors cursor-pointer"
-            title="Remove all buses"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
-        )}
-
-        <button
-          onClick={() => setShowAddBusModal(true)}
-          className="px-4 py-2 inst-button-primary text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Add New Bus</span>
-        </button>
-      </SectionHero>
-
-      {/* Live Orbit Telemetry Ticker Marquee */}
-      <LiveCampusTicker />
-
-      {/* ================= TOP SECTION: 10 BUS FLEET STATUS MATRIX ================= */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
-            <Bus className="w-4 h-4 text-[#BC4800]" />
-            Active Bus Fleet Matrix ({busFleet.length} Buses)
-          </h2>
-
-          {/* Filter Status Pills */}
-          <div className="flex items-center bg-[#F7EFE4] p-1 rounded-lg border border-[#E8DCC8] text-xs font-semibold">
-            {['ALL', 'ON ROUTE', 'STATIONED', 'MAINTENANCE'].map((st) => (
-              <button
-                key={st}
-                onClick={() => setFilterStatus(st)}
-                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                  filterStatus === st
-                    ? 'bg-[#BC4800] text-white shadow-xs'
-                    : 'text-[#6B5A4A] hover:text-[#2B1D12]'
-                }`}
-              >
-                {st}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Fleet Grid or Empty State */}
-        {filteredBuses.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl border border-dashed border-[#E8DCC8] bg-[#F7EFE4] space-y-3">
-            <div className="w-12 h-12 rounded-xl bg-[#BC4800]/15 text-[#BC4800] flex items-center justify-center mx-auto border border-[#BC4800]/30">
-              <Bus className="w-6 h-6" />
+      {/* HEADER BANNER */}
+      <div className="p-6 rounded-lg bg-[#1C1917] text-[#FAF8F3] border border-[#92400E] shadow-md relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="badge-brown text-[10px]">
+                <Bus className="w-3.5 h-3.5 text-[#92400E]" />
+                TRANSIT COMMAND
+              </span>
+              <span className="text-xs text-[#FDE68A] font-bold flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-[#F59E0B] animate-ping inline-block" />
+                Live Fleet Manager
+              </span>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-[#2B1D12]">No buses in fleet matrix</h3>
-              <p className="text-xs text-[#6B5A4A] font-medium mt-0.5">
-                Click "+ Add New Bus" to register a bus with Bus Number, Capacity, Dist, and Number Plate.
-              </p>
-            </div>
-            <button
-              onClick={() => setShowAddBusModal(true)}
-              className="px-4 py-2 inst-button-primary text-xs font-semibold rounded-lg shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add New Bus</span>
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {filteredBuses.map((bus) => {
-              const isSelected = bus.id === selectedBusId;
-              const occPct = Math.round((bus.occupied / bus.capacity) * 100);
-
-              return (
-                <div
-                  key={bus.id}
-                  onClick={() => setSelectedBusId(bus.id)}
-                  className={`p-3.5 rounded-xl border transition-all duration-200 cursor-pointer space-y-2 relative bg-[#F7EFE4] ${
-                    isSelected
-                      ? 'border-[#BC4800] ring-1 ring-[#BC4800] shadow-xs'
-                      : 'border-[#E8DCC8] hover:border-[#BC4800]/60'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-[#2B1D12] leading-none truncate">
-                      {bus.busNumber}
-                    </h3>
-                    
-                    <div className="flex items-center space-x-1">
-                      <span className={`w-2 h-2 rounded-full shrink-0 ${
-                        bus.status === 'On Route' ? 'bg-[#4E7A51]' : bus.status === 'Maintenance' ? 'bg-[#A6402F]' : 'bg-[#C48A2E]'
-                      }`} />
-                      
-                      <button
-                        onClick={(e) => handleDeleteBus(e, bus.id, bus.busNumber)}
-                        className="p-1 rounded text-[#6B5A4A] hover:text-[#A6402F] transition-colors cursor-pointer ml-1"
-                        title="Remove bus"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Bus Specs: Capacity, Dist, Number Plate */}
-                  <div className="space-y-1 text-xs text-[#6B5A4A]">
-                    <div className="flex justify-between items-center">
-                      <span>Capacity:</span>
-                      <span className="font-semibold text-[#2B1D12]">{bus.capacity}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span>Dist:</span>
-                      <span className="font-semibold text-[#BC4800] uppercase truncate max-w-[90px]">{bus.dist}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center pt-0.5 border-t border-[#E8DCC8]">
-                      <span>Plate:</span>
-                      <span className="font-semibold text-[#2B1D12]">{bus.numberPlate || 'N/A'}</span>
-                    </div>
-                  </div>
-
-                  {/* Progress Bar inside box */}
-                  <div className="w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${occPct > 85 ? 'bg-[#A6402F]' : 'bg-[#4E7A51]'}`}
-                      style={{ width: `${occPct}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* ================= BOTTOM SECTION: TWO-COLUMN DASHBOARD LAYOUT ================= */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-
-        {/* LEFT COLUMN: Check Arrival and Departure Time of Bus */}
-        <div className="lg:col-span-6 p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
-          
-          <div className="border-b pb-3 border-[#E8DCC8]">
-            <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-[#BC4800]" />
-              Check Arrival and Departure Times
-            </h3>
-            <p className="text-xs text-[#6B5A4A] font-medium mt-0.5">
-              Select a bus to inspect morning and evening shift schedules
+            
+            <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              Transport Manager Interface
+              <Sparkles className="w-5 h-5 text-[#F59E0B]" />
+            </h1>
+            <p className="text-xs text-[#D6CEBE] max-w-2xl font-medium leading-relaxed">
+              Real-time bus occupancy, arrival/departure schedules, faculty booking approvals & city bus requirements.
             </p>
           </div>
 
-          {/* Search Dropdown / Bus Picker */}
-          {busFleet.length > 0 && activeBus ? (
-            <>
-              <div className="relative">
-                <select
-                  value={selectedBusId || ''}
-                  onChange={(e) => setSelectedBusId(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs font-semibold text-[#2B1D12] focus:outline-none focus:border-[#BC4800] transition-colors"
-                >
-                  {busFleet.map((b) => (
-                    <option key={b.id} value={b.id}>
-                      {b.busNumber} (Plate: {b.numberPlate} — Dist: {b.dist})
-                    </option>
-                  ))}
-                </select>
-              </div>
+          <div className="flex items-center gap-2.5">
+            {busFleet.length > 0 && (
+              <button
+                onClick={handleClearAllBuses}
+                className="btn-secondary text-xs"
+                title="Remove all buses"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Remove All</span>
+              </button>
+            )}
 
-              {/* Schedule Details Box */}
-              <div className="space-y-3 pt-1">
-                <h4 className="text-xs font-bold text-[#2B1D12] tracking-tight flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-[#BC4800]" />
-                  Schedule details for <span className="text-[#BC4800] font-semibold">{activeBus.busNumber}</span>
-                </h4>
+            <button
+              onClick={() => setShowAddBusModal(true)}
+              className="btn-primary-brown text-xs"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Vehicle to Fleet</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  
-                  {/* Morning Departure */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
-                      Morning Departure
-                    </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
-                      {activeBus.morningDep}
-                    </div>
-                  </div>
-
-                  {/* Morning Arrival */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
-                      Morning Arrival
-                    </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
-                      {activeBus.morningArr}
-                    </div>
-                  </div>
-
-                  {/* Evening Departure */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
-                      Evening Departure
-                    </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
-                      {activeBus.eveDep}
-                    </div>
-                  </div>
-
-                  {/* Evening Arrival */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
-                      Evening Arrival
-                    </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
-                      {activeBus.eveArr}
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="py-6 text-center text-xs text-[#6B5A4A] font-medium">
-              No bus selected. Register a bus to inspect timetable.
-            </div>
-          )}
-
+      {/* Fleet Summary Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <div className="card-surface p-4 border-l-4 border-l-amber-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">Total Shuttles</span>
+            <Bus className="w-4 h-4 text-amber-700" />
+          </div>
+          <p className="text-xl font-bold text-[#1C1917] mt-1">{busFleet.length}</p>
+          <span className="text-[10px] text-[#78716C] font-mono font-semibold">Active Fleet Register</span>
         </div>
 
-        {/* RIGHT COLUMN: Bus Booking Req & Events that would req city bus */}
-        <div className="lg:col-span-6 space-y-5">
+        <div className="card-surface p-4 border-l-4 border-l-emerald-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">On Route Now</span>
+            <Navigation className="w-4 h-4 text-emerald-600" />
+          </div>
+          <p className="text-xl font-bold text-[#1C1917] mt-1">
+            {busFleet.filter(b => b.status === 'On Route').length}
+          </p>
+          <span className="text-[10px] text-emerald-700 font-mono font-bold">GPS Beacon Active</span>
+        </div>
 
-          {/* CARD 1: BUS BOOKING REQUESTS */}
-          <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-3">
+        <div className="card-surface p-4 border-l-4 border-l-blue-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">Passenger Riders</span>
+            <Users className="w-4 h-4 text-blue-600" />
+          </div>
+          <p className="text-xl font-bold text-[#1C1917] mt-1">
+            {busFleet.reduce((acc, b) => acc + (b.occupied || 0), 0)}
+          </p>
+          <span className="text-[10px] text-blue-700 font-mono font-bold">Live Scan Ingress</span>
+        </div>
+
+        <div className="card-surface p-4 border-l-4 border-l-rose-600">
+          <div className="flex items-center justify-between text-xs text-[#57534E]">
+            <span className="font-bold">Pending Bookings</span>
+            <Clock className="w-4 h-4 text-rose-600" />
+          </div>
+          <p className="text-xl font-bold text-[#1C1917] mt-1">
+            {bookingRequests.filter(r => r.status === 'Pending').length}
+          </p>
+          <span className="text-[10px] text-rose-700 font-mono font-bold">Requires Approval</span>
+        </div>
+      </div>
+
+      {/* Main Bus Fleet Matrix Table */}
+      <div className="card-surface p-5 shadow-2xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E6E0D2]">
+          <div className="flex items-center space-x-2">
+            <Bus className="w-4 h-4 text-[#92400E]" />
+            <h2 className="text-sm font-bold text-[#1C1917]">
+              Shuttle Fleet Roster & Live Timetable Matrix
+            </h2>
+            <span className="badge-brown text-[10px]">
+              {filteredBuses.length} Vehicles
+            </span>
+          </div>
+
+          {/* Search & Filter */}
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-[#78716C] absolute left-2.5 top-2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search bus, route..."
+                className="bg-[#F0EBE1] border border-[#E6E0D2] rounded-md pl-8 pr-2 py-1 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#92400E] font-bold"
+              />
+            </div>
             
-            <div className="flex items-center justify-between pb-2 border-b border-[#E8DCC8]">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
-                  Bus Booking Requests
-                </h3>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#C48A2E]/15 text-[#C48A2E] border border-[#C48A2E]/30">
-                  {bookingRequests.filter(r => r.status === 'Pending').length} Pending
-                </span>
-              </div>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-[#F0EBE1] border border-[#E6E0D2] rounded-md px-2 py-1 text-xs text-[#1C1917] font-bold focus:outline-none"
+            >
+              <option value="ALL">All Status</option>
+              <option value="ON ROUTE">On Route</option>
+              <option value="STATIONED">Stationed</option>
+              <option value="MAINTENANCE">Maintenance</option>
+            </select>
+          </div>
+        </div>
 
-              <button
-                onClick={() => setShowAddReqModal(true)}
-                className="px-3 py-1 inst-button-primary rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1 shadow-xs"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add Request</span>
-              </button>
+        {/* Bus Table */}
+        <div className="overflow-x-auto border border-[#E6E0D2] rounded-md">
+          <table className="table-mono">
+            <thead>
+              <tr>
+                <th>Bus Identifier</th>
+                <th>Route Tag</th>
+                <th>Plate Number</th>
+                <th>Status</th>
+                <th>Occupancy</th>
+                <th>Morning Schedule</th>
+                <th>Evening Schedule</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredBuses.map((bus) => {
+                const isSelected = bus.id === selectedBusId;
+                const isOverloaded = bus.occupied > bus.capacity;
+
+                return (
+                  <tr
+                    key={bus.id}
+                    onClick={() => setSelectedBusId(bus.id)}
+                    className={`cursor-pointer transition-colors ${isSelected ? 'bg-[#F0EBE1] font-bold' : ''}`}
+                  >
+                    <td className="font-bold text-[#1C1917] flex items-center gap-2">
+                      <Bus className={`w-3.5 h-3.5 ${isSelected ? 'text-[#92400E]' : 'text-[#78716C]'}`} />
+                      <span>{bus.busNumber}</span>
+                    </td>
+
+                    <td className="font-mono text-xs text-[#57534E] font-semibold">{bus.dist}</td>
+                    <td className="font-mono text-xs text-[#57534E] font-semibold">{bus.numberPlate}</td>
+
+                    <td>
+                      <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${
+                        bus.status === 'On Route' ? 'badge-emerald' : bus.status === 'Maintenance' ? 'badge-error' : 'badge-brown'
+                      }`}>
+                        {bus.status}
+                      </span>
+                    </td>
+
+                    <td>
+                      <div className="flex items-center space-x-2">
+                        <span className={`font-mono font-bold text-xs ${isOverloaded ? 'text-rose-700' : 'text-[#1C1917]'}`}>
+                          {bus.occupied} / {bus.capacity}
+                        </span>
+                        {isOverloaded && (
+                          <span className="badge-error text-[9px]">OVERLOAD</span>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="font-mono text-[11px] text-[#57534E] font-semibold">
+                      {bus.morningDep} → {bus.morningArr}
+                    </td>
+
+                    <td className="font-mono text-[11px] text-[#57534E] font-semibold">
+                      {bus.eveDep} → {bus.eveArr}
+                    </td>
+
+                    <td>
+                      <button
+                        onClick={(e) => handleDeleteBus(e, bus.id, bus.busNumber)}
+                        className="text-[#78716C] hover:text-rose-700 p-1 rounded"
+                        title="Remove vehicle"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Selected Bus Inspection & Timetable Detail */}
+      {activeBus && (
+        <div className="card-surface p-5 shadow-2xs space-y-3 bg-[#F0EBE1]/50 border-amber-200">
+          <div className="flex items-center justify-between pb-2 border-b border-[#E6E0D2]">
+            <div className="flex items-center space-x-2">
+              <Navigation className="w-4 h-4 text-[#92400E]" />
+              <h3 className="text-sm font-bold text-[#1C1917]">
+                Live Inspector: {activeBus.busNumber} ({activeBus.numberPlate})
+              </h3>
+            </div>
+            <span className="badge-brown text-[10px]">
+              Route Tag: {activeBus.dist}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+            <div className="bg-[#FAF8F3] p-3 rounded border border-[#E6E0D2]">
+              <span className="text-[#57534E] block mb-1 font-bold">Occupancy Gauge</span>
+              <div className="flex items-baseline space-x-2">
+                <span className="text-xl font-bold text-[#1C1917]">{activeBus.occupied}</span>
+                <span className="text-xs text-[#78716C]">/ {activeBus.capacity} Capacity Limit</span>
+              </div>
             </div>
 
-            {/* List of Requests */}
-            {bookingRequests.length === 0 ? (
-              <p className="text-xs text-[#6B5A4A] py-3 text-center">No pending bus booking requests.</p>
-            ) : (
-              <div className="space-y-2">
-                {bookingRequests.map((req) => (
-                  <div
-                    key={req.id}
-                    className="p-3 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] flex items-center justify-between gap-2"
-                  >
-                    <div className="space-y-0.5 text-xs text-[#2B1D12] truncate">
-                      <p className="font-bold text-xs text-[#2B1D12] truncate">{req.requestor} ({req.department})</p>
-                      <p className="text-[#6B5A4A] text-xs truncate">
-                        Date: <span className="font-semibold text-[#2B1D12]">{req.date}</span> • Day: <span className="font-semibold text-[#2B1D12]">{req.day}</span>
+            <div className="bg-[#FAF8F3] p-3 rounded border border-[#E6E0D2]">
+              <span className="text-[#57534E] block mb-1 font-bold">Morning Schedule</span>
+              <p className="text-[#1C1917] font-bold">Departs: {activeBus.morningDep}</p>
+              <p className="text-[#57534E] font-semibold">Arrives: {activeBus.morningArr}</p>
+            </div>
+
+            <div className="bg-[#FAF8F3] p-3 rounded border border-[#E6E0D2]">
+              <span className="text-[#57534E] block mb-1 font-bold">Evening Schedule</span>
+              <p className="text-[#1C1917] font-bold">Departs: {activeBus.eveDep}</p>
+              <p className="text-[#57534E] font-semibold">Arrives: {activeBus.eveArr}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Grid: Faculty Booking Requests & Support Tickets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        
+        {/* Faculty Booking Requests List */}
+        <div className="card-surface p-5 shadow-2xs space-y-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-3">
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-4 h-4 text-[#92400E]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
+                  Faculty Bus Excursion Booking Requests
+                </h3>
+              </div>
+              <span className="badge-brown text-[10px]">
+                {bookingRequests.length} Pending
+              </span>
+            </div>
+
+            <div className="divide-y divide-[#E6E0D2]">
+              {bookingRequests.map((req) => (
+                <div key={req.id} className="py-3 space-y-1.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <h4 className="text-xs font-bold text-[#1C1917]">{req.requestor}</h4>
+                        <span className="badge-brown text-[9px]">{req.department}</span>
+                      </div>
+                      <p className="text-xs font-medium text-[#1C1917] mt-0.5">{req.purpose}</p>
+                      <p className="text-[11px] text-[#57534E] font-mono mt-0.5">
+                        Date: {req.date} ({req.day}) • {req.busType}
                       </p>
-                      <p className="text-xs text-[#BC4800] font-medium truncate">
-                        {req.purpose} • <span>{req.busType}</span>
-                      </p>
-                      {req.status !== 'Pending' && (
-                        <span className={`inline-block mt-0.5 text-xs font-semibold px-2 py-0.5 rounded-full border ${
-                          req.status === 'Approved' ? 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30' : 'bg-[#A6402F]/15 text-[#A6402F] border-[#A6402F]/30'
-                        }`}>
-                          {req.status}
-                        </span>
-                      )}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex items-center space-x-1.5 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0">
                       {req.status === 'Pending' ? (
                         <>
                           <button
                             onClick={() => handleBookingAction(req.id, 'Approved')}
-                            className="p-1.5 rounded-lg bg-[#4E7A51] text-white hover:bg-[#3D6140] transition-colors cursor-pointer"
-                            title="Approve request"
+                            className="btn-primary-brown text-[10px] py-1 px-2"
+                            title="Approve Excursion"
                           >
-                            <Check className="w-3.5 h-3.5" />
+                            <Check className="w-3 h-3" />
+                            <span>Approve</span>
                           </button>
                           <button
                             onClick={() => handleBookingAction(req.id, 'Rejected')}
-                            className="p-1.5 rounded-lg bg-[#A6402F]/15 hover:bg-[#A6402F]/25 text-[#A6402F] border border-[#A6402F]/30 transition-colors cursor-pointer"
-                            title="Reject request"
+                            className="btn-secondary text-[10px] py-1 px-2"
+                            title="Reject Excursion"
                           >
-                            <X className="w-3.5 h-3.5" />
+                            <X className="w-3 h-3" />
                           </button>
                         </>
                       ) : (
-                        <button
-                          onClick={() => handleBookingAction(req.id, 'Pending')}
-                          className="px-2.5 py-1 rounded-lg bg-[#F7EFE4] text-xs font-semibold text-[#6B5A4A] border border-[#E8DCC8] cursor-pointer"
-                        >
-                          Reset
-                        </button>
+                        <span className={`text-[10px] font-mono font-bold px-2 py-1 rounded border ${
+                          req.status === 'Approved' ? 'badge-emerald' : 'badge-brown'
+                        }`}>
+                          {req.status}
+                        </span>
                       )}
 
                       <button
                         onClick={() => handleDeleteBookingReq(req.id, req.requestor)}
-                        className="p-1.5 rounded-lg text-[#6B5A4A] hover:text-[#A6402F] transition-colors cursor-pointer"
-                        title="Delete request"
+                        className="text-[#78716C] hover:text-rose-700 p-1"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-
-          </div>
-
-          {/* CARD 2: EVENTS REQUIRING CITY BUS */}
-          <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-3">
-            
-            <div className="border-b pb-2 border-[#E8DCC8]">
-              <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
-                Events Requiring City Bus
-              </h3>
-            </div>
-
-            {/* List of City Bus Events */}
-            <div className="space-y-2 text-xs">
-              {cityBusEvents.map((evt) => (
-                <div
-                  key={evt.id}
-                  className="p-3 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] flex items-center justify-between gap-2"
-                >
-                  <div className="truncate">
-                    <span className="block text-[#2B1D12] truncate text-xs font-bold">{evt.title}</span>
-                    <span className="text-xs text-[#BC4800] font-semibold">{evt.date}</span>
-                  </div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#BC4800]/15 text-[#BC4800] border border-[#BC4800]/30 text-xs font-semibold shrink-0">
-                    {evt.busCount} City Buses
-                  </span>
                 </div>
               ))}
             </div>
-
-            {/* Add New Event Input Form */}
-            <form onSubmit={handleAddCityBusEvent} className="pt-1 flex items-center gap-2">
-              <input
-                type="text"
-                placeholder="Enter event name requiring city bus..."
-                value={newEventTitle}
-                onChange={(e) => setNewEventTitle(e.target.value)}
-                className="flex-1 px-3 py-1.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] transition-colors"
-              />
-              <button
-                type="submit"
-                className="px-3.5 py-1.5 inst-button-primary rounded-lg text-xs font-semibold transition-colors cursor-pointer shrink-0 shadow-xs"
-              >
-                Add Event
-              </button>
-            </form>
-
           </div>
 
+          <button
+            onClick={() => setShowAddReqModal(true)}
+            className="btn-primary-brown w-full text-xs py-2 mt-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Submit Faculty Excursion Bus Request</span>
+          </button>
+        </div>
+
+        {/* Support Tickets Logger */}
+        <div>
+          <TicketsSupportLogCard currentUser={{ role: 'transport_manager', full_name: 'Sub-Admin Transport' }} />
         </div>
 
       </div>
 
-      {/* ================= TRANSPORT ADMIN TICKETS & SUPPORT LOG ================= */}
-      <TicketsSupportLogCard 
-        adminDomain="transport" 
-        title="Transport Admin Tickets & Support Log" 
-        subtitle="Track bus maintenance, driver telemetry, shuttle GPS & transit logistics tickets" 
-      />
-
-      {/* ================= ADD NEW BOOKING REQ MODAL ================= */}
-      {showAddReqModal && (
-        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
-          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
-            
-            <div className="flex items-center justify-between pb-2 border-b border-[#E8DCC8]">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
-                  <Calendar className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-[#2B1D12]">
-                    Add Bus Booking Request
-                  </h3>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
-                    Submit faculty or department transport booking
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowAddReqModal(false)}
-                className="p-1 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+      {/* Modal: Add Bus */}
+      {showAddBusModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-sans">
+          <div className="card-surface w-full max-w-md p-6 rounded-lg border border-[#E6E0D2] shadow-xl relative bg-[#FAF8F3]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-4">
+              <h3 className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                <Bus className="w-4 h-4 text-[#92400E]" />
+                Register Vehicle into Fleet Matrix
+              </h3>
+              <button onClick={() => setShowAddBusModal(false)} className="text-[#78716C] hover:text-[#1C1917]">×</button>
             </div>
 
-            <form onSubmit={handleAddBookingReqSubmit} className="space-y-3 text-xs">
-              
-              {/* Requestor Name */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Requestor Name <span className="text-[#BC4800]">*</span>
-                </label>
+            <form onSubmit={handleAddBusSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Bus Name / Identifier</label>
                 <input
                   type="text"
+                  value={newBusForm.busNumber}
+                  onChange={(e) => setNewBusForm({ ...newBusForm, busNumber: e.target.value })}
+                  placeholder="e.g. Bus 11 (Express Shuttle)"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                   required
-                  placeholder="e.g. Dr. Meera Nambiar"
-                  value={newReqForm.requestor}
-                  onChange={(e) => setNewReqForm({ ...newReqForm, requestor: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
                 />
               </div>
 
-              {/* Department */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Department
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Biotechnology"
-                  value={newReqForm.department}
-                  onChange={(e) => setNewReqForm({ ...newReqForm, department: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
-                />
-              </div>
-
-              {/* Date & Day */}
-              <div className="grid grid-cols-2 gap-2.5">
-                <div className="space-y-1">
-                  <label className="block font-semibold text-[#2B1D12]">Date</label>
-                  <input
-                    type="date"
-                    value={newReqForm.date}
-                    onChange={(e) => setNewReqForm({ ...newReqForm, date: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] font-semibold focus:outline-none focus:border-[#BC4800]"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="block font-semibold text-[#2B1D12]">Day</label>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Route / Distance Tag</label>
                   <input
                     type="text"
-                    placeholder="e.g. Tuesday"
-                    value={newReqForm.day}
-                    onChange={(e) => setNewReqForm({ ...newReqForm, day: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                    value={newBusForm.dist}
+                    onChange={(e) => setNewBusForm({ ...newBusForm, dist: e.target.value })}
+                    placeholder="e.g. North Campus Loop"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Seating Capacity</label>
+                  <input
+                    type="number"
+                    value={newBusForm.capacity}
+                    onChange={(e) => setNewBusForm({ ...newBusForm, capacity: e.target.value })}
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                    min="10"
+                    max="100"
                   />
                 </div>
               </div>
 
-              {/* Purpose */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">Purpose</label>
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">License Plate Number</label>
                 <input
                   type="text"
-                  placeholder="e.g. Field Excursion Visit"
-                  value={newReqForm.purpose}
-                  onChange={(e) => setNewReqForm({ ...newReqForm, purpose: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  value={newBusForm.numberPlate}
+                  onChange={(e) => setNewBusForm({ ...newBusForm, numberPlate: e.target.value })}
+                  placeholder="e.g. PB-01-AB-9988"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                 />
               </div>
 
-              {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E8DCC8]">
+              <div className="pt-2 flex items-center justify-end space-x-2">
                 <button
                   type="button"
-                  onClick={() => setShowAddReqModal(false)}
-                  className="px-3.5 py-1.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer"
+                  onClick={() => setShowAddBusModal(false)}
+                  className="btn-secondary text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 inst-button-primary rounded-lg font-semibold transition-colors cursor-pointer shadow-xs"
+                  className="btn-primary-brown text-xs py-2 px-4"
                 >
-                  Submit Request
+                  Add Vehicle
                 </button>
               </div>
-
             </form>
           </div>
         </div>
       )}
 
-      {/* ================= ADD NEW BUS MODAL DIALOG ================= */}
-      {showAddBusModal && (
-        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
-          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
-            
-            <div className="flex items-center justify-between pb-2 border-b border-[#E8DCC8]">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
-                  <Bus className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-[#2B1D12]">
-                    Add New Bus
-                  </h3>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
-                    Register bus number, capacity, dist, and number plate
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowAddBusModal(false)}
-                className="p-1 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+      {/* Modal: Add Faculty Excursion Request */}
+      {showAddReqModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-sans">
+          <div className="card-surface w-full max-w-md p-6 rounded-lg border border-[#E6E0D2] shadow-xl relative bg-[#FAF8F3]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2] mb-4">
+              <h3 className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#92400E]" />
+                Submit Excursion Bus Booking
+              </h3>
+              <button onClick={() => setShowAddReqModal(false)} className="text-[#78716C] hover:text-[#1C1917]">×</button>
             </div>
 
-            <form onSubmit={handleAddBusSubmit} className="space-y-3 text-xs">
-              
-              {/* Bus Number */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Bus Number <span className="text-[#BC4800]">*</span>
-                </label>
+            <form onSubmit={handleAddBookingReqSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Faculty / Requestor Name</label>
                 <input
                   type="text"
+                  value={newReqForm.requestor}
+                  onChange={(e) => setNewReqForm({ ...newReqForm, requestor: e.target.value })}
+                  placeholder="e.g. Dr. Ananya Sharma"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                   required
-                  placeholder="e.g. Bus 1, Bus 11"
-                  value={newBusForm.busNumber}
-                  onChange={(e) => setNewBusForm({ ...newBusForm, busNumber: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
                 />
               </div>
 
-              {/* Seating Capacity */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Capacity <span className="text-[#BC4800]">*</span>
-                </label>
-                <input
-                  type="number"
-                  required
-                  min="5"
-                  max="100"
-                  placeholder="e.g. 50"
-                  value={newBusForm.capacity}
-                  onChange={(e) => setNewBusForm({ ...newBusForm, capacity: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Department</label>
+                  <input
+                    type="text"
+                    value={newReqForm.department}
+                    onChange={(e) => setNewReqForm({ ...newReqForm, department: e.target.value })}
+                    placeholder="e.g. Computer Science"
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[#1C1917] font-semibold mb-1">Date</label>
+                  <input
+                    type="date"
+                    value={newReqForm.date}
+                    onChange={(e) => setNewReqForm({ ...newReqForm, date: e.target.value })}
+                    className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold font-mono"
+                  />
+                </div>
               </div>
 
-              {/* Distance / Route Tag */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Dist (Route / Distance) <span className="text-[#BC4800]">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. ptk, itemi, Airport road"
-                  value={newBusForm.dist}
-                  onChange={(e) => setNewBusForm({ ...newBusForm, dist: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
-                />
-              </div>
-
-              {/* Number Plate */}
-              <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Number Plate <span className="text-[#BC4800]">*</span>
-                </label>
+              <div>
+                <label className="block text-[#1C1917] font-semibold mb-1">Excursion Purpose / Destination</label>
                 <input
                   type="text"
+                  value={newReqForm.purpose}
+                  onChange={(e) => setNewReqForm({ ...newReqForm, purpose: e.target.value })}
+                  placeholder="e.g. Science Park Planetarium Field Trip"
+                  className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-2 text-[#1C1917] focus:outline-none focus:border-[#92400E] font-bold"
                   required
-                  placeholder="e.g. PB-01-AB-1234"
-                  value={newBusForm.numberPlate}
-                  onChange={(e) => setNewBusForm({ ...newBusForm, numberPlate: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
                 />
               </div>
 
-              {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E8DCC8]">
+              <div className="pt-2 flex items-center justify-end space-x-2">
                 <button
                   type="button"
-                  onClick={() => setShowAddBusModal(false)}
-                  className="px-3.5 py-1.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer"
+                  onClick={() => setShowAddReqModal(false)}
+                  className="btn-secondary text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 inst-button-primary rounded-lg font-semibold transition-colors cursor-pointer shadow-xs"
+                  className="btn-primary-brown text-xs py-2 px-4"
                 >
-                  Create Bus
+                  Submit Request
                 </button>
               </div>
-
             </form>
           </div>
         </div>

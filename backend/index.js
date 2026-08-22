@@ -254,6 +254,20 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+const path = require('path');
+
+// Serve static frontend build assets in production mode
+if (process.env.NODE_ENV === 'production' || process.env.SERVE_STATIC === 'true') {
+    const frontendDist = path.join(__dirname, '../frontend/dist');
+    app.use(express.static(frontendDist));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(frontendDist, 'index.html'));
+        }
+    });
+}
+
 app.listen(PORT, () => {
     console.log(`🚀 Campus Orbit RBAC Express Server running on http://localhost:${PORT}`);
 });
+

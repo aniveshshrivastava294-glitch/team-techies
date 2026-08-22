@@ -72,12 +72,12 @@ export const demoAccounts = [
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('campus_orbit_user');
-    return saved ? JSON.parse(saved) : demoAccounts[3]; // Default to Transport Admin for immediate preview of Transport Manager Interface
+    return saved ? JSON.parse(saved) : demoAccounts[2]; // Default to Events Admin for immediate preview of Auditorium & Event Manager Interface
   });
 
   const login = async (email, password) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(getApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -103,7 +103,7 @@ export function AuthProvider({ children }) {
 
   const register = async (email, password, role, department_domain, full_name) => {
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch(getApiUrl('/api/auth/register'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, role, department_domain, full_name })
