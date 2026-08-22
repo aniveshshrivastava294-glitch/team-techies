@@ -66,7 +66,7 @@ export const BACKDROP_IMAGES = {
 
   // Energy & Sustainability Section: Solar arrays (Unsplash — real photo TBD)
   energy: {
-    url: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1920&q=80',
+    url: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1920&q=80',
     alt: 'Solar array panels and clean power infrastructure',
     caption: 'Energy, Solar & Sustainability Command'
   },
