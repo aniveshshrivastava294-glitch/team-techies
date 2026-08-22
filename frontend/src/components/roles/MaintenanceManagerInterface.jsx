@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
+import SectionHero from '../SectionHero';
+import { BACKDROP_IMAGES } from '../../config/backdropImages';
 import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import LiveCampusTicker from '../LiveCampusTicker';
 import { 
-  Wrench, ShieldAlert, Check, X, RefreshCw, Zap, Cpu, Wind, 
-  Droplets, Flame, AlertTriangle, CheckCircle2, Clock, Plus, Search,
-  Gauge, Activity, ArrowRight, Sparkles, Building2
+  Wrench, Check, X, CheckCircle2, Plus, Gauge
 } from 'lucide-react';
 
 export default function MaintenanceManagerInterface() {
   const [toastMsg, setToastMsg] = useState(null);
-  const [filterSystem, setFilterSystem] = useState('ALL');
 
   // Work Orders state
   const [workOrders, setWorkOrders] = useState([
@@ -96,65 +95,45 @@ export default function MaintenanceManagerInterface() {
   };
 
   return (
-    <div className="space-y-6 font-sans animate-in fade-in duration-500">
+    <div className="space-y-6 font-sans animate-in fade-in duration-300">
       
-      {/* Live Campus Telemetry Ticker */}
-      <LiveCampusTicker />
-
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-black/90 border border-amber-500/40 text-amber-300 font-mono text-xs px-4 py-2.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-amber-400" />
+        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
+          <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* Header Banner - Borderless Galaxy */}
-      <div className="p-6 rounded-3xl bg-slate-950 text-white border border-amber-500/30 shadow-2xl relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-amber-950/40 pointer-events-none rounded-3xl" />
-        
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <span className="px-3 py-1 text-[10px] font-mono font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full flex items-center gap-1.5 shadow-sm">
-                <Wrench className="w-3.5 h-3.5 text-amber-400" />
-                FACILITY & INFRASTRUCTURE COMMAND
-              </span>
-              <span className="text-xs text-amber-200/80 font-bold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
-                Live Systems Monitor
-              </span>
-            </div>
-            
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white drop-shadow-sm flex items-center gap-2">
-              Maintenance Manager Interface
-              <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" />
-            </h1>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl font-medium leading-relaxed">
-              Real-time HVAC climate diagnostics, electrical substation telemetry, elevator safety checks & work order dispatches.
-            </p>
-          </div>
+      {/* ================= SECTION HERO: MAINTENANCE & INFRASTRUCTURE BACKDROP ================= */}
+      <SectionHero
+        image={BACKDROP_IMAGES.maintenance}
+        category="Facility & Infrastructure"
+        categoryIcon={Wrench}
+        badgeText="98.4% System Health"
+        title="Facilities & Maintenance Command"
+        subtitle="Real-time HVAC climate diagnostics, electrical substation telemetry, elevator safety checks & work order dispatches."
+      >
+        <button
+          onClick={() => setShowCreateWoModal(true)}
+          className="px-4 py-2 inst-button-primary text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          <span>Create Work Order</span>
+        </button>
+      </SectionHero>
 
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setShowCreateWoModal(true)}
-              className="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-black rounded-xl transition-all shadow-lg shadow-amber-950/50 flex items-center gap-1.5 cursor-pointer border border-amber-400/50 hover:scale-105 active:scale-95"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Create Work Order</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Live Campus Telemetry Ticker */}
+      <LiveCampusTicker />
 
       {/* Systems Telemetry Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-amber-400" />
+          <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
+            <Gauge className="w-4 h-4 text-[#BC4800]" />
             Infrastructure Telemetry Matrix ({systems.length} Core Systems)
           </h2>
-          <span className="text-xs font-mono text-emerald-400 font-bold px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+          <span className="text-xs text-[#2B1D12] font-semibold px-2.5 py-1 bg-[#FDF8F2] border border-[#E8DCC8] rounded-full">
             98.4% Operational Health
           </span>
         </div>
@@ -165,29 +144,25 @@ export default function MaintenanceManagerInterface() {
             return (
               <div 
                 key={sys.id} 
-                className={`p-4 rounded-2xl border transition-all duration-300 ${
-                  isWarning 
-                    ? 'bg-amber-500/5 border-amber-500/40 hover:border-amber-400' 
-                    : 'bg-white/[0.02] border-white/5 hover:border-white/20'
-                }`}
+                className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-bold text-white">{sys.name}</h3>
-                  <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border uppercase ${
-                    isWarning ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                  <h3 className="text-xs font-bold text-[#2B1D12]">{sys.name}</h3>
+                  <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
+                    isWarning ? 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30' : 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30'
                   }`}>
                     {sys.status}
                   </span>
                 </div>
 
-                <div className="mt-3 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-zinc-400">{sys.location}</span>
-                  <span className="text-white font-bold">{sys.metric}</span>
+                <div className="mt-3 flex items-center justify-between text-xs text-[#6B5A4A]">
+                  <span>{sys.location}</span>
+                  <span className="text-[#2B1D12] font-bold">{sys.metric}</span>
                 </div>
 
-                <div className="mt-2.5 w-full bg-black/60 h-1.5 rounded-full overflow-hidden border border-white/5">
+                <div className="mt-2 w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden">
                   <div 
-                    className={`h-full rounded-full transition-all ${isWarning ? 'bg-amber-400' : 'bg-emerald-400'}`} 
+                    className={`h-full rounded-full transition-all ${isWarning ? 'bg-[#C48A2E]' : 'bg-[#4E7A51]'}`} 
                     style={{ width: `${sys.health}%` }} 
                   />
                 </div>
@@ -201,67 +176,67 @@ export default function MaintenanceManagerInterface() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch font-sans">
         
         {/* Left Column: Active Work Orders & Maintenance Dispatches */}
-        <div className="w-full rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl transition-all duration-300 overflow-hidden shadow-2xl flex flex-col justify-between">
+        <div className="w-full rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs overflow-hidden flex flex-col justify-between">
           <div>
             {/* Header Bar */}
-            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-white/5 bg-gradient-to-r from-amber-500/5 via-transparent to-transparent">
+            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-[#E8DCC8]">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 shrink-0">
-                    <Wrench className="w-4 h-4 stroke-[1.5]" />
+                  <div className="p-2 rounded-lg border border-[#BC4800]/30 bg-[#BC4800]/15 text-[#BC4800] shrink-0">
+                    <Wrench className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
                       Active Work Orders & Maintenance Dispatches
                     </h3>
-                    <p className="text-[11px] text-zinc-400 font-medium font-mono line-clamp-1">
+                    <p className="text-xs text-[#6B5A4A] font-medium line-clamp-1">
                       Approve, reject, or assign technician dispatches
                     </p>
                   </div>
                 </div>
 
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 bg-amber-500/20 text-amber-300 rounded-full border border-amber-500/40 shrink-0 uppercase">
+                <span className="text-xs font-semibold px-2.5 py-0.5 inst-badge-ochre shrink-0">
                   {workOrders.filter(w => w.status === 'Pending Approval').length} Action Required
                 </span>
               </div>
             </div>
 
             {/* Work Orders List Body */}
-            <div className="p-4 sm:p-5 space-y-3 font-mono">
+            <div className="p-4 sm:p-5 space-y-3">
               {workOrders.map((wo) => (
                 <div 
                   key={wo.id}
-                  className="p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-white/15 transition-all space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 text-amber-300 rounded-full border border-white/10">
+                    <div className="flex items-center gap-2 flex-wrap text-xs">
+                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded">
                         {wo.id}
                       </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 text-cyan-300 rounded-full border border-white/10">
+                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#BC4800] border border-[#E8DCC8] rounded">
                         {wo.system}
                       </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${
-                        wo.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                        wo.status === 'Rejected' ? 'bg-rose-500/20 text-rose-300 border-rose-500/40' :
-                        'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                      <span className={`font-semibold px-2.5 py-0.5 rounded-full border ${
+                        wo.status === 'Approved' ? 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30' :
+                        wo.status === 'Rejected' ? 'bg-[#A6402F]/15 text-[#A6402F] border-[#A6402F]/30' :
+                        'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30'
                       }`}>
                         {wo.status}
                       </span>
                     </div>
-                    <h4 className="text-xs font-bold text-white font-sans">{wo.title}</h4>
-                    <p className="text-[10px] text-zinc-500">
-                      Location: <span className="text-zinc-300">{wo.location}</span> • Tech: <span className="text-amber-400">{wo.technician}</span> • Date: {wo.date}
+                    <h4 className="text-xs font-bold text-[#2B1D12]">{wo.title}</h4>
+                    <p className="text-xs text-[#6B5A4A]">
+                      Location: <span className="text-[#2B1D12] font-semibold">{wo.location}</span> • Tech: <span className="text-[#BC4800] font-semibold">{wo.technician}</span> • Date: {wo.date}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0 font-sans">
+                  <div className="flex items-center gap-2 shrink-0">
                     {wo.status === 'Pending Approval' ? (
                       <>
                         <button
                           type="button"
                           onClick={() => handleWoAction(wo.id, 'Approved')}
-                          className="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                          className="px-3.5 py-1.5 bg-[#4E7A51] hover:bg-[#3D6140] text-white rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1"
                         >
                           <Check className="w-3.5 h-3.5" />
                           <span>Approve</span>
@@ -269,14 +244,14 @@ export default function MaintenanceManagerInterface() {
                         <button
                           type="button"
                           onClick={() => handleWoAction(wo.id, 'Rejected')}
-                          className="px-3 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                          className="py-1.5 px-3 bg-[#A6402F]/15 hover:bg-[#A6402F]/25 text-[#A6402F] border border-[#A6402F]/30 rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1"
                         >
                           <X className="w-3.5 h-3.5" />
                           <span>Reject</span>
                         </button>
                       </>
                     ) : (
-                      <span className="px-3 py-1 bg-white/5 text-zinc-400 border border-white/10 rounded-full text-[11px] font-mono font-bold">
+                      <span className="px-2.5 py-1 bg-[#F7EFE4] text-[#6B5A4A] border border-[#E8DCC8] rounded-full text-xs font-semibold">
                         Processed
                       </span>
                     )}
@@ -298,22 +273,22 @@ export default function MaintenanceManagerInterface() {
 
       {/* Create Work Order Modal */}
       {showCreateWoModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-black/90 border border-white/10 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4 relative animate-in zoom-in-95 backdrop-blur-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
+        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
+          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4 relative animate-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400">
-                  <Wrench className="w-4 h-4 stroke-[1.5]" />
+                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                  <Wrench className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Create Infrastructure Work Order</h3>
-                  <p className="text-[11px] text-zinc-400 font-mono">Dispatch maintenance engineer to campus location</p>
+                  <h3 className="text-sm font-bold text-[#2B1D12]">Create Infrastructure Work Order</h3>
+                  <p className="text-xs text-[#6B5A4A]">Dispatch maintenance engineer to campus location</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowCreateWoModal(false)}
-                className="p-1 rounded-full hover:bg-white/10 text-zinc-400 cursor-pointer transition-all"
+                className="p-1 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -321,24 +296,24 @@ export default function MaintenanceManagerInterface() {
 
             <form onSubmit={handleCreateWoSubmit} className="space-y-3.5 text-xs">
               <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">Work Order Title <span className="text-amber-400">*</span></label>
+                <label className="block font-semibold text-[#2B1D12]">Work Order Title <span className="text-[#BC4800]">*</span></label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Block A Generator Oil Filter Change"
                   value={newWoForm.title}
                   onChange={(e) => setNewWoForm({ ...newWoForm, title: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400/60"
+                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="block font-mono font-bold text-zinc-300">System Domain</label>
+                  <label className="block font-semibold text-[#2B1D12]">System Domain</label>
                   <select
                     value={newWoForm.system}
                     onChange={(e) => setNewWoForm({ ...newWoForm, system: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none"
+                    className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                   >
                     <option value="HVAC Climate">HVAC Climate</option>
                     <option value="Electrical Grid">Electrical Grid</option>
@@ -348,11 +323,11 @@ export default function MaintenanceManagerInterface() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block font-mono font-bold text-zinc-300">Priority</label>
+                  <label className="block font-semibold text-[#2B1D12]">Priority</label>
                   <select
                     value={newWoForm.priority}
                     onChange={(e) => setNewWoForm({ ...newWoForm, priority: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none"
+                    className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                   >
                     <option value="Critical">Critical</option>
                     <option value="High">High</option>
@@ -363,39 +338,39 @@ export default function MaintenanceManagerInterface() {
               </div>
 
               <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">Location <span className="text-amber-400">*</span></label>
+                <label className="block font-semibold text-[#2B1D12]">Location <span className="text-[#BC4800]">*</span></label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Block C Substation / Elevator #2"
                   value={newWoForm.location}
                   onChange={(e) => setNewWoForm({ ...newWoForm, location: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none"
+                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="block font-mono font-bold text-zinc-300">Assigned Technician</label>
+                <label className="block font-semibold text-[#2B1D12]">Assigned Technician</label>
                 <input
                   type="text"
                   placeholder="e.g. Lead Engineer Ramesh"
                   value={newWoForm.technician}
                   onChange={(e) => setNewWoForm({ ...newWoForm, technician: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-black/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none"
+                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/5">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E8DCC8]">
                 <button
                   type="button"
                   onClick={() => setShowCreateWoModal(false)}
-                  className="px-4 py-2 bg-white/5 hover:bg-white/10 text-zinc-400 rounded-full font-mono font-bold cursor-pointer"
+                  className="px-4 py-2 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-full cursor-pointer"
+                  className="px-5 py-2 inst-button-primary rounded-lg font-semibold cursor-pointer text-xs"
                 >
                   Dispatch Work Order
                 </button>
@@ -407,3 +382,4 @@ export default function MaintenanceManagerInterface() {
     </div>
   );
 }
+

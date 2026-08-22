@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth, demoAccounts } from '../context/AuthContext';
-import { ShieldCheck, UserCheck, Key, Lock, ArrowRight, UserPlus, LogIn } from 'lucide-react';
+import { BACKDROP_IMAGES } from '../config/backdropImages';
+import { ArrowRight, LogIn, X } from 'lucide-react';
 
 export default function LoginModal({ isOpen, onClose }) {
   const { login, register, switchDemoRole } = useAuth();
@@ -37,157 +38,178 @@ export default function LoginModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/75 backdrop-blur-xs">
-      <div className="inst-card w-full max-w-md p-6 rounded border border-stone-300 dark:border-stone-800 shadow-xl relative bg-white dark:bg-stone-900 font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2B1D12]/60 backdrop-blur-xs font-sans">
+      <div className="w-full max-w-md rounded-2xl border border-[#E8DCC8] shadow-2xl relative bg-[#F7EFE4] overflow-hidden">
         
-        {/* Header */}
-        <div className="text-center mb-5">
-          <div className="w-10 h-10 bg-[#B5654A]/10 border border-[#B5654A]/30 rounded flex items-center justify-center text-[#B5654A] mx-auto mb-2.5">
-            <Lock className="w-5 h-5" />
-          </div>
-          <h2 className="text-lg font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
-            {isRegisterMode ? 'Register Campus Account' : 'CampusOrbit Authentication'}
-          </h2>
-          <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
-            {isRegisterMode ? 'Faculty accounts auto-approve. Sub-Admins require administrator approval.' : 'Select a demo role below or sign in with credentials'}
-          </p>
-        </div>
+        {/* Header with warm dark brown background */}
+        <div className="relative p-6 bg-[#2B1D12] text-white flex flex-col justify-between">
+          <img
+            src={BACKDROP_IMAGES.loginLanding.url}
+            alt={BACKDROP_IMAGES.loginLanding.alt}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(180deg, rgba(43, 29, 18, 0.75) 0%, rgba(43, 29, 18, 0.90) 100%)'
+            }}
+          />
 
-        {/* Quick Demo Login Chips */}
-        <div className="mb-5 bg-stone-50 dark:bg-stone-950 p-3 rounded border border-stone-200 dark:border-stone-800">
-          <span className="text-[10px] font-mono font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider block mb-2">
-            Quick Demo Role Switcher:
-          </span>
-          <div className="grid grid-cols-2 gap-1.5 text-xs font-medium">
-            {demoAccounts.map((acc, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  switchDemoRole(acc);
-                  onClose();
-                }}
-                className={`p-2 rounded-lg border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                  acc.role === 'super_admin'
-                    ? 'bg-purple-950/40 border-purple-500/30 text-purple-300 hover:bg-purple-900/40'
-                    : acc.role === 'faculty'
-                    ? 'bg-blue-950/40 border-blue-500/30 text-blue-300 hover:bg-blue-900/40'
-                    : acc.approval_status === 'pending'
-                    ? 'bg-amber-950/40 border-amber-500/30 text-amber-300 hover:bg-amber-900/40'
-                    : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-slate-800'
-                }`}
-              >
-                <span className="font-bold text-[11px] truncate">{acc.full_name.split(' ')[0]}</span>
-                <span className="text-[10px] opacity-75 capitalize">
-                  {acc.role === 'sub_admin' ? `${acc.department_domain} Admin` : acc.role.replace('_', ' ')}
-                  {acc.approval_status === 'pending' ? ' [Pending]' : ''}
-                </span>
-              </button>
-            ))}
+          {/* Close Button */}
+          <div className="relative z-10 flex items-center justify-between mb-3">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FDF8F2]/90 border border-[#E8DCC8] text-xs font-medium text-[#2B1D12]">
+              Presidency University
+            </span>
+            <button
+              onClick={onClose}
+              className="p-1 rounded-lg text-stone-300 hover:text-white bg-[#2B1D12]/60 hover:bg-[#2B1D12] transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="relative z-10">
+            <h2 className="text-lg font-bold text-white leading-snug">
+              {isRegisterMode ? 'Register Campus Account' : 'CampusOrbit Authentication'}
+            </h2>
+            <p className="text-xs text-stone-200 mt-0.5">
+              {isRegisterMode ? 'Faculty accounts auto-approve. Sub-Admins require review.' : 'Sign in to access unified institutional operations'}
+            </p>
           </div>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl text-xs">
-            {error}
-          </div>
-        )}
-
-        {/* Custom Auth Form */}
-        <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+        <div className="p-5 space-y-4 bg-[#F7EFE4]">
           
-          {isRegisterMode && (
+          {/* Quick Demo Role Switcher */}
+          <div className="bg-[#FDF8F2] p-3.5 rounded-xl border border-[#E8DCC8]">
+            <span className="text-xs font-semibold text-[#6B5A4A] block mb-2">
+              Quick Demo Role Switcher:
+            </span>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {demoAccounts.map((acc, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    switchDemoRole(acc);
+                    onClose();
+                  }}
+                  className="p-2.5 rounded-lg border border-[#E8DCC8] bg-[#F7EFE4] hover:border-[#BC4800] hover:bg-[#FDF8F2] text-left text-[#2B1D12] transition-all cursor-pointer flex flex-col justify-between shadow-2xs"
+                >
+                  <span className="font-semibold text-xs text-[#2B1D12] truncate">{acc.full_name.split(' ')[0]}</span>
+                  <span className="text-[11px] text-[#6B5A4A] capitalize mt-0.5">
+                    {acc.role === 'sub_admin' ? `${acc.department_domain} Admin` : acc.role.replace('_', ' ')}
+                    {acc.approval_status === 'pending' ? ' [Pending]' : ''}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {error && (
+            <div className="p-2.5 bg-[#A6402F]/15 border border-[#A6402F]/30 text-[#A6402F] rounded-lg text-xs font-medium">
+              {error}
+            </div>
+          )}
+
+          {/* Custom Auth Form */}
+          <form onSubmit={handleSubmit} className="space-y-3 text-xs">
+            
+            {isRegisterMode && (
+              <div>
+                <label className="block text-[#6B5A4A] font-semibold mb-1">Full Name</label>
+                <input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Dr. Jane Doe"
+                  className="w-full bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg px-3 py-2 text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
+                />
+              </div>
+            )}
+
             <div>
-              <label className="block text-slate-400 font-semibold mb-1">Full Name</label>
+              <label className="block text-[#6B5A4A] font-semibold mb-1">Email Address</label>
               <input
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Dr. Jane Doe"
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="user@demo.com"
+                className="w-full bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg px-3 py-2 text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
+                required
               />
             </div>
-          )}
 
-          <div>
-            <label className="block text-slate-400 font-semibold mb-1">Email Address</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="user@demo.com"
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-[#6B5A4A] font-semibold mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg px-3 py-2 text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block text-slate-400 font-semibold mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-
-          {isRegisterMode && (
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-slate-400 font-semibold mb-1">Role</label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-blue-500"
-                >
-                  <option value="faculty">Faculty (Auto-approved)</option>
-                  <option value="sub_admin">Sub-Admin (Needs Approval)</option>
-                </select>
-              </div>
-
-              {role === 'sub_admin' && (
+            {isRegisterMode && (
+              <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Domain</label>
+                  <label className="block text-[#6B5A4A] font-semibold mb-1">Role</label>
                   <select
-                    value={domain}
-                    onChange={(e) => setDomain(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-blue-500"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg px-2.5 py-2 text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
                   >
-                    <option value="events">Events Admin</option>
-                    <option value="transport">Transport Admin</option>
-                    <option value="maintenance">Maintenance Admin</option>
-                    <option value="energy">Energy & Sustainability Admin</option>
-                    <option value="classroom">Classroom & Academic Admin</option>
+                    <option value="faculty">Faculty (Auto-approved)</option>
+                    <option value="sub_admin">Sub-Admin (Needs Approval)</option>
                   </select>
                 </div>
-              )}
-            </div>
-          )}
 
-          <button
-            type="submit"
-            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center space-x-2 cursor-pointer mt-2"
-          >
-            <span>{isRegisterMode ? 'Complete Registration' : 'Sign In to Dashboard'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </form>
+                {role === 'sub_admin' && (
+                  <div>
+                    <label className="block text-[#6B5A4A] font-semibold mb-1">Domain</label>
+                    <select
+                      value={domain}
+                      onChange={(e) => setDomain(e.target.value)}
+                      className="w-full bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg px-2.5 py-2 text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
+                    >
+                      <option value="events">Events Admin</option>
+                      <option value="transport">Transport Admin</option>
+                      <option value="maintenance">Maintenance Admin</option>
+                      <option value="energy">Energy Admin</option>
+                      <option value="classroom">Classroom Admin</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+            )}
 
-        {/* Toggle Mode */}
-        <div className="mt-4 pt-4 border-t border-slate-800 text-center">
-          <button
-            onClick={() => {
-              setIsRegisterMode(!isRegisterMode);
-              setError('');
-            }}
-            className="text-xs text-blue-400 hover:text-blue-300 font-semibold cursor-pointer"
-          >
-            {isRegisterMode ? 'Already have an account? Sign In' : 'Need a new role account? Register here'}
-          </button>
+            <button
+              type="submit"
+              className="w-full py-2.5 inst-button-primary text-xs flex items-center justify-center space-x-2 cursor-pointer mt-2 shadow-2xs"
+            >
+              <span>{isRegisterMode ? 'Complete Registration' : 'Sign In to Dashboard'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </form>
+
+          {/* Toggle Mode */}
+          <div className="pt-3 border-t border-[#E8DCC8] text-center">
+            <button
+              onClick={() => {
+                setIsRegisterMode(!isRegisterMode);
+                setError('');
+              }}
+              className="text-xs text-[#BC4800] hover:underline font-semibold cursor-pointer"
+            >
+              {isRegisterMode ? 'Already have an account? Sign In' : 'Need a new role account? Register here'}
+            </button>
+          </div>
+
         </div>
 
       </div>
     </div>
   );
 }
+

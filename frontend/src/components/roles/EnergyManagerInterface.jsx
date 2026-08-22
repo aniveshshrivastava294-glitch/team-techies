@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import SectionHero from '../SectionHero';
+import { BACKDROP_IMAGES } from '../../config/backdropImages';
 import TicketsSupportLogCard from '../TicketsSupportLogCard';
 import LiveCampusTicker from '../LiveCampusTicker';
 import { 
-  Zap, Sun, ShieldAlert, CheckCircle2, AlertTriangle, RefreshCw, 
-  Activity, Gauge, BatteryCharging, Leaf, Sparkles, Check, X, Sliders, Cpu, ArrowRight
+  Zap, Sun, CheckCircle2, Gauge, BatteryCharging, Leaf, Check
 } from 'lucide-react';
 
 export default function EnergyManagerInterface() {
@@ -61,123 +62,91 @@ export default function EnergyManagerInterface() {
   };
 
   return (
-    <div className="space-y-6 font-sans animate-in fade-in duration-500 pb-10 relative">
+    <div className="space-y-6 font-sans animate-in fade-in duration-300 pb-10 relative">
       
-      {/* Live Campus Orbit Telemetry Ticker */}
-      <LiveCampusTicker />
-
       {/* Toast Alert Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-black/90 border border-emerald-500/40 text-emerald-300 font-mono text-xs px-4 py-2.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
+          <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
           <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* Header Banner - Borderless Galaxy Emerald */}
-      <div className="p-6 rounded-3xl bg-slate-950 text-white border border-emerald-500/30 shadow-2xl relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-emerald-950/40 pointer-events-none rounded-3xl" />
-        
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <span className="px-3 py-1 text-[10px] font-mono font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full flex items-center gap-1.5 shadow-sm">
-                <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                SMART ENERGY & SUSTAINABILITY COMMAND
-              </span>
-              <span className="text-xs text-emerald-200/80 font-bold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
-                Grid Active: 98.6% Efficiency
-              </span>
-            </div>
-            
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white drop-shadow-sm flex items-center gap-2">
-              Energy & Solar Grid Interface
-              <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse" />
-            </h1>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl font-medium leading-relaxed">
-              Real-time rooftop solar generation, battery storage telemetry, power surge alerts & carbon footprint offset analytics.
-            </p>
-          </div>
+      {/* ================= SECTION HERO: ENERGY & SUSTAINABILITY BACKDROP ================= */}
+      <SectionHero
+        image={BACKDROP_IMAGES.energy}
+        category="Sustainability & Grid"
+        categoryIcon={Zap}
+        badgeText="Grid Active: 98.6% Efficiency"
+        title="Energy & Solar Grid Interface"
+        subtitle="Real-time rooftop solar generation, battery storage telemetry, power surge alerts & carbon footprint offset analytics."
+      >
+        <button
+          onClick={() => {
+            setSolarOptimizerActive(!solarOptimizerActive);
+            showToast(`Solar AI Optimizer ${!solarOptimizerActive ? 'Enabled' : 'Disabled'}`);
+          }}
+          className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-xs transition-colors cursor-pointer flex items-center gap-1.5"
+        >
+          <Sun className="w-3.5 h-3.5" />
+          <span>Solar AI: {solarOptimizerActive ? 'ON' : 'OFF'}</span>
+        </button>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <button
-              onClick={() => {
-                setSolarOptimizerActive(!solarOptimizerActive);
-                showToast(`Solar AI Optimizer ${!solarOptimizerActive ? 'Enabled' : 'Disabled'}`);
-              }}
-              className={`px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                solarOptimizerActive 
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' 
-                  : 'bg-white/5 text-zinc-400 border-white/10 hover:text-white'
-              }`}
-            >
-              <Sun className="w-4 h-4 text-emerald-400" />
-              <span>Solar AI: {solarOptimizerActive ? 'ON' : 'OFF'}</span>
-            </button>
+        <button
+          onClick={() => {
+            setPeakShavingActive(!peakShavingActive);
+            showToast(`Peak Load Shaving ${!peakShavingActive ? 'Activated' : 'Standby'}`);
+          }}
+          className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-xs transition-colors cursor-pointer flex items-center gap-1.5"
+        >
+          <BatteryCharging className="w-3.5 h-3.5" />
+          <span>Peak Shave: {peakShavingActive ? 'ACTIVE' : 'STANDBY'}</span>
+        </button>
+      </SectionHero>
 
-            <button
-              onClick={() => {
-                setPeakShavingActive(!peakShavingActive);
-                showToast(`Peak Load Shaving ${!peakShavingActive ? 'Activated' : 'Standby'}`);
-              }}
-              className={`px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                peakShavingActive 
-                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' 
-                  : 'bg-white/5 text-zinc-400 border-white/10'
-              }`}
-            >
-              <BatteryCharging className="w-4 h-4 text-cyan-400" />
-              <span>Peak Shave: {peakShavingActive ? 'ACTIVE' : 'STANDBY'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Live Campus Orbit Telemetry Ticker */}
+      <LiveCampusTicker />
 
       {/* Substation & Solar Telemetry Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-emerald-400" />
+          <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
+            <Gauge className="w-4 h-4 text-[#BC4800]" />
             Power Grid & Solar Array Telemetry ({powerGrids.length} Sub-Systems)
           </h2>
-          <span className="text-xs font-mono text-emerald-400 font-bold px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center gap-1">
-            <Leaf className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-xs text-[#2B1D12] font-semibold px-2.5 py-1 bg-[#FDF8F2] border border-[#E8DCC8] rounded-full flex items-center gap-1">
+            <Leaf className="w-3.5 h-3.5 text-[#4E7A51]" />
             1.4 Tons CO2 Offset Today
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 font-mono">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {powerGrids.map((grid) => {
             const isHigh = grid.status.includes('High Load');
             return (
               <div 
                 key={grid.id}
-                className={`p-4 rounded-2xl border transition-all duration-300 ${
-                  isHigh 
-                    ? 'bg-amber-500/5 border-amber-500/40 hover:border-amber-400' 
-                    : 'bg-white/[0.02] border-white/5 hover:border-emerald-500/30'
-                }`}
+                className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-500 uppercase">{grid.id}</span>
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border uppercase ${
-                    isHigh ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                  <span className="text-xs text-[#6B5A4A] font-semibold bg-[#FDF8F2] px-2 py-0.5 rounded border border-[#E8DCC8]">{grid.id}</span>
+                  <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
+                    isHigh ? 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30' : 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30'
                   }`}>
                     {grid.status}
                   </span>
                 </div>
 
-                <h3 className="text-xs font-bold text-white mt-2 font-sans">{grid.name}</h3>
+                <h3 className="text-xs font-bold text-[#2B1D12] mt-2">{grid.name}</h3>
 
-                <div className="mt-3 flex items-center justify-between text-[11px]">
-                  <span className="text-zinc-400">Current Output:</span>
-                  <span className="text-emerald-400 font-bold">{grid.output}</span>
+                <div className="mt-3 flex items-center justify-between text-xs">
+                  <span className="text-[#6B5A4A]">Current Output:</span>
+                  <span className="text-[#BC4800] font-bold">{grid.output}</span>
                 </div>
 
-                <div className="mt-2.5 w-full bg-black/60 h-1.5 rounded-full overflow-hidden border border-white/5">
+                <div className="mt-2 w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden">
                   <div 
-                    className={`h-full rounded-full transition-all ${isHigh ? 'bg-amber-400' : 'bg-emerald-400'}`} 
+                    className={`h-full rounded-full transition-all ${isHigh ? 'bg-[#C48A2E]' : 'bg-[#4E7A51]'}`} 
                     style={{ width: `${grid.health}%` }} 
                   />
                 </div>
@@ -191,71 +160,71 @@ export default function EnergyManagerInterface() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch font-sans">
         
         {/* Left Box: Energy Load Control Dispatches */}
-        <div className="w-full rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl transition-all duration-300 overflow-hidden shadow-2xl flex flex-col justify-between">
+        <div className="w-full rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs overflow-hidden flex flex-col justify-between">
           <div>
             {/* Header Bar */}
-            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-white/5 bg-gradient-to-r from-emerald-500/5 via-transparent to-transparent">
+            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-[#E8DCC8]">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shrink-0">
-                    <Zap className="w-4 h-4 stroke-[1.5]" />
+                  <div className="p-2 rounded-lg border border-[#BC4800]/30 bg-[#BC4800]/15 text-[#BC4800] shrink-0">
+                    <Zap className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white tracking-tight">
+                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
                       Active Power Load & Energy Dispatches
                     </h3>
-                    <p className="text-[11px] text-zinc-400 font-medium font-mono line-clamp-1">
+                    <p className="text-xs text-[#6B5A4A] font-medium line-clamp-1">
                       Manage power surge alerts, peak load shaving & solar inverters
                     </p>
                   </div>
                 </div>
 
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 bg-emerald-500/20 text-emerald-300 rounded-full border border-emerald-500/40 shrink-0 uppercase">
-                  {energyDispatches.filter(d => d.status !== 'Optimized').length} PENDING
+                <span className="text-xs font-semibold px-2.5 py-0.5 inst-badge-ochre shrink-0">
+                  {energyDispatches.filter(d => d.status !== 'Optimized').length} Action Required
                 </span>
               </div>
             </div>
 
             {/* Dispatches List */}
-            <div className="p-4 sm:p-5 space-y-3 font-mono">
+            <div className="p-4 sm:p-5 space-y-3">
               {energyDispatches.map((disp) => (
                 <div 
                   key={disp.id}
-                  className="p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-white/15 transition-all space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 text-emerald-300 rounded-full border border-white/10">
+                    <div className="flex items-center gap-2 flex-wrap text-xs">
+                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded">
                         {disp.id}
                       </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 text-cyan-300 rounded-full border border-white/10">
+                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#BC4800] border border-[#E8DCC8] rounded">
                         {disp.substation}
                       </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${
-                        disp.status === 'Optimized' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                        'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                      <span className={`font-semibold px-2.5 py-0.5 rounded-full border ${
+                        disp.status === 'Optimized' ? 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30' :
+                        'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30'
                       }`}>
                         {disp.status}
                       </span>
                     </div>
-                    <h4 className="text-xs font-bold text-white font-sans">{disp.title}</h4>
-                    <p className="text-[10px] text-zinc-500">
-                      Target Savings: <span className="text-emerald-400 font-bold">{disp.savingImpact}</span> • Date: {disp.date}
+                    <h4 className="text-xs font-bold text-[#2B1D12]">{disp.title}</h4>
+                    <p className="text-xs text-[#6B5A4A]">
+                      Target Savings: <span className="text-[#4E7A51] font-semibold">{disp.savingImpact}</span> • Date: {disp.date}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0 font-sans">
+                  <div className="flex items-center gap-2 shrink-0">
                     {disp.status !== 'Optimized' ? (
                       <button
                         type="button"
                         onClick={() => handleDispatchAction(disp.id, 'Optimized')}
-                        className="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                        className="px-3.5 py-1.5 bg-[#4E7A51] hover:bg-[#3D6140] text-white rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1"
                       >
                         <Check className="w-3.5 h-3.5" />
                         <span>Optimize</span>
                       </button>
                     ) : (
-                      <span className="px-3 py-1 bg-white/5 text-zinc-400 border border-white/10 rounded-full text-[11px] font-mono font-bold">
+                      <span className="px-2.5 py-1 bg-[#F7EFE4] text-[#6B5A4A] border border-[#E8DCC8] rounded-full text-xs font-semibold">
                         Optimized
                       </span>
                     )}
@@ -277,3 +246,4 @@ export default function EnergyManagerInterface() {
     </div>
   );
 }
+

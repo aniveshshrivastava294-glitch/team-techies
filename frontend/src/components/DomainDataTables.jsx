@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Database, Search, Building2, Calendar, Wrench, Bus, Zap, Users, Filter } from 'lucide-react';
+import { Database, Search, Building2, Calendar, Wrench, Bus, Zap, Users } from 'lucide-react';
 
 export default function DomainDataTables() {
   const [activeTab, setActiveTab] = useState('classrooms');
@@ -45,34 +45,34 @@ export default function DomainDataTables() {
   const columns = tableData.length > 0 ? Object.keys(tableData[0]) : [];
 
   return (
-    <div className="glass-panel p-6 rounded-2xl border border-slate-800 mb-6">
+    <div className="inst-card p-6 border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs mb-6 font-sans">
       
       {/* Header & Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#E8DCC8]">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-blue-600/20 border border-blue-500/30 rounded-xl text-blue-400">
-            <Database className="w-6 h-6" />
+          <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+            <Database className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white tracking-tight">Siloed Domain Datasets Inspector</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Inspect underlying raw PostgreSQL records across the 6 campus operational systems
+            <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight">Domain Datasets Inspector</h2>
+            <p className="text-xs text-[#6B5A4A] mt-0.5">
+              Inspect underlying records across the 6 campus operational domains
             </p>
           </div>
         </div>
 
         {/* Domain Selection Tabs */}
-        <div className="flex flex-wrap items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <div className="flex flex-wrap items-center gap-1 bg-[#FDF8F2] p-1 rounded-lg border border-[#E8DCC8]">
           {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer flex items-center gap-1.5 ${
                   activeTab === tab.id
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                    ? 'bg-[#BC4800] text-white shadow-xs font-semibold'
+                    : 'text-[#6B5A4A] hover:text-[#2B1D12] hover:bg-[#F7EFE4]'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -86,51 +86,51 @@ export default function DomainDataTables() {
       {/* Search Input Bar */}
       <div className="flex items-center justify-between gap-4 mb-4">
         <div className="relative flex-1 max-w-xs">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-[#6B5A4A] absolute left-3 top-2.5" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={`Filter ${activeTab} records...`}
-            className="w-full bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-xs rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#FDF8F2] border border-[#E8DCC8] text-[#2B1D12] placeholder-[#6B5A4A]/60 text-xs rounded-lg pl-9 pr-4 py-2 focus:outline-none focus:border-[#BC4800]"
           />
         </div>
-        <span className="text-xs text-slate-400 font-mono">
+        <span className="text-xs text-[#6B5A4A] font-medium">
           Showing {filteredData.length} of {tableData.length} records
         </span>
       </div>
 
       {/* Data Table */}
       {loading ? (
-        <div className="py-12 text-center text-slate-400">
-          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-          <p className="text-xs">Fetching domain records from Supabase layer...</p>
+        <div className="py-12 text-center text-[#6B5A4A]">
+          <div className="w-6 h-6 border-2 border-[#BC4800] border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+          <p className="text-xs">Fetching domain records...</p>
         </div>
       ) : filteredData.length === 0 ? (
-        <div className="py-8 text-center text-slate-500 text-xs bg-slate-900/50 rounded-xl border border-slate-800">
+        <div className="py-8 text-center text-[#6B5A4A] text-xs bg-[#FDF8F2] rounded-xl border border-[#E8DCC8]">
           No records found matching query filter.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/60">
+        <div className="overflow-x-auto rounded-xl border border-[#E8DCC8] bg-[#FDF8F2]">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-900/90 border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+              <tr className="bg-[#F7EFE4] border-b border-[#E8DCC8] text-[#2B1D12] text-xs">
                 {columns.map((col, idx) => (
-                  <th key={idx} className="px-4 py-3 font-semibold">
+                  <th key={idx} className="px-4 py-3 font-semibold capitalize">
                     {col.replace('_', ' ')}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300 font-mono">
+            <tbody className="divide-y divide-[#E8DCC8] text-[#2B1D12]">
               {filteredData.map((row, rIdx) => (
-                <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
+                <tr key={rIdx} className="hover:bg-[#E8DCC8]/30 transition-colors">
                   {columns.map((col, cIdx) => (
-                    <td key={cIdx} className="px-4 py-2.5 max-w-[220px] truncate">
+                    <td key={cIdx} className="px-4 py-2.5 max-w-[220px] truncate text-xs">
                       {row[col] === null || row[col] === undefined ? (
-                        <span className="text-slate-600 italic">null</span>
+                        <span className="text-[#6B5A4A] italic">null</span>
                       ) : String(row[col]).startsWith('2026') || String(row[col]).includes('T') ? (
-                        <span className="text-slate-400">{new Date(row[col]).toLocaleString()}</span>
+                        <span className="text-[#6B5A4A]">{new Date(row[col]).toLocaleString()}</span>
                       ) : (
                         String(row[col])
                       )}
@@ -146,3 +146,4 @@ export default function DomainDataTables() {
     </div>
   );
 }
+

@@ -21,7 +21,6 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
       case 'critical':
         return 'inst-badge-rust';
       case 'high':
-        return 'inst-badge-ochre';
       case 'medium':
         return 'inst-badge-ochre';
       default:
@@ -36,37 +35,37 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
   };
 
   return (
-    <div className="inst-card p-6 border border-stone-300 dark:border-stone-800 mb-6 font-sans">
+    <div className="inst-card p-6 border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs mb-6 font-sans">
       
       {/* Header & Category Filters */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5 pb-4 border-b border-stone-200 dark:border-stone-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5 pb-4 border-b border-[#E8DCC8]">
         <div className="flex items-center space-x-3">
-          <div className="p-2 bg-[#A64B34]/10 border border-[#A64B34]/30 rounded text-[#A64B34]">
+          <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
             <ShieldAlert className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">Smart Campus Alerts</h2>
-              <span className="px-2.5 py-0.5 text-xs font-mono font-semibold inst-badge-rust">
+              <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight">Smart Campus Alerts & Anomalies</h2>
+              <span className="px-2.5 py-0.5 text-xs font-semibold inst-badge-rust">
                 {filteredAnomalies.length} Alerts
               </span>
             </div>
-            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-              Real-time notifications for room maintenance, energy spikes, and bus delays.
+            <p className="text-xs text-[#6B5A4A] mt-0.5">
+              Live automated cross-domain incident detection with AI diagnostic reasoning
             </p>
           </div>
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+        <div className="flex flex-wrap items-center gap-1 bg-[#FDF8F2] p-1 rounded-lg border border-[#E8DCC8]">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              className={`px-3 py-1 text-xs font-medium rounded-md transition-colors cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-[#BC4800] text-white shadow-xs font-semibold'
+                  : 'text-[#6B5A4A] hover:text-[#2B1D12] hover:bg-[#F7EFE4]'
               }`}
             >
               {cat}
@@ -77,17 +76,17 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
 
       {/* Anomalies List */}
       {isLoading ? (
-        <div className="py-12 text-center text-slate-400 flex flex-col items-center">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-          <p className="text-sm font-medium">Running Anomaly Detection & Gemini Reasoning Pipeline...</p>
+        <div className="py-12 text-center text-[#6B5A4A] flex flex-col items-center">
+          <div className="w-6 h-6 border-2 border-[#BC4800] border-t-transparent rounded-full animate-spin mb-3"></div>
+          <p className="text-xs font-medium">Running Anomaly Detection & AI Reasoning Pipeline...</p>
         </div>
       ) : filteredAnomalies.length === 0 ? (
-        <div className="py-10 text-center text-slate-500 bg-slate-900/40 rounded-xl border border-slate-800">
-          <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2 opacity-80" />
-          <p className="text-sm font-medium text-slate-300">All domain metrics operating within standard baseline thresholds.</p>
+        <div className="py-10 text-center text-[#6B5A4A] bg-[#FDF8F2] rounded-xl border border-[#E8DCC8]">
+          <CheckCircle2 className="w-6 h-6 text-[#4E7A51] mx-auto mb-2 opacity-90" />
+          <p className="text-xs font-medium text-[#2B1D12]">All domain metrics operating within standard baseline thresholds.</p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {filteredAnomalies.map((item, idx) => {
             const isExpanded = expandedId === item.id;
             const rec = getRecommendationForItem(item, idx);
@@ -95,41 +94,41 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
             return (
               <div
                 key={item.id || idx}
-                className={`glass-card rounded-xl border transition-all duration-200 overflow-hidden ${
+                className={`rounded-xl border transition-colors overflow-hidden ${
                   item.severity === 'Critical'
-                    ? 'border-red-500/40 bg-red-950/10'
-                    : 'border-slate-800 hover:border-slate-700'
+                    ? 'border-[#A6402F]/30 bg-[#A6402F]/5'
+                    : 'border-[#E8DCC8] bg-[#FDF8F2] hover:border-[#BC4800]/30'
                 }`}
               >
                 {/* Main Card Header */}
                 <div className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-start space-x-3">
                     <div className={`p-2 rounded-lg mt-0.5 border ${
-                      item.severity === 'Critical' ? 'bg-red-500/10 text-red-400 border-red-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                      item.severity === 'Critical' ? 'bg-[#A6402F]/15 text-[#A6402F] border-[#A6402F]/30' : 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30'
                     }`}>
-                      <AlertCircle className="w-5 h-5" />
+                      <AlertCircle className="w-4 h-4" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${getSeverityBadge(item.severity)}`}>
-                          {item.severity} Severity
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${getSeverityBadge(item.severity)}`}>
+                          {item.severity}
                         </span>
-                        <span className="text-xs font-semibold text-slate-400 flex items-center gap-1">
-                          <Layers className="w-3 h-3 text-slate-500" />
+                        <span className="text-xs font-medium text-[#6B5A4A] flex items-center gap-1">
+                          <Layers className="w-3 h-3 text-[#6B5A4A]" />
                           {item.category}
                         </span>
                         {item.location && (
-                          <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-blue-400" />
+                          <span className="text-xs font-medium text-[#6B5A4A] flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#BC4800]" />
                             {item.location}
                           </span>
                         )}
                       </div>
 
-                      <h3 className="text-sm font-bold text-white mt-1.5 leading-snug">
+                      <h3 className="text-xs font-bold text-[#2B1D12] mt-1.5 leading-snug">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-slate-300 font-mono mt-1 bg-slate-900/80 px-2.5 py-1 rounded-md inline-block border border-slate-800">
+                      <p className="text-xs text-[#6B5A4A] mt-1 bg-[#F7EFE4] px-2 py-0.5 rounded-md border border-[#E8DCC8] inline-block font-medium">
                         {item.metric}
                       </p>
                     </div>
@@ -139,10 +138,10 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
                   <div className="flex items-center space-x-3 self-end sm:self-center">
                     <button
                       onClick={() => toggleExpand(item.id)}
-                      className="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600/15 hover:bg-blue-600/25 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-semibold transition-all cursor-pointer"
+                      className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#F7EFE4] hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] rounded-lg text-xs font-medium transition-colors cursor-pointer"
                     >
-                      <Cpu className="w-3.5 h-3.5 text-blue-400" />
-                      <span>Why this recommendation?</span>
+                      <Cpu className="w-3.5 h-3.5 text-[#BC4800]" />
+                      <span>AI Recommendation</span>
                       {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
                   </div>
@@ -150,15 +149,15 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
 
                 {/* Gemini AI Multi-Factor Reasoning Accordion */}
                 {isExpanded && (
-                  <div className="px-5 py-4 bg-slate-900/90 border-t border-slate-800 text-xs space-y-3.5 animate-fadeIn">
+                  <div className="px-5 py-4 bg-[#F7EFE4] border-t border-[#E8DCC8] text-xs space-y-3">
                     
-                    <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                      <div className="flex items-center space-x-2 text-blue-400 font-semibold">
-                        <Cpu className="w-4 h-4" />
-                        <span>Gemini API Factor-Cited Synthesis (@google/genai)</span>
+                    <div className="flex items-center justify-between border-b border-[#E8DCC8] pb-2">
+                      <div className="flex items-center space-x-2 text-[#2B1D12] font-semibold">
+                        <Cpu className="w-3.5 h-3.5 text-[#BC4800]" />
+                        <span>AI Diagnostic Reasoning</span>
                       </div>
                       {rec?.estimatedSavingsOrSafetyGain && (
-                        <span className="px-2.5 py-1 bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 rounded-md font-semibold text-[11px]">
+                        <span className="px-2.5 py-0.5 bg-[#4E7A51]/15 text-[#4E7A51] border border-[#4E7A51]/30 rounded-full font-semibold text-xs">
                           Gain: {rec.estimatedSavingsOrSafetyGain}
                         </span>
                       )}
@@ -166,11 +165,11 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
 
                     {/* Recommendation Title & Body */}
                     <div>
-                      <h4 className="font-bold text-white text-sm flex items-center gap-1.5">
-                        <ArrowRight className="w-3.5 h-3.5 text-blue-400" />
+                      <h4 className="font-bold text-[#2B1D12] text-xs flex items-center gap-1.5">
+                        <ArrowRight className="w-3 h-3 text-[#BC4800]" />
                         {rec?.title || 'Actionable Operational Fix'}
                       </h4>
-                      <p className="text-slate-300 text-xs mt-1 leading-relaxed pl-5">
+                      <p className="text-[#6B5A4A] text-xs mt-1 leading-relaxed pl-4">
                         {rec?.recommendation || item.details?.description || 'Reallocate schedule to avoid operational hazard.'}
                       </p>
                     </div>
@@ -179,12 +178,12 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
                       
                       {/* Factor Citations */}
-                      <div className="bg-slate-950/80 p-3 rounded-lg border border-slate-800">
-                        <span className="font-semibold text-slate-300 flex items-center gap-1.5 mb-2">
-                          <FileText className="w-3.5 h-3.5 text-amber-400" />
-                          Evidence & Cited Row Factors:
+                      <div className="bg-[#FDF8F2] p-3 rounded-lg border border-[#E8DCC8]">
+                        <span className="font-semibold text-[#2B1D12] flex items-center gap-1.5 mb-2">
+                          <FileText className="w-3.5 h-3.5 text-[#BC4800]" />
+                          Evidence & Cited Factors:
                         </span>
-                        <ul className="space-y-1 text-slate-400 list-disc list-inside text-[11px]">
+                        <ul className="space-y-1 text-[#6B5A4A] list-disc list-inside text-xs">
                           {rec?.citedFactors ? (
                             rec.citedFactors.map((factor, fIdx) => (
                               <li key={fIdx} className="leading-snug">{factor}</li>
@@ -199,12 +198,12 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
                       </div>
 
                       {/* Action Plan */}
-                      <div className="bg-slate-950/80 p-3 rounded-lg border border-slate-800">
-                        <span className="font-semibold text-slate-300 flex items-center gap-1.5 mb-2">
-                          <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                      <div className="bg-[#FDF8F2] p-3 rounded-lg border border-[#E8DCC8]">
+                        <span className="font-semibold text-[#2B1D12] flex items-center gap-1.5 mb-2">
+                          <Zap className="w-3.5 h-3.5 text-[#4E7A51]" />
                           Recommended Step-by-Step Action:
                         </span>
-                        <p className="text-slate-300 text-[11px] leading-relaxed">
+                        <p className="text-[#6B5A4A] text-xs leading-relaxed">
                           {rec?.suggestedAction || 'Notify facility dispatch and lock conflicting room reservation.'}
                         </p>
                       </div>
@@ -221,3 +220,4 @@ export default function AnomaliesPanel({ anomalies, recommendations, isLoading }
     </div>
   );
 }
+
