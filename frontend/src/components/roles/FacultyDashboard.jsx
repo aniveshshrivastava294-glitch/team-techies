@@ -35,15 +35,6 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
     capacity: 60
   });
 
-  const [venueForm, setVenueForm] = useState({
-    venueName: 'Main Campus Auditorium',
-    eventDate: '2026-09-05',
-    startTime: '10:00 AM',
-    endTime: '02:00 PM',
-    attendees: 150,
-    purpose: ''
-  });
-
   const [busFleet, setBusFleet] = useState([
     { id: 'b1', label: 'Bus 1', busNo: 'BUS-101', loc: 'North Gate - Stop 2', capacity: 60, seatsLeft: 14, speed: '42 km/h', driver: 'Alex Rivera', phone: '+1 (555) 019-2831', status: 'On Schedule' },
     { id: 'b2', label: 'Bus 2', busNo: 'BUS-102', loc: 'Science Complex Quad', capacity: 60, seatsLeft: 5, speed: '38 km/h', driver: 'Sarah Jenkins', phone: '+1 (555) 019-4820', status: 'Peak Load' },
@@ -111,27 +102,6 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
     });
   };
 
-  const handleVenueSubmit = (e) => {
-    e.preventDefault();
-    if (!venueForm.purpose.trim()) {
-      showToast('Please provide an event description / purpose.');
-      return;
-    }
-    showToast(`Booked ${venueForm.venueName} for ${venueForm.attendees} attendees on ${venueForm.eventDate}!`);
-    setVenueForm({
-      venueName: 'Main Campus Auditorium',
-      eventDate: '2026-09-05',
-      startTime: '10:00 AM',
-      endTime: '02:00 PM',
-      attendees: 150,
-      purpose: ''
-    });
-  };
-
-  const handleBusBookingSubmit = () => {
-    showToast(`Requested bus allocation for ${selectedBus.label} (${selectedBus.busNo})!`);
-  };
-
   const handleRaiseTicket = async (e) => {
     e.preventDefault();
     if (!ticketTitle || !ticketDesc) return;
@@ -170,7 +140,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
       
       {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-16 right-6 z-50 bg-black text-white px-4 py-2.5 rounded-md shadow-md border border-black text-xs font-mono font-bold flex items-center gap-2">
+        <div className="fixed top-16 right-6 z-50 bg-[#1C1917] text-[#FAF8F3] px-4 py-2.5 rounded-md shadow-md border border-[#292524] text-xs font-mono font-bold flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
@@ -185,26 +155,26 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
               <span className="badge-mono-dark text-[10px]">
                 FACULTY PORTAL
               </span>
-              <span className="text-xs text-[#52525B] font-mono">
+              <span className="text-xs text-[#57534E] font-mono font-semibold">
                 {department}
               </span>
             </div>
             
-            <h1 className="text-xl font-bold tracking-tight text-[#09090B] flex items-center gap-2">
-              Welcome back, <span className="text-black">{currentUser?.full_name || professorName}</span>
-              <Sparkles className="w-4 h-4 text-black" />
+            <h1 className="text-xl font-bold tracking-tight text-[#1C1917] flex items-center gap-2">
+              Welcome back, <span>{currentUser?.full_name || professorName}</span>
+              <Sparkles className="w-4 h-4 text-[#1C1917]" />
             </h1>
-            <p className="text-xs text-[#52525B] max-w-xl">
+            <p className="text-xs text-[#57534E] max-w-xl font-medium">
               Welcome to your campus operations hub. Easily reserve classrooms, inspect shuttle schedules, apply for leave, and track support requests.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setShowIssueModal(false)}
+              onClick={() => setShowIssueModal(true)}
               className="btn-secondary text-xs"
             >
-              <AlertTriangle className="w-3.5 h-3.5 text-black" />
+              <AlertTriangle className="w-3.5 h-3.5 text-[#1C1917]" />
               <span>Report Facility Issue</span>
             </button>
           </div>
@@ -213,12 +183,12 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
       </div>
 
       {/* TAB NAVIGATION */}
-      <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-0 font-sans">
+      <div className="flex items-center justify-between border-b border-[#E6E0D2] pb-0 font-sans">
         <div className="flex items-center space-x-1">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-3.5 py-2 text-xs font-semibold cursor-pointer transition-colors flex items-center space-x-2 border-b-2 ${
-              activeTab === 'overview' ? 'border-black text-black font-bold bg-[#F4F4F5]' : 'border-transparent text-[#52525B] hover:text-black'
+              activeTab === 'overview' ? 'border-[#1C1917] text-[#1C1917] font-bold bg-[#F0EBE1]' : 'border-transparent text-[#57534E] hover:text-[#1C1917]'
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
@@ -228,7 +198,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           <button
             onClick={() => setActiveTab('matrix')}
             className={`px-3.5 py-2 text-xs font-semibold cursor-pointer transition-colors flex items-center space-x-2 border-b-2 ${
-              activeTab === 'matrix' ? 'border-black text-black font-bold bg-[#F4F4F5]' : 'border-transparent text-[#52525B] hover:text-black'
+              activeTab === 'matrix' ? 'border-[#1C1917] text-[#1C1917] font-bold bg-[#F0EBE1]' : 'border-transparent text-[#57534E] hover:text-[#1C1917]'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -238,7 +208,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           <button
             onClick={() => setActiveTab('transport')}
             className={`px-3.5 py-2 text-xs font-semibold cursor-pointer transition-colors flex items-center space-x-2 border-b-2 ${
-              activeTab === 'transport' ? 'border-black text-black font-bold bg-[#F4F4F5]' : 'border-transparent text-[#52525B] hover:text-black'
+              activeTab === 'transport' ? 'border-[#1C1917] text-[#1C1917] font-bold bg-[#F0EBE1]' : 'border-transparent text-[#57534E] hover:text-[#1C1917]'
             }`}
           >
             <Bus className="w-3.5 h-3.5" />
@@ -246,8 +216,8 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           </button>
         </div>
 
-        <span className="text-xs font-mono text-[#52525B] hidden sm:inline-block">
-          Active Role: <strong className="text-black">Faculty</strong>
+        <span className="text-xs font-mono text-[#57534E] font-semibold hidden sm:inline-block">
+          Active Role: <strong className="text-[#1C1917]">Faculty</strong>
         </span>
       </div>
 
@@ -260,41 +230,41 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
             
             <div className="card-surface p-5 flex flex-col justify-between space-y-2 shadow-2xs">
               <div>
-                <span className="text-xs font-mono font-semibold text-[#52525B] uppercase tracking-wider block">
+                <span className="text-xs font-mono font-bold text-[#57534E] uppercase tracking-wider block">
                   Attendance Rate
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-2xl font-mono font-bold text-[#09090B]">{attendancePercent}%</span>
+                  <span className="text-2xl font-mono font-bold text-[#1C1917]">{attendancePercent}%</span>
                   <span className="badge-mono-dark text-[10px]">Optimal</span>
                 </div>
               </div>
-              <div className="w-full bg-[#F4F4F5] h-1.5 rounded-full overflow-hidden mt-3 border border-[#E4E4E7]">
-                <div className="bg-black h-full rounded-full transition-all duration-500" style={{ width: `${attendancePercent}%` }} />
+              <div className="w-full bg-[#E6E0D2] h-1.5 rounded-full overflow-hidden mt-3 border border-[#D6CEBE]">
+                <div className="bg-[#1C1917] h-full rounded-full transition-all duration-500" style={{ width: `${attendancePercent}%` }} />
               </div>
             </div>
 
             <div className="card-surface p-5 flex flex-col justify-between shadow-2xs">
               <div>
-                <span className="text-[10px] font-mono font-semibold text-[#52525B] uppercase tracking-wider block">
+                <span className="text-[10px] font-mono font-bold text-[#57534E] uppercase tracking-wider block">
                   Casual Leaves Used
                 </span>
                 <div className="flex items-baseline gap-1.5 mt-1">
-                  <span className="text-2xl font-bold text-[#09090B]">{leavesTaken}</span>
-                  <span className="text-xs text-[#52525B] font-mono">days</span>
+                  <span className="text-2xl font-bold text-[#1C1917]">{leavesTaken}</span>
+                  <span className="text-xs text-[#57534E] font-mono font-semibold">days</span>
                 </div>
               </div>
-              <p className="text-[10px] text-[#71717A] font-mono mt-2">15 Days Available in Term</p>
+              <p className="text-[10px] text-[#78716C] font-mono font-semibold mt-2">15 Days Available in Term</p>
             </div>
 
             <div className="card-surface p-5 flex flex-col justify-between shadow-2xs">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-mono font-semibold text-[#52525B] uppercase tracking-wider block">
+                  <span className="text-[10px] font-mono font-bold text-[#57534E] uppercase tracking-wider block">
                     Active Support Tickets
                   </span>
                   <div className="flex items-baseline gap-1.5 mt-1">
-                    <span className="text-2xl font-bold text-black">{activeTicketsCount}</span>
-                    <span className="text-xs text-[#52525B] font-mono">in dispatch</span>
+                    <span className="text-2xl font-bold text-[#1C1917]">{activeTicketsCount}</span>
+                    <span className="text-xs text-[#57534E] font-mono font-semibold">in dispatch</span>
                   </div>
                 </div>
                 <button
@@ -305,7 +275,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                   + Raise Ticket
                 </button>
               </div>
-              <p className="text-[10px] text-[#71717A] font-mono mt-2">IT Support & Maintenance Dispatch</p>
+              <p className="text-[10px] text-[#78716C] font-mono font-semibold mt-2">IT Support & Maintenance Dispatch</p>
             </div>
 
           </div>
@@ -313,10 +283,10 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
           {/* ACADEMIC CALENDAR */}
           <div className="card-surface p-5 space-y-3 font-sans shadow-2xs">
             
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E4E4E7] pb-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E6E0D2] pb-2">
               <div className="flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-black" />
-                <h4 className="text-xs font-bold text-[#09090B] flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-[#1C1917]" />
+                <h4 className="text-xs font-bold text-[#1C1917] flex items-center gap-2">
                   Academic Calendar Grid
                   <span className="badge-mono text-[9px]">Fall 2026</span>
                 </h4>
@@ -333,7 +303,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                 >
                   ‹ Prev
                 </button>
-                <span className="text-[11px] font-mono font-bold text-[#09090B] px-2 py-0.5">
+                <span className="text-[11px] font-mono font-bold text-[#1C1917] px-2 py-0.5">
                   {calendarMonth}
                 </span>
                 <button
@@ -351,19 +321,19 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
               
-              <div className="lg:col-span-7 bg-[#F4F4F5] p-3 rounded-lg border border-[#E4E4E7] space-y-2">
-                <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-1">
-                  <span className="text-[10px] font-mono font-semibold uppercase text-[#52525B]">
+              <div className="lg:col-span-7 bg-[#F0EBE1] p-3 rounded-lg border border-[#E6E0D2] space-y-2">
+                <div className="flex items-center justify-between border-b border-[#E6E0D2] pb-1">
+                  <span className="text-[10px] font-mono font-bold uppercase text-[#57534E]">
                     Month View
                   </span>
-                  <span className="text-[10px] font-mono text-black font-bold">
+                  <span className="text-[10px] font-mono text-[#1C1917] font-bold">
                     Today: Aug 21
                   </span>
                 </div>
 
                 <div className="grid grid-cols-7 gap-1 text-center">
                   {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-                    <div key={i} className="text-[9px] font-mono font-bold text-[#52525B] py-0.2">
+                    <div key={i} className="text-[9px] font-mono font-bold text-[#57534E] py-0.2">
                       {d}
                     </div>
                   ))}
@@ -371,7 +341,7 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
                 <div className="grid grid-cols-7 gap-1">
                   {[...Array(6)].map((_, i) => (
-                    <div key={`off-${i}`} className="h-6 rounded bg-[#E4E4E7] opacity-40 cursor-not-allowed" />
+                    <div key={`off-${i}`} className="h-6 rounded bg-[#E6E0D2] opacity-40 cursor-not-allowed" />
                   ))}
                   {[...Array(31)].map((_, idx) => {
                     const dayNum = idx + 1;
@@ -385,10 +355,10 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                         onClick={() => setSelectedCalendarDay(dayNum)}
                         className={`h-6 rounded border text-[10px] font-mono font-semibold flex flex-col items-center justify-center transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-black text-white border-black font-bold'
+                            ? 'bg-[#1C1917] text-white border-[#1C1917] font-bold'
                             : isToday
-                            ? 'bg-[#E4E4E7] border-black text-black font-bold'
-                            : 'bg-white border-[#E4E4E7] text-[#09090B] hover:bg-[#F4F4F5]'
+                            ? 'bg-[#E6E0D2] border-[#1C1917] text-[#1C1917] font-bold'
+                            : 'bg-[#FAF8F3] border-[#E6E0D2] text-[#1C1917] hover:bg-[#F0EBE1]'
                         }`}
                       >
                         <span>{dayNum}</span>
@@ -398,38 +368,38 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                 </div>
               </div>
 
-              <div className="lg:col-span-5 bg-[#F4F4F5] p-3 rounded-lg border border-[#E4E4E7] flex flex-col justify-between space-y-2">
+              <div className="lg:col-span-5 bg-[#F0EBE1] p-3 rounded-lg border border-[#E6E0D2] flex flex-col justify-between space-y-2">
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-1">
-                    <span className="text-[11px] font-bold text-[#09090B]">
+                  <div className="flex items-center justify-between border-b border-[#E6E0D2] pb-1">
+                    <span className="text-[11px] font-bold text-[#1C1917]">
                       Aug {selectedCalendarDay} Agenda
                     </span>
-                    <span className="text-[10px] font-mono text-black font-bold">
+                    <span className="text-[10px] font-mono text-[#1C1917] font-bold">
                       Day #{selectedCalendarDay}
                     </span>
                   </div>
 
                   {academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).length > 0 ? (
                     academicEvents.filter(e => e.day === selectedCalendarDay || (selectedCalendarDay >= 25 && selectedCalendarDay <= 30 && e.id === 1)).map(ev => (
-                      <div key={ev.id} className="p-2 bg-white rounded border border-[#E4E4E7] space-y-0.5 shadow-2xs">
+                      <div key={ev.id} className="p-2 bg-[#FAF8F3] rounded border border-[#E6E0D2] space-y-0.5 shadow-2xs">
                         <div className="flex items-center justify-between">
                           <span className="badge-mono text-[9px]">
                             {ev.type}
                           </span>
-                          <span className="text-[9px] font-mono text-[#52525B]">
+                          <span className="text-[9px] font-mono text-[#57534E] font-semibold">
                             {ev.date}
                           </span>
                         </div>
-                        <h5 className="text-[11px] font-bold text-[#09090B] truncate">{ev.title}</h5>
-                        <p className="text-[9px] text-[#52525B] font-mono flex items-center gap-1 truncate">
-                          <MapPin className="w-2.5 h-2.5 text-black" /> {ev.venue}
+                        <h5 className="text-[11px] font-bold text-[#1C1917] truncate">{ev.title}</h5>
+                        <p className="text-[9px] text-[#57534E] font-mono flex items-center gap-1 truncate font-semibold">
+                          <MapPin className="w-2.5 h-2.5 text-[#1C1917]" /> {ev.venue}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <div className="p-2 text-center text-[10px] text-[#52525B] font-mono">
-                      <p className="font-bold text-[#09090B]">Regular Classes</p>
-                      <p className="text-[9px] text-[#71717A]">No scheduled exam on Aug {selectedCalendarDay}.</p>
+                    <div className="p-2 text-center text-[10px] text-[#57534E] font-mono">
+                      <p className="font-bold text-[#1C1917]">Regular Classes</p>
+                      <p className="text-[9px] text-[#78716C] font-medium">No scheduled exam on Aug {selectedCalendarDay}.</p>
                     </div>
                   )}
                 </div>
@@ -453,19 +423,19 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
             {/* CLASSROOM RESERVATION */}
             <div className={`w-full card-surface overflow-hidden shadow-2xs ${
               activeExpand === 'classroom'
-                ? 'md:col-span-2 border-black'
+                ? 'md:col-span-2 border-[#1C1917]'
                 : 'md:col-span-1'
             }`}>
               <div
                 onClick={() => setActiveExpand(activeExpand === 'classroom' ? null : 'classroom')}
-                className="p-4 flex items-center justify-between cursor-pointer select-none bg-[#F4F4F5] border-b border-[#E4E4E7]"
+                className="p-4 flex items-center justify-between cursor-pointer select-none bg-[#F0EBE1] border-b border-[#E6E0D2]"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-md bg-white border border-[#E4E4E7] text-black">
+                  <div className="p-2 rounded-md bg-[#FAF8F3] border border-[#E6E0D2] text-[#1C1917]">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#09090B] flex items-center gap-2">
+                    <h3 className="text-base font-bold text-[#1C1917] flex items-center gap-2">
                       Classroom Reservation
                       {activeExpand === 'classroom' && (
                         <span className="badge-mono-dark text-[9px]">
@@ -473,38 +443,38 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                         </span>
                       )}
                     </h3>
-                    <p className="text-xs text-[#52525B]">
+                    <p className="text-xs text-[#57534E] font-medium">
                       Reserve classrooms, lecture halls & audio-visual equipment
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-md border border-[#E4E4E7] bg-white text-[#09090B]">
+                  <div className="p-1.5 rounded-md border border-[#E6E0D2] bg-[#FAF8F3] text-[#1C1917]">
                     {activeExpand === 'classroom' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </div>
                 </div>
               </div>
 
               {activeExpand === 'classroom' && (
-                <div className="p-5 border-t border-[#E4E4E7] space-y-4">
+                <div className="p-5 border-t border-[#E6E0D2] space-y-4">
                   <form onSubmit={handleClassroomSubmit} className="space-y-4 text-xs font-sans">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="md:col-span-2">
-                        <label className="block text-[#09090B] font-semibold mb-1">Course / Event Title</label>
+                        <label className="block text-[#1C1917] font-semibold mb-1">Course / Event Title</label>
                         <input
                           type="text"
                           required
                           placeholder="e.g. CS-301 Advanced Data Structures Exam..."
                           value={classForm.eventName}
                           onChange={(e) => setClassForm({ ...classForm, eventName: e.target.value })}
-                          className="w-full px-3 py-2 bg-white border border-[#E4E4E7] rounded-md text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                          className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-bold"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-[#09090B] font-semibold mb-1">Priority & Category</label>
-                        <select className="w-full px-3 py-2 bg-white border border-[#E4E4E7] rounded-md text-xs text-[#09090B] focus:outline-none focus:border-black font-medium">
+                        <label className="block text-[#1C1917] font-semibold mb-1">Priority & Category</label>
+                        <select className="w-full px-3 py-2 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-medium">
                           <option value="exam">Midterm / Endterm Exam</option>
                           <option value="lecture">Regular Academic Lecture</option>
                           <option value="seminar">Research & Guest Seminar</option>
@@ -513,8 +483,8 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                     </div>
 
                     <div className="flex justify-between items-center pt-2">
-                      <span className="text-[11px] font-mono text-[#52525B]">
-                        Status: <strong className="text-black font-bold">Pre-check Instant</strong>
+                      <span className="text-[11px] font-mono text-[#57534E] font-semibold">
+                        Status: <strong className="text-[#1C1917] font-bold">Pre-check Instant</strong>
                       </span>
                       <button
                         type="submit"
@@ -543,11 +513,11 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
         <div className="card-surface p-6 space-y-6 shadow-2xs">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-[#09090B] flex items-center gap-2">
-                <Bus className="w-4 h-4 text-black" />
+              <h3 className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                <Bus className="w-4 h-4 text-[#1C1917]" />
                 <span>Shuttle Bus Fleet Telemetry & GPS Tracker</span>
               </h3>
-              <p className="text-xs text-[#52525B] mt-0.5">Real-time shuttle driver telemetry, seat availability, speed & route operations</p>
+              <p className="text-xs text-[#57534E] font-medium mt-0.5">Real-time shuttle driver telemetry, seat availability, speed & route operations</p>
             </div>
           </div>
         </div>
@@ -556,19 +526,19 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
       {/* RAISE CAMPUS ISSUE MODAL */}
       {showIssueModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-[#E4E4E7] w-full max-w-md rounded-lg p-5 shadow-xl space-y-4">
+          <div className="bg-[#FAF8F3] border border-[#E6E0D2] w-full max-w-md rounded-lg p-5 shadow-xl space-y-4">
             
-            <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E7]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2]">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-black" />
-                <h3 className="text-sm font-bold text-[#09090B]">
+                <AlertTriangle className="w-4 h-4 text-[#1C1917]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
                   Raise Support Ticket
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowIssueModal(false)}
-                className="p-1 rounded text-[#71717A] hover:text-[#09090B] hover:bg-[#F4F4F5]"
+                className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#F0EBE1]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -576,8 +546,8 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
 
             <form onSubmit={handleRaiseTicket} className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#09090B] font-semibold mb-1">
-                  Issue Title <span className="text-black">*</span>
+                <label className="block text-[#1C1917] font-semibold mb-1">
+                  Issue Title <span className="text-[#1C1917]">*</span>
                 </label>
                 <input
                   type="text"
@@ -585,13 +555,13 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                   placeholder="e.g. Projector HDMI Fault in Room CS-301"
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded-md text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-bold"
                 />
               </div>
 
               <div>
-                <label className="block text-[#09090B] font-semibold mb-1">
-                  Detailed Description <span className="text-black">*</span>
+                <label className="block text-[#1C1917] font-semibold mb-1">
+                  Detailed Description <span className="text-[#1C1917]">*</span>
                 </label>
                 <textarea
                   required
@@ -599,11 +569,11 @@ export default function FacultyDashboard({ currentUser, activeTab: propActiveTab
                   placeholder="Describe the issue..."
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded-md text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-medium"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E4E4E7]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E6E0D2]">
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(false)}

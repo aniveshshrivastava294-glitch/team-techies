@@ -86,35 +86,35 @@ export default function TicketsSupportLogCard({
     <div className="card-surface p-5 mb-6 font-sans shadow-2xs">
       {/* Toast Banner */}
       {toastMsg && (
-        <div className="fixed top-16 right-6 bg-black text-white text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2 font-mono font-bold">
+        <div className="fixed top-16 right-6 bg-[#1C1917] text-[#FAF8F3] text-xs px-4 py-2.5 rounded-md shadow-md z-50 flex items-center gap-2 font-mono font-bold">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-[#E4E4E7]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-[#E6E0D2]">
         <div className="flex items-start gap-2.5">
-          <div className="p-2 rounded-md bg-[#F4F4F5] text-black border border-[#E4E4E7] shrink-0">
+          <div className="p-2 rounded-md bg-[#F0EBE1] text-[#1C1917] border border-[#E6E0D2] shrink-0">
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-sm font-bold text-[#09090B]">
+              <h3 className="text-sm font-bold text-[#1C1917]">
                 {title}
               </h3>
               <span className="badge-mono-dark text-[10px]">
                 {activeTicketsCount} Active
               </span>
             </div>
-            <p className="text-xs text-[#52525B] mt-0.5">
+            <p className="text-xs text-[#57534E] font-medium mt-0.5">
               {subtitle}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center space-x-1 border-b border-[#E4E4E7] sm:border-b-0">
+          <div className="flex items-center space-x-1 border-b border-[#E6E0D2] sm:border-b-0">
             {['ALL', 'ACTIVE', 'RESOLVED'].map(st => (
               <button
                 key={st}
@@ -143,18 +143,18 @@ export default function TicketsSupportLogCard({
       {/* Tickets List Body */}
       <div className="space-y-2.5">
         {filteredTickets.length === 0 ? (
-          <div className="py-6 text-center text-[#71717A] text-xs bg-[#F4F4F5] rounded-lg border border-[#E4E4E7]">
+          <div className="py-6 text-center text-[#57534E] text-xs bg-[#F0EBE1] rounded-lg border border-[#E6E0D2] font-semibold">
             No support tickets match the selected filter.
           </div>
         ) : (
           filteredTickets.map((tck) => (
             <div 
               key={tck.id} 
-              className="p-3.5 rounded-lg bg-white border border-[#E4E4E7] hover:border-black transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
+              className="p-3.5 rounded-lg bg-[#FAF8F3] border border-[#E6E0D2] hover:border-[#1C1917] transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
             >
               <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-mono text-xs font-bold text-[#09090B]">
+                  <span className="font-mono text-xs font-bold text-[#1C1917]">
                     {tck.id}
                   </span>
                   <span className="badge-mono text-[10px]">
@@ -168,8 +168,8 @@ export default function TicketsSupportLogCard({
                     {tck.status}
                   </span>
                 </div>
-                <h5 className="text-xs font-bold text-[#09090B] truncate">{tck.title}</h5>
-                <p className="text-[11px] text-[#71717A] font-mono">
+                <h5 className="text-xs font-bold text-[#1C1917] truncate">{tck.title}</h5>
+                <p className="text-[11px] text-[#57534E] font-mono font-medium">
                   Logged by {tck.requestor} on {tck.date} • {tck.time}
                 </p>
               </div>
@@ -179,7 +179,7 @@ export default function TicketsSupportLogCard({
                   <button
                     type="button"
                     onClick={() => handleStatusUpdate(tck.id, 'Resolved')}
-                    className="btn-secondary text-xs py-1 px-3 text-black font-bold"
+                    className="btn-primary text-xs py-1 px-3"
                   >
                     Mark Resolved
                   </button>
@@ -187,7 +187,7 @@ export default function TicketsSupportLogCard({
                   <button
                     type="button"
                     onClick={() => handleStatusUpdate(tck.id, 'In Progress')}
-                    className="btn-secondary text-xs py-1 px-3 text-[#52525B] font-medium"
+                    className="btn-secondary text-xs py-1 px-3 text-[#1C1917] font-semibold"
                   >
                     Reopen
                   </button>
@@ -201,19 +201,19 @@ export default function TicketsSupportLogCard({
       {/* Raise Ticket Modal */}
       {showIssueModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 font-sans">
-          <div className="bg-white border border-[#E4E4E7] w-full max-w-md rounded-lg p-6 shadow-xl space-y-4">
+          <div className="bg-[#FAF8F3] border border-[#E6E0D2] w-full max-w-md rounded-lg p-6 shadow-xl space-y-4">
             
-            <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E7]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2]">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-black" />
-                <h3 className="text-sm font-bold text-[#09090B]">
+                <AlertTriangle className="w-4 h-4 text-[#1C1917]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
                   Raise New Support Ticket
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowIssueModal(false)}
-                className="p-1 rounded text-[#71717A] hover:text-[#09090B] hover:bg-[#F4F4F5] transition-colors"
+                className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#F0EBE1] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -221,8 +221,8 @@ export default function TicketsSupportLogCard({
 
             <form onSubmit={handleRaiseTicket} className="space-y-3 text-xs">
               <div>
-                <label className="block font-semibold text-[#09090B] mb-1">
-                  Issue Title <span className="text-black">*</span>
+                <label className="block font-semibold text-[#1C1917] mb-1">
+                  Issue Title <span className="text-[#1C1917]">*</span>
                 </label>
                 <input
                   type="text"
@@ -230,17 +230,17 @@ export default function TicketsSupportLogCard({
                   placeholder="e.g. Laser Projector HDMI Port Signal Loss"
                   value={ticketTitle}
                   onChange={(e) => setTicketTitle(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-bold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-[#09090B] mb-1">Category Domain</label>
+                  <label className="block font-semibold text-[#1C1917] mb-1">Category Domain</label>
                   <select
                     value={ticketDomain}
                     onChange={(e) => setTicketDomain(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                    className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-medium"
                   >
                     <option value="events">Event AV & Stage</option>
                     <option value="transport">Transport Fleet</option>
@@ -249,11 +249,11 @@ export default function TicketsSupportLogCard({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#09090B] mb-1">Priority</label>
+                  <label className="block font-semibold text-[#1C1917] mb-1">Priority</label>
                   <select
                     value={ticketPriority}
                     onChange={(e) => setTicketPriority(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                    className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-medium"
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -263,8 +263,8 @@ export default function TicketsSupportLogCard({
               </div>
 
               <div>
-                <label className="block font-semibold text-[#09090B] mb-1">
-                  Detailed Description <span className="text-black">*</span>
+                <label className="block font-semibold text-[#1C1917] mb-1">
+                  Detailed Description <span className="text-[#1C1917]">*</span>
                 </label>
                 <textarea
                   required
@@ -272,11 +272,11 @@ export default function TicketsSupportLogCard({
                   placeholder="Describe hardware fault, room location, or support requirement..."
                   value={ticketDesc}
                   onChange={(e) => setTicketDesc(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-medium"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E4E4E7]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E6E0D2]">
                 <button
                   type="button"
                   onClick={() => setShowIssueModal(false)}

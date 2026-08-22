@@ -5,18 +5,18 @@
 
 @layer base {
   :root {
-    --canvas: #FAFAFA;
-    --surface: #FFFFFF;
-    --sidebar-bg: #09090B;
-    --sidebar-hover: #18181B;
-    --accent: #000000;
-    --accent-hover: #18181B;
-    --topbar: #FFFFFF;
-    --text-primary: #09090B;
-    --text-secondary: #52525B;
-    --text-muted: #A1A1AA;
-    --border: #E4E4E7;
-    --border-dark: #27272A;
+    --canvas: #F5F2EB;
+    --surface: #FAF8F3;
+    --sidebar-bg: #1C1917;
+    --sidebar-hover: #292524;
+    --accent: #1C1917;
+    --accent-hover: #292524;
+    --topbar: #FAF8F3;
+    --text-primary: #1C1917;
+    --text-secondary: #44403C;
+    --text-muted: #78716C;
+    --border: #E6E0D2;
+    --border-dark: #292524;
   }
 
   body {
@@ -33,74 +33,74 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAFAFA;
+  background: #F5F2EB;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4D4D8;
+  background: #D6CEBE;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A1A1AA;
+  background: #A89F91;
 }
 
 /* Utility Components */
 .card-surface {
-  background-color: #FFFFFF;
-  border: 1px solid #E4E4E7;
+  background-color: #FAF8F3;
+  border: 1px solid #E6E0D2;
   border-radius: 0.5rem;
-  color: #09090B;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  color: #1C1917;
+  box-shadow: 0 1px 2px 0 rgba(28, 25, 23, 0.04);
 }
 
 .btn-primary {
-  background-color: #000000;
-  color: #FFFFFF;
-  font-weight: 600;
+  background-color: #1C1917;
+  color: #FAF8F3;
+  font-weight: 700;
   font-size: 0.75rem;
   padding: 0.375rem 0.875rem;
   border-radius: 0.375rem;
   transition: all 0.15s ease-in-out;
   display: inline-flex;
-  items-center: center;
+  align-items: center;
   justify-content: center;
   gap: 0.375rem;
   cursor: pointer;
-  border: 1px solid #000000;
+  border: 1px solid #1C1917;
 }
 .btn-primary:hover {
-  background-color: #18181B;
-  border-color: #18181B;
+  background-color: #292524;
+  border-color: #292524;
 }
 
 .btn-secondary {
-  background-color: #FFFFFF;
-  color: #09090B;
-  border: 1px solid #E4E4E7;
-  font-weight: 600;
+  background-color: #FAF8F3;
+  color: #1C1917;
+  border: 1px solid #E6E0D2;
+  font-weight: 700;
   font-size: 0.75rem;
   padding: 0.375rem 0.875rem;
   border-radius: 0.375rem;
   transition: all 0.15s ease-in-out;
   display: inline-flex;
-  items-center: center;
+  align-items: center;
   justify-content: center;
   gap: 0.375rem;
   cursor: pointer;
 }
 .btn-secondary:hover {
-  background-color: #F4F4F5;
-  border-color: #D4D4D8;
-  color: #000000;
+  background-color: #F0EBE1;
+  border-color: #D6CEBE;
+  color: #1C1917;
 }
 
 /* Badges */
-.badge-mono {
-  background-color: #F4F4F5;
-  color: #09090B;
-  border: 1px solid #E4E4E7;
+.badge-mono, .badge-beige {
+  background-color: #F0EBE1;
+  color: #1C1917;
+  border: 1px solid #E6E0D2;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.125rem 0.5rem;
   border-radius: 0.375rem;
   display: inline-flex;
@@ -109,12 +109,12 @@
 }
 
 .badge-mono-dark {
-  background-color: #09090B;
-  color: #FFFFFF;
-  border: 1px solid #27272A;
+  background-color: #1C1917;
+  color: #FAF8F3;
+  border: 1px solid #292524;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.125rem 0.5rem;
   border-radius: 0.375rem;
   display: inline-flex;
@@ -123,9 +123,9 @@
 }
 
 .badge-success, .badge-emerald {
-  background-color: #F4F4F5;
-  color: #09090B;
-  border: 1px solid #09090B;
+  background-color: #F0EBE1;
+  color: #1C1917;
+  border: 1px solid #1C1917;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -137,12 +137,12 @@
 }
 
 .badge-warning, .badge-amber {
-  background-color: #18181B;
-  color: #FFFFFF;
-  border: 1px solid #27272A;
+  background-color: #292524;
+  color: #FAF8F3;
+  border: 1px solid #44403C;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.125rem 0.5rem;
   border-radius: 0.375rem;
   display: inline-flex;
@@ -151,9 +151,9 @@
 }
 
 .badge-error, .badge-rose {
-  background-color: #000000;
-  color: #FFFFFF;
-  border: 1px solid #000000;
+  background-color: #1C1917;
+  color: #FAF8F3;
+  border: 1px solid #1C1917;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -165,12 +165,12 @@
 }
 
 .badge-info, .badge-slate, .badge-zinc {
-  background-color: #F4F4F5;
-  color: #09090B;
-  border: 1px solid #E4E4E7;
+  background-color: #F0EBE1;
+  color: #1C1917;
+  border: 1px solid #E6E0D2;
   font-size: 0.625rem;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.125rem 0.5rem;
   border-radius: 0.375rem;
   display: inline-flex;
@@ -186,10 +186,10 @@
   font-size: 0.75rem;
 }
 .table-light th, .table-mono th {
-  background-color: #F4F4F5;
-  border-bottom: 1px solid #E4E4E7;
-  color: #09090B;
-  font-weight: 700;
+  background-color: #F0EBE1;
+  border-bottom: 1px solid #E6E0D2;
+  color: #1C1917;
+  font-weight: 800;
   padding: 0.625rem 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -197,27 +197,29 @@
   font-family: 'JetBrains Mono', monospace;
 }
 .table-light td, .table-mono td {
-  border-bottom: 1px solid #E4E4E7;
+  border-bottom: 1px solid #E6E0D2;
   padding: 0.625rem 0.75rem;
-  color: #09090B;
+  color: #1C1917;
+  font-weight: 500;
 }
 .table-light tr:hover, .table-mono tr:hover {
-  background-color: #FAFAFA;
+  background-color: #F5F2EB;
 }
 
 /* Nav Tabs */
 .nav-tab-active {
-  color: #000000;
-  border-bottom: 2px solid #000000;
-  font-weight: 700;
-  background-color: rgba(0, 0, 0, 0.03);
+  color: #1C1917;
+  border-bottom: 2px solid #1C1917;
+  font-weight: 800;
+  background-color: rgba(28, 25, 23, 0.04);
 }
 .nav-tab-inactive {
-  color: #52525B;
+  color: #57534E;
   border-bottom: 2px solid transparent;
+  font-weight: 600;
 }
 .nav-tab-inactive:hover {
-  color: #000000;
+  color: #1C1917;
 }
 
 /* Ticker Animation */

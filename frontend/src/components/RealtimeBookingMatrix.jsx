@@ -115,16 +115,16 @@ export default function RealtimeBookingMatrix({ currentUser }) {
     <div className="card-surface p-5 space-y-4 font-sans shadow-2xs">
       
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#E4E4E7]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#E6E0D2]">
         <div>
           <div className="flex items-center space-x-2">
-            <Building2 className="w-5 h-5 text-black" />
-            <h2 className="text-sm font-bold text-[#09090B]">Classroom Reservation & Schedule</h2>
+            <Building2 className="w-5 h-5 text-[#1C1917]" />
+            <h2 className="text-sm font-bold text-[#1C1917]">Classroom Reservation & Schedule</h2>
             <span className="badge-mono-dark font-mono text-[10px]">
               Live Conflict Prevention
             </span>
           </div>
-          <p className="text-xs text-[#52525B] mt-0.5">
+          <p className="text-xs text-[#57534E] font-medium mt-0.5">
             Instant booking confirmation with zero double-booking or scheduling collisions.
           </p>
         </div>
@@ -137,24 +137,24 @@ export default function RealtimeBookingMatrix({ currentUser }) {
       </div>
 
       {/* Reservation Form Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3.5 bg-[#F4F4F5] rounded-lg border border-[#E4E4E7] text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3.5 bg-[#F0EBE1] rounded-lg border border-[#E6E0D2] text-xs">
         <div className="md:col-span-5">
-          <label className="block text-[#09090B] font-semibold mb-1">Event / Lecture Title</label>
+          <label className="block text-[#1C1917] font-semibold mb-1">Event / Lecture Title</label>
           <input
             type="text"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             placeholder="e.g. Machine Learning Lecture"
-            className="w-full bg-white border border-[#E4E4E7] rounded-md px-3 py-1.5 text-xs text-[#09090B] placeholder-[#A1A1AA] focus:outline-none focus:border-black font-medium"
+            className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-1.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1C1917] font-bold"
           />
         </div>
 
         <div className="md:col-span-4">
-          <label className="block text-[#09090B] font-semibold mb-1">Select Venue</label>
+          <label className="block text-[#1C1917] font-semibold mb-1">Select Venue</label>
           <select
             value={selectedVenue}
             onChange={(e) => setSelectedVenue(e.target.value)}
-            className="w-full bg-white border border-[#E4E4E7] rounded-md px-3 py-1.5 text-xs text-[#09090B] focus:outline-none focus:border-black font-bold"
+            className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-1.5 text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-bold"
           >
             {venues.map(v => (
               <option key={v.id} value={v.room_number}>
@@ -165,12 +165,12 @@ export default function RealtimeBookingMatrix({ currentUser }) {
         </div>
 
         <div className="md:col-span-3">
-          <label className="block text-[#09090B] font-semibold mb-1">Reservation Date</label>
+          <label className="block text-[#1C1917] font-semibold mb-1">Reservation Date</label>
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full bg-white border border-[#E4E4E7] rounded-md px-3 py-1.5 text-xs text-[#09090B] focus:outline-none focus:border-black font-mono font-bold"
+            className="w-full bg-white border border-[#E6E0D2] rounded-md px-3 py-1.5 text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-mono font-bold"
           />
         </div>
       </div>
@@ -180,13 +180,13 @@ export default function RealtimeBookingMatrix({ currentUser }) {
         <div className={`p-3 rounded-lg text-xs flex items-center space-x-2 border ${
           bookingStatus.type === 'success' ? 'badge-mono' : 'badge-mono-dark'
         }`}>
-          {bookingStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-black shrink-0" /> : <AlertCircle className="w-4 h-4 text-white shrink-0" />}
+          {bookingStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-[#1C1917] shrink-0" /> : <AlertCircle className="w-4 h-4 text-white shrink-0" />}
           <span>{bookingStatus.message}</span>
         </div>
       )}
 
       {/* Table Display */}
-      <div className="overflow-x-auto border border-[#E4E4E7] rounded-lg">
+      <div className="overflow-x-auto border border-[#E6E0D2] rounded-lg">
         <table className="table-mono">
           <thead>
             <tr>
@@ -201,7 +201,7 @@ export default function RealtimeBookingMatrix({ currentUser }) {
               const booked = isSlotBooked(selectedVenue, selectedDate, slot);
               return (
                 <tr key={idx}>
-                  <td className="font-mono font-bold text-[#09090B]">{slot}</td>
+                  <td className="font-mono font-bold text-[#1C1917]">{slot}</td>
                   <td>
                     {booked ? (
                       <span className="badge-mono-dark text-[10px]">
@@ -216,18 +216,18 @@ export default function RealtimeBookingMatrix({ currentUser }) {
                   <td>
                     {booked ? (
                       <div className="text-xs">
-                        <span className="font-bold text-[#09090B] block">{booked.event_name}</span>
-                        <span className="text-[11px] text-[#71717A] font-mono">{booked.booked_by_email}</span>
+                        <span className="font-bold text-[#1C1917] block">{booked.event_name}</span>
+                        <span className="text-[11px] text-[#57534E] font-mono font-semibold">{booked.booked_by_email}</span>
                       </div>
                     ) : (
-                      <span className="text-[#A1A1AA] text-xs italic">Open for reservation</span>
+                      <span className="text-[#78716C] text-xs italic font-semibold">Open for reservation</span>
                     )}
                   </td>
                   <td>
                     <button
                       onClick={() => handleBookSlot(slot)}
                       disabled={Boolean(booked) || isSubmitting}
-                      className={booked ? 'btn-secondary text-[#A1A1AA] opacity-50 cursor-not-allowed text-xs py-1 px-3' : 'btn-primary text-xs py-1 px-3'}
+                      className={booked ? 'btn-secondary text-[#78716C] opacity-50 cursor-not-allowed text-xs py-1 px-3' : 'btn-primary text-xs py-1 px-3'}
                     >
                       {booked ? (
                         <>

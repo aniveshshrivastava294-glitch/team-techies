@@ -36,15 +36,15 @@ export default function CosmicOrbitRadar() {
     <div className="card-surface p-5 font-sans space-y-4 shadow-2xs">
       
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E4E4E7]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E6E0D2]">
         <div className="flex items-center space-x-2.5">
-          <Satellite className="w-5 h-5 text-black" />
+          <Satellite className="w-5 h-5 text-[#1C1917]" />
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-[#09090B]">Campus Fleet & Telemetry Tracker</h3>
+              <h3 className="text-sm font-bold text-[#1C1917]">Campus Fleet & Telemetry Tracker</h3>
               <span className="badge-mono-dark text-[10px]">Connected</span>
             </div>
-            <p className="text-xs text-[#52525B]">Real-time GPS tracking for campus shuttles and IoT sensors.</p>
+            <p className="text-xs text-[#57534E] font-medium">Real-time GPS tracking for campus shuttles and IoT sensors.</p>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ export default function CosmicOrbitRadar() {
             onClick={() => setSoundEnabled(!soundEnabled)}
             className="btn-secondary text-xs"
           >
-            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-black" /> : <VolumeX className="w-3.5 h-3.5 text-[#A1A1AA]" />}
+            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-[#1C1917]" /> : <VolumeX className="w-3.5 h-3.5 text-[#78716C]" />}
             <span>{soundEnabled ? 'Audio ON' : 'Audio Muted'}</span>
           </button>
           <button
@@ -67,7 +67,7 @@ export default function CosmicOrbitRadar() {
       </div>
 
       {/* Fleet Telemetry Data Table */}
-      <div className="overflow-x-auto border border-[#E4E4E7] rounded-lg">
+      <div className="overflow-x-auto border border-[#E6E0D2] rounded-lg">
         <table className="table-mono">
           <thead>
             <tr>
@@ -86,13 +86,13 @@ export default function CosmicOrbitRadar() {
                 <tr
                   key={sat.id}
                   onClick={() => triggerDiagnosticPing(sat.id)}
-                  className={`cursor-pointer transition-colors ${isSelected ? 'bg-[#F4F4F5] font-bold' : ''}`}
+                  className={`cursor-pointer transition-colors ${isSelected ? 'bg-[#F0EBE1] font-bold' : ''}`}
                 >
-                  <td className="font-mono text-[#09090B] font-bold">{sat.id}</td>
-                  <td className="text-[#09090B] font-medium">{sat.name}</td>
-                  <td className="text-[#52525B] font-mono text-xs">{sat.category}</td>
-                  <td className="font-mono text-[#52525B]">{sat.delay}</td>
-                  <td className="font-mono text-[#09090B] font-bold">{sat.health}</td>
+                  <td className="font-mono text-[#1C1917] font-bold">{sat.id}</td>
+                  <td className="text-[#1C1917] font-bold">{sat.name}</td>
+                  <td className="text-[#57534E] font-mono text-xs font-semibold">{sat.category}</td>
+                  <td className="font-mono text-[#57534E] font-semibold">{sat.delay}</td>
+                  <td className="font-mono text-[#1C1917] font-bold">{sat.health}</td>
                   <td>
                     <span className="badge-mono text-[10px]">
                       <span>{sat.status}</span>

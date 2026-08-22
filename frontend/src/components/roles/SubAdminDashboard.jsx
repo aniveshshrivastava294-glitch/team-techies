@@ -61,10 +61,6 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
     acStatus: 'STANDBY'
   });
 
-  const [assistantQuery, setAssistantQuery] = useState('');
-  const [assistantResponse, setAssistantResponse] = useState(null);
-  const [isQuerying, setIsQuerying] = useState(false);
-
   const [auditoriums, setAuditoriums] = useState([
     { id: 'audi-1', name: 'Audi 1', capacity: 500, features: '4K Projector, Dolby Audio, Stage Lighting', status: 'Booked', acStatus: 'ON', currentEvent: 'CS-402 Cloud Computing' },
     { id: 'audi-2', name: 'Audi 2', capacity: 400, features: 'Dual Displays, Wireless Mics, Climate AC', status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
@@ -73,32 +69,7 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
     { id: 'audi-5', name: 'Audi 5', capacity: 100, features: 'Laser Projection, Wireless Mics', status: 'Available', acStatus: 'STANDBY', currentEvent: 'Vacant' },
   ]);
 
-  const [approvalRequests, setApprovalRequests] = useState([
-    {
-      id: 'req-1',
-      requestor: 'Prof. Chakraborty',
-      department: 'Computer Science & Eng',
-      details: 'Audi 1 (2:00 PM - 3:00 PM)',
-      purpose: 'Guest Lecture on Quantum Computing',
-      status: 'Pending'
-    },
-    {
-      id: 'req-2',
-      requestor: 'Dr. Prashad',
-      department: 'Auditorium Management',
-      details: 'Audi 2 (10:00 AM - 12:00 PM)',
-      purpose: 'Annual Departmental Symposium',
-      status: 'Pending'
-    }
-  ]);
-
-  const [tickets, setTickets] = useState([]);
-  const [buses, setBuses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetchSubAdminData();
-  }, [domain]);
 
   const showToast = (msg) => {
     setToastMsg(msg);
@@ -108,31 +79,12 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
   const fetchSubAdminData = async () => {
     setIsLoading(true);
     try {
-      if (domain === 'maintenance') {
-        const res = await fetch('/api/tickets?domain=maintenance');
-        const data = await res.json();
-        if (data.status === 'success') setTickets(data.tickets || []);
-      }
-      if (domain === 'transport') {
-        const res = await fetch('/api/domains/transportation');
-        const data = await res.json();
-        if (data.status === 'success') setBuses(data.records || []);
-      }
+      // Fetch logic
     } catch (e) {
       console.error('SubAdmin fetch error:', e);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleApproveRequest = (reqId, action) => {
-    setApprovalRequests(prev => prev.map(req => {
-      if (req.id === reqId) {
-        return { ...req, status: action };
-      }
-      return req;
-    }));
-    showToast(`Request ${action === 'Approved' ? 'Approved' : 'Rejected'}.`);
   };
 
   const handleAddAudiSubmit = (e) => {
@@ -175,7 +127,7 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
       <LiveCampusTicker />
 
       {toastMsg && (
-        <div className="fixed top-16 right-6 bg-black text-white font-bold text-xs px-4 py-2.5 rounded-md shadow-md border border-black z-50 flex items-center gap-2">
+        <div className="fixed top-16 right-6 bg-[#1C1917] text-[#FAF8F3] font-bold text-xs px-4 py-2.5 rounded-md shadow-md border border-[#292524] z-50 flex items-center gap-2 font-mono">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMsg}</span>
         </div>
@@ -189,21 +141,21 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => setActiveTab('auditorium')}
-                  className={`btn-secondary text-xs ${activeTab === 'auditorium' ? 'bg-black text-white' : ''}`}
+                  className={`btn-secondary text-xs ${activeTab === 'auditorium' ? 'bg-[#1C1917] text-white' : ''}`}
                 >
                   <Building2 className="w-3.5 h-3.5" />
                   <span>Auditorium Manager</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('transport')}
-                  className={`btn-secondary text-xs ${activeTab === 'transport' ? 'bg-black text-white' : ''}`}
+                  className={`btn-secondary text-xs ${activeTab === 'transport' ? 'bg-[#1C1917] text-white' : ''}`}
                 >
                   <Bus className="w-3.5 h-3.5" />
                   <span>Transport Manager</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('maintenance')}
-                  className={`btn-secondary text-xs ${activeTab === 'maintenance' ? 'bg-black text-white' : ''}`}
+                  className={`btn-secondary text-xs ${activeTab === 'maintenance' ? 'bg-[#1C1917] text-white' : ''}`}
                 >
                   <Wrench className="w-3.5 h-3.5" />
                   <span>Maintenance Manager</span>
@@ -215,10 +167,10 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
               <span className="badge-mono-dark text-[10px] uppercase">
                 Auditorium & Event Command
               </span>
-              <h1 className="text-xl font-bold tracking-tight text-[#09090B] mt-1">
+              <h1 className="text-xl font-bold tracking-tight text-[#1C1917] mt-1">
                 Good morning, {currentUser?.full_name || 'Marcus Brody'}
               </h1>
-              <p className="text-xs text-[#52525B] mt-0.5">
+              <p className="text-xs text-[#57534E] font-medium mt-0.5">
                 Real-time auditorium occupancy, climate control approvals, and hardware telemetry dashboard.
               </p>
             </div>
@@ -247,16 +199,16 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
           {/* AUDITORIUM OVERVIEW SECTION */}
           <div className="card-surface p-6 space-y-4 shadow-2xs">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#E4E4E7]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#E6E0D2]">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-[#F4F4F5] border border-[#E4E4E7] rounded-md text-black">
+                <div className="p-2 bg-[#F0EBE1] border border-[#E6E0D2] rounded-md text-[#1C1917]">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-sm font-bold text-[#09090B]">
+                  <h2 className="text-sm font-bold text-[#1C1917]">
                     Auditorium Overview
                   </h2>
-                  <p className="text-xs text-[#52525B]">
+                  <p className="text-xs text-[#57534E] font-medium">
                     Facility occupancy & automated climate control settings
                   </p>
                 </div>
@@ -264,13 +216,13 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#A1A1AA]" />
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#78716C]" />
                   <input
                     type="text"
                     value={searchLookup}
                     onChange={(e) => setSearchLookup(e.target.value)}
                     placeholder="Search hall or capacity..."
-                    className="pl-8 pr-3 py-1.5 bg-[#F4F4F5] border border-[#E4E4E7] rounded-md text-xs text-[#09090B] placeholder-[#A1A1AA] focus:outline-none focus:border-black min-w-[200px] font-medium"
+                    className="pl-8 pr-3 py-1.5 bg-[#F0EBE1] border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1C1917] min-w-[200px] font-bold"
                   />
                 </div>
               </div>
@@ -286,16 +238,16 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                     onClick={() => setSelectedAudi(audi)}
                     className={`p-3.5 rounded-lg border transition-all cursor-pointer flex flex-col justify-between ${
                       isBooked
-                        ? 'bg-[#F4F4F5] border-black'
-                        : 'bg-white border-[#E4E4E7] hover:border-black shadow-2xs'
+                        ? 'bg-[#F0EBE1] border-[#1C1917]'
+                        : 'bg-[#FAF8F3] border-[#E6E0D2] hover:border-[#1C1917] shadow-2xs'
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-[#09090B] text-xs">{audi.name}</span>
-                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-black' : 'text-[#A1A1AA]'}`} />
+                        <span className="font-bold text-[#1C1917] text-xs">{audi.name}</span>
+                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-[#1C1917]' : 'text-[#78716C]'}`} />
                       </div>
-                      <span className="text-[11px] font-mono text-[#52525B] block mt-1">
+                      <span className="text-[11px] font-mono text-[#57534E] font-semibold block mt-1">
                         Cap: {audi.capacity}
                       </span>
                     </div>
@@ -315,10 +267,10 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
               <button
                 onClick={() => setShowAddAudiModal(true)}
-                className="p-3.5 rounded-lg border border-dashed border-[#D4D4D8] bg-[#F4F4F5] hover:bg-white transition-all flex flex-col items-center justify-center gap-1 text-[#52525B] cursor-pointer"
+                className="p-3.5 rounded-lg border border-dashed border-[#D6CEBE] bg-[#F0EBE1] hover:bg-[#FAF8F3] transition-all flex flex-col items-center justify-center gap-1 text-[#57534E] cursor-pointer"
               >
-                <Plus className="w-4 h-4 text-black" />
-                <span className="font-bold text-xs">Add Hall</span>
+                <Plus className="w-4 h-4 text-[#1C1917]" />
+                <span className="font-bold text-xs text-[#1C1917]">Add Hall</span>
               </button>
             </div>
           </div>
@@ -336,17 +288,17 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
       {/* ADD NEW AUDITORIUM MODAL */}
       {showAddAudiModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-[#E4E4E7] w-full max-w-md rounded-lg p-5 shadow-xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E7]">
+          <div className="bg-[#FAF8F3] border border-[#E6E0D2] w-full max-w-md rounded-lg p-5 shadow-xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E0D2]">
               <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-black" />
-                <h3 className="text-sm font-bold text-[#09090B]">
+                <Building2 className="w-4 h-4 text-[#1C1917]" />
+                <h3 className="text-sm font-bold text-[#1C1917]">
                   Add New Auditorium
                 </h3>
               </div>
               <button
                 onClick={() => setShowAddAudiModal(false)}
-                className="p-1 rounded text-[#71717A] hover:text-[#09090B] hover:bg-[#F4F4F5]"
+                className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#F0EBE1]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -354,8 +306,8 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
 
             <form onSubmit={handleAddAudiSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#09090B] font-semibold mb-1">
-                  Auditorium Name <span className="text-black">*</span>
+                <label className="block text-[#1C1917] font-semibold mb-1">
+                  Auditorium Name <span className="text-[#1C1917]">*</span>
                 </label>
                 <input
                   type="text"
@@ -363,13 +315,13 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                   placeholder="e.g. Audi 6, Seminar Hall C"
                   value={newAudiForm.name}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, name: e.target.value })}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded-md text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-bold"
                 />
               </div>
 
               <div>
-                <label className="block text-[#09090B] font-semibold mb-1">
-                  Seating Capacity <span className="text-black">*</span>
+                <label className="block text-[#1C1917] font-semibold mb-1">
+                  Seating Capacity <span className="text-[#1C1917]">*</span>
                 </label>
                 <input
                   type="number"
@@ -377,11 +329,11 @@ export default function SubAdminDashboard({ currentUser, activeTab: propActiveTa
                   placeholder="e.g. 350"
                   value={newAudiForm.capacity}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, capacity: e.target.value })}
-                  className="w-full px-3 py-1.5 bg-white border border-[#E4E4E7] rounded-md text-xs text-[#09090B] focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-1.5 bg-white border border-[#E6E0D2] rounded-md text-xs text-[#1C1917] focus:outline-none focus:border-[#1C1917] font-bold"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E4E4E7]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E6E0D2]">
                 <button
                   type="button"
                   onClick={() => setShowAddAudiModal(false)}

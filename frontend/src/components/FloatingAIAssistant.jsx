@@ -101,7 +101,7 @@ export default function FloatingAIAssistant({ currentUser }) {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 p-3.5 bg-black hover:bg-[#18181B] text-white font-bold rounded-full shadow-md transition-all flex items-center justify-center cursor-pointer border border-black"
+        className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#1C1917] hover:bg-[#292524] text-[#FAF8F3] font-bold rounded-full shadow-md transition-all flex items-center justify-center cursor-pointer border border-[#1C1917]"
         title="Open Campus Orbit AI Assistant"
       >
         <Sparkles className="w-5 h-5" />
@@ -109,19 +109,19 @@ export default function FloatingAIAssistant({ currentUser }) {
 
       {/* Floating Assistant Drawer */}
       {isOpen && (
-        <div className="fixed bottom-20 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[500px] bg-white border border-[#E4E4E7] rounded-lg shadow-lg flex flex-col overflow-hidden font-sans">
+        <div className="fixed bottom-20 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[500px] bg-[#FAF8F3] border border-[#E6E0D2] rounded-lg shadow-lg flex flex-col overflow-hidden font-sans">
           
           {/* Header */}
-          <div className="p-3.5 bg-[#F4F4F5] border-b border-[#E4E4E7] flex items-center justify-between">
+          <div className="p-3.5 bg-[#F0EBE1] border-b border-[#E6E0D2] flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1.5 rounded-md bg-white border border-[#E4E4E7] text-black">
+              <div className="p-1.5 rounded-md bg-[#FAF8F3] border border-[#E6E0D2] text-[#1C1917]">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-[#09090B]">
+                <h3 className="text-xs font-bold text-[#1C1917]">
                   Campus Orbit Assistant
                 </h3>
-                <p className="text-[10px] text-[#71717A] font-mono">
+                <p className="text-[10px] text-[#78716C] font-mono font-semibold">
                   Executive AI Agent
                 </p>
               </div>
@@ -129,46 +129,46 @@ export default function FloatingAIAssistant({ currentUser }) {
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 text-[#71717A] hover:text-black rounded hover:bg-[#E4E4E7] transition-colors"
+              className="p-1 text-[#78716C] hover:text-[#1C1917] rounded hover:bg-[#E6E0D2] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F4F4F5]">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F0EBE1]">
             {chatMessages.map((msg, i) => (
               <div
                 key={i}
                 className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.sender === 'ai' && (
-                  <div className="w-6 h-6 rounded-md bg-white border border-[#E4E4E7] text-black flex items-center justify-center flex-shrink-0 text-xs mt-0.5 shadow-2xs">
+                  <div className="w-6 h-6 rounded-md bg-[#FAF8F3] border border-[#E6E0D2] text-[#1C1917] flex items-center justify-center flex-shrink-0 text-xs mt-0.5 shadow-2xs font-bold">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
 
                 <div className={`max-w-[82%] space-y-1.5 ${
                   msg.sender === 'user'
-                    ? 'bg-black text-white rounded-lg p-3 text-xs shadow-2xs font-medium'
-                    : 'bg-white border border-[#E4E4E7] text-[#09090B] rounded-lg p-3 text-xs shadow-2xs'
+                    ? 'bg-[#1C1917] text-white rounded-lg p-3 text-xs shadow-2xs font-medium'
+                    : 'bg-[#FAF8F3] border border-[#E6E0D2] text-[#1C1917] rounded-lg p-3 text-xs shadow-2xs font-medium'
                 }`}>
                   <p className="leading-relaxed whitespace-pre-line">{msg.text}</p>
 
                   {msg.toolExecuted && (
-                    <div className="pt-1.5 border-t border-[#F4F4F5] text-[10px] text-black font-mono flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3 text-black" />
+                    <div className="pt-1.5 border-t border-[#E6E0D2] text-[10px] text-[#1C1917] font-mono flex items-center gap-1 font-bold">
+                      <CheckCircle2 className="w-3 h-3 text-[#1C1917]" />
                       <span>Executed: {msg.toolExecuted}</span>
                     </div>
                   )}
 
-                  <span className={`block text-[9px] ${msg.sender === 'user' ? 'text-[#D4D4D8]' : 'text-[#71717A]'} text-right`}>
+                  <span className={`block text-[9px] ${msg.sender === 'user' ? 'text-[#D6CEBE]' : 'text-[#78716C]'} text-right font-mono font-semibold`}>
                     {msg.timestamp}
                   </span>
                 </div>
 
                 {msg.sender === 'user' && (
-                  <div className="w-6 h-6 rounded-md bg-black text-white flex items-center justify-center flex-shrink-0 text-xs mt-0.5 shadow-2xs">
+                  <div className="w-6 h-6 rounded-md bg-[#1C1917] text-white flex items-center justify-center flex-shrink-0 text-xs mt-0.5 shadow-2xs font-bold">
                     <User className="w-3.5 h-3.5" />
                   </div>
                 )}
@@ -176,8 +176,8 @@ export default function FloatingAIAssistant({ currentUser }) {
             ))}
 
             {isLoading && (
-              <div className="flex gap-2.5 justify-start font-mono text-xs text-[#71717A]">
-                <Bot className="w-4 h-4 text-black animate-spin" />
+              <div className="flex gap-2.5 justify-start font-mono text-xs text-[#57534E] font-semibold">
+                <Bot className="w-4 h-4 text-[#1C1917] animate-spin" />
                 <span>Thinking...</span>
               </div>
             )}
@@ -186,7 +186,7 @@ export default function FloatingAIAssistant({ currentUser }) {
           </div>
 
           {/* Quick Action Pills */}
-          <div className="px-3 py-2 bg-white border-t border-[#E4E4E7] flex items-center space-x-1.5 overflow-x-auto whitespace-nowrap">
+          <div className="px-3 py-2 bg-[#FAF8F3] border-t border-[#E6E0D2] flex items-center space-x-1.5 overflow-x-auto whitespace-nowrap">
             {quickPills.map((pill, idx) => (
               <button
                 key={idx}
@@ -199,13 +199,13 @@ export default function FloatingAIAssistant({ currentUser }) {
           </div>
 
           {/* Input Bar */}
-          <form onSubmit={handleSendMessage} className="p-3 bg-white border-t border-[#E4E4E7] flex items-center space-x-2">
+          <form onSubmit={handleSendMessage} className="p-3 bg-[#FAF8F3] border-t border-[#E6E0D2] flex items-center space-x-2">
             <input
               type="text"
               value={inputQuery}
               onChange={(e) => setInputQuery(e.target.value)}
               placeholder="Ask Omni-Agent to execute any task..."
-              className="flex-1 bg-[#F4F4F5] border border-[#E4E4E7] rounded-md px-3 py-1.5 text-xs text-[#09090B] placeholder-[#A1A1AA] focus:outline-none focus:border-black font-medium"
+              className="flex-1 bg-[#F0EBE1] border border-[#E6E0D2] rounded-md px-3 py-1.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1C1917] font-bold"
             />
             <button
               type="submit"

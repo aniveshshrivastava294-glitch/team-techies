@@ -110,7 +110,7 @@ function DashboardRouter() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F5F2EB] text-[#1C1917] flex flex-col font-sans">
       
       {/* Top Header Bar */}
       <Header

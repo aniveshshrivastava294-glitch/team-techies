@@ -20,37 +20,37 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#E4E4E7] font-sans shadow-2xs">
+    <header className="sticky top-0 z-40 bg-[#FAF8F3] border-b border-[#E6E0D2] font-sans shadow-2xs">
       
       {/* Top Main Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
         
         {/* Brand Name Typography */}
         <div className="flex items-center space-x-3 shrink-0">
-          <div className="w-7 h-7 rounded-md bg-black text-white flex items-center justify-center font-mono font-bold text-xs">
+          <div className="w-7 h-7 rounded-md bg-[#1C1917] text-[#FAF8F3] flex items-center justify-center font-mono font-bold text-xs">
             CO
           </div>
           <div>
-            <h1 className="text-sm font-bold tracking-tight text-[#09090B] leading-none">
+            <h1 className="text-sm font-bold tracking-tight text-[#1C1917] leading-none">
               Campus Orbit
             </h1>
-            <span className="text-[10px] text-[#71717A] font-mono tracking-wider uppercase">
-              EXECUTIVE MONOCHROME
+            <span className="text-[10px] text-[#78716C] font-mono tracking-wider uppercase">
+              EXECUTIVE BEIGE
             </span>
           </div>
         </div>
 
         {/* Search Bar */}
         <div className="relative flex-1 max-w-md hidden md:block">
-          <Search className="w-3.5 h-3.5 text-[#A1A1AA] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-[#78716C] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search rooms, bus routes, tickets, or staff (⌘K)..."
-            className="w-full bg-[#F4F4F5] border border-[#E4E4E7] rounded-md pl-9 pr-12 py-1.5 text-xs text-[#09090B] placeholder-[#A1A1AA] focus:outline-none focus:border-black focus:bg-white transition-all"
+            className="w-full bg-[#F0EBE1] border border-[#E6E0D2] rounded-md pl-9 pr-12 py-1.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none focus:border-[#1C1917] focus:bg-[#FAF8F3] font-medium transition-all"
           />
-          <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[#71717A] bg-white px-1.5 py-0.5 rounded border border-[#E4E4E7]">
+          <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[#78716C] bg-[#FAF8F3] px-1.5 py-0.5 rounded border border-[#E6E0D2]">
             ⌘K
           </kbd>
         </div>
@@ -59,7 +59,7 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
         <div className="flex items-center space-x-2">
           
           <div className="hidden lg:flex items-center space-x-1.5 badge-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1C1917] animate-ping"></span>
             <span>System Online</span>
           </div>
 
@@ -68,19 +68,19 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
               onClick={() => setShowRoleDropdown(!showRoleDropdown)}
               className="btn-secondary text-xs flex items-center space-x-1.5 py-1 px-2.5"
             >
-              <Shield className="w-3.5 h-3.5 text-black" />
-              <span className="font-bold text-[#09090B]">
+              <Shield className="w-3.5 h-3.5 text-[#1C1917]" />
+              <span className="font-bold text-[#1C1917]">
                 {currentUser?.full_name?.split(' ')[0] || 'Guest'}
               </span>
-              <span className="text-[10px] font-mono text-[#71717A] uppercase">
+              <span className="text-[10px] font-mono text-[#78716C] uppercase">
                 ({currentUser?.role === 'sub_admin' ? currentUser?.department_domain : currentUser?.role?.replace('_', ' ') || 'Visitor'})
               </span>
-              <ChevronDown className="w-3.5 h-3.5 text-[#A1A1AA]" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#78716C]" />
             </button>
 
             {showRoleDropdown && (
-              <div className="absolute right-0 mt-1 w-56 p-1.5 rounded-md border border-[#E4E4E7] bg-white shadow-md z-50 text-xs space-y-1">
-                <div className="px-2 py-1 text-[10px] font-mono text-[#71717A] uppercase tracking-wider border-b border-[#F4F4F5] mb-1">
+              <div className="absolute right-0 mt-1 w-56 p-1.5 rounded-md border border-[#E6E0D2] bg-[#FAF8F3] shadow-md z-50 text-xs space-y-1">
+                <div className="px-2 py-1 text-[10px] font-mono text-[#78716C] uppercase tracking-wider border-b border-[#E6E0D2] mb-1">
                   Switch Demo Role:
                 </div>
                 {demoAccounts.map((acc, idx) => (
@@ -91,11 +91,11 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
                       setShowRoleDropdown(false);
                     }}
                     className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs transition-colors flex items-center justify-between ${
-                      currentUser?.email === acc.email ? 'bg-black text-white font-bold' : 'hover:bg-[#F4F4F5] text-[#09090B]'
+                      currentUser?.email === acc.email ? 'bg-[#1C1917] text-[#FAF8F3] font-bold' : 'hover:bg-[#F0EBE1] text-[#1C1917]'
                     }`}
                   >
                     <span>{acc.full_name.split(' ')[0]}</span>
-                    <span className="text-[10px] font-mono text-[#71717A] capitalize">
+                    <span className="text-[10px] font-mono text-[#78716C] capitalize">
                       {acc.role === 'sub_admin' ? `${acc.department_domain}` : acc.role.replace('_', ' ')}
                     </span>
                   </button>
@@ -107,16 +107,16 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="p-1.5 text-[#71717A] hover:text-black rounded hover:bg-[#F4F4F5]"
+            className="p-1.5 text-[#78716C] hover:text-[#1C1917] rounded hover:bg-[#F0EBE1]"
             title="Refresh Data"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-black' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#1C1917]' : ''}`} />
           </button>
 
           {currentUser ? (
             <button
               onClick={logout}
-              className="p-1.5 text-[#71717A] hover:text-black rounded hover:bg-[#F4F4F5]"
+              className="p-1.5 text-[#78716C] hover:text-[#1C1917] rounded hover:bg-[#F0EBE1]"
               title="Sign Out"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -136,7 +136,7 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
       </div>
 
       {/* Integrated Navigation Tab Bar */}
-      <div className="border-t border-[#E4E4E7] bg-white">
+      <div className="border-t border-[#E6E0D2] bg-[#FAF8F3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center space-x-1 overflow-x-auto whitespace-nowrap">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -147,11 +147,11 @@ export default function Header({ onRefresh, isRefreshing, onOpenLogin, activeTab
                 onClick={() => setActiveTab && setActiveTab(item.id)}
                 className={`py-2.5 px-3.5 text-xs font-semibold flex items-center space-x-2 border-b-2 transition-all cursor-pointer ${
                   isActive
-                    ? 'border-black text-black font-bold bg-[#F4F4F5]'
-                    : 'border-transparent text-[#52525B] hover:text-black hover:bg-[#FAFAFA]'
+                    ? 'border-[#1C1917] text-[#1C1917] font-bold bg-[#F0EBE1]'
+                    : 'border-transparent text-[#57534E] hover:text-[#1C1917] hover:bg-[#F5F2EB]'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-black' : 'text-[#71717A]'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1C1917]' : 'text-[#78716C]'}`} />
                 <span>{item.label}</span>
               </button>
             );

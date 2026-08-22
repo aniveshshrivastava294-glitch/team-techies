@@ -49,27 +49,27 @@ export default function ConversationalHero({ currentUser }) {
         {/* Header Title */}
         <div className="space-y-1.5">
           <div className="inline-flex items-center space-x-2 badge-mono mb-1">
-            <Sparkles className="w-3.5 h-3.5 text-black" />
+            <Sparkles className="w-3.5 h-3.5 text-[#1C1917]" />
             <span>AI Omni-Agent Intelligence</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#09090B] tracking-tight flex items-center justify-center gap-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#1C1917] tracking-tight flex items-center justify-center gap-2">
             <span>How can Campus AI assist your operations today?</span>
           </h1>
-          <p className="text-xs text-[#52525B] max-w-lg mx-auto">
+          <p className="text-xs text-[#57534E] max-w-lg mx-auto font-medium">
             Execute actions in plain English — reserve classrooms, inspect shuttle telemetry, or approve staff access.
           </p>
         </div>
 
         {/* Search Input Pill */}
         <form onSubmit={(e) => { e.preventDefault(); handleAskAgent(); }} className="relative max-w-xl mx-auto pt-1">
-          <div className="relative flex items-center bg-[#F4F4F5] rounded-full border border-[#E4E4E7] focus-within:border-black focus-within:bg-white p-1.5 transition-colors shadow-2xs">
-            <Search className="w-4 h-4 text-[#A1A1AA] absolute left-4 pointer-events-none" />
+          <div className="relative flex items-center bg-[#F0EBE1] rounded-full border border-[#E6E0D2] focus-within:border-[#1C1917] focus-within:bg-[#FAF8F3] p-1.5 transition-colors shadow-2xs">
+            <Search className="w-4 h-4 text-[#78716C] absolute left-4 pointer-events-none" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="How can we assist you? e.g. Reserve CS-301 for tomorrow 10 AM..."
-              className="w-full bg-transparent border-0 rounded-full pl-10 pr-24 py-2 text-xs text-[#09090B] placeholder-[#A1A1AA] focus:outline-none text-center font-medium"
+              className="w-full bg-transparent border-0 rounded-full pl-10 pr-24 py-2 text-xs text-[#1C1917] placeholder-[#78716C] focus:outline-none text-center font-bold"
             />
             <button
               type="submit"
@@ -104,10 +104,10 @@ export default function ConversationalHero({ currentUser }) {
 
         {/* Agent Execution Result Drawer */}
         {agentResult && (
-          <div className="mt-4 p-4 rounded-lg border border-[#E4E4E7] bg-[#F4F4F5] text-left space-y-2.5 shadow-2xs">
-            <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-2">
-              <span className="text-xs font-bold text-[#09090B] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-black" />
+          <div className="mt-4 p-4 rounded-lg border border-[#E6E0D2] bg-[#F0EBE1] text-left space-y-2.5 shadow-2xs">
+            <div className="flex items-center justify-between border-b border-[#E6E0D2] pb-2">
+              <span className="text-xs font-bold text-[#1C1917] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#1C1917]" />
                 <span>AI Omni-Agent Response</span>
               </span>
               {agentResult.toolExecuted && (
@@ -117,7 +117,7 @@ export default function ConversationalHero({ currentUser }) {
               )}
             </div>
 
-            <p className="text-xs text-[#09090B] leading-relaxed font-sans whitespace-pre-line">
+            <p className="text-xs text-[#1C1917] leading-relaxed font-sans whitespace-pre-line font-medium">
               {agentResult.gemini?.answer || agentResult.query}
             </p>
           </div>

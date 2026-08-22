@@ -69,19 +69,19 @@ export default function ChatWidget() {
     <div className="card-surface p-5 mb-6 font-sans shadow-2xs">
       
       {/* Title & Pipeline Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E4E4E7]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E6E0D2]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] text-black">
+          <div className="p-2 rounded-md bg-[#F0EBE1] border border-[#E6E0D2] text-[#1C1917]">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-[#09090B]">Natural-Language AI Query Engine</h2>
+              <h2 className="text-sm font-bold text-[#1C1917]">Natural-Language AI Query Engine</h2>
               <span className="badge-mono text-[10px]">
                 Groq + Gemini
               </span>
             </div>
-            <p className="text-xs text-[#52525B] mt-0.5">
+            <p className="text-xs text-[#57534E] font-medium mt-0.5">
               Translates queries to SQL, accesses domain tables, and synthesizes actionable recommendations.
             </p>
           </div>
@@ -90,8 +90,8 @@ export default function ChatWidget() {
 
       {/* Quick Prompt Chips */}
       <div className="flex flex-wrap items-center gap-1.5 mb-3">
-        <span className="text-xs text-[#52525B] font-semibold flex items-center gap-1 mr-1">
-          <Zap className="w-3.5 h-3.5 text-black" />
+        <span className="text-xs text-[#57534E] font-semibold flex items-center gap-1 mr-1">
+          <Zap className="w-3.5 h-3.5 text-[#1C1917]" />
           Quick Prompts:
         </span>
         {quickPrompts.map((prompt, pIdx) => (
@@ -107,15 +107,15 @@ export default function ChatWidget() {
       </div>
 
       {/* Chat Messages Box */}
-      <div className="bg-[#F4F4F5] rounded-lg border border-[#E4E4E7] p-3.5 h-[320px] overflow-y-auto space-y-3 mb-3">
+      <div className="bg-[#F0EBE1] rounded-lg border border-[#E6E0D2] p-3.5 h-[320px] overflow-y-auto space-y-3 mb-3">
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex items-start space-x-2.5 ${msg.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
             
             {/* Avatar Icon */}
             <div className={`p-1.5 rounded-md shrink-0 ${
               msg.role === 'user'
-                ? 'bg-black text-white font-bold'
-                : 'bg-white text-black border border-[#E4E4E7] shadow-2xs'
+                ? 'bg-[#1C1917] text-white font-bold'
+                : 'bg-[#FAF8F3] text-[#1C1917] border border-[#E6E0D2] shadow-2xs'
             }`}>
               {msg.role === 'user' ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
             </div>
@@ -123,8 +123,8 @@ export default function ChatWidget() {
             {/* Message Content Bubble */}
             <div className={`max-w-[85%] rounded-lg p-3 text-xs leading-relaxed ${
               msg.role === 'user'
-                ? 'bg-black text-white shadow-2xs font-medium'
-                : 'bg-white border border-[#E4E4E7] text-[#09090B] shadow-2xs'
+                ? 'bg-[#1C1917] text-white shadow-2xs font-medium'
+                : 'bg-[#FAF8F3] border border-[#E6E0D2] text-[#1C1917] shadow-2xs font-medium'
             }`}>
               
               {/* Message Text */}
@@ -134,20 +134,20 @@ export default function ChatWidget() {
 
               {/* Groq Text-to-SQL Block */}
               {msg.groqSql && (
-                <div className="mt-2 pt-2 border-t border-[#F4F4F5]">
+                <div className="mt-2 pt-2 border-t border-[#E6E0D2]">
                   <button
                     onClick={() => setShowSqlIndex(showSqlIndex === idx ? null : idx)}
-                    className="flex items-center justify-between w-full px-2.5 py-1 bg-[#F4F4F5] border border-[#E4E4E7] rounded text-[10px] font-mono text-[#09090B] hover:bg-white transition-colors"
+                    className="flex items-center justify-between w-full px-2.5 py-1 bg-[#F0EBE1] border border-[#E6E0D2] rounded text-[10px] font-mono text-[#1C1917] hover:bg-[#FAF8F3] transition-colors"
                   >
                     <span className="flex items-center gap-1 font-bold">
-                      <Code2 className="w-3 h-3 text-black" />
+                      <Code2 className="w-3 h-3 text-[#1C1917]" />
                       Groq Generated SQL
                     </span>
                     {showSqlIndex === idx ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                   </button>
 
                   {showSqlIndex === idx && (
-                    <div className="mt-1.5 p-2 bg-black text-white rounded text-[10px] font-mono border border-black overflow-x-auto">
+                    <div className="mt-1.5 p-2 bg-[#1C1917] text-[#FAF8F3] rounded text-[10px] font-mono border border-[#292524] overflow-x-auto">
                       <code>{msg.groqSql}</code>
                     </div>
                   )}
@@ -160,8 +160,8 @@ export default function ChatWidget() {
         ))}
 
         {isSubmitting && (
-          <div className="flex items-center space-x-2 text-[#71717A] text-xs py-1 font-mono">
-            <div className="w-2 h-2 bg-black rounded-full animate-ping" />
+          <div className="flex items-center space-x-2 text-[#57534E] text-xs py-1 font-mono font-semibold">
+            <div className="w-2 h-2 bg-[#1C1917] rounded-full animate-ping" />
             <span>AI pipeline executing Groq SQL translation and Gemini synthesis...</span>
           </div>
         )}
@@ -181,7 +181,7 @@ export default function ChatWidget() {
           onChange={(e) => setInputQuery(e.target.value)}
           placeholder="Ask operational questions e.g. 'Which rooms have high energy consumption?'"
           disabled={isSubmitting}
-          className="flex-1 bg-white border border-[#E4E4E7] text-[#09090B] placeholder-[#A1A1AA] text-xs rounded-md px-3 py-2 focus:outline-none focus:border-black font-medium"
+          className="flex-1 bg-white border border-[#E6E0D2] text-[#1C1917] placeholder-[#78716C] text-xs rounded-md px-3 py-2 focus:outline-none focus:border-[#1C1917] font-bold"
         />
         <button
           type="submit"
