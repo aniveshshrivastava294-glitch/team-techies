@@ -66,7 +66,7 @@ export default function EnergyManagerInterface() {
       
       {/* Toast Alert Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
+        <div className="fixed top-20 right-6 bg-[#1F2A38] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E2DED4]">
           <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
           <span>{toastMsg}</span>
         </div>
@@ -110,11 +110,11 @@ export default function EnergyManagerInterface() {
       {/* Substation & Solar Telemetry Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-[#BC4800]" />
+          <h2 className="text-sm font-bold text-[#1F2A38] tracking-tight flex items-center gap-2">
+            <Gauge className="w-4 h-4 text-[#3E5C76]" />
             Power Grid & Solar Array Telemetry ({powerGrids.length} Sub-Systems)
           </h2>
-          <span className="text-xs text-[#2B1D12] font-semibold px-2.5 py-1 bg-[#FDF8F2] border border-[#E8DCC8] rounded-full flex items-center gap-1">
+          <span className="text-xs text-[#1F2A38] font-semibold px-2.5 py-1 bg-[#F5F4F0] border border-[#E2DED4] rounded-full flex items-center gap-1">
             <Leaf className="w-3.5 h-3.5 text-[#4E7A51]" />
             1.4 Tons CO2 Offset Today
           </span>
@@ -126,10 +126,10 @@ export default function EnergyManagerInterface() {
             return (
               <div 
                 key={grid.id}
-                className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-2"
+                className="p-4 rounded-xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#6B5A4A] font-semibold bg-[#FDF8F2] px-2 py-0.5 rounded border border-[#E8DCC8]">{grid.id}</span>
+                  <span className="text-xs text-[#8A8578] font-semibold bg-[#F5F4F0] px-2 py-0.5 rounded border border-[#E2DED4]">{grid.id}</span>
                   <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
                     isHigh ? 'bg-[#C48A2E]/15 text-[#C48A2E] border-[#C48A2E]/30' : 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30'
                   }`}>
@@ -137,14 +137,14 @@ export default function EnergyManagerInterface() {
                   </span>
                 </div>
 
-                <h3 className="text-xs font-bold text-[#2B1D12] mt-2">{grid.name}</h3>
+                <h3 className="text-xs font-bold text-[#1F2A38] mt-2">{grid.name}</h3>
 
                 <div className="mt-3 flex items-center justify-between text-xs">
-                  <span className="text-[#6B5A4A]">Current Output:</span>
-                  <span className="text-[#BC4800] font-bold">{grid.output}</span>
+                  <span className="text-[#8A8578]">Current Output:</span>
+                  <span className="text-[#3E5C76] font-bold">{grid.output}</span>
                 </div>
 
-                <div className="mt-2 w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden">
+                <div className="mt-2 w-full bg-[#E2DED4] h-1.5 rounded-full overflow-hidden">
                   <div 
                     className={`h-full rounded-full transition-all ${isHigh ? 'bg-[#C48A2E]' : 'bg-[#4E7A51]'}`} 
                     style={{ width: `${grid.health}%` }} 
@@ -160,20 +160,20 @@ export default function EnergyManagerInterface() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch font-sans">
         
         {/* Left Box: Energy Load Control Dispatches */}
-        <div className="w-full rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs overflow-hidden flex flex-col justify-between">
+        <div className="w-full rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs overflow-hidden flex flex-col justify-between">
           <div>
             {/* Header Bar */}
-            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-[#E8DCC8]">
+            <div className="p-4 sm:p-5 flex flex-col gap-3 border-b border-[#E2DED4]">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg border border-[#BC4800]/30 bg-[#BC4800]/15 text-[#BC4800] shrink-0">
+                  <div className="p-2 rounded-lg border border-[#3E5C76]/30 bg-[#3E5C76]/15 text-[#3E5C76] shrink-0">
                     <Zap className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
+                    <h3 className="text-sm font-bold text-[#1F2A38] tracking-tight">
                       Active Power Load & Energy Dispatches
                     </h3>
-                    <p className="text-xs text-[#6B5A4A] font-medium line-clamp-1">
+                    <p className="text-xs text-[#8A8578] font-medium line-clamp-1">
                       Manage power surge alerts, peak load shaving & solar inverters
                     </p>
                   </div>
@@ -190,14 +190,14 @@ export default function EnergyManagerInterface() {
               {energyDispatches.map((disp) => (
                 <div 
                   key={disp.id}
-                  className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap text-xs">
-                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded">
+                      <span className="font-semibold px-2 py-0.5 bg-[#DCD7CC] text-[#1F2A38] border border-[#E2DED4] rounded">
                         {disp.id}
                       </span>
-                      <span className="font-semibold px-2 py-0.5 bg-[#F7EFE4] text-[#BC4800] border border-[#E8DCC8] rounded">
+                      <span className="font-semibold px-2 py-0.5 bg-[#DCD7CC] text-[#3E5C76] border border-[#E2DED4] rounded">
                         {disp.substation}
                       </span>
                       <span className={`font-semibold px-2.5 py-0.5 rounded-full border ${
@@ -207,8 +207,8 @@ export default function EnergyManagerInterface() {
                         {disp.status}
                       </span>
                     </div>
-                    <h4 className="text-xs font-bold text-[#2B1D12]">{disp.title}</h4>
-                    <p className="text-xs text-[#6B5A4A]">
+                    <h4 className="text-xs font-bold text-[#1F2A38]">{disp.title}</h4>
+                    <p className="text-xs text-[#8A8578]">
                       Target Savings: <span className="text-[#4E7A51] font-semibold">{disp.savingImpact}</span> • Date: {disp.date}
                     </p>
                   </div>
@@ -224,7 +224,7 @@ export default function EnergyManagerInterface() {
                         <span>Optimize</span>
                       </button>
                     ) : (
-                      <span className="px-2.5 py-1 bg-[#F7EFE4] text-[#6B5A4A] border border-[#E8DCC8] rounded-full text-xs font-semibold">
+                      <span className="px-2.5 py-1 bg-[#DCD7CC] text-[#8A8578] border border-[#E2DED4] rounded-full text-xs font-semibold">
                         Optimized
                       </span>
                     )}

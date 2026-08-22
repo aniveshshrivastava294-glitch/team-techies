@@ -2,9 +2,10 @@ import React from 'react';
 
 /**
  * SectionHero Component
- * 
+ *
  * Renders a restrained-height photography backdrop banner with
- * a warm dark brown overlay (rgba(43, 29, 18, ...)) across all dashboard sections.
+ * a deep navy overlay (rgba(31, 42, 56, ...)) across all dashboard sections.
+ * Flat fill only — no gradients, no glow.
  */
 export default function SectionHero({
   image,
@@ -20,7 +21,7 @@ export default function SectionHero({
   const imageAlt = image?.alt || 'Section backdrop';
 
   return (
-    <div className={`w-full rounded-xl relative overflow-hidden shadow-xs border border-[#E8DCC8] bg-[#2B1D12] text-white min-h-[170px] sm:min-h-[185px] flex flex-col justify-between p-6 sm:p-7 ${className}`}>
+    <div className={`w-full rounded-xl relative overflow-hidden shadow-xs border border-[#E2DED4] bg-[#1F2A38] text-white min-h-[170px] sm:min-h-[185px] flex flex-col justify-between p-6 sm:p-7 ${className}`}>
       
       {/* Background Photographic Image */}
       {imageUrl && (
@@ -32,25 +33,23 @@ export default function SectionHero({
         />
       )}
 
-      {/* Warm Dark Brown Scrim Overlay (#2B1D12 at ~50-80% opacity) */}
-      <div 
+      {/* Deep Navy Scrim Overlay (#1F2A38 at ~50% opacity) — flat fill, no gradient */}
+      <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(90deg, rgba(43, 29, 18, 0.84) 0%, rgba(43, 29, 18, 0.65) 50%, rgba(43, 29, 18, 0.46) 100%)'
-        }}
+        style={{ background: 'rgba(31, 42, 56, 0.52)' }}
       />
 
       {/* Top Bar: Category Pill & Status Badge */}
       <div className="relative z-10 flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
           {category && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FDF8F2]/90 border border-[#E8DCC8] text-[#2B1D12] text-xs font-medium backdrop-blur-xs">
-              {CategoryIcon && <CategoryIcon className="w-3.5 h-3.5 text-[#BC4800]" />}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 border border-white/25 text-white text-xs font-medium">
+              {CategoryIcon && <CategoryIcon className="w-3.5 h-3.5 text-white/80" />}
               <span>{category}</span>
             </span>
           )}
           {badgeText && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#4E7A51]/25 border border-[#4E7A51]/50 text-white text-xs font-medium backdrop-blur-xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#4E7A51]/25 border border-[#4E7A51]/50 text-white text-xs font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-[#4E7A51]"></span>
               <span>{badgeText}</span>
             </span>
@@ -65,7 +64,7 @@ export default function SectionHero({
             {title}
           </h1>
           {subtitle && (
-            <p className="text-xs sm:text-sm text-stone-200 font-normal leading-relaxed">
+            <p className="text-xs sm:text-sm text-white/75 font-normal leading-relaxed">
               {subtitle}
             </p>
           )}
@@ -82,4 +81,3 @@ export default function SectionHero({
     </div>
   );
 }
-

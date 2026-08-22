@@ -112,25 +112,25 @@ export default function RealtimeBookingMatrix({ currentUser }) {
   };
 
   return (
-    <div className="inst-card p-6 border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-6 font-sans">
+    <div className="inst-card p-6 border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-6 font-sans">
       
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E8DCC8]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E2DED4]">
         <div>
           <div className="flex items-center space-x-2">
-            <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight">Classroom & Room Booking</h2>
+            <h2 className="text-sm font-bold text-[#1F2A38] tracking-tight">Classroom & Room Booking</h2>
             <span className="px-2.5 py-0.5 text-xs font-semibold inst-badge-sage">
               Live Availability
             </span>
           </div>
-          <p className="text-xs text-[#6B5A4A] mt-0.5">
+          <p className="text-xs text-[#8A8578] mt-0.5">
             Instant booking confirmation with zero double-booking or scheduling conflicts
           </p>
         </div>
 
         {/* Conditional Logic Pills */}
         <div className="flex items-center space-x-2 text-xs">
-          <div className="px-2.5 py-1 bg-[#FDF8F2] border border-[#E8DCC8] text-[#2B1D12] rounded-full font-medium text-xs">
+          <div className="px-2.5 py-1 bg-[#F5F4F0] border border-[#E2DED4] text-[#1F2A38] rounded-full font-medium text-xs">
             <strong>Standard Room:</strong> Instant Approval
           </div>
           <div className="px-2.5 py-1 inst-badge-ochre rounded-full font-medium text-xs">
@@ -140,27 +140,27 @@ export default function RealtimeBookingMatrix({ currentUser }) {
       </div>
 
       {/* Booking Form Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-[#FDF8F2] p-4 rounded-xl border border-[#E8DCC8]">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-[#F5F4F0] p-4 rounded-xl border border-[#E2DED4]">
         
         {/* Event Name */}
         <div className="md:col-span-5">
-          <label className="block text-xs font-semibold text-[#2B1D12] mb-1">Event / Lecture Title</label>
+          <label className="block text-xs font-semibold text-[#1F2A38] mb-1">Event / Lecture Title</label>
           <input
             type="text"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             placeholder="e.g. Machine Learning Lecture"
-            className="w-full bg-[#F7EFE4] border border-[#E8DCC8] rounded-lg px-3 py-2 text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800]"
+            className="w-full bg-[#DCD7CC] border border-[#E2DED4] rounded-lg px-3 py-2 text-xs text-[#1F2A38] placeholder-[#8A8578]/60 focus:outline-none focus:border-[#3E5C76]"
           />
         </div>
 
         {/* Venue Selector */}
         <div className="md:col-span-4">
-          <label className="block text-xs font-semibold text-[#2B1D12] mb-1">Select Venue</label>
+          <label className="block text-xs font-semibold text-[#1F2A38] mb-1">Select Venue</label>
           <select
             value={selectedVenue}
             onChange={(e) => setSelectedVenue(e.target.value)}
-            className="w-full bg-[#F7EFE4] border border-[#E8DCC8] rounded-lg px-3 py-2 text-xs text-[#2B1D12] focus:outline-none focus:border-[#BC4800] font-medium"
+            className="w-full bg-[#DCD7CC] border border-[#E2DED4] rounded-lg px-3 py-2 text-xs text-[#1F2A38] focus:outline-none focus:border-[#3E5C76] font-medium"
           >
             {venues.map(v => (
               <option key={v.id} value={v.room_number}>
@@ -172,12 +172,12 @@ export default function RealtimeBookingMatrix({ currentUser }) {
 
         {/* Date Selector */}
         <div className="md:col-span-3">
-          <label className="block text-xs font-semibold text-[#2B1D12] mb-1">Reservation Date</label>
+          <label className="block text-xs font-semibold text-[#1F2A38] mb-1">Reservation Date</label>
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full bg-[#F7EFE4] border border-[#E8DCC8] rounded-lg px-3 py-2 text-xs text-[#2B1D12] focus:outline-none focus:border-[#BC4800]"
+            className="w-full bg-[#DCD7CC] border border-[#E2DED4] rounded-lg px-3 py-2 text-xs text-[#1F2A38] focus:outline-none focus:border-[#3E5C76]"
           />
         </div>
 
@@ -198,8 +198,8 @@ export default function RealtimeBookingMatrix({ currentUser }) {
       {/* Real-Time Time Slots Matrix */}
       <div>
         <div className="flex items-center justify-between mb-3 text-xs">
-          <span className="text-[#2B1D12] font-medium flex items-center gap-1.5">
-            <Clock className="w-4 h-4 text-[#BC4800]" />
+          <span className="text-[#1F2A38] font-medium flex items-center gap-1.5">
+            <Clock className="w-4 h-4 text-[#3E5C76]" />
             Time Slot Availability for <strong>{selectedVenue}</strong> on {selectedDate}
           </span>
           <span className={`px-2.5 py-0.5 font-semibold rounded-full border text-xs ${
@@ -218,13 +218,13 @@ export default function RealtimeBookingMatrix({ currentUser }) {
                 key={idx}
                 className={`p-4 rounded-xl border transition-colors flex flex-col justify-between space-y-3 relative overflow-hidden ${
                   booked
-                    ? 'bg-[#A6402F]/5 border-[#A6402F]/25 text-[#6B5A4A]'
-                    : 'bg-[#FDF8F2] border-[#E8DCC8] hover:border-[#BC4800]/40'
+                    ? 'bg-[#A6402F]/5 border-[#A6402F]/25 text-[#8A8578]'
+                    : 'bg-[#F5F4F0] border-[#E2DED4] hover:border-[#3E5C76]/40'
                 }`}
               >
                 {/* Status Indicator */}
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-xs text-[#2B1D12]">{slot}</span>
+                  <span className="font-bold text-xs text-[#1F2A38]">{slot}</span>
                   {booked ? (
                     <span className="flex items-center space-x-1.5 px-2 py-0.5 bg-[#A6402F]/15 text-[#A6402F] border border-[#A6402F]/30 rounded-full text-xs font-semibold">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#A6402F]"></span>
@@ -240,12 +240,12 @@ export default function RealtimeBookingMatrix({ currentUser }) {
 
                 {/* Slot Detail */}
                 {booked ? (
-                  <div className="text-xs text-[#6B5A4A] bg-[#F7EFE4] p-2.5 rounded-lg border border-[#E8DCC8]">
-                    <span className="font-semibold text-[#2B1D12] block truncate">{booked.event_name}</span>
-                    <span className="text-[11px] text-[#6B5A4A] block truncate">By: {booked.booked_by_email}</span>
+                  <div className="text-xs text-[#8A8578] bg-[#DCD7CC] p-2.5 rounded-lg border border-[#E2DED4]">
+                    <span className="font-semibold text-[#1F2A38] block truncate">{booked.event_name}</span>
+                    <span className="text-[11px] text-[#8A8578] block truncate">By: {booked.booked_by_email}</span>
                   </div>
                 ) : (
-                  <p className="text-xs text-[#6B5A4A]">
+                  <p className="text-xs text-[#8A8578]">
                     Available for reservation. {isAcVenue ? 'AC venue triggers Event Admin review.' : 'Instant Non-AC booking.'}
                   </p>
                 )}
@@ -256,7 +256,7 @@ export default function RealtimeBookingMatrix({ currentUser }) {
                   disabled={Boolean(booked) || isSubmitting}
                   className={`w-full py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center space-x-1.5 ${
                     booked
-                      ? 'bg-[#E8DCC8] text-[#6B5A4A] border border-[#E8DCC8] cursor-not-allowed'
+                      ? 'bg-[#E2DED4] text-[#8A8578] border border-[#E2DED4] cursor-not-allowed'
                       : 'inst-button-primary shadow-xs'
                   }`}
                 >

@@ -70,31 +70,31 @@ export default function KpiOverview({ kpis }) {
         return (
           <div
             key={idx}
-            className="p-4 rounded-xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs relative group hover:border-[#BC4800]/40 transition-colors"
+            className="p-4 rounded-xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs relative group hover:border-[#3E5C76]/40 transition-colors"
           >
             {/* Top Bar: Icon + Badge */}
             <div className="flex items-center justify-between mb-2.5">
-              <div className="p-1.5 rounded-lg bg-[#FDF8F2] border border-[#E8DCC8] text-[#2B1D12]">
+              <div className="p-1.5 rounded-lg bg-[#F5F4F0] border border-[#E2DED4] text-[#1F2A38]">
                 <IconComponent className="w-3.5 h-3.5" />
               </div>
-              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[#E8DCC8] bg-[#FDF8F2] text-[#6B5A4A]">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[#E2DED4] bg-[#F5F4F0] text-[#8A8578]">
                 {card.badge}
               </span>
             </div>
 
             {/* Title */}
-            <p className="text-xs font-medium text-[#6B5A4A]">{card.title}</p>
+            <p className="text-xs font-medium text-[#8A8578]">{card.title}</p>
 
             {/* Metric Value */}
             <div className="flex items-baseline space-x-1.5 mt-1">
-              <h3 className="text-xl font-bold text-[#2B1D12]">{card.mainValue}</h3>
-              <span className="text-xs text-[#6B5A4A]">{card.unit}</span>
+              <h3 className="text-xl font-bold text-[#1F2A38]">{card.mainValue}</h3>
+              <span className="text-xs text-[#8A8578]">{card.unit}</span>
             </div>
 
             {/* Context Line */}
-            <div className="mt-2.5 pt-2 border-t border-[#E8DCC8] flex items-center justify-between text-xs">
-              <span className="text-[#6B5A4A] text-[11px] truncate">{card.subValue}</span>
-              <span className={`text-[11px] font-semibold flex items-center gap-0.5 ${card.hasAlert ? 'text-[#A6402F]' : 'text-[#BC4800]'}`}>
+            <div className="mt-2.5 pt-2 border-t border-[#E2DED4] flex items-center justify-between text-xs">
+              <span className="text-[#8A8578] text-[11px] truncate">{card.subValue}</span>
+              <span className={`text-[11px] font-semibold flex items-center gap-0.5 ${card.hasAlert ? 'text-[#A6402F]' : 'text-[#3E5C76]'}`}>
                 {card.hasAlert ? <AlertTriangle className="w-3 h-3 text-[#A6402F] inline" /> : <ArrowUpRight className="w-3 h-3 inline" />}
                 <span>{card.trend}</span>
               </span>

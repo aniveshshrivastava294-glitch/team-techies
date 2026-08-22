@@ -160,23 +160,23 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2B1D12]/60 backdrop-blur-xs font-sans">
-      <div className="inst-card w-full max-w-5xl p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-2xl relative overflow-hidden max-h-[90vh] flex flex-col font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1F2A38]/60 backdrop-blur-xs font-sans">
+      <div className="inst-card w-full max-w-5xl p-6 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-2xl relative overflow-hidden max-h-[90vh] flex flex-col font-sans">
         
         {/* Header Bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-[#E8DCC8]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#E2DED4]">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+            <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
+              <h2 className="text-sm font-bold text-[#1F2A38] tracking-tight flex items-center gap-2">
                 Multi-Batch AI Data Intaker
                 <span className="px-2.5 py-0.5 text-xs font-semibold inst-badge-ochre">
                   Structured Ingest
                 </span>
               </h2>
-              <p className="text-xs text-[#6B5A4A]">
+              <p className="text-xs text-[#8A8578]">
                 Intake raw files and text into any domain database with real-time placement guidance
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
             )}
             <button
               onClick={onClose}
-              className="p-1 text-[#6B5A4A] hover:text-[#2B1D12] rounded-lg hover:bg-[#FDF8F2] transition-colors cursor-pointer"
+              className="p-1 text-[#8A8578] hover:text-[#1F2A38] rounded-lg hover:bg-[#F5F4F0] transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -205,19 +205,19 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
           <div className="lg:col-span-7 space-y-4 text-xs">
             
             {/* Target Destination Selector */}
-            <div className="p-3.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-xl space-y-2">
-              <label className="text-[#2B1D12] font-semibold flex items-center justify-between text-xs">
+            <div className="p-3.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-xl space-y-2">
+              <label className="text-[#1F2A38] font-semibold flex items-center justify-between text-xs">
                 <span className="flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-[#BC4800]" />
+                  <Database className="w-3.5 h-3.5 text-[#3E5C76]" />
                   Target Data Destination:
                 </span>
-                <span className="text-[#BC4800] text-xs font-medium">Auto-Detect Active</span>
+                <span className="text-[#3E5C76] text-xs font-medium">Auto-Detect Active</span>
               </label>
 
               <select
                 value={targetEntity}
                 onChange={(e) => setTargetEntity(e.target.value)}
-                className="w-full bg-[#F7EFE4] border border-[#E8DCC8] rounded-lg px-3 py-2 text-[#2B1D12] text-xs focus:outline-none focus:border-[#BC4800] cursor-pointer"
+                className="w-full bg-[#DCD7CC] border border-[#E2DED4] rounded-lg px-3 py-2 text-[#1F2A38] text-xs focus:outline-none focus:border-[#3E5C76] cursor-pointer"
               >
                 <option value="faculty">Faculty & Staff Directory</option>
                 <option value="transport">Transport Fleet, Drivers & Shuttle Routes</option>
@@ -248,17 +248,17 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
                   </div>
                 </div>
 
-                <div className="bg-[#FDF8F2] rounded-xl p-4 border border-[#E8DCC8] max-h-48 overflow-y-auto text-xs space-y-2">
-                  <span className="text-xs font-semibold text-[#6B5A4A] block">
+                <div className="bg-[#F5F4F0] rounded-xl p-4 border border-[#E2DED4] max-h-48 overflow-y-auto text-xs space-y-2">
+                  <span className="text-xs font-semibold text-[#8A8578] block">
                     Ingested Record Preview ({targetEntity.toUpperCase()} Domain):
                   </span>
                   {result.users?.map((u, i) => (
-                    <div key={i} className="p-2 bg-[#F7EFE4] rounded-lg border border-[#E8DCC8] flex items-center justify-between text-xs">
+                    <div key={i} className="p-2 bg-[#DCD7CC] rounded-lg border border-[#E2DED4] flex items-center justify-between text-xs">
                       <div>
-                        <span className="text-[#2B1D12] font-bold block">{u.full_name}</span>
-                        <span className="text-[#6B5A4A] text-xs">{u.email}</span>
+                        <span className="text-[#1F2A38] font-bold block">{u.full_name}</span>
+                        <span className="text-[#8A8578] text-xs">{u.email}</span>
                       </div>
-                      <span className="px-2.5 py-0.5 bg-[#E3A857]/20 text-[#2B1D12] border border-[#E3A857]/40 rounded-full text-xs font-semibold">
+                      <span className="px-2.5 py-0.5 bg-[#C48A2E]/20 text-[#1F2A38] border border-[#C48A2E]/40 rounded-full text-xs font-semibold">
                         {u.role}
                       </span>
                     </div>
@@ -277,7 +277,7 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
 
                   <button
                     onClick={onClose}
-                    className="px-5 py-2.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-xl transition-colors cursor-pointer text-xs font-semibold"
+                    className="px-5 py-2.5 bg-[#F5F4F0] hover:bg-[#DCD7CC] text-[#1F2A38] border border-[#E2DED4] rounded-xl transition-colors cursor-pointer text-xs font-semibold"
                   >
                     Close
                   </button>
@@ -289,10 +289,10 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
                 <div
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={handleFileDrop}
-                  className="border border-dashed border-[#E8DCC8] hover:border-[#BC4800] rounded-xl p-6 text-center bg-[#FDF8F2] transition-colors"
+                  className="border border-dashed border-[#E2DED4] hover:border-[#3E5C76] rounded-xl p-6 text-center bg-[#F5F4F0] transition-colors"
                 >
-                  <Upload className="w-6 h-6 text-[#6B5A4A] mx-auto mb-2 opacity-80" />
-                  <p className="font-medium text-[#2B1D12] text-xs">
+                  <Upload className="w-6 h-6 text-[#8A8578] mx-auto mb-2 opacity-80" />
+                  <p className="font-medium text-[#1F2A38] text-xs">
                     Drag and drop your file (.pdf, .xlsx, .csv, .json) here
                   </p>
 
@@ -310,21 +310,21 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
                   />
                   <label
                     htmlFor="multi-file-upload-input"
-                    className="mt-2.5 inline-block px-3.5 py-1.5 bg-[#F7EFE4] hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] rounded-lg text-xs font-medium transition-colors cursor-pointer"
+                    className="mt-2.5 inline-block px-3.5 py-1.5 bg-[#DCD7CC] hover:bg-[#F5F4F0] text-[#1F2A38] border border-[#E2DED4] rounded-lg text-xs font-medium transition-colors cursor-pointer"
                   >
                     Browse File
                   </label>
 
                   {file && (
-                    <div className="mt-2 p-1.5 bg-[#F7EFE4] rounded-md border border-[#E8DCC8] inline-flex items-center space-x-2 text-xs text-[#2B1D12]">
-                      <FileText className="w-3.5 h-3.5 text-[#BC4800]" />
+                    <div className="mt-2 p-1.5 bg-[#DCD7CC] rounded-md border border-[#E2DED4] inline-flex items-center space-x-2 text-xs text-[#1F2A38]">
+                      <FileText className="w-3.5 h-3.5 text-[#3E5C76]" />
                       <span>{file.name} ({(file.size / 1024).toFixed(1)} KB)</span>
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-[#6B5A4A] font-semibold mb-1 text-xs">
+                  <label className="block text-[#8A8578] font-semibold mb-1 text-xs">
                     Or Paste Raw Text / CSV / Data Array:
                   </label>
                   <textarea
@@ -337,7 +337,7 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
                     }}
                     placeholder="Paste CSV or plain text (e.g., Driver Rajesh, Bus 104, Route Alpha...)"
                     rows={4}
-                    className="w-full bg-[#FDF8F2] border border-[#E8DCC8] rounded-xl px-3.5 py-2.5 text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] text-xs font-sans"
+                    className="w-full bg-[#F5F4F0] border border-[#E2DED4] rounded-xl px-3.5 py-2.5 text-[#1F2A38] placeholder-[#8A8578]/60 focus:outline-none focus:border-[#3E5C76] text-xs font-sans"
                   />
                 </div>
 
@@ -360,18 +360,18 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
           </div>
 
           {/* Right Column: AI Placement Advisor Chatbox */}
-          <div className="lg:col-span-5 flex flex-col justify-between bg-[#FDF8F2] rounded-xl border border-[#E8DCC8] p-4 min-h-[380px] font-sans text-xs">
+          <div className="lg:col-span-5 flex flex-col justify-between bg-[#F5F4F0] rounded-xl border border-[#E2DED4] p-4 min-h-[380px] font-sans text-xs">
             
             <div>
               {/* Chat Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8] mb-3">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4] mb-3">
                 <div className="flex items-center space-x-2">
-                  <div className="p-1.5 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-md text-[#BC4800]">
+                  <div className="p-1.5 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-md text-[#3E5C76]">
                     <Bot className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2B1D12] text-xs">Placement Advisor</h3>
-                    <p className="text-xs text-[#6B5A4A]">Ask where to route any dataset</p>
+                    <h3 className="font-bold text-[#1F2A38] text-xs">Placement Advisor</h3>
+                    <p className="text-xs text-[#8A8578]">Ask where to route any dataset</p>
                   </div>
                 </div>
                 <span className="text-xs inst-badge-ochre px-2.5 py-0.5 rounded-full font-semibold">
@@ -386,8 +386,8 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
                     key={idx} 
                     className={`p-3 rounded-xl text-xs leading-relaxed ${
                       m.sender === 'user'
-                        ? 'bg-[#BC4800] text-white ml-4'
-                        : 'bg-[#F7EFE4] border border-[#E8DCC8] text-[#2B1D12] mr-2 shadow-2xs'
+                        ? 'bg-[#3E5C76] text-white ml-4'
+                        : 'bg-[#DCD7CC] border border-[#E2DED4] text-[#1F2A38] mr-2 shadow-2xs'
                     }`}
                   >
                     <p className="whitespace-pre-line">{m.text}</p>
@@ -397,26 +397,26 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
             </div>
 
             {/* Quick Placement Prompts & Chat Input */}
-            <div className="mt-3 space-y-2 pt-2 border-t border-[#E8DCC8]">
+            <div className="mt-3 space-y-2 pt-2 border-t border-[#E2DED4]">
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
                 <button
                   type="button"
                   onClick={() => setChatInput('Where should I enter bus driver CSVs?')}
-                  className="px-2.5 py-1 bg-[#F7EFE4] hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] rounded-full shrink-0 cursor-pointer text-xs font-medium"
+                  className="px-2.5 py-1 bg-[#DCD7CC] hover:bg-[#F5F4F0] text-[#1F2A38] border border-[#E2DED4] rounded-full shrink-0 cursor-pointer text-xs font-medium"
                 >
                   Bus CSVs?
                 </button>
                 <button
                   type="button"
                   onClick={() => setChatInput('Where do I format solar inverter metrics?')}
-                  className="px-2.5 py-1 bg-[#F7EFE4] hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] rounded-full shrink-0 cursor-pointer text-xs font-medium"
+                  className="px-2.5 py-1 bg-[#DCD7CC] hover:bg-[#F5F4F0] text-[#1F2A38] border border-[#E2DED4] rounded-full shrink-0 cursor-pointer text-xs font-medium"
                 >
                   Solar Metrics?
                 </button>
                 <button
                   type="button"
                   onClick={() => setChatInput('Where to upload room booking schedules?')}
-                  className="px-2.5 py-1 bg-[#F7EFE4] hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] rounded-full shrink-0 cursor-pointer text-xs font-medium"
+                  className="px-2.5 py-1 bg-[#DCD7CC] hover:bg-[#F5F4F0] text-[#1F2A38] border border-[#E2DED4] rounded-full shrink-0 cursor-pointer text-xs font-medium"
                 >
                   Room Schedules?
                 </button>
@@ -428,7 +428,7 @@ export default function BulkFacultyUploadModal({ isOpen, onClose, onSuccess }) {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Ask placement guide..."
-                  className="flex-1 bg-[#F7EFE4] border border-[#E8DCC8] rounded-lg px-3 py-2 text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] text-xs font-sans"
+                  className="flex-1 bg-[#DCD7CC] border border-[#E2DED4] rounded-lg px-3 py-2 text-[#1F2A38] placeholder-[#8A8578]/60 focus:outline-none focus:border-[#3E5C76] text-xs font-sans"
                 />
                 <button
                   type="submit"

@@ -5,8 +5,8 @@ export default function ResolveConfirmationModal({ isOpen, ticket, onConfirm, on
   if (!isOpen || !ticket) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2B1D12]/60 backdrop-blur-xs font-sans">
-      <div className="inst-card w-full max-w-md p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-2xl relative space-y-4 font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1F2A38]/60 backdrop-blur-xs font-sans">
+      <div className="inst-card w-full max-w-md p-6 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-2xl relative space-y-4 font-sans">
         
         {/* Header */}
         <div className="flex items-center space-x-3">
@@ -14,17 +14,17 @@ export default function ResolveConfirmationModal({ isOpen, ticket, onConfirm, on
             <AlertTriangle className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">Confirm Ticket Resolution</h3>
-            <p className="text-xs text-[#6B5A4A]">Maintenance Sub-Admin Safeguard Verification</p>
+            <h3 className="text-sm font-bold text-[#1F2A38] tracking-tight">Confirm Ticket Resolution</h3>
+            <p className="text-xs text-[#8A8578]">Maintenance Sub-Admin Safeguard Verification</p>
           </div>
         </div>
 
         {/* Confirmation Body */}
-        <div className="bg-[#FDF8F2] p-4 rounded-xl border border-[#E8DCC8] text-xs text-[#6B5A4A] space-y-2">
-          <p className="font-semibold text-[#2B1D12]">
+        <div className="bg-[#F5F4F0] p-4 rounded-xl border border-[#E2DED4] text-xs text-[#8A8578] space-y-2">
+          <p className="font-semibold text-[#1F2A38]">
             Are you sure you want to mark this issue as resolved?
           </p>
-          <div className="pt-2 border-t border-[#E8DCC8] space-y-1 text-xs text-[#6B5A4A]">
+          <div className="pt-2 border-t border-[#E2DED4] space-y-1 text-xs text-[#8A8578]">
             <p><strong>Ticket ID:</strong> {ticket.ticket_id}</p>
             <p><strong>Title:</strong> {ticket.title}</p>
             <p><strong>Venue:</strong> {ticket.venue_name}</p>
@@ -35,7 +35,7 @@ export default function ResolveConfirmationModal({ isOpen, ticket, onConfirm, on
         <div className="flex items-center space-x-3 pt-2">
           <button
             onClick={onCancel}
-            className="flex-1 py-2.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-xl text-xs font-semibold transition-all cursor-pointer"
+            className="flex-1 py-2.5 bg-[#F5F4F0] hover:bg-[#DCD7CC] text-[#1F2A38] border border-[#E2DED4] rounded-xl text-xs font-semibold transition-all cursor-pointer"
           >
             Cancel
           </button>

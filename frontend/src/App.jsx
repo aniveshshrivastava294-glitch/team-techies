@@ -11,10 +11,10 @@ import FacultyDashboard from './components/roles/FacultyDashboard';
 import SubAdminDashboard from './components/roles/SubAdminDashboard';
 import InstitutionalFooter from './components/InstitutionalFooter';
 import { BACKDROP_IMAGES } from './config/backdropImages';
-import { LogIn, ArrowRight, Sparkles } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 
 function DashboardRouter() {
-  const { currentUser, switchDemoRole } = useAuth();
+  const { currentUser } = useAuth();
   const [kpis, setKpis] = useState(null);
   const [anomalies, setAnomalies] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
@@ -60,8 +60,8 @@ function DashboardRouter() {
   const renderRoleDashboard = () => {
     if (!currentUser) {
       return (
-        /* Full-Viewport Edge-to-Edge Photographic Hero Landing Page (No boxed card edges) */
-        <div className="relative w-full -mt-8 -mx-4 sm:-mx-6 min-h-[calc(100vh-65px)] flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-16 overflow-hidden">
+        /* Full-Viewport Edge-to-Edge Photographic Hero Landing Page */
+        <div className="fixed inset-0 z-0 w-screen h-screen flex flex-col justify-center items-start px-8 sm:px-16 lg:px-24 overflow-hidden">
           {/* Full Screen Photography Backdrop */}
           <img
             src={BACKDROP_IMAGES.loginLanding.url}
@@ -69,60 +69,36 @@ function DashboardRouter() {
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
 
-          {/* Warm Dark Brown Overlay (#2B1D12 at ~50-55% opacity) */}
-          <div 
+          {/* Deep Navy Overlay (#1F2A38 at ~50% opacity) — flat, no gradient */}
+          <div
             className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(135deg, rgba(43, 29, 18, 0.72) 0%, rgba(43, 29, 18, 0.52) 60%, rgba(43, 29, 18, 0.65) 100%)'
-            }}
+            style={{ background: 'rgba(31, 42, 56, 0.52)' }}
           />
 
-          {/* Hero Content Block - Sits Seamlessly On Top of Photo */}
-          <div className="relative z-10 max-w-2xl space-y-6 text-white">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDF8F2]/90 border border-[#E8DCC8] text-xs font-semibold text-[#2B1D12] shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-[#BC4800]" />
-              <span>PRESIDENCY UNIVERSITY</span>
+          {/* Hero Content — centered vertically over full-viewport photo */}
+          <div className="relative z-10 max-w-xl space-y-5 text-white">
+            <span className="inline-block px-3 py-1 rounded-full bg-white/15 border border-white/25 text-xs font-semibold tracking-widest uppercase text-white/90">
+              PRESIDENCY UNIVERSITY
             </span>
 
             <div className="space-y-3">
               <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
                 CampusOrbit Operations Platform
               </h1>
-              <p className="text-base sm:text-lg text-stone-200 font-normal leading-relaxed max-w-xl">
+              <p className="text-sm sm:text-base text-white/80 font-normal leading-relaxed max-w-lg">
                 Unified cross-domain management for classroom scheduling, transit telemetry, energy sustainability, and facilities maintenance.
               </p>
             </div>
 
-            {/* CTA & Demo Role Switcher Bar */}
-            <div className="pt-2 space-y-4">
-              <div className="flex items-center gap-3 flex-wrap">
-                <button
-                  onClick={() => setIsLoginOpen(true)}
-                  className="px-6 py-3 bg-[#BC4800] hover:bg-[#9A3A00] text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer shadow-md inline-flex items-center gap-2"
-                >
-                  <LogIn className="w-4 h-4" />
-                  <span>Sign In / Switch Demo Role</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Direct Quick Role Switcher Chips */}
-              <div className="pt-3">
-                <p className="text-xs text-stone-300 mb-2 font-medium">Or explore instantly as demo role:</p>
-                <div className="flex flex-wrap gap-2">
-                  {demoAccounts.slice(0, 4).map((acc, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => switchDemoRole(acc)}
-                      className="px-3 py-1.5 rounded-full bg-[#FDF8F2]/90 hover:bg-[#FDF8F2] text-[#2B1D12] border border-[#E8DCC8] text-xs font-medium transition-colors cursor-pointer shadow-xs"
-                    >
-                      {acc.full_name.split(' ')[0]} ({acc.role === 'sub_admin' ? `${acc.department_domain} Admin` : acc.role.replace('_', ' ')})
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="pt-1">
+              <button
+                onClick={() => setIsLoginOpen(true)}
+                className="px-6 py-3 bg-[#3E5C76] hover:bg-[#2E4459] text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer shadow-md inline-flex items-center gap-2"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Sign In</span>
+              </button>
             </div>
-
           </div>
         </div>
       );
@@ -160,29 +136,50 @@ function DashboardRouter() {
     }
   };
 
+  const isLoggedOut = !currentUser;
+
   return (
-    <div className="min-h-screen bg-[#FDF8F2] text-[#2B1D12] flex flex-col transition-colors duration-150 relative overflow-x-hidden font-sans">
-      
-      {/* Header Navbar */}
-      <Header
-        onRefresh={fetchDashboardData}
-        isRefreshing={isRefreshing}
-        datasource={datasource}
-        onOpenLogin={() => setIsLoginOpen(true)}
-      />
+    <div className="min-h-screen bg-[#F5F4F0] text-[#1F2A38] flex flex-col transition-colors duration-150 relative overflow-x-hidden font-sans">
+
+      {/* Header Navbar — only show when logged in */}
+      {!isLoggedOut && (
+        <Header
+          onRefresh={fetchDashboardData}
+          isRefreshing={isRefreshing}
+          datasource={datasource}
+          onOpenLogin={() => setIsLoginOpen(true)}
+        />
+      )}
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 relative z-10">
-        
-        {/* Conversational Hero Bar for Signed-In Users */}
-        {currentUser && currentUser.approval_status !== 'pending' && (
-          <ConversationalHero currentUser={currentUser} />
-        )}
+      {isLoggedOut ? (
+        /* Landing page: full viewport, no constraints */
+        <div className="flex-1 relative">
+          {renderRoleDashboard()}
+          {/* Sign In button for header area on login page */}
+          <div className="absolute top-4 right-6 z-20">
+            <button
+              onClick={() => setIsLoginOpen(true)}
+              className="px-4 py-2 bg-white/15 hover:bg-white/25 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-2 backdrop-blur-sm"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 mb-12 space-y-8 relative z-10">
 
-        {/* Role Workspace */}
-        {renderRoleDashboard()}
+          {/* Conversational Hero Bar for Signed-In Users */}
+          {currentUser && currentUser.approval_status !== 'pending' && (
+            <ConversationalHero currentUser={currentUser} />
+          )}
 
-      </main>
+          {/* Role Workspace */}
+          {renderRoleDashboard()}
+
+        </main>
+      )}
 
       {/* Persistent AI Assistant Widget */}
       <FloatingAIAssistant currentUser={currentUser} />
@@ -190,8 +187,8 @@ function DashboardRouter() {
       {/* Login / Demo Switcher Modal */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-      {/* Institutional Enterprise Footer */}
-      <InstitutionalFooter />
+      {/* Institutional Enterprise Footer — only when logged in */}
+      {!isLoggedOut && <InstitutionalFooter />}
 
     </div>
   );
@@ -206,4 +203,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-

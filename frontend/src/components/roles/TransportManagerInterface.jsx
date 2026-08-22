@@ -255,7 +255,7 @@ export default function TransportManagerInterface() {
       
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
+        <div className="fixed top-20 right-6 bg-[#1F2A38] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 flex items-center gap-2 border border-[#E2DED4]">
           <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
           <span>{toastMsg}</span>
         </div>
@@ -295,21 +295,21 @@ export default function TransportManagerInterface() {
       {/* ================= TOP SECTION: 10 BUS FLEET STATUS MATRIX ================= */}
       <div className="space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
-            <Bus className="w-4 h-4 text-[#BC4800]" />
+          <h2 className="text-sm font-bold text-[#1F2A38] tracking-tight flex items-center gap-2">
+            <Bus className="w-4 h-4 text-[#3E5C76]" />
             Active Bus Fleet Matrix ({busFleet.length} Buses)
           </h2>
 
           {/* Filter Status Pills */}
-          <div className="flex items-center bg-[#F7EFE4] p-1 rounded-lg border border-[#E8DCC8] text-xs font-semibold">
+          <div className="flex items-center bg-[#DCD7CC] p-1 rounded-lg border border-[#E2DED4] text-xs font-semibold">
             {['ALL', 'ON ROUTE', 'STATIONED', 'MAINTENANCE'].map((st) => (
               <button
                 key={st}
                 onClick={() => setFilterStatus(st)}
                 className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
                   filterStatus === st
-                    ? 'bg-[#BC4800] text-white shadow-xs'
-                    : 'text-[#6B5A4A] hover:text-[#2B1D12]'
+                    ? 'bg-[#3E5C76] text-white shadow-xs'
+                    : 'text-[#8A8578] hover:text-[#1F2A38]'
                 }`}
               >
                 {st}
@@ -320,13 +320,13 @@ export default function TransportManagerInterface() {
 
         {/* Fleet Grid or Empty State */}
         {filteredBuses.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl border border-dashed border-[#E8DCC8] bg-[#F7EFE4] space-y-3">
-            <div className="w-12 h-12 rounded-xl bg-[#BC4800]/15 text-[#BC4800] flex items-center justify-center mx-auto border border-[#BC4800]/30">
+          <div className="p-8 text-center rounded-2xl border border-dashed border-[#E2DED4] bg-[#DCD7CC] space-y-3">
+            <div className="w-12 h-12 rounded-xl bg-[#3E5C76]/15 text-[#3E5C76] flex items-center justify-center mx-auto border border-[#3E5C76]/30">
               <Bus className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[#2B1D12]">No buses in fleet matrix</h3>
-              <p className="text-xs text-[#6B5A4A] font-medium mt-0.5">
+              <h3 className="text-sm font-bold text-[#1F2A38]">No buses in fleet matrix</h3>
+              <p className="text-xs text-[#8A8578] font-medium mt-0.5">
                 Click "+ Add New Bus" to register a bus with Bus Number, Capacity, Dist, and Number Plate.
               </p>
             </div>
@@ -348,14 +348,14 @@ export default function TransportManagerInterface() {
                 <div
                   key={bus.id}
                   onClick={() => setSelectedBusId(bus.id)}
-                  className={`p-3.5 rounded-xl border transition-all duration-200 cursor-pointer space-y-2 relative bg-[#F7EFE4] ${
+                  className={`p-3.5 rounded-xl border transition-all duration-200 cursor-pointer space-y-2 relative bg-[#DCD7CC] ${
                     isSelected
-                      ? 'border-[#BC4800] ring-1 ring-[#BC4800] shadow-xs'
-                      : 'border-[#E8DCC8] hover:border-[#BC4800]/60'
+                      ? 'border-[#3E5C76] ring-1 ring-[#3E5C76] shadow-xs'
+                      : 'border-[#E2DED4] hover:border-[#3E5C76]/60'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-[#2B1D12] leading-none truncate">
+                    <h3 className="text-xs font-bold text-[#1F2A38] leading-none truncate">
                       {bus.busNumber}
                     </h3>
                     
@@ -366,7 +366,7 @@ export default function TransportManagerInterface() {
                       
                       <button
                         onClick={(e) => handleDeleteBus(e, bus.id, bus.busNumber)}
-                        className="p-1 rounded text-[#6B5A4A] hover:text-[#A6402F] transition-colors cursor-pointer ml-1"
+                        className="p-1 rounded text-[#8A8578] hover:text-[#A6402F] transition-colors cursor-pointer ml-1"
                         title="Remove bus"
                       >
                         <Trash2 className="w-3 h-3" />
@@ -375,25 +375,25 @@ export default function TransportManagerInterface() {
                   </div>
 
                   {/* Bus Specs: Capacity, Dist, Number Plate */}
-                  <div className="space-y-1 text-xs text-[#6B5A4A]">
+                  <div className="space-y-1 text-xs text-[#8A8578]">
                     <div className="flex justify-between items-center">
                       <span>Capacity:</span>
-                      <span className="font-semibold text-[#2B1D12]">{bus.capacity}</span>
+                      <span className="font-semibold text-[#1F2A38]">{bus.capacity}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
                       <span>Dist:</span>
-                      <span className="font-semibold text-[#BC4800] uppercase truncate max-w-[90px]">{bus.dist}</span>
+                      <span className="font-semibold text-[#3E5C76] uppercase truncate max-w-[90px]">{bus.dist}</span>
                     </div>
 
-                    <div className="flex justify-between items-center pt-0.5 border-t border-[#E8DCC8]">
+                    <div className="flex justify-between items-center pt-0.5 border-t border-[#E2DED4]">
                       <span>Plate:</span>
-                      <span className="font-semibold text-[#2B1D12]">{bus.numberPlate || 'N/A'}</span>
+                      <span className="font-semibold text-[#1F2A38]">{bus.numberPlate || 'N/A'}</span>
                     </div>
                   </div>
 
                   {/* Progress Bar inside box */}
-                  <div className="w-full bg-[#E8DCC8] h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#E2DED4] h-1.5 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${occPct > 85 ? 'bg-[#A6402F]' : 'bg-[#4E7A51]'}`}
                       style={{ width: `${occPct}%` }}
@@ -410,14 +410,14 @@ export default function TransportManagerInterface() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
         {/* LEFT COLUMN: Check Arrival and Departure Time of Bus */}
-        <div className="lg:col-span-6 p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
+        <div className="lg:col-span-6 p-5 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-4">
           
-          <div className="border-b pb-3 border-[#E8DCC8]">
-            <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-[#BC4800]" />
+          <div className="border-b pb-3 border-[#E2DED4]">
+            <h3 className="text-sm font-bold text-[#1F2A38] tracking-tight flex items-center gap-1.5">
+              <Clock className="w-4 h-4 text-[#3E5C76]" />
               Check Arrival and Departure Times
             </h3>
-            <p className="text-xs text-[#6B5A4A] font-medium mt-0.5">
+            <p className="text-xs text-[#8A8578] font-medium mt-0.5">
               Select a bus to inspect morning and evening shift schedules
             </p>
           </div>
@@ -429,7 +429,7 @@ export default function TransportManagerInterface() {
                 <select
                   value={selectedBusId || ''}
                   onChange={(e) => setSelectedBusId(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs font-semibold text-[#2B1D12] focus:outline-none focus:border-[#BC4800] transition-colors"
+                  className="w-full px-3.5 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs font-semibold text-[#1F2A38] focus:outline-none focus:border-[#3E5C76] transition-colors"
                 >
                   {busFleet.map((b) => (
                     <option key={b.id} value={b.id}>
@@ -441,49 +441,49 @@ export default function TransportManagerInterface() {
 
               {/* Schedule Details Box */}
               <div className="space-y-3 pt-1">
-                <h4 className="text-xs font-bold text-[#2B1D12] tracking-tight flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-[#BC4800]" />
-                  Schedule details for <span className="text-[#BC4800] font-semibold">{activeBus.busNumber}</span>
+                <h4 className="text-xs font-bold text-[#1F2A38] tracking-tight flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-[#3E5C76]" />
+                  Schedule details for <span className="text-[#3E5C76] font-semibold">{activeBus.busNumber}</span>
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
                   
                   {/* Morning Departure */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
+                  <div className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-1">
+                    <label className="block text-xs font-semibold text-[#8A8578]">
                       Morning Departure
                     </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
+                    <div className="font-bold text-xs text-[#1F2A38]">
                       {activeBus.morningDep}
                     </div>
                   </div>
 
                   {/* Morning Arrival */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
+                  <div className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-1">
+                    <label className="block text-xs font-semibold text-[#8A8578]">
                       Morning Arrival
                     </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
+                    <div className="font-bold text-xs text-[#1F2A38]">
                       {activeBus.morningArr}
                     </div>
                   </div>
 
                   {/* Evening Departure */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
+                  <div className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-1">
+                    <label className="block text-xs font-semibold text-[#8A8578]">
                       Evening Departure
                     </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
+                    <div className="font-bold text-xs text-[#1F2A38]">
                       {activeBus.eveDep}
                     </div>
                   </div>
 
                   {/* Evening Arrival */}
-                  <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1">
-                    <label className="block text-xs font-semibold text-[#6B5A4A]">
+                  <div className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-1">
+                    <label className="block text-xs font-semibold text-[#8A8578]">
                       Evening Arrival
                     </label>
-                    <div className="font-bold text-xs text-[#2B1D12]">
+                    <div className="font-bold text-xs text-[#1F2A38]">
                       {activeBus.eveArr}
                     </div>
                   </div>
@@ -492,7 +492,7 @@ export default function TransportManagerInterface() {
               </div>
             </>
           ) : (
-            <div className="py-6 text-center text-xs text-[#6B5A4A] font-medium">
+            <div className="py-6 text-center text-xs text-[#8A8578] font-medium">
               No bus selected. Register a bus to inspect timetable.
             </div>
           )}
@@ -503,11 +503,11 @@ export default function TransportManagerInterface() {
         <div className="lg:col-span-6 space-y-5">
 
           {/* CARD 1: BUS BOOKING REQUESTS */}
-          <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-3">
+          <div className="p-5 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-3">
             
-            <div className="flex items-center justify-between pb-2 border-b border-[#E8DCC8]">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E2DED4]">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
+                <h3 className="text-sm font-bold text-[#1F2A38] tracking-tight">
                   Bus Booking Requests
                 </h3>
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#C48A2E]/15 text-[#C48A2E] border border-[#C48A2E]/30">
@@ -526,20 +526,20 @@ export default function TransportManagerInterface() {
 
             {/* List of Requests */}
             {bookingRequests.length === 0 ? (
-              <p className="text-xs text-[#6B5A4A] py-3 text-center">No pending bus booking requests.</p>
+              <p className="text-xs text-[#8A8578] py-3 text-center">No pending bus booking requests.</p>
             ) : (
               <div className="space-y-2">
                 {bookingRequests.map((req) => (
                   <div
                     key={req.id}
-                    className="p-3 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] flex items-center justify-between gap-2"
+                    className="p-3 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] flex items-center justify-between gap-2"
                   >
-                    <div className="space-y-0.5 text-xs text-[#2B1D12] truncate">
-                      <p className="font-bold text-xs text-[#2B1D12] truncate">{req.requestor} ({req.department})</p>
-                      <p className="text-[#6B5A4A] text-xs truncate">
-                        Date: <span className="font-semibold text-[#2B1D12]">{req.date}</span> • Day: <span className="font-semibold text-[#2B1D12]">{req.day}</span>
+                    <div className="space-y-0.5 text-xs text-[#1F2A38] truncate">
+                      <p className="font-bold text-xs text-[#1F2A38] truncate">{req.requestor} ({req.department})</p>
+                      <p className="text-[#8A8578] text-xs truncate">
+                        Date: <span className="font-semibold text-[#1F2A38]">{req.date}</span> • Day: <span className="font-semibold text-[#1F2A38]">{req.day}</span>
                       </p>
-                      <p className="text-xs text-[#BC4800] font-medium truncate">
+                      <p className="text-xs text-[#3E5C76] font-medium truncate">
                         {req.purpose} • <span>{req.busType}</span>
                       </p>
                       {req.status !== 'Pending' && (
@@ -573,7 +573,7 @@ export default function TransportManagerInterface() {
                       ) : (
                         <button
                           onClick={() => handleBookingAction(req.id, 'Pending')}
-                          className="px-2.5 py-1 rounded-lg bg-[#F7EFE4] text-xs font-semibold text-[#6B5A4A] border border-[#E8DCC8] cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-[#DCD7CC] text-xs font-semibold text-[#8A8578] border border-[#E2DED4] cursor-pointer"
                         >
                           Reset
                         </button>
@@ -581,7 +581,7 @@ export default function TransportManagerInterface() {
 
                       <button
                         onClick={() => handleDeleteBookingReq(req.id, req.requestor)}
-                        className="p-1.5 rounded-lg text-[#6B5A4A] hover:text-[#A6402F] transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-[#8A8578] hover:text-[#A6402F] transition-colors cursor-pointer"
                         title="Delete request"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -595,10 +595,10 @@ export default function TransportManagerInterface() {
           </div>
 
           {/* CARD 2: EVENTS REQUIRING CITY BUS */}
-          <div className="p-5 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-3">
+          <div className="p-5 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-3">
             
-            <div className="border-b pb-2 border-[#E8DCC8]">
-              <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight">
+            <div className="border-b pb-2 border-[#E2DED4]">
+              <h3 className="text-sm font-bold text-[#1F2A38] tracking-tight">
                 Events Requiring City Bus
               </h3>
             </div>
@@ -608,13 +608,13 @@ export default function TransportManagerInterface() {
               {cityBusEvents.map((evt) => (
                 <div
                   key={evt.id}
-                  className="p-3 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] flex items-center justify-between gap-2"
+                  className="p-3 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] flex items-center justify-between gap-2"
                 >
                   <div className="truncate">
-                    <span className="block text-[#2B1D12] truncate text-xs font-bold">{evt.title}</span>
-                    <span className="text-xs text-[#BC4800] font-semibold">{evt.date}</span>
+                    <span className="block text-[#1F2A38] truncate text-xs font-bold">{evt.title}</span>
+                    <span className="text-xs text-[#3E5C76] font-semibold">{evt.date}</span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#BC4800]/15 text-[#BC4800] border border-[#BC4800]/30 text-xs font-semibold shrink-0">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#3E5C76]/15 text-[#3E5C76] border border-[#3E5C76]/30 text-xs font-semibold shrink-0">
                     {evt.busCount} City Buses
                   </span>
                 </div>
@@ -628,7 +628,7 @@ export default function TransportManagerInterface() {
                 placeholder="Enter event name requiring city bus..."
                 value={newEventTitle}
                 onChange={(e) => setNewEventTitle(e.target.value)}
-                className="flex-1 px-3 py-1.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs font-medium text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] transition-colors"
+                className="flex-1 px-3 py-1.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs font-medium text-[#1F2A38] placeholder-[#8A8578]/60 focus:outline-none focus:border-[#3E5C76] transition-colors"
               />
               <button
                 type="submit"
@@ -653,26 +653,26 @@ export default function TransportManagerInterface() {
 
       {/* ================= ADD NEW BOOKING REQ MODAL ================= */}
       {showAddReqModal && (
-        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
-          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
+        <div className="fixed inset-0 bg-[#1F2A38]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
+          <div className="bg-[#DCD7CC] border border-[#E2DED4] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
             
-            <div className="flex items-center justify-between pb-2 border-b border-[#E8DCC8]">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E2DED4]">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                   <Calendar className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#2B1D12]">
+                  <h3 className="text-sm font-bold text-[#1F2A38]">
                     Add Bus Booking Request
                   </h3>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
+                  <p className="text-xs text-[#8A8578] font-medium">
                     Submit faculty or department transport booking
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowAddReqModal(false)}
-                className="p-1 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer"
+                className="p-1 rounded-lg hover:bg-[#F5F4F0] text-[#8A8578] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -682,8 +682,8 @@ export default function TransportManagerInterface() {
               
               {/* Requestor Name */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Requestor Name <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Requestor Name <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="text"
@@ -691,13 +691,13 @@ export default function TransportManagerInterface() {
                   placeholder="e.g. Dr. Meera Nambiar"
                   value={newReqForm.requestor}
                   onChange={(e) => setNewReqForm({ ...newReqForm, requestor: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Department */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
+                <label className="block font-semibold text-[#1F2A38]">
                   Department
                 </label>
                 <input
@@ -705,51 +705,51 @@ export default function TransportManagerInterface() {
                   placeholder="e.g. Biotechnology"
                   value={newReqForm.department}
                   onChange={(e) => setNewReqForm({ ...newReqForm, department: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Date & Day */}
               <div className="grid grid-cols-2 gap-2.5">
                 <div className="space-y-1">
-                  <label className="block font-semibold text-[#2B1D12]">Date</label>
+                  <label className="block font-semibold text-[#1F2A38]">Date</label>
                   <input
                     type="date"
                     value={newReqForm.date}
                     onChange={(e) => setNewReqForm({ ...newReqForm, date: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] font-semibold focus:outline-none focus:border-[#BC4800]"
+                    className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] font-semibold focus:outline-none focus:border-[#3E5C76]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block font-semibold text-[#2B1D12]">Day</label>
+                  <label className="block font-semibold text-[#1F2A38]">Day</label>
                   <input
                     type="text"
                     placeholder="e.g. Tuesday"
                     value={newReqForm.day}
                     onChange={(e) => setNewReqForm({ ...newReqForm, day: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                    className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                   />
                 </div>
               </div>
 
               {/* Purpose */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">Purpose</label>
+                <label className="block font-semibold text-[#1F2A38]">Purpose</label>
                 <input
                   type="text"
                   placeholder="e.g. Field Excursion Visit"
                   value={newReqForm.purpose}
                   onChange={(e) => setNewReqForm({ ...newReqForm, purpose: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E8DCC8]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E2DED4]">
                 <button
                   type="button"
                   onClick={() => setShowAddReqModal(false)}
-                  className="px-3.5 py-1.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer"
+                  className="px-3.5 py-1.5 bg-[#F5F4F0] hover:bg-[#DCD7CC] text-[#1F2A38] border border-[#E2DED4] rounded-lg font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -768,26 +768,26 @@ export default function TransportManagerInterface() {
 
       {/* ================= ADD NEW BUS MODAL DIALOG ================= */}
       {showAddBusModal && (
-        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
-          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
+        <div className="fixed inset-0 bg-[#1F2A38]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
+          <div className="bg-[#DCD7CC] border border-[#E2DED4] w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 relative animate-in zoom-in-95">
             
-            <div className="flex items-center justify-between pb-2 border-b border-[#E8DCC8]">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E2DED4]">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                   <Bus className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#2B1D12]">
+                  <h3 className="text-sm font-bold text-[#1F2A38]">
                     Add New Bus
                   </h3>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
+                  <p className="text-xs text-[#8A8578] font-medium">
                     Register bus number, capacity, dist, and number plate
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowAddBusModal(false)}
-                className="p-1 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer"
+                className="p-1 rounded-lg hover:bg-[#F5F4F0] text-[#8A8578] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -797,8 +797,8 @@ export default function TransportManagerInterface() {
               
               {/* Bus Number */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Bus Number <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Bus Number <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="text"
@@ -806,14 +806,14 @@ export default function TransportManagerInterface() {
                   placeholder="e.g. Bus 1, Bus 11"
                   value={newBusForm.busNumber}
                   onChange={(e) => setNewBusForm({ ...newBusForm, busNumber: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Seating Capacity */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Capacity <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Capacity <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="number"
@@ -823,14 +823,14 @@ export default function TransportManagerInterface() {
                   placeholder="e.g. 50"
                   value={newBusForm.capacity}
                   onChange={(e) => setNewBusForm({ ...newBusForm, capacity: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Distance / Route Tag */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Dist (Route / Distance) <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Dist (Route / Distance) <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="text"
@@ -838,14 +838,14 @@ export default function TransportManagerInterface() {
                   placeholder="e.g. ptk, itemi, Airport road"
                   value={newBusForm.dist}
                   onChange={(e) => setNewBusForm({ ...newBusForm, dist: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Number Plate */}
               <div className="space-y-1">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Number Plate <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Number Plate <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="text"
@@ -853,16 +853,16 @@ export default function TransportManagerInterface() {
                   placeholder="e.g. PB-01-AB-1234"
                   value={newBusForm.numberPlate}
                   onChange={(e) => setNewBusForm({ ...newBusForm, numberPlate: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3 py-2 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E8DCC8]">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#E2DED4]">
                 <button
                   type="button"
                   onClick={() => setShowAddBusModal(false)}
-                  className="px-3.5 py-1.5 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer"
+                  className="px-3.5 py-1.5 bg-[#F5F4F0] hover:bg-[#DCD7CC] text-[#1F2A38] border border-[#E2DED4] rounded-lg font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>

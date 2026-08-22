@@ -203,7 +203,7 @@ export default function SubAdminDashboard({ currentUser }) {
       
       {/* Toast Alert Banner */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 bg-[#2B1D12] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-xl z-50 flex items-center gap-2 border border-[#E8DCC8]">
+        <div className="fixed top-20 right-6 bg-[#1F2A38] text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-xl z-50 flex items-center gap-2 border border-[#E2DED4]">
           <CheckCircle2 className="w-4 h-4 text-[#4E7A51]" />
           <span>{toastMsg}</span>
         </div>
@@ -211,7 +211,7 @@ export default function SubAdminDashboard({ currentUser }) {
 
       {/* ================= SECTION HERO: AUDITORIUM & EVENT COMMAND ================= */}
       <SectionHero
-        image={BACKDROP_IMAGES.classrooms}
+        image={BACKDROP_IMAGES.auditorium}
         category="Auditorium & Events"
         categoryIcon={Building2}
         badgeText="Venue Scheduling"
@@ -240,17 +240,17 @@ export default function SubAdminDashboard({ currentUser }) {
         <div className="space-y-8 md:space-y-10">
 
           {/* 1. AUDITORIUM OVERVIEW SECTION */}
-          <div className="p-6 md:p-7 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-5 relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E8DCC8] relative z-10">
+          <div className="p-6 md:p-7 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-5 relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E2DED4] relative z-10">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base md:text-lg font-bold text-[#2B1D12]">
+                  <h2 className="text-base md:text-lg font-bold text-[#1F2A38]">
                     Auditorium Overview
                   </h2>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
+                  <p className="text-xs text-[#8A8578] font-medium">
                     Facility occupancy & automated climate control settings
                   </p>
                 </div>
@@ -258,9 +258,9 @@ export default function SubAdminDashboard({ currentUser }) {
 
               {/* Master AC Control & Lookup Search */}
               <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-2 bg-[#FDF8F2] px-3 py-1.5 rounded-lg border border-[#E8DCC8]">
-                  <Wind className="w-4 h-4 text-[#BC4800]" />
-                  <span className="text-xs font-semibold text-[#2B1D12]">Master Climate AC:</span>
+                <div className="flex items-center gap-2 bg-[#F5F4F0] px-3 py-1.5 rounded-lg border border-[#E2DED4]">
+                  <Wind className="w-4 h-4 text-[#3E5C76]" />
+                  <span className="text-xs font-semibold text-[#1F2A38]">Master Climate AC:</span>
                   <button
                     onClick={() => {
                       setAcMasterToggle(!acMasterToggle);
@@ -277,13 +277,13 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#6B5A4A]" />
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#8A8578]" />
                   <input
                     type="text"
                     value={searchLookup}
                     onChange={(e) => setSearchLookup(e.target.value)}
                     placeholder="Search hall or capacity..."
-                    className="pl-8 pr-3 py-1.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] min-w-[210px] font-medium"
+                    className="pl-8 pr-3 py-1.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 focus:outline-none focus:border-[#3E5C76] min-w-[210px] font-medium"
                   />
                 </div>
               </div>
@@ -297,18 +297,18 @@ export default function SubAdminDashboard({ currentUser }) {
                   <div
                     key={audi.id}
                     onClick={() => setSelectedAudi(audi)}
-                    className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col justify-between bg-[#FDF8F2] border-[#E8DCC8] hover:border-[#BC4800] shadow-xs`}
+                    className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col justify-between bg-[#F5F4F0] border-[#E2DED4] hover:border-[#3E5C76] shadow-xs`}
                   >
                     <div>
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-[#2B1D12] text-sm">{audi.name}</span>
-                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-[#BC4800]' : 'text-[#6B5A4A]'}`} />
+                        <span className="font-bold text-[#1F2A38] text-sm">{audi.name}</span>
+                        <Wind className={`w-3.5 h-3.5 ${audi.acStatus === 'ON' ? 'text-[#3E5C76]' : 'text-[#8A8578]'}`} />
                       </div>
-                      <span className="text-xs text-[#6B5A4A] font-semibold block mt-1">
+                      <span className="text-xs text-[#8A8578] font-semibold block mt-1">
                         Cap: {audi.capacity}
                       </span>
                       {audi.features && (
-                        <p className="text-xs text-[#6B5A4A]/80 line-clamp-1 mt-0.5" title={audi.features}>
+                        <p className="text-xs text-[#8A8578]/80 line-clamp-1 mt-0.5" title={audi.features}>
                           {audi.features}
                         </p>
                       )}
@@ -330,10 +330,10 @@ export default function SubAdminDashboard({ currentUser }) {
               {/* Add Hall Button triggering Modal */}
               <button
                 onClick={() => setShowAddAudiModal(true)}
-                className="p-4 rounded-xl border border-dashed border-[#E8DCC8] bg-[#FDF8F2] hover:bg-[#F7EFE4] transition-all flex flex-col items-center justify-center gap-1 text-[#6B5A4A] cursor-pointer"
+                className="p-4 rounded-xl border border-dashed border-[#E2DED4] bg-[#F5F4F0] hover:bg-[#DCD7CC] transition-all flex flex-col items-center justify-center gap-1 text-[#8A8578] cursor-pointer"
               >
-                <Plus className="w-5 h-5 text-[#BC4800]" />
-                <span className="font-semibold text-xs text-[#2B1D12]">Add Hall</span>
+                <Plus className="w-5 h-5 text-[#3E5C76]" />
+                <span className="font-semibold text-xs text-[#1F2A38]">Add Hall</span>
               </button>
             </div>
           </div>
@@ -342,17 +342,17 @@ export default function SubAdminDashboard({ currentUser }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10">
 
             {/* LEFT COLUMN: Approval Requests (for AC) */}
-            <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
+            <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4]">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                  <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                     <ShieldAlert className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#2B1D12]">
+                    <h3 className="text-sm font-bold text-[#1F2A38]">
                       Approval Requests (for AC)
                     </h3>
-                    <span className="text-xs font-semibold text-[#BC4800]">
+                    <span className="text-xs font-semibold text-[#3E5C76]">
                       Pending Request(s)
                     </span>
                   </div>
@@ -360,8 +360,8 @@ export default function SubAdminDashboard({ currentUser }) {
               </div>
 
               {/* Callout Box */}
-              <div className="p-3 bg-[#FDF8F2] border border-[#E8DCC8] rounded-xl text-xs text-[#6B5A4A] leading-relaxed">
-                💡 <strong className="text-[#2B1D12]">Auto-Approval Rule:</strong> Requests are automatically approved only if the venue is vacant at that given time window.
+              <div className="p-3 bg-[#F5F4F0] border border-[#E2DED4] rounded-xl text-xs text-[#8A8578] leading-relaxed">
+                💡 <strong className="text-[#1F2A38]">Auto-Approval Rule:</strong> Requests are automatically approved only if the venue is vacant at that given time window.
               </div>
 
               {/* Pending Request Items matching User Text */}
@@ -369,11 +369,11 @@ export default function SubAdminDashboard({ currentUser }) {
                 {approvalRequests.map((req) => (
                   <div
                     key={req.id}
-                    className="p-4 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-2"
+                    className="p-4 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-2"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs text-[#2B1D12]">
-                        Requestor: <strong className="text-[#BC4800]">{req.requestor}</strong>
+                      <span className="font-bold text-xs text-[#1F2A38]">
+                        Requestor: <strong className="text-[#3E5C76]">{req.requestor}</strong>
                       </span>
                       <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
                         req.status === 'Approved' ? 'bg-[#4E7A51]/15 text-[#4E7A51] border-[#4E7A51]/30' :
@@ -384,16 +384,16 @@ export default function SubAdminDashboard({ currentUser }) {
                       </span>
                     </div>
 
-                    <p className="text-xs text-[#2B1D12] font-semibold">
+                    <p className="text-xs text-[#1F2A38] font-semibold">
                       Request details: <strong>{req.details}</strong>
                     </p>
-                    <p className="text-xs text-[#6B5A4A]">
+                    <p className="text-xs text-[#8A8578]">
                       Purpose: {req.purpose} ({req.department})
                     </p>
 
                     {req.status === 'Pending' && (
-                      <div className="flex items-center gap-2 pt-2 border-t border-[#E8DCC8]">
-                        <span className="text-xs font-semibold text-[#6B5A4A]">Approval options:</span>
+                      <div className="flex items-center gap-2 pt-2 border-t border-[#E2DED4]">
+                        <span className="text-xs font-semibold text-[#8A8578]">Approval options:</span>
                         <div className="flex items-center gap-2 ml-auto">
                           <button
                             onClick={() => handleApproveRequest(req.id, 'Approved')}
@@ -418,36 +418,36 @@ export default function SubAdminDashboard({ currentUser }) {
             </div>
 
             {/* RIGHT COLUMN: Academic Calendar */}
-            <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
+            <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4]">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                  <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                     <CalendarIcon className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#2B1D12]">
+                    <h3 className="text-sm font-bold text-[#1F2A38]">
                       Academic Calendar
                     </h3>
-                    <p className="text-xs text-[#6B5A4A] font-medium">
+                    <p className="text-xs text-[#8A8578] font-medium">
                       Auditorium timetable conflict detection matrix
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-[#FDF8F2] px-3 py-1.5 rounded-lg border border-[#E8DCC8]">
-                  <CalendarIcon className="w-3.5 h-3.5 text-[#BC4800]" />
+                <div className="flex items-center gap-1.5 bg-[#F5F4F0] px-3 py-1.5 rounded-lg border border-[#E2DED4]">
+                  <CalendarIcon className="w-3.5 h-3.5 text-[#3E5C76]" />
                   <input
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="bg-transparent text-[#2B1D12] text-xs font-semibold focus:outline-none"
+                    className="bg-transparent text-[#1F2A38] text-xs font-semibold focus:outline-none"
                   />
                 </div>
               </div>
 
               {/* Slot selector numbers */}
               <div>
-                <span className="text-xs font-semibold text-[#6B5A4A] block mb-2">
+                <span className="text-xs font-semibold text-[#8A8578] block mb-2">
                   Select Timetable Slot (Slot 1 to 6)
                 </span>
                 <div className="flex items-center justify-between gap-1.5">
@@ -459,8 +459,8 @@ export default function SubAdminDashboard({ currentUser }) {
                         onClick={() => setActiveCalendarSlot(slot)}
                         className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all border ${
                           isSelected
-                            ? 'bg-[#BC4800] text-white border-[#BC4800] shadow-xs'
-                            : 'bg-[#FDF8F2] text-[#2B1D12] border-[#E8DCC8] hover:bg-[#F7EFE4]'
+                            ? 'bg-[#3E5C76] text-white border-[#3E5C76] shadow-xs'
+                            : 'bg-[#F5F4F0] text-[#1F2A38] border-[#E2DED4] hover:bg-[#DCD7CC]'
                         }`}
                       >
                         {slot}
@@ -471,7 +471,7 @@ export default function SubAdminDashboard({ currentUser }) {
               </div>
 
               {/* Timetable Matrix */}
-              <div className="p-4 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-3">
+              <div className="p-4 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-3">
                 {(() => {
                   const slotScheduleMap = {
                     1: ['audi-4'],
@@ -488,10 +488,10 @@ export default function SubAdminDashboard({ currentUser }) {
                   return (
                     <>
                       <div className="flex items-center justify-between text-xs font-semibold">
-                        <span className="text-[#2B1D12] font-bold">
+                        <span className="text-[#1F2A38] font-bold">
                           Slot #{activeCalendarSlot} Overview:
                         </span>
-                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-[#F7EFE4] text-[#2B1D12] border-[#E8DCC8]">
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-[#DCD7CC] text-[#1F2A38] border-[#E2DED4]">
                           {occupiedCount > 0 
                             ? `${occupiedCount} Hall${occupiedCount > 1 ? 's' : ''} Occupied (${availableCount} Available)`
                             : `All ${auditoriums.length} Halls Available`}
@@ -507,7 +507,7 @@ export default function SubAdminDashboard({ currentUser }) {
                               className={`p-2.5 rounded-lg border transition-all ${
                                 isSlotBooked
                                   ? 'bg-[#A6402F]/15 text-[#A6402F] border-[#A6402F]/30 font-bold'
-                                  : 'bg-[#FDF8F2] border-[#E8DCC8] font-semibold text-[#2B1D12]'
+                                  : 'bg-[#F5F4F0] border-[#E2DED4] font-semibold text-[#1F2A38]'
                               }`}
                             >
                               <span className="block font-bold text-xs">{audi.name}</span>
@@ -532,17 +532,17 @@ export default function SubAdminDashboard({ currentUser }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
 
             {/* CARD 1: AV Hardware */}
-            <div className="p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
+            <div className="p-6 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4]">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                  <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                     <Tv className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#2B1D12]">
+                    <h3 className="text-sm font-bold text-[#1F2A38]">
                       Resource Status (AV Hardware)
                     </h3>
-                    <p className="text-xs text-[#6B5A4A] font-medium">
+                    <p className="text-xs text-[#8A8578] font-medium">
                       Audio-visual equipment diagnostic metrics
                     </p>
                   </div>
@@ -555,23 +555,23 @@ export default function SubAdminDashboard({ currentUser }) {
 
               <div className="space-y-3 text-xs">
                 {/* Projectors */}
-                <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1.5">
+                <div className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-1.5">
                   <div className="flex justify-between items-center font-bold">
-                    <span className="text-[#2B1D12] flex items-center gap-2">
-                      <Tv className="w-4 h-4 text-[#BC4800]" />
+                    <span className="text-[#1F2A38] flex items-center gap-2">
+                      <Tv className="w-4 h-4 text-[#3E5C76]" />
                       Projectors:
                     </span>
                     <span className="font-bold text-[#4E7A51]">(4/5 Avail.)</span>
                   </div>
-                  <div className="w-full bg-[#E8DCC8] h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#E2DED4] h-2 rounded-full overflow-hidden">
                     <div className="bg-[#4E7A51] h-full rounded-full" style={{ width: '80%' }} />
                   </div>
                 </div>
 
                 {/* Sound Systems */}
-                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] font-bold">
-                  <span className="text-[#2B1D12] flex items-center gap-2">
-                    <Volume2 className="w-4 h-4 text-[#BC4800]" />
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] font-bold">
+                  <span className="text-[#1F2A38] flex items-center gap-2">
+                    <Volume2 className="w-4 h-4 text-[#3E5C76]" />
                     Sound Systems:
                   </span>
                   <span className="font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
@@ -580,9 +580,9 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Audio Speakers */}
-                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] font-bold">
-                  <span className="text-[#2B1D12] flex items-center gap-2">
-                    <Radio className="w-4 h-4 text-[#BC4800]" />
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] font-bold">
+                  <span className="text-[#1F2A38] flex items-center gap-2">
+                    <Radio className="w-4 h-4 text-[#3E5C76]" />
                     Audio Speakers:
                   </span>
                   <span className="font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
@@ -591,9 +591,9 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Climate HVAC */}
-                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] font-bold">
-                  <span className="text-[#2B1D12] flex items-center gap-2">
-                    <Wind className="w-4 h-4 text-[#BC4800]" />
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] font-bold">
+                  <span className="text-[#1F2A38] flex items-center gap-2">
+                    <Wind className="w-4 h-4 text-[#3E5C76]" />
                     Climate HVAC:
                   </span>
                   <span className="font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
@@ -604,17 +604,17 @@ export default function SubAdminDashboard({ currentUser }) {
             </div>
 
             {/* CARD 2: Facility Telemetry */}
-            <div className="p-6 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
+            <div className="p-6 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4]">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                  <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                     <Mic className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#2B1D12]">
+                    <h3 className="text-sm font-bold text-[#1F2A38]">
                       Facility Hardware Telemetry
                     </h3>
-                    <p className="text-xs text-[#6B5A4A] font-medium">
+                    <p className="text-xs text-[#8A8578] font-medium">
                       Display panels, wireless mics & power backup status
                     </p>
                   </div>
@@ -627,9 +627,9 @@ export default function SubAdminDashboard({ currentUser }) {
 
               <div className="space-y-3 text-xs">
                 {/* 4K Displays */}
-                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] font-bold">
-                  <span className="text-[#2B1D12] flex items-center gap-2">
-                    <Tv className="w-4 h-4 text-[#BC4800]" />
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] font-bold">
+                  <span className="text-[#1F2A38] flex items-center gap-2">
+                    <Tv className="w-4 h-4 text-[#3E5C76]" />
                     4K Screens & Displays:
                   </span>
                   <span className="font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
@@ -638,23 +638,23 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* Wireless Microphones */}
-                <div className="p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] space-y-1.5">
+                <div className="p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] space-y-1.5">
                   <div className="flex justify-between items-center font-bold">
-                    <span className="text-[#2B1D12] flex items-center gap-2">
-                      <Mic className="w-4 h-4 text-[#BC4800]" />
+                    <span className="text-[#1F2A38] flex items-center gap-2">
+                      <Mic className="w-4 h-4 text-[#3E5C76]" />
                       Wireless Microphones:
                     </span>
                     <span className="font-bold text-[#4E7A51]">(8/10 Avail.)</span>
                   </div>
-                  <div className="w-full bg-[#E8DCC8] h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#E2DED4] h-2 rounded-full overflow-hidden">
                     <div className="bg-[#4E7A51] h-full rounded-full" style={{ width: '80%' }} />
                   </div>
                 </div>
 
                 {/* Stage Lighting */}
-                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] font-bold">
-                  <span className="text-[#2B1D12] flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-[#BC4800]" />
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] font-bold">
+                  <span className="text-[#1F2A38] flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-[#3E5C76]" />
                     Stage Lighting Grid:
                   </span>
                   <span className="font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
@@ -663,9 +663,9 @@ export default function SubAdminDashboard({ currentUser }) {
                 </div>
 
                 {/* UPS Backup */}
-                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] font-bold">
-                  <span className="text-[#2B1D12] flex items-center gap-2">
-                    <Cpu className="w-4 h-4 text-[#BC4800]" />
+                <div className="flex justify-between items-center p-3.5 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] font-bold">
+                  <span className="text-[#1F2A38] flex items-center gap-2">
+                    <Cpu className="w-4 h-4 text-[#3E5C76]" />
                     UPS Power Backup:
                   </span>
                   <span className="font-semibold text-[#4E7A51] px-2 py-0.5 bg-[#4E7A51]/15 rounded-full border border-[#4E7A51]/30">
@@ -678,17 +678,17 @@ export default function SubAdminDashboard({ currentUser }) {
           </div>
 
           {/* 4. QUICK QUERY ASSISTANT */}
-          <div className="p-6 md:p-7 rounded-2xl border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
+          <div className="p-6 md:p-7 rounded-2xl border border-[#E2DED4] bg-[#DCD7CC] shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4]">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                   <HelpCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#2B1D12]">
+                  <h3 className="text-base font-bold text-[#1F2A38]">
                     Facility Assistant Query
                   </h3>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
+                  <p className="text-xs text-[#8A8578] font-medium">
                     Search operational status, climate controls, or auditorium timetables
                   </p>
                 </div>
@@ -697,22 +697,22 @@ export default function SubAdminDashboard({ currentUser }) {
 
             {/* Quick Query Chips */}
             <div className="flex items-center gap-2 flex-wrap text-xs">
-              <span className="text-xs font-semibold text-[#6B5A4A]">Common Questions:</span>
+              <span className="text-xs font-semibold text-[#8A8578]">Common Questions:</span>
               <button
                 onClick={() => setAssistantQuery("Which auditoriums have AC turned on right now?")}
-                className="px-3 py-1.5 bg-[#FDF8F2] text-[#2B1D12] hover:bg-[#F7EFE4] rounded-full border border-[#E8DCC8] text-xs font-semibold transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-[#F5F4F0] text-[#1F2A38] hover:bg-[#DCD7CC] rounded-full border border-[#E2DED4] text-xs font-semibold transition-colors cursor-pointer"
               >
                 AC Status
               </button>
               <button
                 onClick={() => setAssistantQuery("Check projectors available in Audi 1 & Audi 2")}
-                className="px-3 py-1.5 bg-[#FDF8F2] text-[#2B1D12] hover:bg-[#F7EFE4] rounded-full border border-[#E8DCC8] text-xs font-semibold transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-[#F5F4F0] text-[#1F2A38] hover:bg-[#DCD7CC] rounded-full border border-[#E2DED4] text-xs font-semibold transition-colors cursor-pointer"
               >
                 Projector Availability
               </button>
               <button
                 onClick={() => setAssistantQuery("Summarize pending AC approval requests")}
-                className="px-3 py-1.5 bg-[#FDF8F2] text-[#2B1D12] hover:bg-[#F7EFE4] rounded-full border border-[#E8DCC8] text-xs font-semibold transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-[#F5F4F0] text-[#1F2A38] hover:bg-[#DCD7CC] rounded-full border border-[#E2DED4] text-xs font-semibold transition-colors cursor-pointer"
               >
                 Pending Requests
               </button>
@@ -721,13 +721,13 @@ export default function SubAdminDashboard({ currentUser }) {
             {/* Form Input Box */}
             <form onSubmit={handleAssistantQuerySubmit} className="flex items-center gap-3">
               <div className="relative flex-1">
-                <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#6B5A4A]" />
+                <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#8A8578]" />
                 <input
                   type="text"
                   value={assistantQuery}
                   onChange={(e) => setAssistantQuery(e.target.value)}
                   placeholder="Type a query (e.g. 'Show vacant halls for 3:00 PM')..."
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 focus:outline-none focus:border-[#BC4800] font-medium"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 focus:outline-none focus:border-[#3E5C76] font-medium"
                 />
               </div>
               <button
@@ -746,8 +746,8 @@ export default function SubAdminDashboard({ currentUser }) {
 
             {/* Response Output Box */}
             {assistantResponse && (
-              <div className="p-4 rounded-xl bg-[#FDF8F2] border border-[#E8DCC8] text-xs text-[#2B1D12] space-y-1">
-                <div className="flex items-center gap-2 font-bold text-[#BC4800]">
+              <div className="p-4 rounded-xl bg-[#F5F4F0] border border-[#E2DED4] text-xs text-[#1F2A38] space-y-1">
+                <div className="flex items-center gap-2 font-bold text-[#3E5C76]">
                   <FileText className="w-4 h-4" />
                   <span>Query Result:</span>
                 </div>
@@ -768,25 +768,25 @@ export default function SubAdminDashboard({ currentUser }) {
 
       {/* ================= ADD NEW AUDITORIUM MODAL DIALOG ================= */}
       {showAddAudiModal && (
-        <div className="fixed inset-0 bg-[#2B1D12]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
-          <div className="bg-[#F7EFE4] border border-[#E8DCC8] w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-5 relative">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCC8]">
+        <div className="fixed inset-0 bg-[#1F2A38]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in font-sans">
+          <div className="bg-[#DCD7CC] border border-[#E2DED4] w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-5 relative">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2DED4]">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+                <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#2B1D12]">
+                  <h3 className="text-base font-bold text-[#1F2A38]">
                     Add New Auditorium
                   </h3>
-                  <p className="text-xs text-[#6B5A4A] font-medium">
+                  <p className="text-xs text-[#8A8578] font-medium">
                     Register a new hall with capacity & feature specs
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowAddAudiModal(false)}
-                className="p-1.5 rounded-lg hover:bg-[#FDF8F2] text-[#6B5A4A] cursor-pointer"
+                className="p-1.5 rounded-lg hover:bg-[#F5F4F0] text-[#8A8578] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -795,8 +795,8 @@ export default function SubAdminDashboard({ currentUser }) {
             <form onSubmit={handleAddAudiSubmit} className="space-y-4 text-xs">
               {/* Hall Name */}
               <div className="space-y-1.5">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Auditorium Name <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Auditorium Name <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="text"
@@ -804,14 +804,14 @@ export default function SubAdminDashboard({ currentUser }) {
                   placeholder="e.g. Audi 6, Seminar Hall C"
                   value={newAudiForm.name}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Seating Capacity */}
               <div className="space-y-1.5">
-                <label className="block font-semibold text-[#2B1D12]">
-                  Seating Capacity <span className="text-[#BC4800]">*</span>
+                <label className="block font-semibold text-[#1F2A38]">
+                  Seating Capacity <span className="text-[#3E5C76]">*</span>
                 </label>
                 <input
                   type="number"
@@ -821,13 +821,13 @@ export default function SubAdminDashboard({ currentUser }) {
                   placeholder="e.g. 350"
                   value={newAudiForm.capacity}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, capacity: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-semibold focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Hall Features */}
               <div className="space-y-1.5">
-                <label className="block font-semibold text-[#2B1D12]">
+                <label className="block font-semibold text-[#1F2A38]">
                   Equipment & Feature Specifications
                 </label>
                 <textarea
@@ -835,19 +835,19 @@ export default function SubAdminDashboard({ currentUser }) {
                   placeholder="e.g. 4K Dual Projectors, Dolby Surround Audio, Stage Lighting Grid, Central HVAC"
                   value={newAudiForm.features}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, features: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] placeholder-[#6B5A4A]/60 font-medium focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] placeholder-[#8A8578]/60 font-medium focus:outline-none focus:border-[#3E5C76]"
                 />
               </div>
 
               {/* Initial Climate AC Status */}
               <div className="space-y-1.5">
-                <label className="block font-semibold text-[#2B1D12]">
+                <label className="block font-semibold text-[#1F2A38]">
                   Initial AC Climate Mode
                 </label>
                 <select
                   value={newAudiForm.acStatus}
                   onChange={(e) => setNewAudiForm({ ...newAudiForm, acStatus: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#FDF8F2] border border-[#E8DCC8] rounded-lg text-xs text-[#2B1D12] font-semibold focus:outline-none focus:border-[#BC4800]"
+                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E2DED4] rounded-lg text-xs text-[#1F2A38] font-semibold focus:outline-none focus:border-[#3E5C76]"
                 >
                   <option value="STANDBY">Eco Standby</option>
                   <option value="ON">Climate ON (22°C)</option>
@@ -856,11 +856,11 @@ export default function SubAdminDashboard({ currentUser }) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-[#E8DCC8]">
+              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-[#E2DED4]">
                 <button
                   type="button"
                   onClick={() => setShowAddAudiModal(false)}
-                  className="px-4 py-2 bg-[#FDF8F2] hover:bg-[#F7EFE4] text-[#2B1D12] border border-[#E8DCC8] rounded-lg font-semibold cursor-pointer"
+                  className="px-4 py-2 bg-[#F5F4F0] hover:bg-[#DCD7CC] text-[#1F2A38] border border-[#E2DED4] rounded-lg font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>

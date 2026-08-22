@@ -79,20 +79,20 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left: Pending Sub-Admin Registrations */}
-        <div className="lg:col-span-8 inst-card p-6 border border-[#E8DCC8] bg-[#F7EFE4] shadow-xs">
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#E8DCC8]">
+        <div className="lg:col-span-8 inst-card p-6 border border-[#E2DED4] bg-[#DCD7CC] shadow-xs">
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#E2DED4]">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg text-[#BC4800]">
+              <div className="p-2 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg text-[#3E5C76]">
                 <UserCheck className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold text-[#2B1D12] tracking-tight">Staff Access Approvals</h2>
+                  <h2 className="text-sm font-bold text-[#1F2A38] tracking-tight">Staff Access Approvals</h2>
                   <span className="px-2.5 py-0.5 text-xs font-semibold inst-badge-ochre">
                     {pendingUsers.length} Action Required
                   </span>
                 </div>
-                <p className="text-xs text-[#6B5A4A] mt-0.5">
+                <p className="text-xs text-[#8A8578] mt-0.5">
                   Review and verify administrative clearance requests
                 </p>
               </div>
@@ -100,25 +100,25 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
           </div>
 
           {pendingUsers.length === 0 ? (
-            <div className="py-6 text-center text-[#6B5A4A] text-xs bg-[#FDF8F2] rounded-xl border border-[#E8DCC8] flex items-center justify-center space-x-2">
+            <div className="py-6 text-center text-[#8A8578] text-xs bg-[#F5F4F0] rounded-xl border border-[#E2DED4] flex items-center justify-center space-x-2">
               <ShieldCheck className="w-4 h-4 text-[#4E7A51]" />
               <span>All staff accounts are verified. No pending approvals in queue.</span>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {pendingUsers.map((user) => (
-                <div key={user.id} className="bg-[#FDF8F2] p-3.5 rounded-xl border border-[#E8DCC8] flex flex-col justify-between">
+                <div key={user.id} className="bg-[#F5F4F0] p-3.5 rounded-xl border border-[#E2DED4] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-[#2B1D12]">{user.full_name || user.email}</span>
+                      <span className="text-xs font-semibold text-[#1F2A38]">{user.full_name || user.email}</span>
                       <span className="px-2.5 py-0.5 text-xs font-semibold uppercase inst-badge-ochre">
                         {user.department_domain} Admin
                       </span>
                     </div>
-                    <p className="text-xs text-[#6B5A4A] mb-2">{user.email}</p>
+                    <p className="text-xs text-[#8A8578] mb-2">{user.email}</p>
                   </div>
 
-                  <div className="flex items-center space-x-2 pt-2 border-t border-[#E8DCC8]">
+                  <div className="flex items-center space-x-2 pt-2 border-t border-[#E2DED4]">
                     <button
                       onClick={() => handleApproveUser(user.id, 'approved')}
                       disabled={actionLoading === user.id}
@@ -143,18 +143,18 @@ export default function SuperAdminDashboard({ kpis, anomalies, recommendations, 
         </div>
 
         {/* Right: Universal Multi-Batch AI Data Intaker Hero Card */}
-        <div className="lg:col-span-4 inst-card p-6 border border-[#E8DCC8] bg-[#F7EFE4] flex flex-col justify-between space-y-4 shadow-xs">
+        <div className="lg:col-span-4 inst-card p-6 border border-[#E2DED4] bg-[#DCD7CC] flex flex-col justify-between space-y-4 shadow-xs">
           <div>
-            <div className="w-8 h-8 bg-[#BC4800]/15 border border-[#BC4800]/30 rounded-lg flex items-center justify-center text-[#BC4800] mb-3">
+            <div className="w-8 h-8 bg-[#3E5C76]/15 border border-[#3E5C76]/30 rounded-lg flex items-center justify-center text-[#3E5C76] mb-3">
               <Sparkles className="w-4 h-4" />
             </div>
-            <h3 className="text-sm font-bold text-[#2B1D12] tracking-tight flex items-center gap-2">
+            <h3 className="text-sm font-bold text-[#1F2A38] tracking-tight flex items-center gap-2">
               Universal Multi-Batch Data Intaker
               <span className="px-2.5 py-0.5 text-xs font-semibold inst-badge-ochre">
                 AI Powered
               </span>
             </h3>
-            <p className="text-xs text-[#6B5A4A] mt-1 leading-relaxed">
+            <p className="text-xs text-[#8A8578] mt-1 leading-relaxed">
               Import CSV, JSON, or text files into Faculty, Transport, Energy, Classroom, or Maintenance databases with AI schema placement guidance.
             </p>
           </div>

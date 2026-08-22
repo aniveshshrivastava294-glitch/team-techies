@@ -4,79 +4,97 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   SLATE & STONE DESIGN SYSTEM
+   Primary BG:       #F5F4F0  (off-white)
+   Secondary BG:     #DCD7CC  (stone gray / cards)
+   Primary text:     #1F2A38  (deep navy)
+   Muted text:       #8A8578  (warm gray)
+   Accent:           #3E5C76  (slate blue)
+   Accent hover:     #2E4459
+   Borders:          #E2DED4  (light stone)
+   Success:          #4E7A51  (muted forest green)
+   Warning:          #C48A2E  (warm amber)
+   Error/Danger:     #A6402F  (muted brick red)
+   ============================================================ */
+
 @layer base {
   :root {
-    --bg-canvas: #FDF8F2;
-    --bg-surface: #F7EFE4;
-    --bg-surface-subtle: #FDF8F2;
-    --border-color: #E8DCC8;
-    --border-color-strong: #DBC8B0;
-    --text-heading: #2B1D12;
-    --text-body: #2B1D12;
-    --text-muted: #6B5A4A;
-    --color-accent: #BC4800;
-    --color-accent-hover: #9A3A00;
-    --color-accent-gold: #E3A857;
-    --color-success: #4E7A51;
-    --color-warning: #C48A2E;
-    --color-danger: #A6402F;
+    --bg-canvas:            #F5F4F0;
+    --bg-surface:           #DCD7CC;
+    --bg-surface-subtle:    #F5F4F0;
+    --border-color:         #E2DED4;
+    --border-color-strong:  #C8C3B8;
+    --text-heading:         #1F2A38;
+    --text-body:            #1F2A38;
+    --text-muted:           #8A8578;
+    --color-accent:         #3E5C76;
+    --color-accent-hover:   #2E4459;
+    --color-success:        #4E7A51;
+    --color-warning:        #C48A2E;
+    --color-danger:         #A6402F;
   }
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #FDF8F2;
-    color: #2B1D12;
+    background-color: #F5F4F0;
+    color: #1F2A38;
     @apply antialiased relative min-h-screen overflow-x-hidden text-sm;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: #2B1D12;
+    color: #1F2A38;
     font-weight: 700;
     letter-spacing: normal;
   }
 }
 
-/* Institutional Design Utility Classes */
+/* ============================================================
+   INSTITUTIONAL DESIGN UTILITY CLASSES
+   ============================================================ */
+
 .inst-card {
-  background-color: #F7EFE4;
-  border: 1px solid #E8DCC8;
+  background-color: #DCD7CC;
+  border: 1px solid #E2DED4;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(43, 29, 18, 0.04);
+  box-shadow: 0 1px 3px rgba(31, 42, 56, 0.06);
 }
 
 .inst-card-subtle {
-  background-color: #FDF8F2;
-  border: 1px solid #E8DCC8;
+  background-color: #F5F4F0;
+  border: 1px solid #E2DED4;
   border-radius: 10px;
 }
 
+/* Primary button — slate blue accent */
 .inst-button-primary {
-  background-color: #BC4800;
+  background-color: #3E5C76;
   color: #FFFFFF;
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.8125rem;
   padding: 0.5rem 1rem;
   transition: background-color 0.15s ease;
-  border: 1px solid #BC4800;
+  border: 1px solid #3E5C76;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 .inst-button-primary:hover {
-  background-color: #9A3A00;
-  border-color: #9A3A00;
+  background-color: #2E4459;
+  border-color: #2E4459;
 }
 .inst-button-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* Secondary button — outlined slate blue */
 .inst-button-secondary {
   background-color: transparent;
-  color: #BC4800;
-  border: 1px solid #BC4800;
+  color: #3E5C76;
+  border: 1px solid #3E5C76;
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.8125rem;
@@ -87,10 +105,13 @@
   justify-content: center;
 }
 .inst-button-secondary:hover {
-  background-color: rgba(188, 72, 0, 0.08);
+  background-color: rgba(62, 92, 118, 0.08);
 }
 
-/* Status Badges - Flat, Rounded Pill, ~15% Opacity Background, Full Color Text */
+/* ============================================================
+   STATUS BADGES — Flat pill, ~15% opacity BG
+   ============================================================ */
+
 .inst-badge-sage, .inst-badge-success {
   background-color: rgba(78, 122, 81, 0.15);
   color: #4E7A51;
@@ -131,9 +152,9 @@
 }
 
 .inst-badge-neutral {
-  background-color: #FDF8F2;
-  color: #6B5A4A;
-  border: 1px solid #E8DCC8;
+  background-color: #F5F4F0;
+  color: #8A8578;
+  border: 1px solid #E2DED4;
   border-radius: 9999px;
   font-size: 0.6875rem;
   font-weight: 500;
@@ -143,59 +164,68 @@
   gap: 0.25rem;
 }
 
-/* Institutional Ledger Table Styles */
+/* ============================================================
+   INSTITUTIONAL LEDGER TABLE STYLES
+   ============================================================ */
+
 .inst-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8125rem;
 }
 .inst-table th {
-  background-color: #F7EFE4;
-  color: #2B1D12;
+  background-color: #DCD7CC;
+  color: #1F2A38;
   font-weight: 600;
   font-size: 0.75rem;
   padding: 10px 14px;
-  border-bottom: 1px solid #E8DCC8;
+  border-bottom: 1px solid #E2DED4;
   text-align: left;
 }
 .inst-table td {
   padding: 11px 14px;
-  border-bottom: 1px solid #E8DCC8;
-  color: #2B1D12;
+  border-bottom: 1px solid #E2DED4;
+  color: #1F2A38;
 }
 .inst-table tr:hover td {
-  background-color: rgba(232, 220, 200, 0.35);
+  background-color: rgba(220, 215, 204, 0.4);
 }
 
-/* Clean Minimal Scrollbar */
+/* ============================================================
+   CLEAN MINIMAL SCROLLBAR
+   ============================================================ */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FDF8F2;
+  background: #F5F4F0;
 }
 ::-webkit-scrollbar-thumb {
-  background: #DBC8B0;
+  background: #C8C3B8;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #BC4800;
+  background: #3E5C76;
 }
 
-/* Compatibility classes */
+/* ============================================================
+   COMPATIBILITY / LEGACY OVERRIDES
+   No gradients, no glow, no neon — flat fills only
+   ============================================================ */
+
 .glass-panel, .glass-card, .glass-card-interactive {
-  background-color: #F7EFE4 !important;
-  border: 1px solid #E8DCC8 !important;
+  background-color: #DCD7CC !important;
+  border: 1px solid #E2DED4 !important;
   border-radius: 12px;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: 0 1px 3px rgba(43, 29, 18, 0.04);
+  box-shadow: 0 1px 3px rgba(31, 42, 56, 0.06);
 }
 
 .divider-galaxy {
   height: 1px;
   width: 100%;
-  background-color: #E8DCC8;
+  background-color: #E2DED4;
 }
-

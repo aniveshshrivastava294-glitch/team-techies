@@ -8,22 +8,22 @@ export default function PendingApprovalView() {
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 font-sans">
-      <div className="inst-card p-8 rounded-2xl border border-[#E8DCC8] text-center space-y-5 bg-[#F7EFE4] shadow-xs">
+      <div className="inst-card p-8 rounded-2xl border border-[#E2DED4] text-center space-y-5 bg-[#DCD7CC] shadow-xs">
         
         <div className="w-12 h-12 bg-[#C48A2E]/15 border border-[#C48A2E]/30 rounded-xl flex items-center justify-center text-[#C48A2E] mx-auto">
           <Clock className="w-6 h-6" />
         </div>
 
         <div>
-          <h2 className="text-xl font-bold text-[#2B1D12] tracking-tight">
+          <h2 className="text-xl font-bold text-[#1F2A38] tracking-tight">
             Account Approval Pending
           </h2>
-          <p className="text-xs text-[#6B5A4A] mt-2 max-w-md mx-auto">
-            Welcome, <strong className="text-[#2B1D12]">{currentUser?.full_name || currentUser?.email}</strong>. Your requested account for department <span className="text-[#BC4800] font-bold uppercase">{currentUser?.department_domain}</span> is undergoing review by campus administration.
+          <p className="text-xs text-[#8A8578] mt-2 max-w-md mx-auto">
+            Welcome, <strong className="text-[#1F2A38]">{currentUser?.full_name || currentUser?.email}</strong>. Your requested account for department <span className="text-[#3E5C76] font-bold uppercase">{currentUser?.department_domain}</span> is undergoing review by campus administration.
           </p>
         </div>
 
-        <div className="bg-[#FDF8F2] p-4 rounded-xl border border-[#E8DCC8] text-xs text-[#6B5A4A] space-y-1.5 text-left">
+        <div className="bg-[#F5F4F0] p-4 rounded-xl border border-[#E2DED4] text-xs text-[#8A8578] space-y-1.5 text-left">
           <div className="flex items-center space-x-2 text-[#C48A2E] font-bold">
             <ShieldAlert className="w-4 h-4" />
             <span>Admin Notice:</span>
@@ -35,7 +35,7 @@ export default function PendingApprovalView() {
 
         {/* Demo Helper */}
         <div className="pt-2">
-          <p className="text-xs text-[#6B5A4A] mb-2 font-medium">
+          <p className="text-xs text-[#8A8578] mb-2 font-medium">
             Switch to the Super Admin account to approve this account right now:
           </p>
           <button
